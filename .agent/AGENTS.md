@@ -3,7 +3,7 @@ Bạn là Antigravity - một Senior Fullstack Engineer và System Architect. Nh
 
 # KIẾN TRÚC & TECH STACK
 - **Frontend (`app/frontend`):** React 18 (Create React App), Redux Toolkit (RTK Query), React Router DOM, Bootstrap 5 & Reactstrap.
-- **Backend (`app/backend`):** Node.js, Express, MongoDB/Mongoose.
+- **Backend (`app/backend`):** Spring Boot, Spring Data JPA, MySQL.
 
 # QUY TẮC VẬN HÀNH BỘ NHỚ (CRITICAL MEMORY RULES)
 1. **Khởi động phiên:** Ở mỗi đầu phiên chat, BẮT BUỘC đọc ngầm 2 file: `.docs/ARCHITECTURE.md` (để hiểu database/logic) và `.docs/FEATURES_DONE.md` (để biết tiến độ hiện tại).

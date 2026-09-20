@@ -1,9 +1,28 @@
 # TIẾN ĐỘ: EN-LEARNING
 
-Giai đoạn hiện tại: **chỉ xây dựng Frontend**. Không triển khai Backend,
-Database hay API thật. Toàn bộ dữ liệu lấy từ mock trong `src/mocks`.
+Giai đoạn hiện tại: **Frontend xong với dữ liệu mock; Database đã thiết kế**.
+Chưa triển khai API Backend. Frontend vẫn lấy dữ liệu từ mock trong `src/mocks`.
 
-Cập nhật: 20/09/2026 (vòng 2: sáng/tối, đa ngôn ngữ, ảnh thẻ, bộ lọc)
+Cập nhật: 20/09/2026 (vòng 2: sáng/tối, đa ngôn ngữ, ảnh thẻ, bộ lọc; thiết kế Database)
+
+---
+
+## Database (thiết kế xong, chưa có API)
+
+- `apps/backend/src/main/resources/db/migration/V1__init_schema.sql`: 26 bảng,
+  40 khoá ngoại, 85 index, 18 ràng buộc CHECK. Đã chạy thử Flyway và
+  Hibernate `validate` trên MySQL 9.0 thành công, kèm ghi/đọc thử các cột JSON
+  và ràng buộc CHECK của 5 bảng mới qua JPA.
+- 26 entity JPA ở `apps/backend/.../entity`, 19 enum ở `entity/enums`.
+- Đã rút gọn từ 35 bảng xuống 21 (gộp danh sách nhỏ thành cột JSON), rồi khôi phục
+  Chat AI và Luyện nói và thêm `study_sessions`, lên 26 bảng (20/09/2026):
+  `chat_conversations`, `chat_messages`, `speaking_lessons`, `speaking_attempts`, `study_sessions`.
+- Luyện nói không lưu âm thanh, chỉ lưu transcript, điểm và nhận xét; lượt chấm lỗi
+  là `FAILED` và người học ghi âm lại.
+- Thời gian học ở Dashboard tính từ `study_sessions` (heartbeat ~30 giây, gom theo
+  ngày ở múi giờ Asia/Ho_Chi_Minh). Cách tính chi tiết: mục 2 của `ARCHITECTURE.md`.
+- Chi tiết bảng và quy ước: mục 1 của `ARCHITECTURE.md`.
+- Chưa làm: Repository, Service, Controller, JWT; dữ liệu mẫu (seed).
 
 ---
 
