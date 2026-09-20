@@ -51,6 +51,8 @@ CREATE TABLE user_settings (
     email_reminders    TINYINT(1)  NOT NULL DEFAULT 1,
     reminder_time      TIME        NOT NULL DEFAULT '20:00:00',
     daily_goal_minutes INT         NOT NULL DEFAULT 30,
+    time_zone          VARCHAR(50) NOT NULL DEFAULT 'Asia/Ho_Chi_Minh'
+                       COMMENT 'Mã múi giờ IANA (vd Asia/Ho_Chi_Minh); Service kiểm tra bằng ZoneId.of. Biểu đồ thời gian học gom ngày theo múi giờ này',
     created_at         DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
     updated_at         DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
     PRIMARY KEY (id),
@@ -58,7 +60,8 @@ CREATE TABLE user_settings (
     -- Job nhắc học quét theo giờ nhắc của người bật nhắc.
     KEY idx_user_settings_reminder (email_reminders, reminder_time),
     CONSTRAINT fk_user_settings_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
-    CONSTRAINT chk_user_settings_goal CHECK (daily_goal_minutes BETWEEN 1 AND 1440)
+    CONSTRAINT chk_user_settings_goal CHECK (daily_goal_minutes BETWEEN 1 AND 1440),
+    CONSTRAINT chk_user_settings_time_zone CHECK (CHAR_LENGTH(time_zone) > 0)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
 
 CREATE TABLE refresh_tokens (
@@ -627,8 +630,9 @@ CREATE TABLE chat_messages (
 -- một lần khi tab đang mở; backend cộng vào active_seconds nhưng chỉ tính
 -- tối đa 60 giây cho mỗi heartbeat, và nếu im lặng quá 2 phút thì phiên kết
 -- thúc, heartbeat sau đó mở phiên mới. Thời gian của một phiên tính vào
--- ngày của started_at. Biểu đồ Tuần/Tháng gom theo ngày ở múi giờ ứng dụng
--- (Asia/Ho_Chi_Minh), không gom theo ngày UTC.
+-- ngày của started_at. Biểu đồ Tuần/Tháng gom theo ngày ở múi giờ của người
+-- dùng (user_settings.time_zone, mặc định Asia/Ho_Chi_Minh), không gom theo
+-- ngày UTC.
 -- ref_id trỏ tới bộ thẻ, đề viết, bài nghe/đọc/nói hoặc đề kiểm tra tuỳ theo
 -- skill (CHAT: hội thoại, hoặc NULL). Không có FK vì trỏ nhiều bảng.
 CREATE TABLE study_sessions (

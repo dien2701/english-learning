@@ -10,7 +10,7 @@ Cập nhật: 20/09/2026 (vòng 2: sáng/tối, đa ngôn ngữ, ảnh thẻ, b�
 ## Database (thiết kế xong, chưa có API)
 
 - `apps/backend/src/main/resources/db/migration/V1__init_schema.sql`: 26 bảng,
-  40 khoá ngoại, 85 index, 18 ràng buộc CHECK. Đã chạy thử Flyway và
+  40 khoá ngoại, 85 index, 19 ràng buộc CHECK. Đã chạy thử Flyway và
   Hibernate `validate` trên MySQL 9.0 thành công, kèm ghi/đọc thử các cột JSON
   và ràng buộc CHECK của 5 bảng mới qua JPA.
 - 26 entity JPA ở `apps/backend/.../entity`, 19 enum ở `entity/enums`.
@@ -20,7 +20,8 @@ Cập nhật: 20/09/2026 (vòng 2: sáng/tối, đa ngôn ngữ, ảnh thẻ, b�
 - Luyện nói không lưu âm thanh, chỉ lưu transcript, điểm và nhận xét; lượt chấm lỗi
   là `FAILED` và người học ghi âm lại.
 - Thời gian học ở Dashboard tính từ `study_sessions` (heartbeat ~30 giây, gom theo
-  ngày ở múi giờ Asia/Ho_Chi_Minh). Cách tính chi tiết: mục 2 của `ARCHITECTURE.md`.
+  ngày theo `user_settings.time_zone`, mặc định Asia/Ho_Chi_Minh). Cách tính chi tiết:
+  mục 2 của `ARCHITECTURE.md`.
 - Chi tiết bảng và quy ước: mục 1 của `ARCHITECTURE.md`.
 - Chưa làm: Repository, Service, Controller, JWT; dữ liệu mẫu (seed).
 
@@ -154,9 +155,6 @@ chỉ được chuyển sang ngừng hoạt động.
 
 - Gói build ra một chunk 1,77 MB (gzip 533 kB), chủ yếu do Ant Design. Nên
   tách chunk hoặc nạp động khu quản trị.
-- `.agent/AGENTS.md` ghi sai tech stack: nói Node/Express/MongoDB và
-  CRA + Redux + Bootstrap, trong khi dự án thực tế là Vite + Ant Design +
-  Tailwind, không dùng Redux, backend dự kiến là Spring Boot.
 - Thư mục lồng `english-learning/english-learning`.
 - Ảnh bìa bộ thẻ lấy từ Unsplash qua đường dẫn ngoài; khi có backend nên
   chuyển sang Cloudinary.

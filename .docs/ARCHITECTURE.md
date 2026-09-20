@@ -13,7 +13,7 @@ Nội dung đã có trong lịch sử học bị FK RESTRICT chặn xoá, chỉ 
 
 Xác thực & người dùng
 User: Lưu tài khoản, mật khẩu BCrypt và vai trò USER, ADMIN.
-UserSetting: Ngôn ngữ, giao diện, mục tiêu học mỗi ngày, bật/tắt và giờ email nhắc học (1-1 với User).
+UserSetting: Ngôn ngữ, giao diện, mục tiêu học mỗi ngày, múi giờ IANA (mặc định Asia/Ho_Chi_Minh), bật/tắt và giờ email nhắc học (1-1 với User).
 RefreshToken & PasswordResetToken: Lưu bản băm SHA-256 của token, không lưu token thô.
 
 Nội dung học
@@ -72,8 +72,8 @@ Backend lưu tin nhắn của người học trước, gọi OpenAI sau và lưu
 Thời gian học:
 Frontend gửi heartbeat khoảng 30 giây một lần khi tab học đang mở. Backend cộng vào StudySession.activeSeconds, mỗi heartbeat
 tính tối đa 60 giây; im lặng quá 2 phút thì phiên kết thúc và heartbeat sau mở phiên mới. Biểu đồ Dashboard = tổng
-activeSeconds của người dùng gom theo ngày ở múi giờ ứng dụng (Asia/Ho_Chi_Minh), không phải ngày UTC; thời gian của một
-phiên tính vào ngày startedAt. Phần trăm so với kỳ trước chạy lại cùng truy vấn cho khoảng liền trước.
+activeSeconds của người dùng gom theo ngày ở múi giờ của họ (UserSetting.timeZone, mặc định Asia/Ho_Chi_Minh), không phải
+ngày UTC; thời gian của một phiên tính vào ngày startedAt. Giờ nhắc học (reminderTime) cũng hiểu theo múi giờ này. Phần trăm so với kỳ trước chạy lại cùng truy vấn cho khoảng liền trước.
 Bài kiểm tra:
 Trắc nghiệm tự chấm bằng đáp án trong database.
 Không trả đáp án đúng trước khi User nộp bài.

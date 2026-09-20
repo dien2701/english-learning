@@ -25,7 +25,7 @@ import vn.enlearning.backend.entity.enums.StudySkill;
  * {@code activeSeconds} nhưng chỉ tính tối đa 60 giây cho mỗi heartbeat, và nếu im
  * lặng quá 2 phút thì phiên kết thúc, heartbeat sau đó mở phiên mới. Thời gian của
  * phiên tính vào ngày của {@code startedAt}; khi gom theo ngày phải đổi sang múi giờ
- * ứng dụng (Asia/Ho_Chi_Minh), không gom theo ngày UTC.
+ * của người dùng ({@link UserSetting#getTimeZone()}), không gom theo ngày UTC.
  */
 @Getter
 @Setter

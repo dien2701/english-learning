@@ -50,4 +50,11 @@ public class UserSetting extends AuditedEntity {
 
 	@Column(nullable = false)
 	private int dailyGoalMinutes = 30;
+
+	/**
+	 * Mã múi giờ IANA; Service kiểm tra bằng {@code ZoneId.of} trước khi lưu. Biểu đồ
+	 * thời gian học gom ngày theo múi giờ này thay vì UTC.
+	 */
+	@Column(nullable = false, length = 50)
+	private String timeZone = "Asia/Ho_Chi_Minh";
 }
