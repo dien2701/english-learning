@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { App, Form, Input, Modal } from 'antd';
+import { App, Form, Input, Modal, Popconfirm } from 'antd';
 import { useTranslation } from 'react-i18next';
 
 import { Button, IconButton } from '../../components/ui/Button';
@@ -64,6 +64,16 @@ const ManageTopicsPage: React.FC = () => {
     }
   };
 
+  const handleDelete = async (id: string) => {
+    try {
+      await adminService.deleteTopic(id);
+      message.success(t('admin.topicDeleted'));
+      reload();
+    } catch (deleteError) {
+      message.error(describe(deleteError, 'admin.topicError'));
+    }
+  };
+
   return (
     <div className="mx-auto w-full max-w-content px-4 py-6 sm:px-6 lg:px-8">
       <PageHeader
@@ -106,13 +116,31 @@ const ManageTopicsPage: React.FC = () => {
                 </p>
               </div>
 
-              <IconButton
-                icon="edit"
-                label={t('admin.editTopicOf', { name: L(topic.name) })}
-                variant="subtle"
-                onClick={() => openEdit(topic)}
-                className="shrink-0 bg-transparent"
-              />
+              <div className="flex shrink-0 items-center">
+                <IconButton
+                  icon="edit"
+                  label={t('admin.editTopicOf', { name: L(topic.name) })}
+                  variant="subtle"
+                  onClick={() => openEdit(topic)}
+                  className="bg-transparent"
+                />
+                <Popconfirm
+                  title={t('admin.deleteTopicTitle')}
+                  description={t('admin.deleteTopicBody')}
+                  onConfirm={() => handleDelete(topic.id)}
+                  okText={t('common.delete')}
+                  cancelText={t('common.cancel')}
+                  placement="topRight"
+                  okButtonProps={{ danger: true }}
+                >
+                  <IconButton
+                    icon="delete"
+                    label={t('common.delete')}
+                    variant="subtle"
+                    className="bg-transparent text-[var(--color-error)]"
+                  />
+                </Popconfirm>
+              </div>
             </div>
           ))}
         </div>

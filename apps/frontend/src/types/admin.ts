@@ -93,3 +93,26 @@ export interface AdminNotification {
   createdAt: string;
   sentAt?: string;
 }
+
+export type QuestionType = 'MULTIPLE_CHOICE' | 'FILL_BLANK';
+
+export interface AdminQuestion {
+  id?: string;
+  type: QuestionType;
+  content: string;
+  options?: string[];
+  correctAnswers: string[];
+}
+
+/** Payload dùng chung khi thêm/sửa nội dung. */
+export interface AdminContentPayload {
+  skill: Skill;
+  title: L10n;
+  topicName?: L10n; // Flashcard dùng topicName
+  level: string;
+  prompt?: string; // Đề bài chung cho bài tập (nếu có)
+  mediaUrl?: string; // Audio/Video URL
+  contentBody?: string; // Đoạn văn / Transcript
+  items: any[]; // Dữ liệu con tuỳ thuộc vào kỹ năng (từ vựng, câu hỏi nghe/đọc...)
+}
+

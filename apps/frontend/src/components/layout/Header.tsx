@@ -221,8 +221,12 @@ export const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => {
             aria-haspopup="true"
             className="flex min-h-[44px] items-center gap-2.5 rounded-md px-1.5 text-left transition-colors duration-200 hover:bg-surface-hover sm:px-2"
           >
-            <span className="grid h-9 w-9 shrink-0 place-items-center rounded-pill bg-action text-[12.5px] font-bold text-white">
-              {initialsOf(displayName)}
+            <span className="grid h-9 w-9 shrink-0 overflow-hidden place-items-center rounded-pill bg-action text-[12.5px] font-bold text-white">
+              {user?.avatarUrl ? (
+                <img src={user.avatarUrl} alt="Avatar" className="h-full w-full object-cover" />
+              ) : (
+                initialsOf(displayName)
+              )}
             </span>
             <span className="hidden leading-tight sm:block">
               <span className="block max-w-[10rem] truncate text-[13px] font-bold text-ink">

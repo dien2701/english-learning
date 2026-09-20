@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { App, Form, Input } from 'antd';
+import { App, Form, Input, Upload } from 'antd';
+import type { UploadProps } from 'antd';
 import { useTranslation } from 'react-i18next';
 
 import { Button } from '../../components/ui/Button';
 import PageHeader from '../../components/ui/PageHeader';
 import { Card, CardHeader } from '../../components/ui/Card';
 import { ErrorState, Skeleton } from '../../components/ui/StateBlocks';
+import { useAuth } from '../../contexts/AuthContext';
 import { useApi } from '../../hooks/useApi';
 import { useApiError } from '../../hooks/useApiError';
 import { useFormat } from '../../hooks/useFormat';
@@ -14,6 +16,7 @@ import { profileService } from '../../services/userService';
 interface ProfileForm {
   fullName: string;
   email: string;
+  phoneNumber?: string;
 }
 
 interface PasswordForm {
@@ -27,25 +30,33 @@ const ProfilePage: React.FC = () => {
   const { t } = useTranslation();
   const { date, duration } = useFormat();
   const { describe, applyTo } = useApiError();
+  const { updateUser } = useAuth();
   const [profileForm] = Form.useForm<ProfileForm>();
   const [passwordForm] = Form.useForm<PasswordForm>();
 
   const [isSavingProfile, setIsSavingProfile] = useState(false);
   const [isSavingPassword, setIsSavingPassword] = useState(false);
+  const [avatarUrl, setAvatarUrl] = useState<string | undefined>();
 
   const { data, isLoading, error, reload } = useApi(() => profileService.get(), []);
 
   // Đổ dữ liệu vào form sau khi tải xong.
   useEffect(() => {
     if (data) {
-      profileForm.setFieldsValue({ fullName: data.fullName, email: data.email });
+      profileForm.setFieldsValue({
+        fullName: data.fullName,
+        email: data.email,
+        phoneNumber: data.phoneNumber,
+      });
+      setAvatarUrl(data.avatarUrl);
     }
   }, [data, profileForm]);
 
   const saveProfile = async (values: ProfileForm) => {
     setIsSavingProfile(true);
     try {
-      await profileService.update(values);
+      const updatedUser = await profileService.update({ ...values, avatarUrl });
+      updateUser(updatedUser);
       message.success(t('profile.updated'));
       reload();
     } catch (saveError) {
@@ -99,6 +110,23 @@ const ProfilePage: React.FC = () => {
     .join('')
     .toUpperCase();
 
+  const uploadProps: UploadProps = {
+    showUploadList: false,
+    beforeUpload: (file) => {
+      const isImage = file.type.startsWith('image/');
+      if (!isImage) {
+        return Upload.LIST_IGNORE;
+      }
+      const reader = new FileReader();
+      reader.onload = () => {
+        setAvatarUrl(reader.result as string);
+        message.success(t('profile.uploadSuccess'));
+      };
+      reader.readAsDataURL(file);
+      return false;
+    },
+  };
+
   return (
     <div className="mx-auto w-full max-w-content px-4 py-6 sm:px-6 lg:px-8">
       <PageHeader title={t('profile.title')} />
@@ -106,15 +134,34 @@ const ProfilePage: React.FC = () => {
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-12">
         <div className="lg:col-span-4">
           <Card className="text-center">
-            <span className="mx-auto grid h-20 w-20 place-items-center rounded-pill bg-action text-[26px] font-extrabold text-white">
-              {initials}
-            </span>
+            <Upload {...uploadProps} accept="image/*" className="cursor-pointer group relative block w-fit mx-auto">
+              <div className="mx-auto grid h-24 w-24 place-items-center overflow-hidden rounded-pill bg-action text-[28px] font-extrabold text-white ring-2 ring-transparent transition-all group-hover:ring-action/30">
+                {avatarUrl ? (
+                  <img src={avatarUrl} alt="Avatar" className="h-full w-full object-cover" />
+                ) : (
+                  initials
+                )}
+                <div className="absolute inset-0 grid place-items-center rounded-pill bg-black/40 opacity-0 transition-opacity group-hover:opacity-100">
+                  <span className="material-symbols-outlined text-white">photo_camera</span>
+                </div>
+              </div>
+            </Upload>
 
             <h2 className="mt-4 text-[18px] font-extrabold text-ink">
               {data.fullName}
             </h2>
             <p className="mt-0.5 text-[13px] text-ink-muted">{data.email}</p>
-            <p className="mt-2 text-caption text-ink-subtle">
+            
+            <div className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-surface-muted px-2.5 py-1">
+              <span className="material-symbols-outlined text-[16px] text-ink-subtle">
+                {data.role === 'ADMIN' ? 'shield_person' : 'school'}
+              </span>
+              <span className="text-[12px] font-semibold text-ink-subtle">
+                {data.role === 'ADMIN' ? t('header.admin') : t('header.student')}
+              </span>
+            </div>
+
+            <p className="mt-4 text-caption text-ink-subtle">
               {t('profile.joinedAt', { date: date(data.joinedAt) })}
             </p>
 
@@ -150,7 +197,6 @@ const ProfilePage: React.FC = () => {
               form={profileForm}
               layout="vertical"
               onFinish={saveProfile}
-              requiredMark={false}
               className="mt-4"
             >
               <Form.Item
@@ -168,6 +214,13 @@ const ProfilePage: React.FC = () => {
                   { required: true, message: t('auth.validation.emailRequired') },
                   { type: 'email', message: t('auth.validation.emailFormat') },
                 ]}
+              >
+                <Input size="large" />
+              </Form.Item>
+
+              <Form.Item
+                label={t('profile.phoneNumber')}
+                name="phoneNumber"
               >
                 <Input size="large" />
               </Form.Item>

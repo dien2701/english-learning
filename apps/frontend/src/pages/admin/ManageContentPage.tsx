@@ -16,6 +16,7 @@ import { adminService } from '../../services/adminService';
 import type { Level } from '../../types/common';
 import type { AdminContentItem } from '../../types/admin';
 import { useLanguage } from '../../hooks/useLanguage';
+import { ContentEditorDrawer } from '../../components/admin/content-forms/ContentEditorDrawer';
 
 /**
  * Quản lý toàn bộ nội dung học trong một bảng.
@@ -35,6 +36,9 @@ const ManageContentPage: React.FC = () => {
   const [skill, setSkill] = useState('');
   const [status, setStatus] = useState('');
   const [page, setPage] = useState(1);
+
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
 
   const debouncedSearch = useDebounced(search, 350);
 
@@ -135,9 +139,16 @@ const ManageContentPage: React.FC = () => {
     {
       title: '',
       key: 'actions',
-      width: 90,
-      render: (_, item) =>
-        item.inUse ? (
+      width: 140,
+      render: (_, item) => (
+        <div className="flex items-center gap-2">
+          <Button size="sm" variant="secondary" onClick={() => {
+            setEditingId(item.id);
+            setDrawerOpen(true);
+          }}>
+            {t('common.edit', 'Sửa')}
+          </Button>
+          {item.inUse ? (
           <Tooltip title={t('admin.inUseTooltip')}>
             <span className="inline-flex cursor-not-allowed items-center gap-1 text-[12.5px] font-semibold text-ink-subtle">
               <span aria-hidden="true" className="material-symbols-outlined text-[16px]">
@@ -150,16 +161,31 @@ const ManageContentPage: React.FC = () => {
           <Button size="sm" variant="danger" onClick={() => remove(item)}>
             {t('common.delete')}
           </Button>
-        ),
+        )}
+        </div>
+      ),
     },
   ];
 
   return (
     <div className="mx-auto w-full max-w-content px-4 py-6 sm:px-6 lg:px-8">
-      <PageHeader
-        title={t('admin.contentTitle')}
-        description={t('admin.contentSubtitle')}
-      />
+      <div className="mb-6 flex items-start justify-between gap-4">
+        <PageHeader
+          title={t('admin.contentTitle')}
+          description={t('admin.contentSubtitle')}
+        />
+        <Button 
+          variant="primary" 
+          className="bg-action" 
+          onClick={() => {
+            setEditingId(null);
+            setDrawerOpen(true);
+          }}
+        >
+          <span className="material-symbols-outlined mr-1 text-[20px]">add</span>
+          {t('admin.addContent', 'Thêm mới')}
+        </Button>
+      </div>
 
       <div className="mb-5 flex flex-wrap items-center gap-2.5">
         <Input
@@ -240,6 +266,15 @@ const ManageContentPage: React.FC = () => {
           />
         </div>
       )}
+
+      <ContentEditorDrawer
+        open={drawerOpen}
+        editingId={editingId}
+        onClose={() => setDrawerOpen(false)}
+        onSuccess={() => {
+          reload();
+        }}
+      />
     </div>
   );
 };

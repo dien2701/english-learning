@@ -4,7 +4,7 @@ import { Link, NavLink, Navigate, useNavigate } from 'react-router-dom';
 
 import { useAuth } from '../../contexts/AuthContext';
 import { useThemeMode } from '../../contexts/ThemeContext';
-import { Button } from '../ui/Button';
+
 import LanguageSwitch from './LanguageSwitch';
 
 /** Lấy tối đa hai chữ cái đầu để làm ảnh đại diện chữ. */

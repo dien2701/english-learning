@@ -266,6 +266,95 @@ get('/admin/content', ({ query }) => {
   return paginate(filtered, num(query, 'page', 1), num(query, 'pageSize', 10));
 });
 
+get('/admin/content/:id', ({ params }) => {
+  const allItems = [
+    ...decks.map(d => ({ ...d, skill: 'VOCABULARY' })),
+    ...listeningLessons.map(d => ({ ...d, skill: 'LISTENING' })),
+    ...readingLessons.map(d => ({ ...d, skill: 'READING' })),
+    ...writingPrompts.map(d => ({ ...d, skill: 'WRITING' })),
+    ...speakingLessons.map(d => ({ ...d, skill: 'SPEAKING' })),
+    ...exams.map(d => ({ ...d, skill: 'EXAM' })),
+  ];
+  const item = allItems.find(i => i.id === params.id);
+  if (!item) fail(404, 'errors.contentNotFound', 'CONTENT_NOT_FOUND');
+  
+  // Fake payload structure cho edit form
+  const payload = {
+    skill: item.skill,
+    title: item.title,
+    topicName: (item as any).topicName,
+    level: item.level,
+    items: [] as any[], // Trong thực tế lấy từ db
+  };
+
+  if (item.skill === 'VOCABULARY') payload.items = (item as any).cards || [];
+  if (item.skill === 'LISTENING') payload.items = (item as any).parts || [];
+  if (item.skill === 'READING') payload.items = (item as any).questions || [];
+  if (item.skill === 'WRITING') payload.items = [(item as any).prompt]; // Ví dụ
+  if (item.skill === 'SPEAKING') payload.items = (item as any).prompts || [];
+  if (item.skill === 'EXAM') payload.items = (item as any).questions || [];
+
+  return {
+    id: item.id,
+    title: item.title,
+    skill: item.skill,
+    level: item.level,
+    status: contentStatus.get(item.id) ?? 'ACTIVE',
+    payload
+  };
+});
+
+post('/admin/content', ({ body }) => {
+  const { skill, title, topicName, level, items } = (body ?? {}) as any;
+  if (!title?.vi || !skill) fail(400, 'errors.invalidPayload', 'VALIDATION');
+  
+  const newId = `new-${skill.toLowerCase()}-${Date.now().toString(36)}`;
+  
+  // Fake push vào list tương ứng
+  const newContent = {
+    id: newId,
+    title,
+    topicName: topicName || { vi: 'Chưa có', en: 'None' },
+    level: level || 'BEGINNER',
+    totalCards: items?.length || 0,
+    questionCount: items?.length || 0,
+    promptCount: items?.length || 0,
+  };
+
+  if (skill === 'VOCABULARY') (decks as any[]).unshift(newContent);
+  if (skill === 'LISTENING') (listeningLessons as any[]).unshift(newContent);
+  if (skill === 'READING') (readingLessons as any[]).unshift(newContent);
+  if (skill === 'WRITING') (writingPrompts as any[]).unshift(newContent);
+  if (skill === 'SPEAKING') (speakingLessons as any[]).unshift(newContent);
+  if (skill === 'EXAM') (exams as any[]).unshift(newContent);
+
+  contentStatus.set(newId, 'ACTIVE');
+
+  return {
+    id: newId,
+    title,
+    skill,
+    level,
+    status: 'ACTIVE',
+    itemCount: items?.length || 0,
+    updatedAt: new Date().toISOString()
+  };
+});
+
+put('/admin/content/:id', ({ params, body }) => {
+  const { skill, title, level, items } = (body ?? {}) as any;
+  
+  return {
+    id: params.id,
+    title,
+    skill,
+    level,
+    status: contentStatus.get(params.id) ?? 'ACTIVE',
+    itemCount: items?.length || 0,
+    updatedAt: new Date().toISOString()
+  };
+});
+
 /** Bật hoặc tắt trạng thái hoạt động của một nội dung. */
 patch('/admin/content/:id', ({ params, body }) => {
   const { status } = (body ?? {}) as { status?: ContentStatus };
@@ -336,6 +425,45 @@ put('/admin/topics/:id', ({ params, body }) => {
 
   topic.name = { vi: name.trim(), en: name.trim() };
   return topic;
+});
+
+del('/admin/topics/:id', ({ params }) => {
+  const topicIndex = topics.findIndex((t) => t.id === params.id);
+  if (topicIndex === -1) fail(404, 'errors.topicNotFound', 'TOPIC_NOT_FOUND');
+
+  const topic = topics[topicIndex];
+  
+  // Kiểm tra xem có nội dung nào dùng topic này đang inUse (có trong lịch sử học) không
+  const allContent = buildContentList();
+  const contentsUnderTopic = allContent.filter((c) => c.topicName.vi === topic.name.vi);
+  const inUse = contentsUnderTopic.some((c) => c.inUse);
+  
+  if (inUse) {
+    fail(409, 'errors.topicInUse', 'TOPIC_IN_USE');
+  }
+
+  // Xóa chủ đề
+  topics.splice(topicIndex, 1);
+  
+  // Xóa liên kết (cập nhật các nội dung đang dùng topic này về 'Khác')
+  // Do mock dùng các array tách rời nên ta cần loop qua để gán lại. 
+  const reassignTopic = (items: any[]) => {
+    items.forEach(item => {
+      if (item.topicId === params.id || (item.topicName && item.topicName.vi === topic.name.vi)) {
+        item.topicId = undefined; // Hoặc 'tp-other' nếu có
+        item.topicName = { vi: 'Khác', en: 'Other' };
+      }
+    });
+  };
+
+  reassignTopic(decks);
+  reassignTopic(listeningLessons);
+  reassignTopic(readingLessons);
+  reassignTopic(writingPrompts);
+  reassignTopic(speakingLessons);
+  reassignTopic(exams);
+
+  return { deleted: true };
 });
 
 /* -------------------------------------------------------------------

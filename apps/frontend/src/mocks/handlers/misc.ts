@@ -197,7 +197,7 @@ patch('/profile', ({ token, body }) => {
   const account = findAccountByToken(token);
   if (!account) fail(401, 'errors.sessionExpired', 'UNAUTHORIZED');
 
-  const { fullName, email } = (body ?? {}) as { fullName?: string; email?: string };
+  const { fullName, email, phoneNumber, avatarUrl } = (body ?? {}) as { fullName?: string; email?: string; phoneNumber?: string; avatarUrl?: string };
 
   const fieldErrors: Record<string, string> = {};
   if (fullName !== undefined && !fullName.trim()) {
@@ -221,6 +221,8 @@ patch('/profile', ({ token, body }) => {
 
   if (fullName) account.fullName = fullName.trim();
   if (email) account.email = email.toLowerCase();
+  if (phoneNumber !== undefined) account.phoneNumber = phoneNumber;
+  if (avatarUrl !== undefined) account.avatarUrl = avatarUrl;
 
   return toPublicUser(account);
 });

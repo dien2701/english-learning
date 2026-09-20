@@ -70,7 +70,7 @@ export const notificationService = {
 export const profileService = {
   get: (): Promise<ProfileData> => http.get<ProfileData>('/profile'),
 
-  update: (payload: { fullName?: string; email?: string }): Promise<User> =>
+  update: (payload: { fullName?: string; email?: string; phoneNumber?: string; avatarUrl?: string }): Promise<User> =>
     http.patch<User>('/profile', payload),
 
   changePassword: (payload: {

@@ -84,6 +84,7 @@ export function toPublicUser(account: MockAccount): User {
     id: account.id,
     email: account.email,
     fullName: account.fullName,
+    phoneNumber: account.phoneNumber,
     avatarUrl: account.avatarUrl,
     role: account.role,
     status: account.status,

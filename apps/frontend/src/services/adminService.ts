@@ -7,6 +7,7 @@ import type {
   AdminUser,
   AudienceKey,
   ContentStatus,
+  AdminContentPayload,
 } from '../types/admin';
 import type { AccountStatus, Role } from '../types/common';
 import type { Topic } from '../types/practice';
@@ -56,6 +57,15 @@ export const adminService = {
   deleteContent: (id: string) =>
     http.delete<{ deleted: boolean }>(`/admin/content/${id}`),
 
+  getContent: (id: string): Promise<AdminContentItem & { payload: AdminContentPayload }> =>
+    http.get<AdminContentItem & { payload: AdminContentPayload }>(`/admin/content/${id}`),
+
+  createContent: (payload: AdminContentPayload): Promise<AdminContentItem> =>
+    http.post<AdminContentItem>('/admin/content', payload),
+
+  updateContent: (id: string, payload: AdminContentPayload): Promise<AdminContentItem> =>
+    http.put<AdminContentItem>(`/admin/content/${id}`, payload),
+
   /* --- Chủ đề --- */
 
   listTopics: (): Promise<Topic[]> => http.get<Topic[]>('/admin/topics'),
@@ -65,6 +75,9 @@ export const adminService = {
 
   updateTopic: (id: string, name: string): Promise<Topic> =>
     http.put<Topic>(`/admin/topics/${id}`, { name }),
+
+  deleteTopic: (id: string): Promise<{ deleted: boolean }> =>
+    http.delete<{ deleted: boolean }>(`/admin/topics/${id}`),
 
   /* --- Thông báo --- */
 
