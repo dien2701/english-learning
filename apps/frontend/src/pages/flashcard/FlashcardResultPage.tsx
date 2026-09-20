@@ -1,201 +1,172 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { Button, Breadcrumb } from 'antd';
-import { CheckCircleFilled, SyncOutlined, SoundOutlined, ArrowLeftOutlined } from '@ant-design/icons';
-import type { SessionResult, Flashcard, FlashcardDeck } from '../../types/flashcard';
-import { flashcardService } from '../../services/flashcardService';
-import './Flashcard.css';
+import React from 'react';
+import { useLocation, useParams } from 'react-router-dom';
+
+import { ButtonLink, IconButton } from '../../components/ui/Button';
+import PageHeader from '../../components/ui/PageHeader';
+import { Card } from '../../components/ui/Card';
+import { Chip } from '../../components/ui/Chip';
+import { EmptyBlock } from '../../components/ui/StateBlocks';
+import { useSpeech } from '../../hooks/useSpeech';
+import type { StudyResult } from '../../types/flashcard';
+import { useLanguage } from '../../hooks/useLanguage';
+import { useTranslation } from 'react-i18next';
+import WordImage from '../../components/flashcard/WordImage';
 
 const FlashcardResultPage: React.FC = () => {
+  const { t } = useTranslation();
+  const { L } = useLanguage();
+  const { id = '' } = useParams();
   const location = useLocation();
-  const navigate = useNavigate();
-  const { id } = useParams<{ id: string }>();
+  const { speak, isSupported } = useSpeech();
 
-  const [deck, setDeck] = useState<FlashcardDeck | null>(null);
-  const [reviewCards, setReviewCards] = useState<Flashcard[]>([]);
-  const [loading, setLoading] = useState(true);
+  // Kết quả được truyền qua state khi chuyển trang từ phiên học.
+  const result = (location.state as { result?: StudyResult } | null)?.result;
 
-  // Safely extract session result from navigation state
-  const sessionResult = location.state?.sessionResult as SessionResult | undefined;
-
-  useEffect(() => {
-    const fetchData = async () => {
-      if (!id) return;
-      setLoading(true);
-      const deckData = await flashcardService.getDeckById(Number(id));
-      if (deckData) {
-        setDeck(deckData);
-        // Get cards marked as forgot or hard
-        const toReview = await flashcardService.getFlashcardsForReview(Number(id));
-        setReviewCards(toReview);
-      }
-      setLoading(false);
-    };
-    
-    fetchData();
-  }, [id]);
-
-  if (!sessionResult && !loading) {
+  if (!result) {
     return (
-      <div className="fc-page-container" style={{ textAlign: 'center', paddingTop: '60px' }}>
-        <h2 style={{ fontSize: '20px', marginBottom: '16px' }}>Không tìm thấy kết quả phiên học</h2>
-        <Button type="primary" onClick={() => navigate(`/flashcard/${id}`)}>Quay lại bài học</Button>
+      <div className="mx-auto w-full max-w-3xl px-4 py-6 sm:px-6">
+        <Card>
+          <EmptyBlock
+            icon="quiz"
+            title={t('flashcard.noResultTitle')}
+            message={t('flashcard.noResultHint')}
+            action={
+              <ButtonLink to={`/flashcard/${id}`}>
+                {t('flashcard.backToDeck')}
+              </ButtonLink>
+            }
+          />
+        </Card>
       </div>
     );
   }
 
-  if (loading || !deck || !sessionResult) return <div className="fc-page-container">Đang tải...</div>;
-
-  const goodCount = sessionResult.easy + sessionResult.normal;
-  const needReviewCount = sessionResult.forgot + sessionResult.hard;
-  const goodPercent = sessionResult.total > 0 ? Math.round((goodCount / sessionResult.total) * 100) : 0;
+  const stats = [
+    {
+      label: t('flashcard.studiedWords'),
+      value: result.studiedCards,
+      tone: 'text-ink',
+    },
+    {
+      label: t('recall.REMEMBERED'),
+      value: result.remembered,
+      tone: 'text-success',
+    },
+    {
+      label: t('recall.ALMOST_REMEMBERED'),
+      value: result.almostRemembered,
+      tone: 'text-warning',
+    },
+    {
+      label: t('recall.NOT_REMEMBERED'),
+      value: result.notRemembered,
+      tone: 'text-danger',
+    },
+  ];
 
   return (
-    <div className="fc-page-container">
-      {/* Breadcrumb */}
-      <div style={{ marginBottom: '24px' }}>
-        <Breadcrumb items={[
-          { title: <a onClick={() => navigate('/flashcard')}>Flashcard</a> },
-          { title: <a onClick={() => navigate(`/flashcard/${id}`)}>{deck.title}</a> },
-          { title: 'Kết quả' }
-        ]} />
-      </div>
+    <div className="mx-auto w-full max-w-3xl px-4 py-6 sm:px-6">
+      <PageHeader
+        title={t('flashcard.resultTitle')}
+        description={L(result.deckTitle)}
+        backTo={{ label: t('flashcard.backToDeck'), to: `/flashcard/${id}` }}
+      />
 
-      <div style={{ marginBottom: '24px' }}>
-        <h1 className="fc-page-title">Kết quả học</h1>
-        <p className="fc-page-subtitle">Phiên học bộ từ vựng {deck.title}</p>
-      </div>
-
-      {/* Summary Card */}
-      <section className="fc-result-summary">
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <div style={{ width: '56px', height: '56px', borderRadius: '50%', background: '#D1FAE5', color: '#059669', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <CheckCircleFilled style={{ fontSize: '32px' }} />
-          </div>
+      <Card className="mb-5">
+        <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
-            <h2 style={{ fontSize: '24px', fontWeight: 700, color: '#1e293b', marginBottom: '2px' }}>
-              Bạn đã hoàn thành {sessionResult.total} từ
-            </h2>
-            <p style={{ fontSize: '16px', color: '#64748b' }}>
-              {goodCount} từ đã nhớ tốt, {needReviewCount} từ cần ôn lại
+            <p className="text-caption text-ink-muted">
+              {t('flashcard.completionRate')}
+            </p>
+            <p className="mt-1 text-[34px] font-extrabold leading-none tracking-tight text-ink">
+              {result.completionPercent}%
+            </p>
+            <p className="mt-1 text-caption text-ink-subtle">
+              {t('flashcard.cardsInDeck', {
+                done: result.studiedCards,
+                total: result.totalCards,
+              })}
             </p>
           </div>
+
+          <dl className="grid grid-cols-2 gap-x-6 gap-y-3 sm:grid-cols-4">
+            {stats.map((stat) => (
+              <div key={stat.label}>
+                <dt className="text-caption text-ink-muted">{stat.label}</dt>
+                <dd className={`mt-0.5 text-[22px] font-extrabold ${stat.tone}`}>
+                  {stat.value}
+                </dd>
+              </div>
+            ))}
+          </dl>
         </div>
 
-        <div style={{ width: '224px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: '#64748b', marginBottom: '8px' }}>
-            <span>Tỷ lệ nhớ tốt</span>
-            <span style={{ fontWeight: 700, color: '#1e293b' }}>{goodPercent}%</span>
-          </div>
-          <div style={{ width: '100%', height: '10px', background: '#E5E8EE', borderRadius: '9999px', overflow: 'hidden' }}>
-            <div style={{ height: '100%', background: '#10B981', borderRadius: '9999px', width: `${goodPercent}%` }}></div>
-          </div>
+        <div className="mt-6 flex flex-wrap gap-3">
+          <ButtonLink to={`/flashcard/${id}/study`}>
+            {t('flashcard.studyAgain')}
+          </ButtonLink>
+          <ButtonLink to="/flashcard" variant="subtle">
+            {t('flashcard.pickAnother')}
+          </ButtonLink>
         </div>
-      </section>
+      </Card>
 
-      {/* Stats Cards */}
-      <section style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px', marginBottom: '24px' }}>
-        <div className="fc-stat-card">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{ fontSize: '14px', fontWeight: 500, color: '#64748b' }}>Đã học</span>
-          </div>
-          <div>
-            <span style={{ fontSize: '32px', fontWeight: 700, color: '#1e293b', marginRight: '6px' }}>{sessionResult.total}</span>
-            <span style={{ fontSize: '14px', color: '#64748b' }}>từ</span>
-          </div>
-        </div>
+      <Card>
+        <h2 className="text-card-title text-ink">{t('flashcard.reviewTitle')}</h2>
+        <p className="mt-0.5 text-caption text-ink-muted">
+          {t('flashcard.reviewHint')}
+        </p>
 
-        <div className="fc-stat-card">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{ fontSize: '14px', fontWeight: 500, color: '#64748b' }}>Đã nhớ</span>
-          </div>
-          <div>
-            <span style={{ fontSize: '32px', fontWeight: 700, color: '#059669', marginRight: '6px' }}>{goodCount}</span>
-            <span style={{ fontSize: '14px', color: '#64748b' }}>từ</span>
-          </div>
-        </div>
-
-        <div className="fc-stat-card">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span style={{ fontSize: '14px', fontWeight: 500, color: '#64748b' }}>Cần ôn lại</span>
-          </div>
-          <div>
-            <span style={{ fontSize: '32px', fontWeight: 700, color: '#D97706', marginRight: '6px' }}>{needReviewCount}</span>
-            <span style={{ fontSize: '14px', color: '#64748b' }}>từ</span>
-          </div>
-        </div>
-      </section>
-
-      {/* Words to Review Table */}
-      {reviewCards.length > 0 && (
-        <section style={{ background: '#fff', borderRadius: '12px', border: '1px solid #E5E8EE', padding: '24px', marginBottom: '24px' }}>
-          <h3 style={{ fontSize: '20px', fontWeight: 700, color: '#1e293b', marginBottom: '4px' }}>Từ cần ôn lại</h3>
-          <p style={{ fontSize: '14px', color: '#64748b', marginBottom: '16px' }}>Danh sách các thuật ngữ cần tiếp tục củng cố</p>
-          
-          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
-            <thead>
-              <tr style={{ borderBottom: '1px solid #E5E8EE', color: '#64748b', fontSize: '12px' }}>
-                <th style={{ padding: '12px 16px', fontWeight: 600 }}>Thuật ngữ</th>
-                <th style={{ padding: '12px 16px', fontWeight: 600 }}>Nghĩa tiếng Việt</th>
-                <th style={{ padding: '12px 16px', fontWeight: 600 }}>Trạng thái</th>
-                <th style={{ padding: '12px 16px', fontWeight: 600, textAlign: 'right' }}>Phát âm</th>
-              </tr>
-            </thead>
-            <tbody>
-              {reviewCards.map(card => (
-                <tr key={card.id} style={{ borderBottom: '1px solid #F1F5F9' }}>
-                  <td style={{ padding: '14px 16px', fontWeight: 600, color: '#1e293b' }}>{card.word}</td>
-                  <td style={{ padding: '14px 16px', color: '#475569' }}>{card.meaning}</td>
-                  <td style={{ padding: '14px 16px' }}>
-                    {card.memoryLevel === 'forgot' ? (
-                      <span style={{ display: 'inline-flex', padding: '2px 10px', borderRadius: '9999px', fontSize: '12px', fontWeight: 500, background: '#FEF2F2', color: '#DC2626', border: '1px solid #FECACA' }}>
-                        Chưa nhớ
-                      </span>
-                    ) : (
-                      <span style={{ display: 'inline-flex', padding: '2px 10px', borderRadius: '9999px', fontSize: '12px', fontWeight: 500, background: '#FFFBEB', color: '#B45309', border: '1px solid #FDE68A' }}>
-                        Khó
+        {result.wordsToReview.length === 0 ? (
+          <EmptyBlock
+            icon="celebration"
+            title={t('flashcard.allRememberedTitle')}
+            message={t('flashcard.allRememberedHint')}
+          />
+        ) : (
+          <ul className="mt-3 divide-y divide-hairline">
+            {result.wordsToReview.map((word) => (
+              <li key={word.id} className="flex items-center gap-3 py-3">
+                <WordImage
+                  word={word.word}
+                  src={word.imageUrl}
+                  size="sm"
+                  className="h-12 w-12 shrink-0 rounded-md"
+                />
+                <div className="min-w-0 flex-1">
+                  <div className="flex flex-wrap items-baseline gap-x-2.5">
+                    <span className="text-[15px] font-extrabold text-ink">
+                      {word.word}
+                    </span>
+                    {word.phonetic && (
+                      <span className="text-[12.5px] text-ink-subtle">
+                        {word.phonetic}
                       </span>
                     )}
-                  </td>
-                  <td style={{ padding: '14px 16px', textAlign: 'right' }}>
-                    <Button type="text" shape="circle" icon={<SoundOutlined />} style={{ color: '#64748b' }} />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </section>
-      )}
+                  </div>
+                  <p className="mt-0.5 text-[13.5px] text-ink-muted">{L(word.meaning)}</p>
+                </div>
 
-      {/* Footer Actions */}
-      <footer style={{ background: '#fff', borderRadius: '12px', border: '1px solid #E5E8EE', padding: '16px 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <a 
-          style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '14px', color: '#64748b', cursor: 'pointer' }}
-          onClick={() => navigate('/flashcard')}
-        >
-          <ArrowLeftOutlined /> Quay lại danh sách
-        </a>
-        
-        <div style={{ display: 'flex', gap: '12px' }}>
-          <Button 
-            size="large"
-            onClick={() => navigate(`/flashcard/${id}/study`)}
-            style={{ borderRadius: '8px', fontWeight: 600, color: '#1e293b', borderColor: '#E5E8EE' }}
-          >
-            Tiếp tục học
-          </Button>
-          <Button 
-            type="primary" 
-            size="large"
-            icon={<SyncOutlined />}
-            onClick={() => navigate(`/flashcard/${id}/study`, { state: { mode: 'review' } })}
-            style={{ borderRadius: '8px', fontWeight: 600, background: '#008FD5' }}
-            disabled={reviewCards.length === 0}
-          >
-            Ôn lại từ chưa nhớ
-          </Button>
-        </div>
-      </footer>
+                <Chip
+                  tone={word.recallLevel === 'NOT_REMEMBERED' ? 'danger' : 'warning'}
+                >
+                  {t(`recall.${word.recallLevel}`)}
+                </Chip>
+
+                {isSupported && (
+                  <IconButton
+                    icon="volume_up"
+                    label={t('flashcard.pronounce', { word: word.word })}
+                    variant="subtle"
+                    onClick={() => speak(word.word)}
+                    className="shrink-0 bg-transparent hover:text-accent"
+                  />
+                )}
+              </li>
+            ))}
+          </ul>
+        )}
+      </Card>
     </div>
   );
 };

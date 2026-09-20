@@ -1,266 +1,300 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { useParams, useNavigate, useLocation } from 'react-router-dom';
-import { Button } from 'antd';
-import { SoundOutlined, ArrowLeftOutlined, ArrowRightOutlined } from '@ant-design/icons';
-import type { FlashcardDeck, Flashcard, FlashcardSession, MemoryLevel } from '../../types/flashcard';
-import { flashcardService } from '../../services/flashcardService';
-import FlashcardMemoryButtons from '../../components/flashcard/FlashcardMemoryButtons';
-import './Flashcard.css';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { App, Modal } from 'antd';
+import { useNavigate, useParams } from 'react-router-dom';
+
+import { Button, IconButton } from '../../components/ui/Button';
+import { ErrorState, Skeleton } from '../../components/ui/StateBlocks';
+import { useApi } from '../../hooks/useApi';
+import { useApiError } from '../../hooks/useApiError';
+import { useSpeech } from '../../hooks/useSpeech';
+import { flashcardService } from '../../services/contentService';
+import type { Flashcard, RecallLevel } from '../../types/flashcard';
+import { useLanguage } from '../../hooks/useLanguage';
+import { useTranslation } from 'react-i18next';
+import WordImage from '../../components/flashcard/WordImage';
+
+const RECALL_BUTTONS: Array<{
+  level: RecallLevel;
+  icon: string;
+  className: string;
+}> = [
+  {
+    level: 'NOT_REMEMBERED',
+    icon: 'close',
+    className: 'bg-danger-bg text-danger-fg hover:bg-danger-bg/80',
+  },
+  {
+    level: 'ALMOST_REMEMBERED',
+    icon: 'change_history',
+    className: 'bg-warning-bg text-warning-fg hover:bg-warning-bg/80',
+  },
+  {
+    level: 'REMEMBERED',
+    icon: 'check',
+    className: 'bg-success-bg text-success-fg hover:bg-success-bg/80',
+  },
+];
 
 const FlashcardStudyPage: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
+  const { t } = useTranslation();
+  const { L } = useLanguage();
+  const { describe } = useApiError();
+  const { id = '' } = useParams();
   const navigate = useNavigate();
-  const location = useLocation();
-  
-  const [deck, setDeck] = useState<FlashcardDeck | null>(null);
-  const [cards, setCards] = useState<Flashcard[]>([]);
-  const [loading, setLoading] = useState(true);
-  
-  const [session, setSession] = useState<FlashcardSession | null>(null);
-  const [isFlipped, setIsFlipped] = useState(false);
+  const { message } = App.useApp();
+  const { speak, stop, isSupported } = useSpeech();
 
-  useEffect(() => {
-    const initSession = async () => {
-      if (!id) return;
-      setLoading(true);
-      const deckData = await flashcardService.getDeckById(Number(id));
-      if (!deckData) {
-        setLoading(false);
+  const { data: deck, isLoading, error, reload } = useApi(
+    () => flashcardService.getDeck(id),
+    [id],
+  );
+
+  const [index, setIndex] = useState(0);
+  const [isFlipped, setIsFlipped] = useState(false);
+  const [studiedIds, setStudiedIds] = useState<string[]>([]);
+  const [isSaving, setIsSaving] = useState(false);
+
+  const cards: Flashcard[] = useMemo(() => deck?.cards ?? [], [deck]);
+  const card = cards[index];
+
+  const finish = useCallback(
+    async (ids: string[]) => {
+      stop();
+      try {
+        const result = await flashcardService.finishSession(id, ids);
+        navigate(`/flashcard/${id}/result`, { state: { result }, replace: true });
+      } catch {
+        message.error(t('flashcard.finishError'));
+      }
+    },
+    [id, navigate, message, stop, t],
+  );
+
+  const handleRate = async (level: RecallLevel) => {
+    if (!card || isSaving) return;
+
+    setIsSaving(true);
+    try {
+      // Chỉ gửi id thẻ và mức độ nhớ; ngày ôn tiếp theo do backend tính.
+      await flashcardService.saveRecall(id, {
+        flashcardId: card.id,
+        recallLevel: level,
+      });
+
+      const nextStudied = studiedIds.includes(card.id)
+        ? studiedIds
+        : [...studiedIds, card.id];
+      setStudiedIds(nextStudied);
+
+      if (index + 1 >= cards.length) {
+        await finish(nextStudied);
         return;
       }
-      
-      let sessionCards: Flashcard[];
-      const mode = location.state?.mode;
-      
-      if (mode === 'review') {
-        sessionCards = await flashcardService.getFlashcardsForReview(Number(id));
-      } else {
-        sessionCards = await flashcardService.getFlashcardsByDeckId(Number(id));
-      }
-      
-      if (sessionCards.length === 0) {
-        // If reviewing but no cards to review, fallback to all cards
-        sessionCards = deckData.flashcards;
-      }
 
-      setDeck(deckData);
-      setCards(sessionCards);
-      
-      setSession({
-        deckId: deckData.id,
-        totalCards: sessionCards.length,
-        currentIndex: 0,
-        answers: [],
-        startedAt: new Date()
-      });
-      
-      setLoading(false);
-    };
-    
-    initSession();
-  }, [id, location.state]);
-
-  const toggleFlip = useCallback(() => {
-    setIsFlipped(prev => !prev);
-  }, []);
-
-  const handleNext = useCallback(() => {
-    if (!session) return;
-    if (session.currentIndex < session.totalCards - 1) {
-      setSession(prev => prev ? { ...prev, currentIndex: prev.currentIndex + 1 } : null);
+      setIndex((i) => i + 1);
       setIsFlipped(false);
-    }
-  }, [session]);
-
-  const handlePrev = useCallback(() => {
-    if (!session) return;
-    if (session.currentIndex > 0) {
-      setSession(prev => prev ? { ...prev, currentIndex: prev.currentIndex - 1 } : null);
-      setIsFlipped(false);
-    }
-  }, [session]);
-
-  // Keyboard events
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      const activeEl = document.activeElement;
-      const isInput = activeEl?.tagName === 'INPUT' || activeEl?.tagName === 'TEXTAREA' || activeEl?.tagName === 'SELECT';
-      if (isInput) return;
-
-      if (e.code === 'Space') {
-        e.preventDefault();
-        toggleFlip();
-      } else if (e.code === 'ArrowRight') {
-        e.preventDefault();
-        handleNext();
-      } else if (e.code === 'ArrowLeft') {
-        e.preventDefault();
-        handlePrev();
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [toggleFlip, handleNext, handlePrev]);
-
-  const handleMemorySelect = async (level: MemoryLevel) => {
-    if (!session || !cards.length) return;
-    
-    const currentCard = cards[session.currentIndex];
-    const newAnswers = [...session.answers];
-    const existingIndex = newAnswers.findIndex(a => a.flashcardId === currentCard.id);
-    
-    if (existingIndex >= 0) {
-      newAnswers[existingIndex] = { flashcardId: currentCard.id, memoryLevel: level };
-    } else {
-      newAnswers.push({ flashcardId: currentCard.id, memoryLevel: level });
-    }
-
-    const updatedSession = { ...session, answers: newAnswers };
-    setSession(updatedSession);
-
-    if (session.currentIndex < session.totalCards - 1) {
-      handleNext();
-    } else {
-      // Session finished
-      const result = await flashcardService.finishLearningSession(updatedSession);
-      navigate(`/flashcard/${id}/result`, { state: { sessionResult: result, mode: location.state?.mode } });
+    } catch {
+      message.error(t('flashcard.saveError'));
+    } finally {
+      setIsSaving(false);
     }
   };
 
-  if (loading) return <div style={{ padding: '60px', textAlign: 'center' }}>Đang tải bộ thẻ...</div>;
-  if (!deck || !session || cards.length === 0) return <div style={{ padding: '60px', textAlign: 'center' }}>Lỗi tải dữ liệu.</div>;
+  /** Rời phiên giữa chừng: tiến độ từng thẻ đã lưu nên không mất gì. */
+  const confirmExit = () => {
+    Modal.confirm({
+      title: t('flashcard.exitTitle'),
+      content: t('flashcard.exitBody'),
+      okText: t('flashcard.exitConfirm'),
+      cancelText: t('flashcard.exitCancel'),
+      onOk: () => {
+        stop();
+        navigate(`/flashcard/${id}`);
+      },
+    });
+  };
 
-  const currentCard = cards[session.currentIndex];
-  const progressPercent = session.totalCards > 0 ? Math.round(((session.currentIndex) / session.totalCards) * 100) : 0;
+  /* Phím tắt: Space lật thẻ, 1/2/3 đánh giá, mũi tên để chuyển thẻ. */
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      const target = event.target as HTMLElement;
+      if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') return;
+
+      if (event.code === 'Space') {
+        event.preventDefault();
+        setIsFlipped((v) => !v);
+        return;
+      }
+
+      if (!isFlipped) return;
+
+      if (event.key === '1') void handleRate('NOT_REMEMBERED');
+      if (event.key === '2') void handleRate('ALMOST_REMEMBERED');
+      if (event.key === '3') void handleRate('REMEMBERED');
+    };
+
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  });
+
+  if (error) {
+    return (
+      <div className="mx-auto w-full max-w-3xl px-4 py-6">
+        <div className="rounded-lg border border-hairline bg-surface shadow-sm">
+          <ErrorState message={describe(error)} onRetry={reload} />
+        </div>
+      </div>
+    );
+  }
+
+  if (isLoading || !deck || !card) {
+    return (
+      <div className="mx-auto w-full max-w-3xl px-4 py-6">
+        <Skeleton className="h-[420px] w-full" />
+      </div>
+    );
+  }
+
+  const progress = Math.round(((index + 1) / cards.length) * 100);
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: 'calc(100vh - 64px)', background: '#F7F9FF' }}>
-      {/* Top Learning Bar */}
-      <div style={{ background: '#fff', borderBottom: '1px solid #E5E8EE', padding: '12px 32px' }}>
-        <div style={{ maxWidth: '896px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '14px' }}>
-            <span style={{ fontWeight: 600, color: '#1e293b' }}>{deck.title}</span>
-            <span style={{ color: '#E5E8EE' }}>•</span>
-            <span style={{ color: '#64748b', fontWeight: 500 }}>Thẻ {session.currentIndex + 1} / {session.totalCards}</span>
+    <div className="mx-auto w-full max-w-3xl px-4 py-6 sm:px-6">
+      {/* Thanh tiến độ phiên học */}
+      <div className="mb-5 flex items-center gap-4">
+        <IconButton
+          icon="close"
+          label={t('flashcard.exitAria')}
+          variant="subtle"
+          onClick={confirmExit}
+          className="shrink-0 bg-transparent"
+        />
+
+        <div className="min-w-0 flex-1">
+          <div className="flex items-baseline justify-between gap-2">
+            <span className="truncate text-[13px] font-bold text-ink">
+              {L(deck.title)}
+            </span>
+            <span className="shrink-0 text-[12.5px] tabular-nums text-ink-muted">
+              {index + 1}/{cards.length}
+            </span>
           </div>
-          
-          <div style={{ flex: 1, maxWidth: '320px', display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <div style={{ width: '100%', height: '6px', background: '#E5E8EE', borderRadius: '9999px', overflow: 'hidden' }}>
-              <div style={{ height: '100%', background: '#008FD5', width: `${progressPercent}%`, transition: 'width 0.3s' }}></div>
-            </div>
-            <span style={{ fontSize: '12px', fontWeight: 600, color: '#008FD5' }}>{progressPercent}%</span>
-          </div>
-          
-          <div>
-            <Button type="text" onClick={() => navigate(`/flashcard/${deck.id}`)} style={{ color: '#64748b' }}>Thoát</Button>
+          <div
+            role="progressbar"
+            aria-valuenow={progress}
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-label={t('flashcard.sessionProgress')}
+            className="mt-1.5 h-1.5 overflow-hidden rounded-pill bg-surface-muted"
+          >
+            <div
+              className="h-full rounded-pill bg-brand-500 transition-[width] duration-300"
+              style={{ width: `${progress}%` }}
+            />
           </div>
         </div>
       </div>
 
-      {/* Main Flashcard Area */}
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '48px 24px' }}>
-        <div className="fc-study-card-container">
-          {/* Card */}
-          <div className="perspective-1000" style={{ marginBottom: '32px' }}>
-            <div className={`fc-study-card transform-style-preserve-3d ${isFlipped ? 'card-flipped' : ''}`} onClick={toggleFlip}>
-              
-              {/* Front */}
-              <div className="fc-study-card-face fc-study-card-front backface-hidden">
-                <div style={{ textAlign: 'center' }}>
-                  <span style={{ fontSize: '12px', color: '#64748b', fontWeight: 600, letterSpacing: '2px' }}>TỪ VỰNG</span>
-                </div>
-                
-                <div style={{ textAlign: 'center', padding: '24px 0' }}>
-                  <h2 style={{ fontSize: '44px', fontWeight: 700, color: '#1e293b', marginBottom: '12px', letterSpacing: '-0.02em' }}>
-                    {currentCard.word}
-                  </h2>
-                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', background: '#F0F4FA', padding: '4px 12px', borderRadius: '9999px' }}>
-                    <span style={{ color: '#64748b', fontSize: '16px', fontFamily: 'monospace' }}>{currentCard.phonetic}</span>
-                    <Button 
-                      type="text" 
-                      shape="circle" 
-                      icon={<SoundOutlined />} 
-                      onClick={(e) => { e.stopPropagation(); /* Play sound */ }} 
-                      style={{ color: '#008FD5', background: '#fff', width: '28px', height: '28px', minWidth: '28px' }}
-                    />
-                  </div>
-                </div>
-                
-                <div style={{ textAlign: 'center', borderTop: '1px solid #E5E8EE', paddingTop: '16px' }}>
-                  <p style={{ fontSize: '12px', color: '#64748b' }}>Nhấn vào thẻ để lật xem nghĩa (hoặc phím <kbd style={{ padding: '2px 6px', background: '#EBEEF4', borderRadius: '4px', border: '1px solid #DFE3E9', fontFamily: 'monospace' }}>Space</kbd>)</p>
-                </div>
+      {/* Thẻ từ vựng */}
+      <button
+        type="button"
+        onClick={() => setIsFlipped((v) => !v)}
+        aria-pressed={isFlipped}
+        className="flex min-h-[320px] w-full flex-col items-center justify-center gap-4 rounded-xl border border-hairline bg-surface p-8 text-center shadow-md transition-shadow duration-200 hover:shadow-lg"
+      >
+        {!isFlipped ? (
+          <>
+            <WordImage
+              word={card.word}
+              src={card.imageUrl}
+              className="h-40 w-full max-w-sm rounded-lg"
+            />
+            <p className="text-[34px] font-extrabold tracking-tight text-ink sm:text-[42px]">
+              {card.word}
+            </p>
+            {card.phonetic && (
+              <p className="text-[16px] text-ink-muted">{card.phonetic}</p>
+            )}
+            <p className="mt-2 text-caption text-ink-subtle">
+              {t('flashcard.flipHint')}
+            </p>
+          </>
+        ) : (
+          <>
+            <WordImage
+              word={card.word}
+              src={card.imageUrl}
+              size="sm"
+              className="h-24 w-32 rounded-md"
+            />
+            <p className="text-[24px] font-extrabold text-ink sm:text-[28px]">
+              {L(card.meaning)}
+            </p>
+            {card.partOfSpeech && (
+              <p className="text-[13px] italic text-ink-subtle">{L(card.partOfSpeech)}</p>
+            )}
+            {card.example && (
+              <div className="mt-2 max-w-lg rounded-md bg-surface-muted p-4">
+                <p className="text-[14.5px] italic text-ink">{card.example}</p>
+                {card.exampleMeaning && (
+                  <p className="mt-1.5 text-[13px] text-ink-muted">
+                    {card.exampleMeaning}
+                  </p>
+                )}
               </div>
+            )}
+          </>
+        )}
+      </button>
 
-              {/* Back */}
-              <div className="fc-study-card-face fc-study-card-back backface-hidden">
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #E5E8EE', paddingBottom: '12px' }}>
-                  <div style={{ display: 'flex', alignItems: 'baseline', gap: '10px' }}>
-                    <span style={{ fontSize: '20px', fontWeight: 700, color: '#1e293b' }}>{currentCard.word}</span>
-                    <span style={{ color: '#BFC7D2' }}>—</span>
-                    <span style={{ fontSize: '20px', fontWeight: 700, color: '#008FD5' }}>{currentCard.meaning}</span>
-                  </div>
-                  <Button 
-                    type="text" 
-                    shape="circle" 
-                    icon={<SoundOutlined />} 
-                    onClick={(e) => { e.stopPropagation(); /* Play sound */ }} 
-                    style={{ color: '#008FD5' }}
-                  />
-                </div>
-                
-                <div style={{ textAlign: 'left', padding: '16px 0', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                  {currentCard.definition && (
-                    <div style={{ marginBottom: '16px' }}>
-                      <p style={{ fontSize: '12px', fontWeight: 600, color: '#64748b', marginBottom: '4px' }}>Định nghĩa</p>
-                      <p style={{ fontSize: '16px', color: '#1e293b', lineHeight: 1.5 }}>{currentCard.definition}</p>
-                    </div>
-                  )}
-                  {currentCard.example && (
-                    <div>
-                      <p style={{ fontSize: '12px', fontWeight: 600, color: '#64748b', marginBottom: '4px' }}>Ví dụ</p>
-                      <p style={{ fontSize: '16px', color: '#1e293b', fontStyle: 'italic', lineHeight: 1.5 }}>"{currentCard.example}"</p>
-                      {currentCard.exampleTranslation && (
-                        <p style={{ fontSize: '14px', color: '#64748b', marginTop: '4px' }}>Dịch nghĩa: {currentCard.exampleTranslation}</p>
-                      )}
-                    </div>
-                  )}
-                </div>
-                
-                <div style={{ textAlign: 'center', borderTop: '1px solid #E5E8EE', paddingTop: '16px' }}>
-                  <p style={{ fontSize: '12px', color: '#64748b' }}>Nhấn vào thẻ để lật lại mặt trước</p>
-                </div>
-              </div>
-
-            </div>
-          </div>
-
-          {/* Memory Actions (Visible only when flipped) */}
-          <div style={{ visibility: isFlipped ? 'visible' : 'hidden', opacity: isFlipped ? 1 : 0, transition: 'opacity 0.3s' }}>
-            <FlashcardMemoryButtons onSelect={handleMemorySelect} />
-          </div>
-
-          {/* Navigation Actions */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0 8px' }}>
-            <Button 
-              type="text" 
-              icon={<ArrowLeftOutlined />} 
-              onClick={handlePrev} 
-              disabled={session.currentIndex === 0}
-              style={{ color: '#64748b', fontWeight: 500 }}
-            >
-              Trước
-            </Button>
-            <Button 
-              type="text" 
-              onClick={handleNext} 
-              disabled={session.currentIndex === session.totalCards - 1}
-              style={{ color: '#64748b', fontWeight: 500 }}
-            >
-              Tiếp <ArrowRightOutlined />
-            </Button>
-          </div>
+      {/* Nút phát âm, tách khỏi thẻ để bấm không làm lật thẻ */}
+      {isSupported && (
+        <div className="mt-3 flex justify-center">
+          <Button
+            variant="subtle"
+            size="sm"
+            icon="volume_up"
+            onClick={() => speak(card.word)}
+          >
+            {t('flashcard.listenPronunciation')}
+          </Button>
         </div>
+      )}
+
+      {/* Ba mức tự đánh giá, chỉ hiện sau khi đã lật thẻ */}
+      <div className="mt-6">
+        {isFlipped ? (
+          <>
+            <p className="mb-3 text-center text-caption text-ink-muted">
+              {t('flashcard.rateQuestion')}
+            </p>
+            <div className="grid grid-cols-3 gap-2.5">
+              {RECALL_BUTTONS.map((button, i) => (
+                <button
+                  key={button.level}
+                  type="button"
+                  disabled={isSaving}
+                  onClick={() => handleRate(button.level)}
+                  className={`flex min-h-[56px] flex-col items-center justify-center gap-0.5 rounded-md text-[13.5px] font-bold transition-colors duration-200 disabled:opacity-50 ${button.className}`}
+                >
+                  <span
+                    aria-hidden="true"
+                    className="material-symbols-outlined text-[20px]"
+                  >
+                    {button.icon}
+                  </span>
+                  {t(`recall.${button.level}`)}
+                  <span className="text-[10.5px] font-semibold opacity-70">
+                    {t('flashcard.keyHint', { key: i + 1 })}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </>
+        ) : (
+          <p className="text-center text-caption text-ink-subtle">
+            {t('flashcard.flipToRate')}
+          </p>
+        )}
       </div>
     </div>
   );

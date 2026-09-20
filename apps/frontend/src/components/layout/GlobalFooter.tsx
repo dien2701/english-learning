@@ -1,60 +1,100 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
+const linkClass =
+  'inline-flex items-center gap-1.5 text-ink-muted transition-colors duration-200 hover:text-accent';
+
 export const GlobalFooter: React.FC = () => {
   const { t } = useTranslation();
+
   return (
-    <footer className="w-full bg-transparent dark:bg-slate-900 border-t border-[#E5E8EE] dark:border-slate-800 px-6 sm:px-8 py-8 mt-auto transition-colors duration-200">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
-        {/* Col 1: En-Learning */}
+    <footer className="mt-auto w-full border-t border-hairline px-4 py-8 sm:px-6 lg:px-8">
+      <div className="mx-auto grid max-w-content grid-cols-1 gap-8 md:grid-cols-3">
+        {/* Cột 1 — giới thiệu */}
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-2.5">
-            <img 
-              alt="En-Learning Logo" 
-              className="w-6 h-6 object-contain rounded" 
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDEwr_YbXb5oX0vziwgVyr3CVi0Ea1vpu8y1GG2QnUGPnZlEjghBLbA7i6k7gRNtz7UAxECUmazJHjkE9vZvGVUbS3Cm2Li84uWNGQ3HTp-C2mjbvnUf1gw-oFZiLbEbLlaeyVuwGKCBulzbyEvELe_YDJgwf6BKMfDv2f2unr4plZJusuLq581L6nHYCE6E0Nrp2FdTznZzC87Ozm9z9fR3wX5xl9cu_82uFOpuPbLaCT4GUplF0ETPB3aHKpD54K7Rg"
-            />
-            <span className="text-base font-bold text-[#008FD5]">En-Learning</span>
+            <span className="grid h-7 w-7 place-items-center rounded-sm bg-action text-white">
+              <span
+                aria-hidden="true"
+                className="material-symbols-outlined text-[17px]"
+              >
+                school
+              </span>
+            </span>
+            <span className="text-[15px] font-extrabold tracking-tight text-ink">
+              En-Learning
+            </span>
           </div>
-          <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+
+          <p className="max-w-sm text-caption font-normal leading-relaxed text-ink-muted">
             {t('footer.description')}
           </p>
-          <div className="pt-1">
-            <a className="text-xs font-semibold text-[#008FD5] hover:text-[#006193] dark:hover:text-sky-300 inline-flex items-center gap-1 hover:underline cursor-pointer" href="#ho-tro">
-              <span>{t('footer.support')}</span>
-              <span className="material-symbols-outlined text-[14px]">arrow_outward</span>
-            </a>
-          </div>
+
+          <a href="#ho-tro" className={`${linkClass} text-caption font-bold`}>
+            {t('footer.support')}
+            <span
+              aria-hidden="true"
+              className="material-symbols-outlined text-[14px]"
+            >
+              arrow_outward
+            </span>
+          </a>
         </div>
-        
-        {/* Col 2: Policies */}
+
+        {/* Cột 2 — chính sách */}
         <div className="flex flex-col gap-3">
-          <h5 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">{t('footer.policies')}</h5>
-          <ul className="flex flex-col gap-2.5 text-xs text-slate-500 dark:text-slate-400">
-            <li><a className="hover:text-[#008FD5] dark:hover:text-sky-400 transition-colors" href="#chinh-sach-bao-mat">{t('footer.privacy_policy')}</a></li>
-            <li><a className="hover:text-[#008FD5] dark:hover:text-sky-400 transition-colors" href="#dieu-khoan-su-dung">{t('footer.terms_of_use')}</a></li>
-            <li><a className="hover:text-[#008FD5] dark:hover:text-sky-400 transition-colors" href="#quy-dinh-hoc-tap">{t('footer.learning_rules')}</a></li>
+          <h2 className="text-caption font-bold uppercase tracking-wider text-ink">
+            {t('footer.policies')}
+          </h2>
+          <ul className="flex flex-col gap-2.5 text-caption font-normal">
+            <li>
+              <a href="#chinh-sach-bao-mat" className={linkClass}>
+                {t('footer.privacyPolicy')}
+              </a>
+            </li>
+            <li>
+              <a href="#dieu-khoan-su-dung" className={linkClass}>
+                {t('footer.termsOfUse')}
+              </a>
+            </li>
+            <li>
+              <a href="#quy-dinh-hoc-tap" className={linkClass}>
+                {t('footer.learningRules')}
+              </a>
+            </li>
           </ul>
         </div>
-        
-        {/* Col 3: Contact */}
+
+        {/* Cột 3 — liên hệ */}
         <div className="flex flex-col gap-3">
-          <h5 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">{t('footer.contact')}</h5>
-          <ul className="flex flex-col gap-2.5 text-xs text-slate-500 dark:text-slate-400">
+          <h2 className="text-caption font-bold uppercase tracking-wider text-ink">
+            {t('footer.contact')}
+          </h2>
+          <ul className="flex flex-col gap-2.5 text-caption font-normal">
             <li>
-              <a className="hover:text-[#008FD5] dark:hover:text-sky-400 transition-colors flex items-center gap-1.5" href="#trung-tam-ho-tro">
-                <span className="material-symbols-outlined text-[16px] text-slate-400">headset_mic</span>
-                <span>{t('footer.support_center')}</span>
+              <a href="#trung-tam-ho-tro" className={linkClass}>
+                <span
+                  aria-hidden="true"
+                  className="material-symbols-outlined text-[16px]"
+                >
+                  headset_mic
+                </span>
+                {t('footer.supportCenter')}
               </a>
             </li>
             <li>
-              <a className="hover:text-[#008FD5] dark:hover:text-sky-400 transition-colors flex items-center gap-1.5" href="#gui-phan-hoi">
-                <span className="material-symbols-outlined text-[16px] text-slate-400">rate_review</span>
-                <span>{t('footer.send_feedback')}</span>
+              <a href="#gui-phan-hoi" className={linkClass}>
+                <span
+                  aria-hidden="true"
+                  className="material-symbols-outlined text-[16px]"
+                >
+                  rate_review
+                </span>
+                {t('footer.sendFeedback')}
               </a>
             </li>
-            <li className="text-slate-400 dark:text-slate-500 pt-1">
-              © 2026 En-Learning. All rights reserved.
+            <li className="pt-1 text-ink-subtle">
+              {t('footer.rights')}
             </li>
           </ul>
         </div>

@@ -8,12 +8,12 @@ triggers:
 
 # NHIỆM VỤ: LẬP TRÌNH GIAO DIỆN (UI EXECUTION)
 
-Khi nhận lệnh `/code-ui [Tên dự án][Tên Màn Hình / Component]`, bạn đang đóng vai trò là một Frontend Developer thi công. Hãy BẮT BUỘC thực hiện tuần tự 4 bước sau một cách im lặng, chỉ báo cáo kết quả cuối cùng:
+Khi nhận lệnh `/code-ui [Tên dự án],[Tên Màn Hình / Component]`, bạn đang đóng vai trò là một Frontend Developer thi công. Hãy BẮT BUỘC thực hiện tuần tự 4 bước sau một cách im lặng, chỉ báo cáo kết quả cuối cùng:
 
 ## BƯỚC 1: NẠP NGỮ CẢNH VÀ QUY HOẠCH
 Trước khi làm bất cứ điều gì, bạn BẮT BUỘC phải đọc ngầm 2 file:
 1. `.docs/STYLEGUIDE.md` (Để lấy biến màu Tailwind, font chữ, quy tắc bo góc).
-2. Tương ứng file kế hoạch trong `.docs/frontend-plans/` (Để biết cấu trúc Smart/Dumb Component và Interface Props).
+2. Tương ứng file   kế hoạch trong `.docs/frontend-plans/` (Để biết cấu trúc Smart/Dumb Component và Interface Props).
 
 ## BƯỚC 2: QUÉT THƯ VIỆN & TÁI SỬ DỤNG (QUAN TRỌNG TỐI THƯỢNG)
 - Quét thư mục `apps/frontend/components/ui/` (Thư viện UI dùng chung).

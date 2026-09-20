@@ -10,7 +10,7 @@
 
 * **Sidebar (Thanh điều hướng):**
 
-  * Hiển thị các chức năng chính: Dashboard, Flashcard, Luyện viết, Luyện nghe, Bài kiểm tra, Thống kê, Gợi ý học tập, Chat và Hồ sơ & Cài đặt.
+  * Hiển thị các chức năng chính: Dashboard, Flashcard, Luyện viết, Luyện nghe, Luyện đọc, Luyện nói, Bài kiểm tra, Chat và Hồ sơ & Cài đặt.
   * Mục đang truy cập được làm nổi bật để người dùng dễ xác định vị trí.
   * Sidebar có thể thu gọn trên desktop và chuyển thành Drawer trên thiết bị nhỏ.
 

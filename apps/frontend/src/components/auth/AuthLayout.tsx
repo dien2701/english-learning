@@ -1,40 +1,62 @@
-import React from 'react';
-import { Card, Typography, Layout } from 'antd';
-import { HighlightOutlined } from '@ant-design/icons';
-import './AuthLayout.css';
+import React, { type ReactNode } from 'react';
 
-const { Title, Text } = Typography;
+import LanguageSwitch from '../layout/LanguageSwitch';
 
 interface AuthLayoutProps {
-  children: React.ReactNode;
+  children: ReactNode;
   title: string;
-  subtitle: string;
+  subtitle?: string;
+  /** Liên kết phụ dưới thẻ, ví dụ "Chưa có tài khoản? Đăng ký ngay". */
+  footer?: ReactNode;
 }
 
-const AuthLayout: React.FC<AuthLayoutProps> = ({ children, title, subtitle }) => {
-  return (
-    <Layout className="auth-layout">
-      <div className="auth-container">
-        <div className="auth-header">
-          <div className="auth-logo">
-            <div className="logo-icon-auth">
-              <HighlightOutlined />
-            </div>
-            <div className="logo-text-auth">
-              <span className="logo-title-auth">EnglishAI</span>
-            </div>
-          </div>
-        </div>
-        <Card className="auth-card" bordered={false}>
-          <div className="auth-card-header">
-            <Title level={2} className="auth-title">{title}</Title>
-            <Text className="auth-subtitle">{subtitle}</Text>
-          </div>
-          {children}
-        </Card>
+/**
+ * Khung chung cho các màn hình xác thực.
+ * Một cột căn giữa, nền mint nhạt, không trang trí thừa.
+ */
+const AuthLayout: React.FC<AuthLayoutProps> = ({
+  children,
+  title,
+  subtitle,
+  footer,
+}) => (
+  <div className="flex min-h-screen items-center justify-center px-4 py-10">
+    <div className="w-full max-w-[420px]">
+      {/* Người chưa đăng nhập cũng phải đổi được ngôn ngữ, nếu không cả
+          nhóm màn hình xác thực sẽ kẹt ở tiếng Việt. */}
+      <div className="mb-4 flex justify-end">
+        <LanguageSwitch />
       </div>
-    </Layout>
-  );
-};
+
+      <div className="mb-7 flex items-center justify-center gap-2.5">
+        <span className="grid h-10 w-10 place-items-center rounded-md bg-action text-white">
+          <span aria-hidden="true" className="material-symbols-outlined text-[23px]">
+            school
+          </span>
+        </span>
+        <span className="text-[22px] font-extrabold tracking-tight text-ink">
+          En-Learning
+        </span>
+      </div>
+
+      <div className="rounded-lg border border-hairline bg-surface p-7 shadow-md sm:p-8">
+        <div className="mb-6 text-center">
+          <h1 className="text-[24px] font-extrabold tracking-tight text-ink">
+            {title}
+          </h1>
+          {subtitle && (
+            <p className="mt-1.5 text-body text-ink-muted">{subtitle}</p>
+          )}
+        </div>
+
+        {children}
+      </div>
+
+      {footer && (
+        <p className="mt-5 text-center text-body text-ink-muted">{footer}</p>
+      )}
+    </div>
+  </div>
+);
 
 export default AuthLayout;

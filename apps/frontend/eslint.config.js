@@ -18,5 +18,24 @@ export default defineConfig([
     languageOptions: {
       globals: globals.browser,
     },
+    rules: {
+      // Cho phép bỏ bớt trường bằng cách destructure rồi không dùng,
+      // ví dụ `const { cards: _cards, ...summary } = deck`. Đây là cách
+      // gọn nhất để loại một thuộc tính khỏi object mà vẫn giữ kiểu.
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          caughtErrorsIgnorePattern: '^_',
+          ignoreRestSiblings: true,
+        },
+      ],
+    },
+  },
+  {
+    // Các file này cố ý export thêm hằng số hoặc kiểu dùng chung cạnh component.
+    files: ['src/components/ui/FilterBar.tsx'],
+    rules: { 'react-refresh/only-export-components': 'off' },
   },
 ])

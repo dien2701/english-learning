@@ -2,123 +2,166 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
-export const Sidebar: React.FC<{ isOpen?: boolean }> = ({ isOpen }) => {
+interface NavItem {
+  to: string;
+  icon: string;
+  labelKey: string;
+  /** Khớp cả các đường dẫn con, ví dụ /flashcard/3/study. */
+  matchPrefix?: boolean;
+}
+
+interface NavGroup {
+  titleKey: string;
+  items: NavItem[];
+}
+
+const NAV_GROUPS: NavGroup[] = [
+  {
+    titleKey: 'sidebar.learning',
+    items: [
+      { to: '/dashboard', icon: 'grid_view', labelKey: 'sidebar.dashboard' },
+      { to: '/flashcard', icon: 'style', labelKey: 'sidebar.flashcard', matchPrefix: true },
+      { to: '/writing', icon: 'edit_note', labelKey: 'sidebar.writing', matchPrefix: true },
+      { to: '/listening', icon: 'headphones', labelKey: 'sidebar.listening', matchPrefix: true },
+      { to: '/reading', icon: 'menu_book', labelKey: 'sidebar.reading', matchPrefix: true },
+      { to: '/speaking', icon: 'mic', labelKey: 'sidebar.speaking', matchPrefix: true },
+      { to: '/exam', icon: 'quiz', labelKey: 'sidebar.exam', matchPrefix: true },
+    ],
+  },
+  {
+    titleKey: 'sidebar.tracking',
+    items: [{ to: '/statistics', icon: 'bar_chart', labelKey: 'sidebar.statistics' }],
+  },
+  {
+    titleKey: 'sidebar.interactionSystem',
+    items: [
+      { to: '/chat', icon: 'forum', labelKey: 'sidebar.chat', matchPrefix: true },
+      { to: '/notifications', icon: 'notifications', labelKey: 'sidebar.notifications' },
+      { to: '/settings', icon: 'manage_accounts', labelKey: 'sidebar.settings' },
+    ],
+  },
+];
+
+interface SidebarProps {
+  isOpen: boolean;
+  /** Đóng sidebar sau khi chọn mục, chỉ áp dụng trên màn hình nhỏ. */
+  onNavigate?: () => void;
+  /** Mở cửa sổ chat thu nhỏ gắn ở góc màn hình. */
+  onOpenAssistant: () => void;
+}
+
+export const Sidebar: React.FC<SidebarProps> = ({
+  isOpen,
+  onNavigate,
+  onOpenAssistant,
+}) => {
   const { t } = useTranslation();
-  const getNavClass = ({ isActive }: { isActive: boolean }) => 
-    `nav-item flex items-center px-3 py-2.5 mx-3 rounded-lg text-sm transition-all duration-300 group cursor-pointer ${
-      isActive 
-        ? 'bg-[#E6F4FA] dark:bg-sky-950 text-[#008FD5] dark:text-sky-400 font-semibold' 
-        : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-slate-200 font-medium'
-    } ${!isOpen ? 'justify-center !px-0 !mx-2' : 'gap-3'}`;
-
-  const getIconClass = (isActive: boolean) => 
-    `material-symbols-outlined text-[20px] shrink-0 ${
-      isActive
-        ? 'text-[#008FD5] dark:text-sky-400'
-        : 'text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300'
-    }`;
-
-  const renderNavText = (text: string) => (
-    <span className={`nav-text whitespace-nowrap overflow-hidden transition-all duration-300 ${isOpen ? 'w-auto opacity-100' : 'w-0 opacity-0 md:hidden'}`}>
-      {text}
-    </span>
-  );
 
   return (
-    <aside 
-      className={`fixed top-16 left-0 bottom-0 bg-surface-main dark:bg-slate-900 border-r border-[#E5E8EE] dark:border-slate-800 flex flex-col z-30 transition-all duration-300 ease-in-out md:translate-x-0 ${isOpen ? 'w-64 translate-x-0' : 'w-20 -translate-x-full md:translate-x-0'}`} 
+    <aside
       id="main-sidebar"
+      aria-label={t('sidebar.mainNav')}
+      className={[
+        'fixed inset-y-0 left-0 z-40 flex flex-col bg-sidebar',
+        'transition-[width,transform] duration-300 ease-out',
+        'lg:translate-x-0',
+        isOpen
+          ? 'w-sidebar translate-x-0'
+          : 'w-sidebar -translate-x-full lg:w-sidebar-sm',
+      ].join(' ')}
     >
-      <nav className="flex-1 py-4 overflow-y-auto overflow-x-hidden flex flex-col gap-1">
-        <div className={`nav-category px-6 py-1.5 text-[11px] font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider transition-all duration-300 ${isOpen ? 'opacity-100' : 'opacity-0 h-0 overflow-hidden py-0'}`}>
-          {t('sidebar.learning_management')}
-        </div>
-        
-        <NavLink to="/dashboard" className={getNavClass} title={t('sidebar.dashboard')}>
-          {({ isActive }) => (
-            <>
-              <span className={getIconClass(isActive)}>grid_view</span>
-              {renderNavText(t('sidebar.dashboard'))}
-            </>
-          )}
-        </NavLink>
-        
-        <NavLink to="/flashcard" className={getNavClass} title={t('sidebar.flashcard')}>
-          {({ isActive }) => (
-            <>
-              <span className={getIconClass(isActive)}>style</span>
-              {renderNavText(t('sidebar.flashcard'))}
-            </>
-          )}
-        </NavLink>
+      {/* Logo */}
+      <div
+        className={`flex h-header shrink-0 items-center gap-2.5 ${
+          isOpen ? 'px-5' : 'px-5 lg:justify-center lg:px-0'
+        }`}
+      >
+        <span className="grid h-9 w-9 shrink-0 place-items-center rounded-md bg-action text-white">
+          <span className="material-symbols-outlined text-[22px]">school</span>
+        </span>
+        <span
+          className={`whitespace-nowrap text-[17px] font-extrabold tracking-tight text-white transition-opacity duration-200 ${
+            isOpen ? 'opacity-100' : 'opacity-0 lg:hidden'
+          }`}
+        >
+          En-Learning
+        </span>
+      </div>
 
-        <NavLink to="/writing" className={getNavClass} title={t('sidebar.writing')}>
-          {({ isActive }) => (
-            <>
-              <span className={getIconClass(isActive)}>edit_note</span>
-              {renderNavText(t('sidebar.writing'))}
-            </>
-          )}
-        </NavLink>
-        
-        <NavLink to="/listening" className={getNavClass} title={t('sidebar.listening')}>
-          {({ isActive }) => (
-            <>
-              <span className={getIconClass(isActive)}>headphones</span>
-              {renderNavText(t('sidebar.listening'))}
-            </>
-          )}
-        </NavLink>
-        
-        <NavLink to="/exam" className={getNavClass} title={t('sidebar.exam')}>
-          {({ isActive }) => (
-            <>
-              <span className={getIconClass(isActive)}>quiz</span>
-              {renderNavText(t('sidebar.exam'))}
-            </>
-          )}
-        </NavLink>
+      {/* Danh sách điều hướng */}
+      <nav className="flex-1 overflow-y-auto overflow-x-hidden px-3 pb-4">
+        {NAV_GROUPS.map((group) => (
+          <div key={group.titleKey} className="mb-5 last:mb-0">
+            <p
+              className={`px-3 pb-2 pt-1 text-[11px] font-bold uppercase tracking-[0.08em] text-sidebar-muted transition-opacity duration-200 ${
+                isOpen ? 'opacity-100' : 'opacity-0 lg:h-0 lg:overflow-hidden lg:p-0'
+              }`}
+            >
+              {t(group.titleKey)}
+            </p>
 
-        <NavLink to="/statistics" className={getNavClass} title={t('sidebar.statistics')}>
-          {({ isActive }) => (
-            <>
-              <span className={getIconClass(isActive)}>bar_chart</span>
-              {renderNavText(t('sidebar.statistics'))}
-            </>
-          )}
-        </NavLink>
-
-        <NavLink to="/recommendation" className={getNavClass} title={t('sidebar.recommendation')}>
-          {({ isActive }) => (
-            <>
-              <span className={getIconClass(isActive)}>auto_awesome</span>
-              {renderNavText(t('sidebar.recommendation'))}
-            </>
-          )}
-        </NavLink>
-        
-        <div className={`nav-category px-6 pt-4 pb-1.5 text-[11px] font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider transition-all duration-300 ${isOpen ? 'opacity-100' : 'opacity-0 h-0 overflow-hidden py-0 pt-0'}`}>
-          {t('sidebar.interaction_system')}
-        </div>
-        
-        <NavLink to="/chat" className={getNavClass} title={t('sidebar.chat')}>
-          {({ isActive }) => (
-            <>
-              <span className={getIconClass(isActive)}>forum</span>
-              {renderNavText(t('sidebar.chat'))}
-            </>
-          )}
-        </NavLink>
-
-        <NavLink to="/settings" className={getNavClass} title={t('sidebar.settings')}>
-          {({ isActive }) => (
-            <>
-              <span className={getIconClass(isActive)}>manage_accounts</span>
-              {renderNavText(t('sidebar.settings'))}
-            </>
-          )}
-        </NavLink>
+            <ul className="flex flex-col gap-1">
+              {group.items.map((item) => (
+                <li key={item.to}>
+                  <NavLink
+                    to={item.to}
+                    end={!item.matchPrefix}
+                    title={t(item.labelKey)}
+                    onClick={onNavigate}
+                    className={({ isActive }) =>
+                      [
+                        'group flex items-center rounded-md text-[13.5px] font-semibold',
+                        'transition-colors duration-200',
+                        // Chiều cao tối thiểu 44px cho vùng chạm trên cảm ứng.
+                        'min-h-[44px] px-3',
+                        isOpen ? 'gap-3' : 'gap-3 lg:justify-center lg:px-0',
+                        isActive
+                          ? 'bg-sidebar-active text-white'
+                          : 'text-sidebar-fg hover:bg-white/[0.07] hover:text-white',
+                      ].join(' ')
+                    }
+                  >
+                    <span className="material-symbols-outlined shrink-0 text-[21px]">
+                      {item.icon}
+                    </span>
+                    <span
+                      className={`whitespace-nowrap transition-opacity duration-200 ${
+                        isOpen ? 'opacity-100' : 'opacity-0 lg:hidden'
+                      }`}
+                    >
+                      {t(item.labelKey)}
+                    </span>
+                  </NavLink>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
       </nav>
+
+      {/* Khối trợ lý AI ghim ở đáy, theo mô tả chức năng 9 */}
+      <div className={`shrink-0 p-3 ${isOpen ? '' : 'lg:hidden'}`}>
+        <div className="rounded-lg bg-white/[0.06] p-4 text-center">
+          <span className="mx-auto mb-2 grid h-10 w-10 place-items-center rounded-pill bg-white/15 text-white">
+            <span className="material-symbols-outlined text-[22px]">
+              smart_toy
+            </span>
+          </span>
+          <p className="text-[13.5px] font-bold text-white">
+            {t('sidebar.assistantTitle')}
+          </p>
+          <p className="mt-1 text-[11.5px] leading-snug text-sidebar-muted">
+            {t('sidebar.assistantDesc')}
+          </p>
+          <button
+            type="button"
+            onClick={onOpenAssistant}
+            className="mt-3 flex min-h-[40px] w-full items-center justify-center rounded-pill bg-action px-4 text-[13px] font-bold text-white ring-1 ring-inset ring-brand-400/60 transition-colors duration-200 hover:bg-action-hover"
+          >
+            {t('sidebar.assistantCta')}
+          </button>
+        </div>
+      </div>
     </aside>
   );
 };

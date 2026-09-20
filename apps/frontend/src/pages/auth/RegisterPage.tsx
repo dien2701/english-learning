@@ -1,138 +1,240 @@
-import React, { useState } from 'react';
-import { Form, Input, Button, message, Checkbox } from 'antd';
+import React, { useCallback, useRef, useState } from 'react';
+import { App, Checkbox, Form, Input } from 'antd';
+import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
-import { UserOutlined, MailOutlined, LockOutlined } from '@ant-design/icons';
+
 import AuthLayout from '../../components/auth/AuthLayout';
+import PasswordStrength from '../../components/auth/PasswordStrength';
+import { Button } from '../../components/ui/Button';
+import { useAuth } from '../../contexts/AuthContext';
+import { useApiError } from '../../hooks/useApiError';
 import { authService } from '../../services/authService';
+
+interface RegisterForm {
+  fullName: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  acceptTerms: boolean;
+}
+
+/** Kết quả hỏi server xem email đã có tài khoản chưa. */
+type EmailCheck =
+  | { state: 'idle' }
+  | { state: 'checking' }
+  | { state: 'available' };
+
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const RegisterPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
+  const [password, setPassword] = useState('');
+  const [emailCheck, setEmailCheck] = useState<EmailCheck>({ state: 'idle' });
+  const [form] = Form.useForm<RegisterForm>();
+  const { message } = App.useApp();
+  const { t } = useTranslation();
   const navigate = useNavigate();
+  const { register } = useAuth();
+  const { describe, applyTo } = useApiError();
 
-  const onFinish = async (values: { email: string; password: string; fullName: string }) => {
+  /* Người dùng có thể rời ô email nhiều lần; chỉ lời gọi cuối cùng được
+     phép ghi kết quả, nếu không một phản hồi cũ về muộn sẽ đè lên. */
+  const checkSeq = useRef(0);
+
+  const onFinish = async (values: RegisterForm) => {
     setLoading(true);
     try {
-      await authService.register({
+      await register({
+        fullName: values.fullName,
         email: values.email,
         password: values.password,
-        fullName: values.fullName
+        confirmPassword: values.confirmPassword,
       });
-      message.success('Đăng ký thành công! Vui lòng đăng nhập.');
-      navigate('/login');
-    } catch {
-      message.error('Có lỗi xảy ra khi đăng ký!');
+      message.success(t('auth.registerSuccess'));
+      navigate('/dashboard', { replace: true });
+    } catch (error) {
+      // Đưa lỗi về đúng ô nhập thay vì chỉ hiện một thông báo chung.
+      applyTo(form, error);
+      message.error(describe(error, 'auth.registerFailed'));
     } finally {
       setLoading(false);
     }
   };
 
+  /**
+   * Hỏi server ngay khi rời ô email. Biết email đã có tài khoản từ lúc này
+   * thì người dùng sửa luôn, thay vì điền hết form rồi mới nhận lỗi.
+   */
+  const handleEmailBlur = useCallback(
+    async (event: React.FocusEvent<HTMLInputElement>) => {
+      const email = event.target.value.trim();
+
+      if (!EMAIL_PATTERN.test(email)) {
+        setEmailCheck({ state: 'idle' });
+        return;
+      }
+
+      const seq = ++checkSeq.current;
+      setEmailCheck({ state: 'checking' });
+
+      try {
+        const { available } = await authService.checkEmail(email);
+        if (seq !== checkSeq.current) return;
+
+        if (available) {
+          setEmailCheck({ state: 'available' });
+        } else {
+          setEmailCheck({ state: 'idle' });
+          form.setFields([
+            { name: 'email', errors: [t('errors.emailTaken')] },
+          ]);
+        }
+      } catch {
+        /* Mạng hỏng thì im lặng bỏ qua: đây chỉ là kiểm tra sớm cho tiện,
+           lúc bấm nút đăng ký server vẫn kiểm tra lại lần nữa. */
+        if (seq === checkSeq.current) setEmailCheck({ state: 'idle' });
+      }
+    },
+    [form, t],
+  );
+
   return (
-    <AuthLayout 
-      title="Tạo tài khoản" 
-      subtitle="Bắt đầu hành trình học tiếng Anh của bạn cùng EnglishAI."
+    <AuthLayout
+      title={t('auth.createAccount')}
+      subtitle={t('auth.registerSubtitle')}
+      footer={
+        <>
+          {t('auth.hasAccount')}{' '}
+          <Link to="/login" className="font-bold text-accent hover:underline">
+            {t('auth.login')}
+          </Link>
+        </>
+      }
     >
       <Form
-        name="register_form"
-        className="auth-form"
+        form={form}
         layout="vertical"
         onFinish={onFinish}
         requiredMark={false}
+        size="large"
+        /* Kiểm tra ngay khi rời ô, rồi mới theo từng phím gõ — người dùng
+           thấy lỗi sớm nhưng không bị mắng ngay từ ký tự đầu tiên. */
+        validateTrigger={['onBlur', 'onChange']}
+        initialValues={{ acceptTerms: false }}
       >
         <Form.Item
-          label="Họ và tên"
+          label={t('auth.fullName')}
           name="fullName"
           rules={[
-            { required: true, message: 'Vui lòng nhập họ và tên!' },
-            { whitespace: true, message: 'Họ và tên không được chỉ chứa khoảng trắng!' }
+            { required: true, message: t('auth.validation.nameRequired') },
+            { min: 2, message: t('auth.validation.nameShort') },
           ]}
         >
-          <Input 
-            prefix={<UserOutlined style={{ color: 'var(--text-secondary)' }} />} 
-            placeholder="Nguyễn Văn A" 
-            size="large"
-          />
+          <Input placeholder={t('auth.namePlaceholder')} autoComplete="name" />
         </Form.Item>
 
         <Form.Item
-          label="Email"
+          label={t('auth.email')}
           name="email"
           rules={[
-            { required: true, message: 'Vui lòng nhập email!' },
-            { type: 'email', message: 'Email không đúng định dạng!' }
+            { required: true, message: t('auth.validation.emailRequired') },
+            { type: 'email', message: t('auth.validation.emailFormat') },
           ]}
+          validateStatus={emailCheck.state === 'checking' ? 'validating' : undefined}
+          hasFeedback={emailCheck.state === 'checking'}
+          extra={
+            emailCheck.state === 'available' ? (
+              <span className="inline-flex items-center gap-1 text-accent">
+                <span
+                  aria-hidden="true"
+                  className="material-symbols-outlined text-[15px]"
+                >
+                  check_circle
+                </span>
+                {t('auth.emailAvailable')}
+              </span>
+            ) : emailCheck.state === 'checking' ? (
+              t('auth.emailChecking')
+            ) : undefined
+          }
         >
-          <Input 
-            prefix={<MailOutlined style={{ color: 'var(--text-secondary)' }} />} 
-            placeholder="nhap@email.com" 
-            size="large"
+          <Input
+            placeholder="ban@example.com"
+            autoComplete="email"
+            inputMode="email"
+            onBlur={handleEmailBlur}
+            onChange={() => setEmailCheck({ state: 'idle' })}
           />
         </Form.Item>
 
         <Form.Item
-          label="Mật khẩu"
+          label={t('auth.password')}
           name="password"
           rules={[
-            { required: true, message: 'Vui lòng nhập mật khẩu!' },
-            { min: 8, message: 'Mật khẩu phải có tối thiểu 8 ký tự!' }
+            { required: true, message: t('auth.validation.passwordRequired') },
+            { min: 6, message: t('auth.validation.passwordMin') },
           ]}
+          extra={t('auth.passwordHint')}
         >
-          <Input.Password 
-            prefix={<LockOutlined style={{ color: 'var(--text-secondary)' }} />} 
-            placeholder="••••••••" 
-            size="large"
+          <Input.Password
+            placeholder="••••••••"
+            autoComplete="new-password"
+            onChange={(event) => setPassword(event.target.value)}
           />
         </Form.Item>
-        
+
+        <PasswordStrength password={password} className="-mt-3 mb-5" />
+
         <Form.Item
-          label="Xác nhận mật khẩu"
+          label={t('auth.confirmPassword')}
           name="confirmPassword"
           dependencies={['password']}
           rules={[
-            { required: true, message: 'Vui lòng xác nhận mật khẩu!' },
+            { required: true, message: t('auth.validation.confirmRequired') },
             ({ getFieldValue }) => ({
               validator(_, value) {
                 if (!value || getFieldValue('password') === value) {
                   return Promise.resolve();
                 }
-                return Promise.reject(new Error('Mật khẩu xác nhận không khớp!'));
+                return Promise.reject(
+                  new Error(t('auth.validation.confirmMismatch')),
+                );
               },
             }),
           ]}
         >
-          <Input.Password 
-            prefix={<LockOutlined style={{ color: 'var(--text-secondary)' }} />} 
-            placeholder="••••••••" 
-            size="large"
-          />
+          <Input.Password placeholder="••••••••" autoComplete="new-password" />
         </Form.Item>
 
         <Form.Item
-          name="agreement"
+          name="acceptTerms"
           valuePropName="checked"
           rules={[
             {
-              validator: (_, value) =>
-                value ? Promise.resolve() : Promise.reject(new Error('Vui lòng đồng ý với điều khoản!')),
+              validator: (_, value: boolean) =>
+                value
+                  ? Promise.resolve()
+                  : Promise.reject(new Error(t('auth.validation.termsRequired'))),
             },
           ]}
         >
-          <Checkbox>Tôi đồng ý với các điều khoản và điều kiện</Checkbox>
+          <Checkbox>
+            {/* Tên hai văn bản để chữ thường chứ không phải link: dự án
+                chưa có trang Điều khoản và Chính sách, mà link dẫn tới
+                trang 404 còn tệ hơn là không có link. Khi hai trang đó
+                ra đời thì bọc lại bằng <Link>. */}
+            <span className="text-[13.5px] text-ink">
+              {t('auth.termsPrefix')}{' '}
+              <strong className="font-bold text-accent">{t('auth.termsLink')}</strong>{' '}
+              {t('auth.and')}{' '}
+              <strong className="font-bold text-accent">{t('auth.privacyLink')}</strong>
+            </span>
+          </Checkbox>
         </Form.Item>
 
-        <Form.Item style={{ marginBottom: 0, marginTop: 12 }}>
-          <Button 
-            type="primary" 
-            htmlType="submit" 
-            className="auth-submit-btn"
-            loading={loading}
-          >
-            Đăng ký
-          </Button>
-        </Form.Item>
-        
-        <div className="auth-footer">
-          Đã có tài khoản? <Link to="/login">Đăng nhập</Link>
-        </div>
+        <Button type="submit" size="lg" loading={loading} block>
+          {t('auth.createAccount')}
+        </Button>
       </Form>
     </AuthLayout>
   );

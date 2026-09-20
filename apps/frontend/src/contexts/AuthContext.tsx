@@ -1,61 +1,112 @@
 /* eslint-disable react-refresh/only-export-components */
-import React, { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
-import { type User } from '../services/authService';
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from 'react';
+
+import {
+  authService,
+  type LoginPayload,
+  type RegisterPayload,
+} from '../services/authService';
+import { setUnauthorizedHandler, tokenStore } from '../shared/api/client';
+import type { User } from '../types/common';
 
 interface AuthContextType {
+  /** true khi đã có người dùng hợp lệ. */
   isAuthenticated: boolean;
+  /** true trong lúc khôi phục phiên từ token đã lưu, lúc mới tải trang. */
+  isBootstrapping: boolean;
   user: User | null;
-  login: (token: string, user: User) => void;
-  logout: () => void;
+  isAdmin: boolean;
+  login: (payload: LoginPayload) => Promise<User>;
+  register: (payload: RegisterPayload) => Promise<User>;
+  logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [user, setUser] = useState<User | null>(null);
+  const [isBootstrapping, setIsBootstrapping] = useState<boolean>(
+    () => tokenStore.get() !== null,
+  );
 
+  /* Khôi phục phiên khi tải lại trang: nếu còn token thì hỏi lại server
+     xem token có còn hiệu lực không, thay vì tin vào dữ liệu trong
+     localStorage. */
   useEffect(() => {
-    // On mount, check if there's a token in localStorage
-    const token = localStorage.getItem('auth_token');
-    const storedUser = localStorage.getItem('auth_user');
-    
-    if (token && storedUser) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setIsAuthenticated(true);
-      try {
-        setUser(JSON.parse(storedUser));
-      } catch {
-        // Handle JSON parse error
-      }
-    }
+    // Không có token thì isBootstrapping đã là false ngay từ giá trị khởi tạo.
+    if (tokenStore.get() === null) return;
+
+    let cancelled = false;
+
+    authService
+      .me()
+      .then((me) => {
+        if (!cancelled) setUser(me);
+      })
+      .catch(() => {
+        // Token hỏng hoặc đã hết hạn — coi như chưa đăng nhập.
+        tokenStore.clear();
+        if (!cancelled) setUser(null);
+      })
+      .finally(() => {
+        if (!cancelled) setIsBootstrapping(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
-  const login = (token: string, userData: User) => {
-    localStorage.setItem('auth_token', token);
-    localStorage.setItem('auth_user', JSON.stringify(userData));
-    setIsAuthenticated(true);
-    setUser(userData);
-  };
+  /* Khi bất kỳ request nào nhận 401, lớp API sẽ gọi vào đây để dọn phiên. */
+  useEffect(() => {
+    setUnauthorizedHandler(() => setUser(null));
+  }, []);
 
-  const logout = () => {
-    localStorage.removeItem('auth_token');
-    localStorage.removeItem('auth_user');
-    setIsAuthenticated(false);
+  const login = useCallback(async (payload: LoginPayload) => {
+    const session = await authService.login(payload);
+    setUser(session.user);
+    return session.user;
+  }, []);
+
+  const register = useCallback(async (payload: RegisterPayload) => {
+    const session = await authService.register(payload);
+    setUser(session.user);
+    return session.user;
+  }, []);
+
+  const logout = useCallback(async () => {
+    await authService.logout();
     setUser(null);
-  };
+  }, []);
 
-  return (
-    <AuthContext.Provider value={{ isAuthenticated, user, login, logout }}>
-      {children}
-    </AuthContext.Provider>
+  const value = useMemo<AuthContextType>(
+    () => ({
+      isAuthenticated: user !== null,
+      isBootstrapping,
+      user,
+      isAdmin: user?.role === 'ADMIN',
+      login,
+      register,
+      logout,
+    }),
+    [user, isBootstrapping, login, register, logout],
   );
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
-export const useAuth = () => {
+export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error('useAuth phải được dùng bên trong AuthProvider');
   }
   return context;
 };

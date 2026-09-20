@@ -1,104 +1,109 @@
 import React, { useState } from 'react';
-import { Form, Input, Button, message, Typography } from 'antd';
-import { Link } from 'react-router-dom';
-import { MailOutlined, ArrowLeftOutlined } from '@ant-design/icons';
-import AuthLayout from '../../components/auth/AuthLayout';
-import { authService } from '../../services/authService';
+import { App, Form, Input } from 'antd';
+import { Trans, useTranslation } from 'react-i18next';
+import { Link, useNavigate } from 'react-router-dom';
 
-const { Text } = Typography;
+import AuthLayout from '../../components/auth/AuthLayout';
+import { Button } from '../../components/ui/Button';
+import { useApiError } from '../../hooks/useApiError';
+import { authService } from '../../services/authService';
 
 const ForgotPasswordPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
-  const [email, setEmail] = useState('');
+  const [sentTo, setSentTo] = useState<string | null>(null);
+  const { message } = App.useApp();
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+  const { describe } = useApiError();
 
   const onFinish = async (values: { email: string }) => {
     setLoading(true);
-    setEmail(values.email);
     try {
       await authService.forgotPassword(values.email);
-      setIsSuccess(true);
-    } catch {
-      message.error('Có lỗi xảy ra. Vui lòng thử lại!');
+      setSentTo(values.email);
+    } catch (error) {
+      message.error(describe(error, 'auth.sendError'));
     } finally {
       setLoading(false);
     }
   };
 
-  if (isSuccess) {
+  /* Màn hình sau khi gửi. Nội dung cố ý không xác nhận email có tồn tại
+     hay không, để không lộ tài khoản nào đang có trong hệ thống. */
+  if (sentTo) {
     return (
-      <AuthLayout 
-        title="Kiểm tra email của bạn" 
-        subtitle="Chúng tôi đã gửi liên kết đặt lại mật khẩu đến email của bạn."
+      <AuthLayout
+        title={t('auth.checkInbox')}
+        subtitle={t('auth.sentTo', { email: sentTo })}
       >
-        <div style={{ textAlign: 'center', marginBottom: 24 }}>
-          <Text style={{ display: 'block', marginBottom: 16 }}>
-            Email đã được gửi đến: <strong style={{ color: 'var(--primary-color)' }}>{email}</strong>
-          </Text>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-            <Button 
-              type="primary" 
-              className="auth-submit-btn"
-              onClick={() => setIsSuccess(false)}
-            >
-              Gửi lại email
-            </Button>
-            <Link to="/login" style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8, marginTop: 8, color: 'var(--text-secondary)' }}>
-              <ArrowLeftOutlined /> Quay lại đăng nhập
-            </Link>
-          </div>
-          
-          <div style={{ marginTop: 24, fontSize: 13, color: 'var(--text-secondary)' }}>
-            <p>Môi trường dev: <Link to="/reset-password?token=mock-token">Đến trang Reset Password để test</Link></p>
-          </div>
+        <div className="rounded-md bg-surface-muted p-4">
+          <p className="text-body text-ink-muted">{t('auth.codeValid')}</p>
+          <p className="mt-2 text-caption text-ink-subtle">
+            <Trans
+              i18nKey="auth.demoCode"
+              components={{ code: <span className="font-bold text-ink" /> }}
+            />
+          </p>
         </div>
+
+        <Button
+          size="lg"
+          block
+          className="mt-5"
+          onClick={() =>
+            navigate(`/reset-password?email=${encodeURIComponent(sentTo)}`)
+          }
+        >
+          {t('auth.enterCode')}
+        </Button>
+
+        <Button
+          variant="subtle"
+          size="lg"
+          block
+          className="mt-2"
+          onClick={() => setSentTo(null)}
+        >
+          {t('auth.useAnotherEmail')}
+        </Button>
       </AuthLayout>
     );
   }
 
   return (
-    <AuthLayout 
-      title="Quên mật khẩu?" 
-      subtitle="Đừng lo lắng! Nhập email của bạn và chúng tôi sẽ gửi liên kết để đặt lại mật khẩu."
+    <AuthLayout
+      title={t('auth.forgotTitle')}
+      subtitle={t('auth.forgotSubtitle')}
+      footer={
+        <>
+          {t('auth.rememberedPassword')}{' '}
+          <Link to="/login" className="font-bold text-accent hover:underline">
+            {t('auth.login')}
+          </Link>
+        </>
+      }
     >
       <Form
-        name="forgot_password_form"
-        className="auth-form"
         layout="vertical"
         onFinish={onFinish}
         requiredMark={false}
+        size="large"
+        validateTrigger={['onBlur', 'onChange']}
       >
         <Form.Item
-          label="Email"
+          label={t('auth.email')}
           name="email"
           rules={[
-            { required: true, message: 'Vui lòng nhập email!' },
-            { type: 'email', message: 'Email không đúng định dạng!' }
+            { required: true, message: t('auth.validation.emailRequired') },
+            { type: 'email', message: t('auth.validation.emailFormat') },
           ]}
         >
-          <Input 
-            prefix={<MailOutlined style={{ color: 'var(--text-secondary)' }} />} 
-            placeholder="nhap@email.com" 
-            size="large"
-          />
+          <Input placeholder="ban@example.com" autoComplete="email" inputMode="email" />
         </Form.Item>
 
-        <Form.Item style={{ marginBottom: 0, marginTop: 12 }}>
-          <Button 
-            type="primary" 
-            htmlType="submit" 
-            className="auth-submit-btn"
-            loading={loading}
-          >
-            Gửi yêu cầu đặt lại mật khẩu
-          </Button>
-        </Form.Item>
-        
-        <div className="auth-footer" style={{ marginTop: 16 }}>
-          <Link to="/login" style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
-            <ArrowLeftOutlined /> Quay lại đăng nhập
-          </Link>
-        </div>
+        <Button type="submit" size="lg" loading={loading} block>
+          {t('auth.sendCode')}
+        </Button>
       </Form>
     </AuthLayout>
   );

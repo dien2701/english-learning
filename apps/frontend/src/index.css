@@ -1,49 +1,104 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+/* Plus Jakarta Sans có đủ dấu tiếng Việt. Inter giữ lại làm font dự phòng. */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
 
-@import "tailwindcss";
+/* Thứ tự lớp CSS phải khai báo trước mọi @import dùng tới nó.
+   Tailwind v4 sinh utility bên trong @layer utilities, trong khi CSS của
+   Ant Design vốn nằm ngoài mọi lớp — mà CSS không phân lớp thì luôn thắng
+   CSS có lớp, bất kể specificity. Hậu quả là các quy tắc theo thẻ của AntD
+   (a, button…) đè lên mọi utility màu chữ. Vì vậy AntD được gom vào lớp
+   riêng `antd`.
+
+   Vị trí của lớp `antd` phải nằm GIỮA `base` và `components`:
+   - trên `base` để AntD thắng phần reset của Tailwind. Reset đó đặt
+     `button { padding: 0; border: 0; background: transparent }`, nếu AntD
+     nằm dưới thì mọi component AntD dựng bằng thẻ button — Switch, nút
+     trong Modal — sẽ mất sạch nền, viền và phần đệm;
+   - dưới `components` và `utilities` để class của Tailwind vẫn đè được lên
+     AntD khi cần chỉnh riêng. */
+@layer theme, base, antd, components, utilities;
+
+@import 'antd/dist/reset.css' layer(antd);
+@import './styles/tokens.css';
+@import 'tailwindcss';
 @config "../tailwind.config.js";
 
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
-button, a, [role="button"] {
-  cursor: pointer !important;
-}
-
-:root {
-  --primary-color: #008FD5;
-  --primary-dark: #007BB8;
-  --primary-light: #E6F4FA;
-  --bg-color: #F7F9FF;
-  --surface-color: #FFFFFF;
-  --border-color: #E5E8EE;
-  --text-primary: #1E293B;
-  --text-secondary: #64748B;
-  --success-color: #16A34A;
-  --warning-color: #F59E0B;
-  --error-color: #DC2626;
+html {
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
   margin: 0;
   min-width: 320px;
-  font-family: 'Inter', "Segoe UI", system-ui, sans-serif;
-  background-color: var(--bg-color);
-  color: var(--text-primary);
+  font-family: 'Plus Jakarta Sans', Inter, 'Segoe UI', system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--text);
+  background-color: var(--bg);
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-h1, h2, h3, h4, h5, h6, p {
+/* Lớp phủ mint rất nhạt ở đỉnh trang, lấy cảm hứng từ nền gradient
+   của bản thiết kế gốc nhưng giữ đủ nhạt để chữ vẫn đạt tương phản. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: 420px;
+  background: linear-gradient(180deg, var(--bg-mint) 0%, transparent 100%);
+  opacity: 0.85;
+  pointer-events: none;
+  z-index: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
   margin: 0;
 }
 
 #root {
+  position: relative;
+  z-index: 1;
   max-width: 100%;
   margin: 0;
   padding: 0;
   text-align: left;
+}
+
+button,
+a,
+[role='button'] {
+  cursor: pointer;
+}
+
+button:disabled,
+[role='button'][aria-disabled='true'] {
+  cursor: not-allowed;
+}
+
+/* Vòng focus dùng chung cho điều hướng bằng bàn phím.
+   Không bao giờ xoá outline mà không thay bằng chỉ báo khác. */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--brand-600);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+::selection {
+  background: var(--brand-100);
+  color: var(--brand-800);
 }
 
 .material-symbols-outlined {
@@ -51,18 +106,180 @@ h1, h2, h3, h4, h5, h6, p {
   vertical-align: middle;
   display: inline-flex;
   align-items: center;
+  user-select: none;
 }
 
-/* Chart bar hover effects */
-.chart-bar-group:hover .bar-fill {
-  background-color: #008FD5 !important;
+/* Thanh cuộn mảnh, hợp tông xanh */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
 }
 
-.chart-bar-group:hover .bar-label {
-  opacity: 1 !important;
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
 }
 
-.chart-bar-group.peak .bar-label {
-  opacity: 1 !important;
+*::-webkit-scrollbar-thumb {
+  background-color: var(--border-strong);
+  border-radius: var(--radius-pill);
 }
 
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Chỉ dành cho trình đọc màn hình */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Tôn trọng lựa chọn giảm chuyển động của hệ điều hành */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ============================================================
+   Ô NHẬP LIỆU — kiểu dùng chung cho cả Ant Design lẫn thẻ gốc
+
+   Yêu cầu: ô nhập phải thấy rõ ranh giới ngay cả khi liếc nhanh.
+   Cách làm: nền mint rất nhạt tách khỏi card trắng, viền 1px đậm
+   hơn hairline; khi focus thì nền chuyển trắng, viền dày 2px màu
+   hành động kèm quầng sáng mờ.
+
+   Phải đặt trong @layer components: CSS-in-JS của Ant Design nằm ở
+   layer `antd` (xem mục 6 STYLEGUIDE) nên mọi rule ở đây luôn thắng,
+   không cần !important và không phụ thuộc specificity.
+   ============================================================ */
+@layer components {
+  .ant-input,
+  .ant-input-affix-wrapper,
+  .ant-input-number,
+  .ant-input-outlined,
+  .ant-picker,
+  .ant-select:not(.ant-select-customize-input) .ant-select-selector {
+    background-color: var(--field-bg);
+    border-color: var(--field-border);
+    border-width: 1px;
+    border-radius: var(--radius-md);
+    color: var(--text);
+    transition:
+      border-color var(--dur-fast) var(--ease-out),
+      background-color var(--dur-fast) var(--ease-out),
+      box-shadow var(--dur-fast) var(--ease-out);
+  }
+
+  /* Ô nhập nằm bên trong khối bọc (Input.Password, Search…) đã có
+     viền riêng của khối bọc, nên tự nó phải trong suốt. */
+  .ant-input-affix-wrapper > .ant-input,
+  .ant-input-number-input,
+  .ant-input-group-wrapper .ant-input-affix-wrapper > .ant-input {
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+  }
+
+  .ant-input:hover,
+  .ant-input-affix-wrapper:hover,
+  .ant-input-number:hover,
+  .ant-picker:hover,
+  .ant-select:not(.ant-select-disabled):not(.ant-select-customize-input):hover
+    .ant-select-selector {
+    background-color: rgb(var(--field-bg-hover-rgb));
+    border-color: var(--field-border-hover);
+  }
+
+  .ant-input:focus,
+  .ant-input-focused,
+  .ant-input-affix-wrapper:focus-within,
+  .ant-input-number-focused,
+  .ant-picker-focused,
+  .ant-select-focused:not(.ant-select-customize-input) .ant-select-selector,
+  .ant-select-open:not(.ant-select-customize-input) .ant-select-selector {
+    background-color: var(--field-bg-focus);
+    border-color: var(--field-focus);
+    border-width: 2px;
+    box-shadow: var(--field-focus-ring);
+    outline: none;
+  }
+
+  /* Viền dày thêm 1px khi focus sẽ đẩy chữ nhảy sang một pixel nếu
+     không bù lại phần đệm. */
+  .ant-input:focus,
+  .ant-input-focused,
+  .ant-input-affix-wrapper:focus-within,
+  .ant-picker-focused,
+  .ant-select-focused:not(.ant-select-customize-input) .ant-select-selector {
+    padding-inline: 10px;
+  }
+
+  .ant-form-item-has-error .ant-input,
+  .ant-form-item-has-error .ant-input-affix-wrapper,
+  .ant-form-item-has-error .ant-picker,
+  .ant-form-item-has-error .ant-select .ant-select-selector,
+  .ant-input-status-error {
+    border-color: var(--danger);
+    background-color: var(--field-bg-focus);
+  }
+
+  .ant-form-item-has-error .ant-input:focus,
+  .ant-form-item-has-error .ant-input-affix-wrapper:focus-within,
+  .ant-form-item-has-error .ant-select-focused .ant-select-selector {
+    border-color: var(--danger);
+    box-shadow: var(--field-error-ring);
+  }
+
+  .ant-input::placeholder,
+  .ant-input-number-input::placeholder,
+  .ant-select-selection-placeholder,
+  .ant-picker-input > input::placeholder {
+    color: var(--text-subtle);
+    opacity: 1;
+  }
+
+  /* Nhãn đậm và tối hơn mặc định để cặp nhãn–ô đọc thành một khối. */
+  .ant-form-item-label > label {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .ant-form-item-explain-error {
+    font-size: 12.5px;
+    font-weight: 500;
+  }
+
+  .ant-input[disabled],
+  .ant-input-affix-wrapper-disabled,
+  .ant-select-disabled .ant-select-selector {
+    background-color: var(--surface-muted);
+    color: var(--text-subtle);
+  }
+
+  /* Nhãn checkbox dài (ví dụ dòng đồng ý điều khoản) xuống hai dòng thì ô
+     tích phải neo theo dòng đầu, không trôi xuống giữa khối chữ. Đồng thời
+     chừa khoảng cách cố định giữa ô tích và nhãn. */
+  .ant-checkbox-wrapper {
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .ant-checkbox-wrapper > .ant-checkbox {
+    margin-top: 1px;
+  }
+}

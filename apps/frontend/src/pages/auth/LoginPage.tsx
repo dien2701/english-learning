@@ -1,95 +1,137 @@
 import React, { useState } from 'react';
-import { Form, Input, Button, Checkbox, message } from 'antd';
-import { Link, useNavigate } from 'react-router-dom';
-import { MailOutlined, LockOutlined } from '@ant-design/icons';
+import { App, Checkbox, Form, Input } from 'antd';
+import { useTranslation } from 'react-i18next';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+
 import AuthLayout from '../../components/auth/AuthLayout';
-import { authService } from '../../services/authService';
+import { Button } from '../../components/ui/Button';
 import { useAuth } from '../../contexts/AuthContext';
+import { useApiError } from '../../hooks/useApiError';
+
+interface LoginForm {
+  email: string;
+  password: string;
+  remember?: boolean;
+}
 
 const LoginPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
+  const [form] = Form.useForm<LoginForm>();
+  const { message } = App.useApp();
+  const { t } = useTranslation();
   const navigate = useNavigate();
+  const location = useLocation();
   const { login } = useAuth();
+  const { describe, applyTo } = useApiError();
 
-  const onFinish = async (values: { email: string; password: string }) => {
+  const onFinish = async (values: LoginForm) => {
     setLoading(true);
     try {
-      const response = await authService.login(values.email, values.password);
-      login(response.token, response.user);
-      message.success('Đăng nhập thành công!');
-      navigate('/dashboard');
-    } catch {
-      message.error('Email hoặc mật khẩu không đúng!');
+      const user = await login({
+        email: values.email,
+        password: values.password,
+      });
+
+      message.success(t('auth.loginSuccess'));
+
+      const from = (location.state as { from?: string } | null)?.from;
+      navigate(from ?? (user.role === 'ADMIN' ? '/admin' : '/dashboard'), {
+        replace: true,
+      });
+    } catch (error) {
+      applyTo(form, error);
+      // Thông báo cố ý không tiết lộ email có tồn tại trong hệ thống hay không.
+      message.error(describe(error, 'auth.loginFailed'));
     } finally {
       setLoading(false);
     }
   };
 
+  /** Điền nhanh tài khoản mẫu — chỉ có ý nghĩa khi chạy với dữ liệu giả lập. */
+  const fillDemo = (email: string) => {
+    form.setFieldsValue({ email, password: '123456' });
+  };
+
   return (
-    <AuthLayout 
-      title="Đăng nhập" 
-      subtitle="Chào mừng trở lại! Vui lòng đăng nhập vào tài khoản của bạn."
+    <AuthLayout
+      title={t('auth.login')}
+      subtitle={t('auth.loginSubtitle')}
+      footer={
+        <>
+          {t('auth.noAccount')}{' '}
+          <Link to="/register" className="font-bold text-accent hover:underline">
+            {t('auth.register')}
+          </Link>
+        </>
+      }
     >
       <Form
-        name="login_form"
-        className="auth-form"
+        form={form}
         layout="vertical"
-        initialValues={{ remember: true }}
         onFinish={onFinish}
         requiredMark={false}
+        initialValues={{ remember: true }}
+        size="large"
+        validateTrigger={['onBlur', 'onChange']}
       >
         <Form.Item
-          label="Email"
+          label={t('auth.email')}
           name="email"
           rules={[
-            { required: true, message: 'Vui lòng nhập email!' },
-            { type: 'email', message: 'Email không đúng định dạng!' }
+            { required: true, message: t('auth.validation.emailRequired') },
+            { type: 'email', message: t('auth.validation.emailFormat') },
           ]}
         >
-          <Input 
-            prefix={<MailOutlined style={{ color: 'var(--text-secondary)' }} />} 
-            placeholder="nhap@email.com" 
-            size="large"
-          />
+          <Input placeholder="ban@example.com" autoComplete="email" inputMode="email" />
         </Form.Item>
 
         <Form.Item
-          label="Mật khẩu"
+          label={t('auth.password')}
           name="password"
-          rules={[{ required: true, message: 'Vui lòng nhập mật khẩu!' }]}
+          rules={[
+            { required: true, message: t('auth.validation.passwordRequired') },
+          ]}
         >
-          <Input.Password 
-            prefix={<LockOutlined style={{ color: 'var(--text-secondary)' }} />} 
-            placeholder="••••••••" 
-            size="large"
-          />
+          <Input.Password placeholder="••••••••" autoComplete="current-password" />
         </Form.Item>
 
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
+        <div className="mb-5 flex items-center justify-between gap-3">
           <Form.Item name="remember" valuePropName="checked" noStyle>
-            <Checkbox>Ghi nhớ đăng nhập</Checkbox>
+            <Checkbox>{t('auth.remember')}</Checkbox>
           </Form.Item>
-          
-          <Link to="/forgot-password" style={{ color: 'var(--primary-color)', fontWeight: 500 }}>
-            Quên mật khẩu?
+
+          <Link
+            to="/forgot-password"
+            className="text-[13.5px] font-bold text-accent hover:underline"
+          >
+            {t('auth.forgot')}
           </Link>
         </div>
 
-        <Form.Item style={{ marginBottom: 0 }}>
-          <Button 
-            type="primary" 
-            htmlType="submit" 
-            className="auth-submit-btn"
-            loading={loading}
-          >
-            Đăng nhập
-          </Button>
-        </Form.Item>
-        
-        <div className="auth-footer">
-          Chưa có tài khoản? <Link to="/register">Đăng ký ngay</Link>
-        </div>
+        <Button type="submit" size="lg" loading={loading} block>
+          {t('auth.login')}
+        </Button>
       </Form>
+
+      <div className="mt-6 rounded-md bg-surface-muted p-3">
+        <p className="text-caption text-ink-muted">{t('auth.demoHint')}</p>
+        <div className="mt-2 flex flex-wrap gap-2">
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={() => fillDemo('hocvien@enlearning.vn')}
+          >
+            {t('auth.demoStudent')}
+          </Button>
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={() => fillDemo('admin@enlearning.vn')}
+          >
+            {t('auth.demoAdmin')}
+          </Button>
+        </div>
+      </div>
     </AuthLayout>
   );
 };

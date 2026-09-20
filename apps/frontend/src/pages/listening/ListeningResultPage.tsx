@@ -1,12 +1,13 @@
 import React from 'react';
+import PracticeResultPage from '../practice/PracticeResultPage';
 
-const ListeningResultPage: React.FC = () => {
-  return (
-    <div style={{ padding: '24px' }}>
-      <h1>Listening Result Page</h1>
-      <p>This is a placeholder for the ListeningResultPage component.</p>
-    </div>
-  );
-};
+const ListeningResultPage: React.FC = () => (
+  <PracticeResultPage
+    titleKey="listening.resultTitle"
+    backLabelKey="listening.allLessons"
+    backTo="/listening"
+    retryPath={(lessonId) => `/listening/${lessonId}`}
+  />
+);
 
 export default ListeningResultPage;

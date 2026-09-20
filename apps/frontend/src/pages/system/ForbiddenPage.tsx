@@ -1,12 +1,13 @@
 import React from 'react';
+import SystemMessage from './SystemMessage';
 
-const ForbiddenPage: React.FC = () => {
-  return (
-    <div style={{ padding: '24px' }}>
-      <h1>Forbidden Page</h1>
-      <p>This is a placeholder for the ForbiddenPage component.</p>
-    </div>
-  );
-};
+const ForbiddenPage: React.FC = () => (
+  <SystemMessage
+    code="403"
+    icon="lock"
+    titleKey="system.forbiddenTitle"
+    descriptionKey="system.forbiddenBody"
+  />
+);
 
 export default ForbiddenPage;

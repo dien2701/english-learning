@@ -1,0 +1,272 @@
+/* ============================================================
+   EN-LEARNING — DESIGN TOKENS
+   Chủ đề: LinguaMerse (xanh rừng + xanh lá tươi + nền mint)
+
+   CÁCH HOẠT ĐỘNG
+   Mỗi màu khai báo dưới dạng ba số kênh RGB (R G B), để
+   tailwind.config.js bọc lại thành rgb(var(--x-rgb) / <alpha-value>).
+   Nhờ vậy vừa đổi được theo chế độ sáng/tối chỉ bằng cách đổi biến,
+   vừa giữ nguyên các biến thể độ mờ như bg-surface/50.
+   Bản rgb() dựng sẵn ở cuối file dành cho CSS thường và Recharts.
+
+   HAI NHÓM TOKEN
+   1. Thang brand — bảng màu thương hiệu, CỐ ĐỊNH ở cả hai chế độ.
+   2. Token theo vai trò (action, accent, surface, ink…) — ĐỔI theo
+      chế độ. Component luôn dùng nhóm này, không dùng trực tiếp
+      thang brand cho chữ.
+
+   QUY TẮC TƯƠNG PHẢN (WCAG AA cần 4.5:1 cho chữ thường)
+     action #15803D + chữ trắng          5.01:1  nút, ở cả hai chế độ
+     sidebar-active #2D6A4F + trắng      6.39:1
+     accent sáng #166534 trên card trắng 8.01:1
+     accent tối  #86EFAC trên card tối   9.16:1
+   Không bao giờ đặt chữ lên brand-500 (#22C55E): trắng chỉ đạt 3.3:1.
+   ============================================================ */
+
+:root {
+  /* --- Thang màu thương hiệu (cố định cả hai chế độ) --------- */
+  --brand-50-rgb: 240 253 244;
+  --brand-100-rgb: 220 252 231;
+  --brand-200-rgb: 187 247 208;
+  --brand-300-rgb: 134 239 172;
+  --brand-400-rgb: 74 222 128;
+  --brand-500-rgb: 34 197 94; /* nhấn không có chữ: progress, chấm */
+  --brand-600-rgb: 21 128 61;
+  --brand-700-rgb: 22 101 52;
+  --brand-800-rgb: 20 83 45;
+  --brand-900-rgb: 23 63 46;
+  --brand-950-rgb: 15 46 32;
+
+  /* --- Hành động: nền nút, luôn đi với chữ trắng ------------- */
+  --action-rgb: 21 128 61;
+  --action-hover-rgb: 22 101 52;
+  --on-action-rgb: 255 255 255;
+
+  /* --- Nhấn: chữ link, nhãn, icon nhấn ----------------------- */
+  --accent-rgb: 22 101 52;
+  --accent-soft-rgb: 220 252 231; /* nền chip, khối nhấn */
+  --accent-soft-fg-rgb: 22 101 52;
+  --accent-subtle-rgb: 240 253 244; /* nền nhấn rất nhạt */
+  --accent-line-rgb: 187 247 208;
+
+  /* --- Bề mặt ------------------------------------------------ */
+  --bg-rgb: 244 250 246;
+  --bg-mint-rgb: 233 247 239;
+  --surface-rgb: 255 255 255;
+  --surface-muted-rgb: 241 246 243;
+  --surface-hover-rgb: 238 245 240;
+
+  /* --- Sidebar ----------------------------------------------- */
+  --sidebar-rgb: 23 63 46;
+  --sidebar-fg-rgb: 220 235 227; /* 9.7:1 trên nền sidebar */
+  --sidebar-muted-rgb: 169 198 182; /* 6.4:1 */
+  --sidebar-active-rgb: 45 106 79;
+
+  /* --- Chữ ---------------------------------------------------- */
+  --ink-rgb: 20 38 28;
+  --ink-muted-rgb: 90 107 98;
+  --ink-subtle-rgb: 138 154 145;
+
+  /* --- Đường viền -------------------------------------------- */
+  --hairline-rgb: 221 232 225;
+  --hairline-strong-rgb: 196 214 203;
+
+  /* --- Ô nhập liệu -------------------------------------------
+     Ô nhập nền mint rất nhạt để tách hẳn khỏi card trắng, viền
+     đậm hơn hairline thường. Khi focus thì nền chuyển trắng,
+     viền dày 2px màu hành động kèm quầng sáng mờ — ranh giới ô
+     thấy rõ ngay cả khi liếc nhanh.                              */
+  --field-bg-rgb: 241 247 243;
+  --field-bg-hover-rgb: 234 243 237;
+  --field-bg-focus-rgb: 255 255 255;
+  --field-border-rgb: 196 214 203;
+  --field-border-hover-rgb: 154 186 166;
+  --field-focus-rgb: 21 128 61;
+  --field-focus-ring: 0 0 0 4px rgb(21 128 61 / 0.12);
+  --field-error-ring: 0 0 0 4px rgb(220 38 38 / 0.12);
+  --field-h: 46px;
+  --field-h-lg: 52px;
+  --field-h-sm: 36px;
+
+  /* --- Trạng thái -------------------------------------------- */
+  --success-rgb: 21 128 61;
+  --success-bg-rgb: 220 252 231;
+  --success-fg-rgb: 22 101 52;
+
+  --warning-rgb: 180 83 9;
+  --warning-bg-rgb: 254 243 199;
+  --warning-fg-rgb: 146 64 14;
+
+  --danger-rgb: 220 38 38;
+  --danger-bg-rgb: 254 226 226;
+  --danger-fg-rgb: 153 27 27;
+
+  /* Thông tin dùng xám xanh — bảng màu đã bỏ hẳn xanh lam. */
+  --info-rgb: 61 79 69;
+  --info-bg-rgb: 241 246 243;
+  --info-fg-rgb: 61 79 69;
+
+  /* --- Trình độ (chip) ---------------------------------------
+     Ba mức ba tông khác hẳn nhau nên phân biệt được cả khi in
+     đen trắng hoặc với người mù màu.                            */
+  --level-beginner-bg-rgb: 220 252 231;
+  --level-beginner-fg-rgb: 22 101 52;
+  --level-intermediate-bg-rgb: 254 243 199;
+  --level-intermediate-fg-rgb: 146 64 14;
+  --level-advanced-bg-rgb: 237 233 254;
+  --level-advanced-fg-rgb: 91 33 182;
+
+  /* --- Biểu đồ -----------------------------------------------
+     Thứ tự cố định, không xoay vòng. Đã qua bộ kiểm tra của
+     skill dataviz ở cả hai chế độ. Đổi thì phải chạy lại
+     scripts/validate_palette.js.                                */
+  --chart-1-rgb: 21 128 61; /* chuỗi 1 — kỳ hiện tại */
+  --chart-2-rgb: 139 92 246; /* chuỗi 2 — kỳ trước */
+  --chart-3-rgb: 180 83 9;
+  --chart-4-rgb: 190 24 93;
+  --chart-5-rgb: 79 100 89;
+  --chart-grid-rgb: 232 240 235;
+
+  /* --- Bo góc ------------------------------------------------ */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-pill: 999px;
+
+  /* --- Đổ bóng ----------------------------------------------- */
+  --shadow-xs: 0 1px 2px rgba(19, 42, 32, 0.05);
+  --shadow-sm: 0 1px 3px rgba(19, 42, 32, 0.06), 0 1px 2px rgba(19, 42, 32, 0.04);
+  --shadow-md: 0 4px 12px rgba(19, 42, 32, 0.07), 0 2px 4px rgba(19, 42, 32, 0.04);
+  --shadow-lg: 0 12px 28px rgba(19, 42, 32, 0.1), 0 4px 8px rgba(19, 42, 32, 0.05);
+  --shadow-brand: 0 6px 16px rgba(21, 128, 61, 0.24);
+
+  /* --- Chuyển động ------------------------------------------- */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast: 150ms;
+  --dur-base: 220ms;
+  --dur-slow: 320ms;
+
+  /* --- Khung layout ------------------------------------------ */
+  --header-h: 64px;
+  --sidebar-w: 260px;
+  --sidebar-w-collapsed: 80px;
+  --content-max: 1360px;
+}
+
+/* ============================================================
+   CHẾ ĐỘ TỐI
+   Bật bằng class .dark trên thẻ <html>.
+
+   Chỉ token theo vai trò đổi giá trị; thang brand giữ nguyên.
+   Nền tối thì mọi chữ ưu tiên tông sáng, còn nền nút vẫn giữ
+   #15803D để chữ trắng luôn đạt 5.01:1.
+   ============================================================ */
+
+.dark {
+  /* Nút giữ nguyên màu để chữ trắng vẫn đạt chuẩn; viền sáng
+     thêm ở component giúp nút tách khỏi nền tối. */
+  --action-rgb: 21 128 61;
+  --action-hover-rgb: 26 158 75;
+
+  /* Chữ nhấn phải sáng hẳn lên mới đọc được trên card tối. */
+  --accent-rgb: 134 239 172;
+  --accent-soft-rgb: 27 58 40;
+  --accent-soft-fg-rgb: 167 243 196;
+  --accent-subtle-rgb: 20 38 28;
+  --accent-line-rgb: 45 106 79;
+
+  --bg-rgb: 13 26 19;
+  --bg-mint-rgb: 16 33 26;
+  --surface-rgb: 20 37 27;
+  --surface-muted-rgb: 26 47 35;
+  --surface-hover-rgb: 31 54 41;
+
+  --sidebar-rgb: 15 31 23;
+  --sidebar-fg-rgb: 220 235 227;
+  --sidebar-muted-rgb: 169 198 182;
+  --sidebar-active-rgb: 45 106 79;
+
+  --ink-rgb: 230 240 234;
+  --ink-muted-rgb: 176 197 185;
+  --ink-subtle-rgb: 141 163 150;
+
+  --hairline-rgb: 35 64 47;
+  --hairline-strong-rgb: 47 83 64;
+
+  --field-bg-rgb: 26 47 35;
+  --field-bg-hover-rgb: 31 54 41;
+  --field-bg-focus-rgb: 20 37 27;
+  --field-border-rgb: 47 83 64;
+  --field-border-hover-rgb: 69 112 87;
+  --field-focus-rgb: 74 222 128;
+  --field-focus-ring: 0 0 0 4px rgb(74 222 128 / 0.18);
+  --field-error-ring: 0 0 0 4px rgb(248 113 113 / 0.18);
+
+  --success-rgb: 134 239 172;
+  --success-bg-rgb: 20 54 31;
+  --success-fg-rgb: 134 239 172;
+
+  --warning-rgb: 252 211 77;
+  --warning-bg-rgb: 58 42 12;
+  --warning-fg-rgb: 252 211 77;
+
+  --danger-rgb: 248 113 113;
+  --danger-bg-rgb: 61 23 25;
+  --danger-fg-rgb: 252 165 165;
+
+  --info-rgb: 176 197 185;
+  --info-bg-rgb: 31 54 41;
+  --info-fg-rgb: 195 217 204;
+
+  --level-beginner-bg-rgb: 20 54 31;
+  --level-beginner-fg-rgb: 134 239 172;
+  --level-intermediate-bg-rgb: 58 42 12;
+  --level-intermediate-fg-rgb: 252 211 77;
+  --level-advanced-bg-rgb: 43 31 77;
+  --level-advanced-fg-rgb: 196 181 253;
+
+  /* Bước màu riêng cho nền tối, cũng đã qua validator. */
+  --chart-1-rgb: 22 163 74;
+  --chart-2-rgb: 139 92 246;
+  --chart-grid-rgb: 35 64 47;
+
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 12px 28px rgba(0, 0, 0, 0.45);
+  --shadow-brand: 0 6px 16px rgba(21, 128, 61, 0.35);
+}
+
+/* ------------------------------------------------------------
+   Bản rgb() dựng sẵn — dành cho CSS thường và cho Recharts,
+   những chỗ không đi qua Tailwind.
+   ------------------------------------------------------------ */
+:root,
+.dark {
+  --bg: rgb(var(--bg-rgb));
+  --bg-mint: rgb(var(--bg-mint-rgb));
+  --surface: rgb(var(--surface-rgb));
+  --surface-muted: rgb(var(--surface-muted-rgb));
+  --text: rgb(var(--ink-rgb));
+  --text-muted: rgb(var(--ink-muted-rgb));
+  --text-subtle: rgb(var(--ink-subtle-rgb));
+  --border: rgb(var(--hairline-rgb));
+  --field-bg: rgb(var(--field-bg-rgb));
+  --field-bg-focus: rgb(var(--field-bg-focus-rgb));
+  --field-border: rgb(var(--field-border-rgb));
+  --field-border-hover: rgb(var(--field-border-hover-rgb));
+  --field-focus: rgb(var(--field-focus-rgb));
+  --danger: rgb(var(--danger-rgb));
+  --border-strong: rgb(var(--hairline-strong-rgb));
+  --action: rgb(var(--action-rgb));
+  --accent: rgb(var(--accent-rgb));
+  --brand-100: rgb(var(--brand-100-rgb));
+  --brand-800: rgb(var(--brand-800-rgb));
+  --chart-1: rgb(var(--chart-1-rgb));
+  --chart-2: rgb(var(--chart-2-rgb));
+  --chart-3: rgb(var(--chart-3-rgb));
+  --chart-4: rgb(var(--chart-4-rgb));
+  --chart-5: rgb(var(--chart-5-rgb));
+  --chart-grid: rgb(var(--chart-grid-rgb));
+}

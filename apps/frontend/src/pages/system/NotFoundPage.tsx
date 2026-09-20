@@ -1,12 +1,13 @@
 import React from 'react';
+import SystemMessage from './SystemMessage';
 
-const NotFoundPage: React.FC = () => {
-  return (
-    <div style={{ padding: '24px' }}>
-      <h1>Not Found Page</h1>
-      <p>This is a placeholder for the NotFoundPage component.</p>
-    </div>
-  );
-};
+const NotFoundPage: React.FC = () => (
+  <SystemMessage
+    code="404"
+    icon="search_off"
+    titleKey="system.notFoundTitle"
+    descriptionKey="system.notFoundBody"
+  />
+);
 
 export default NotFoundPage;

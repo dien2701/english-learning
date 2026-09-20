@@ -1,12 +1,13 @@
 import React from 'react';
+import SystemMessage from './SystemMessage';
 
-const ServerErrorPage: React.FC = () => {
-  return (
-    <div style={{ padding: '24px' }}>
-      <h1>Server Error Page</h1>
-      <p>This is a placeholder for the ServerErrorPage component.</p>
-    </div>
-  );
-};
+const ServerErrorPage: React.FC = () => (
+  <SystemMessage
+    code="500"
+    icon="cloud_off"
+    titleKey="system.serverErrorTitle"
+    descriptionKey="system.serverErrorBody"
+  />
+);
 
 export default ServerErrorPage;
