@@ -187,7 +187,7 @@ const StudyTimeChart: React.FC = () => {
               aria-pressed={period === key}
               className={`min-h-[32px] rounded-pill px-4 text-[13px] font-bold transition-colors duration-200 ${
                 period === key
-                  ? 'bg-surface text-accent shadow-xs'
+                  ? 'bg-[#15803D] text-white shadow-xs'
                   : 'text-ink-muted hover:text-ink'
               }`}
             >

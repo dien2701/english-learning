@@ -157,6 +157,23 @@ export function buildThemeConfig(mode: ThemeMode): ThemeConfig {
         horizontalItemPadding: '12px 0',
       },
 
+      Segmented: {
+        itemSelectedBg: '#15803D',
+        itemSelectedColor: '#ffffff',
+      },
+
+      Switch: {
+        colorPrimary: '#15803D',
+        colorPrimaryHover: '#15803D',
+      },
+
+      Radio: {
+        buttonSolidCheckedBg: '#15803D',
+        buttonSolidCheckedColor: '#ffffff',
+        buttonCheckedBg: '#15803D',
+        colorPrimary: '#15803D',
+      },
+
       Menu: {
         itemBorderRadius: radius.md,
         itemSelectedBg: isDark ? '#1b3a28' : brand[100],

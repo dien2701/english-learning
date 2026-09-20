@@ -56,14 +56,6 @@ const LoginPage: React.FC = () => {
     <AuthLayout
       title={t('auth.login')}
       subtitle={t('auth.loginSubtitle')}
-      footer={
-        <>
-          {t('auth.noAccount')}{' '}
-          <Link to="/register" className="font-bold text-accent hover:underline">
-            {t('auth.register')}
-          </Link>
-        </>
-      }
     >
       <Form
         form={form}
@@ -111,6 +103,14 @@ const LoginPage: React.FC = () => {
         <Button type="submit" size="lg" loading={loading} block>
           {t('auth.login')}
         </Button>
+        <div className="mt-4 text-center">
+          <span className="text-[13.5px] text-ink-muted">
+            {t('auth.noAccount')}{' '}
+            <Link to="/register" className="text-[13.5px] font-bold text-accent hover:underline">
+              {t('auth.register')}
+            </Link>
+          </span>
+        </div>
       </Form>
 
       <div className="mt-6 rounded-md bg-surface-muted p-3">

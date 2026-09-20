@@ -1,10 +1,19 @@
-import React, { useState, type ReactNode } from 'react';
+import React, { useEffect, useRef, useState, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, NavLink, Navigate, useNavigate } from 'react-router-dom';
 
 import { useAuth } from '../../contexts/AuthContext';
+import { useThemeMode } from '../../contexts/ThemeContext';
 import { Button } from '../ui/Button';
 import LanguageSwitch from './LanguageSwitch';
+
+/** Lấy tối đa hai chữ cái đầu để làm ảnh đại diện chữ. */
+function initialsOf(fullName: string): string {
+  const parts = fullName.trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return '?';
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
 
 /** Nhãn để ở dạng khoá dịch, dịch lúc dựng để đổi được theo VI/EN. */
 const NAV_ITEMS = [
@@ -26,6 +35,29 @@ const AdminLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
+  const [openProfile, setOpenProfile] = useState(false);
+  const profileRef = useRef<HTMLDivElement>(null);
+  const { isDark, toggle: toggleTheme } = useThemeMode();
+
+  useEffect(() => {
+    if (!openProfile) return;
+
+    const onPointerDown = (event: MouseEvent) => {
+      if (profileRef.current?.contains(event.target as Node)) return;
+      setOpenProfile(false);
+    };
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setOpenProfile(false);
+    };
+
+    document.addEventListener('mousedown', onPointerDown);
+    document.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.removeEventListener('mousedown', onPointerDown);
+      document.removeEventListener('keydown', onKeyDown);
+    };
+  }, [openProfile]);
 
   // Người dùng thường lạc vào đây thì đưa sang trang báo thiếu quyền.
   if (!isAdmin) return <Navigate to="/403" replace />;
@@ -129,18 +161,102 @@ const AdminLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
             {/* Khu quản trị cũng phải đổi được ngôn ngữ, không chỉ khu học. */}
             <LanguageSwitch />
 
-            <span className="hidden text-right sm:block">
-              <span className="block max-w-[12rem] truncate text-[13px] font-bold text-ink">
-                {user?.fullName}
-              </span>
-              <span className="block text-[11px] text-ink-muted">
-                {t('header.admin')}
-              </span>
-            </span>
+            {/* Hồ sơ */}
+            <div className="relative" ref={profileRef}>
+              <button
+                type="button"
+                onClick={() => setOpenProfile(!openProfile)}
+                aria-expanded={openProfile}
+                aria-haspopup="true"
+                className="flex min-h-[44px] items-center gap-2.5 rounded-md px-1.5 text-left transition-colors duration-200 hover:bg-surface-hover sm:px-2"
+              >
+                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-pill bg-action text-[12.5px] font-bold text-white">
+                  {initialsOf(user?.fullName ?? '')}
+                </span>
+                <span className="hidden leading-tight sm:block">
+                  <span className="block max-w-[10rem] truncate text-[13px] font-bold text-ink">
+                    {user?.fullName}
+                  </span>
+                  <span className="block text-[11px] font-medium text-ink-muted">
+                    {t('header.admin')}
+                  </span>
+                </span>
+                <span
+                  aria-hidden="true"
+                  className={`material-symbols-outlined text-[18px] text-ink-subtle transition-transform duration-200 ${
+                    openProfile ? 'rotate-180' : ''
+                  }`}
+                >
+                  expand_more
+                </span>
+              </button>
 
-            <Button variant="subtle" size="sm" icon="logout" onClick={handleLogout}>
-              {t('header.logout')}
-            </Button>
+              {openProfile && (
+                <div className="absolute right-0 mt-2 w-[min(18rem,calc(100vw-2rem))] origin-top-right overflow-hidden rounded-lg border border-hairline bg-surface shadow-lg">
+                  <div className="border-b border-hairline px-4 py-3">
+                    <p className="truncate text-[14px] font-bold text-ink">
+                      {user?.fullName}
+                    </p>
+                    <p className="truncate text-[12px] text-ink-muted">
+                      {user?.email}
+                    </p>
+                  </div>
+
+                  <div className="py-1">
+                    <Link
+                      to="/profile"
+                      onClick={() => setOpenProfile(false)}
+                      className="flex min-h-[44px] items-center gap-3 px-4 text-[13.5px] text-ink transition-colors hover:bg-surface-hover"
+                    >
+                      <span className="material-symbols-outlined text-[20px] text-ink-subtle">
+                        person
+                      </span>
+                      {t('header.profile')}
+                    </Link>
+
+                    <Link
+                      to="/dashboard"
+                      onClick={() => setOpenProfile(false)}
+                      className="flex min-h-[44px] items-center gap-3 px-4 text-[13.5px] text-ink transition-colors hover:bg-surface-hover"
+                    >
+                      <span className="material-symbols-outlined text-[20px] text-ink-subtle">
+                        school
+                      </span>
+                      {t('admin.backToLearning')}
+                    </Link>
+
+                    <button
+                      type="button"
+                      onClick={toggleTheme}
+                      className="flex min-h-[44px] w-full items-center justify-between gap-3 px-4 text-left text-[13.5px] text-ink transition-colors hover:bg-surface-hover"
+                    >
+                      <span className="flex items-center gap-3">
+                        <span className="material-symbols-outlined text-[20px] text-ink-subtle">
+                          {isDark ? 'dark_mode' : 'light_mode'}
+                        </span>
+                        {t('header.theme')}
+                      </span>
+                      <span className="text-[12px] font-bold text-accent">
+                        {isDark ? t('header.themeDark') : t('header.themeLight')}
+                      </span>
+                    </button>
+                  </div>
+
+                  <div className="border-t border-hairline py-1">
+                    <button
+                      type="button"
+                      onClick={handleLogout}
+                      className="flex min-h-[44px] w-full items-center gap-3 px-4 text-left text-[13.5px] font-semibold text-danger transition-colors hover:bg-danger-bg"
+                    >
+                      <span className="material-symbols-outlined text-[20px]">
+                        logout
+                      </span>
+                      {t('header.logout')}
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </header>
 

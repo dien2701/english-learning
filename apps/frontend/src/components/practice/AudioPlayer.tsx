@@ -207,7 +207,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({
               aria-pressed={speed === value}
               className={`min-h-[28px] rounded-pill px-2.5 text-[12px] font-bold transition-colors duration-200 ${
                 speed === value
-                  ? 'bg-surface text-accent shadow-xs'
+                  ? 'bg-[#15803D] text-white shadow-xs'
                   : 'text-ink-muted hover:text-ink'
               }`}
             >

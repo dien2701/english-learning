@@ -32,7 +32,7 @@ const LanguageSwitch: React.FC<LanguageSwitchProps> = ({
         ? 'min-h-[30px] px-3 text-[12px]'
         : 'min-h-[38px] px-4 text-[13px]',
       active
-        ? 'bg-surface text-accent shadow-xs'
+        ? 'bg-[#15803D] text-white shadow-xs'
         : 'text-ink-muted hover:text-ink',
     ].join(' ');
 

@@ -102,14 +102,6 @@ const RegisterPage: React.FC = () => {
     <AuthLayout
       title={t('auth.createAccount')}
       subtitle={t('auth.registerSubtitle')}
-      footer={
-        <>
-          {t('auth.hasAccount')}{' '}
-          <Link to="/login" className="font-bold text-accent hover:underline">
-            {t('auth.login')}
-          </Link>
-        </>
-      }
     >
       <Form
         form={form}
@@ -235,6 +227,14 @@ const RegisterPage: React.FC = () => {
         <Button type="submit" size="lg" loading={loading} block>
           {t('auth.createAccount')}
         </Button>
+        <div className="mt-4 text-center">
+          <span className="text-[13.5px] text-ink-muted">
+            {t('auth.hasAccount')}{' '}
+            <Link to="/login" className="text-[13.5px] font-bold text-accent hover:underline">
+              {t('auth.login')}
+            </Link>
+          </span>
+        </div>
       </Form>
     </AuthLayout>
   );

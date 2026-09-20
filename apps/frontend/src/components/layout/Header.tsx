@@ -107,6 +107,19 @@ export const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => {
             640px nên trên điện thoại không có cách nào đổi sang EN. */}
         <LanguageSwitch />
 
+        {/* Nút sang khu quản trị (chỉ Admin) */}
+        {isAdmin && (
+          <Link
+            to="/admin"
+            aria-label={t('header.admin')}
+            className={iconButton}
+          >
+            <span className="material-symbols-outlined text-[23px]">
+              admin_panel_settings
+            </span>
+          </Link>
+        )}
+
         {/* Thông báo */}
         <div className="relative" ref={notifRef}>
           <button
@@ -251,6 +264,19 @@ export const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => {
                   </span>
                   {t('header.profile')}
                 </Link>
+
+                {isAdmin && (
+                  <Link
+                    to="/admin"
+                    onClick={() => setOpenMenu(null)}
+                    className="flex min-h-[44px] items-center gap-3 px-4 text-[13.5px] text-ink transition-colors hover:bg-surface-hover"
+                  >
+                    <span className="material-symbols-outlined text-[20px] text-ink-subtle">
+                      admin_panel_settings
+                    </span>
+                    {t('header.admin')}
+                  </Link>
+                )}
 
                 <button
                   type="button"

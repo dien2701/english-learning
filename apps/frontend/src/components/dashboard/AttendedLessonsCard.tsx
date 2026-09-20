@@ -52,7 +52,7 @@ const AttendedLessonsCard: React.FC<{ lessons: AttendedLesson[] }> = ({
                 aria-pressed={filter === f.key}
                 className={`min-h-[32px] rounded-pill px-3 text-[12.5px] font-bold transition-colors duration-200 ${
                   filter === f.key
-                    ? 'bg-surface text-accent shadow-xs'
+                    ? 'bg-[#15803D] text-white shadow-xs'
                     : 'text-ink-muted hover:text-ink'
                 }`}
               >
