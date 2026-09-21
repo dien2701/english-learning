@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 import { Chip, LevelChip } from '../ui/Chip';
+import SafeImage from '../ui/SafeImage';
 import type { DeckSummary } from '../../types/flashcard';
 import { useLanguage } from '../../hooks/useLanguage';
 
@@ -24,14 +25,11 @@ const DeckCard: React.FC<{ deck: DeckSummary }> = ({ deck }) => {
     className="group flex flex-col overflow-hidden rounded-lg border border-hairline bg-surface shadow-sm transition-shadow duration-200 hover:shadow-md"
   >
     <div className="relative aspect-[16/9] w-full overflow-hidden bg-surface-muted">
-      {deck.coverImageUrl && (
-        <img
-          src={deck.coverImageUrl}
-          alt=""
-          loading="lazy"
-          className="h-full w-full object-cover"
-        />
-      )}
+      <SafeImage
+        src={deck.coverImageUrl}
+        alt=""
+        className="h-full w-full object-cover"
+      />
       <span className="absolute left-3 top-3">
         <LevelChip level={deck.level} />
       </span>

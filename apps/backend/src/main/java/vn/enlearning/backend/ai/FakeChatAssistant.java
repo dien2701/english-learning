@@ -15,7 +15,7 @@ import vn.enlearning.backend.entity.enums.StudySkill;
  * làm bản giả lỗi để thử luồng báo lỗi.
  */
 @Component
-@Conditional(OpenAiKeyMissing.class)
+@Conditional(GeminiKeyMissing.class)
 @RequiredArgsConstructor
 class FakeChatAssistant implements ChatAssistant {
 

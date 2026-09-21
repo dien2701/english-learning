@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 
 import { formatScore } from '../../utils/format';
 import type { GradedAnswer, PracticeResult } from '../../types/practice';
-import { useFormat } from '../../hooks/useFormat';
+import { formatClock } from '../../hooks/useCountdown';
 import { useLanguage } from '../../hooks/useLanguage';
 
 /** Vòng tròn hiển thị điểm tổng. */
@@ -58,7 +58,6 @@ export const ScoreRing: React.FC<{ score: number; size?: number }> = ({
 export const ResultOverview: React.FC<{ result: PracticeResult }> = ({ result }) => {
   const { t } = useTranslation();
   const { L } = useLanguage();
-  const { duration } = useFormat();
 
   return (
   <section className="rounded-lg border border-hairline bg-surface p-6 shadow-sm">
@@ -84,7 +83,7 @@ export const ResultOverview: React.FC<{ result: PracticeResult }> = ({ result })
           <div>
             <dt className="text-caption text-ink-muted">{t('common.duration')}</dt>
             <dd className="mt-0.5 text-[20px] font-extrabold text-ink">
-              {duration(Math.round(result.durationSeconds / 60))}
+              {formatClock(result.durationSeconds)}
             </dd>
           </div>
         </dl>

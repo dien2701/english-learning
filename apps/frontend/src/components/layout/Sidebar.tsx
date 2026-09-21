@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 interface NavItem {
@@ -71,8 +71,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
       ].join(' ')}
     >
       {/* Logo */}
-      <div
-        className={`flex h-header shrink-0 items-center gap-2.5 ${
+      <Link
+        to="/dashboard"
+        onClick={onNavigate}
+        className={`flex h-header shrink-0 items-center gap-2.5 text-white no-underline visited:text-white hover:text-white ${
           isOpen ? 'px-5' : 'px-5 lg:justify-center lg:px-0'
         }`}
       >
@@ -86,7 +88,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         >
           En-Learning
         </span>
-      </div>
+      </Link>
 
       {/* Danh sách điều hướng */}
       <nav className="flex-1 overflow-y-auto overflow-x-hidden px-3 pb-4">
@@ -111,13 +113,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     className={({ isActive }) =>
                       [
                         'group flex items-center rounded-md text-[13.5px] font-semibold',
-                        'transition-colors duration-200',
+                        'transition-colors duration-200 visited:text-white',
                         // Chiều cao tối thiểu 44px cho vùng chạm trên cảm ứng.
                         'min-h-[44px] px-3',
                         isOpen ? 'gap-3' : 'gap-3 lg:justify-center lg:px-0',
                         isActive
                           ? 'bg-sidebar-active text-white'
-                          : 'text-sidebar-fg hover:bg-white/[0.07] hover:text-white',
+                          : 'text-white hover:bg-white/[0.07]',
                       ].join(' ')
                     }
                   >

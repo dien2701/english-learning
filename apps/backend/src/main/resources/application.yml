@@ -70,11 +70,19 @@ app:
     cookie-secure: ${COOKIE_SECURE:false}
   mail:
     from: ${MAIL_FROM:}
-  # OPENAI_API_KEY trống thì Luyện viết/Chat/Nói dùng bản giả (xem ai/OpenAiKeyMissing).
+  # GEMINI_API_KEY trống thì Luyện viết/Chat/Nói dùng bản giả (xem ai/GeminiKeyMissing).
   ai:
-    openai-api-key: ${OPENAI_API_KEY:}
+    gemini-api-key: ${GEMINI_API_KEY:}
+    gemini-model: ${GEMINI_MODEL:gemini-2.5-flash}
+    gemini-timeout: ${GEMINI_TIMEOUT:45s}
     grading-timeout: ${AI_GRADING_TIMEOUT:60s}
     fake-latency: ${AI_FAKE_LATENCY:1500ms}
+  # Hạn mức chat: tối đa daily-limit câu trợ lý trả lời mỗi người mỗi ngày (giờ Asia/Ho_Chi_Minh).
+  chat:
+    daily-limit: ${CHAT_DAILY_LIMIT:30}
+  # Chỉ có tác dụng ở profile dev. if-empty: chỉ nạp phần còn thiếu; reset-demo: xoá dữ liệu demo (email @demo.enlearning.vn) rồi nạp lại.
+  seed:
+    mode: ${SEED_MODE:if-empty}
   scheduling:
     enabled: true
   # Nhắc học: quét mỗi phút; người dùng đến giờ nhắc (theo múi giờ riêng) mà trễ tối đa catch-up thì vẫn được nhắc.
@@ -84,6 +92,7 @@ app:
   cleanup:
     token-retention: 1d
     empty-session-retention: 30d
+    speaking-in-progress-retention: 24h
   # Giới hạn tần suất theo IP: tối đa capacity request mỗi window.
   rate-limit:
     enabled: true

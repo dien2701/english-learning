@@ -1,0 +1,3591 @@
+[
+  {
+    "status": "ACTIVE",
+    "titleVi": "TOEIC mini 1",
+    "titleEn": "TOEIC Mini Test 1",
+    "descriptionVi": "Đề rút gọn theo cấu trúc TOEIC: ngữ pháp, nghe ngắn và đọc thông báo.",
+    "descriptionEn": "A shortened TOEIC-style test: grammar, short listening and notices.",
+    "level": "INTERMEDIATE",
+    "timeLimitMinutes": 30,
+    "questions": [
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "VOCABULARY",
+        "content": "The manager asked all staff to ____ the report by Friday.",
+        "explanation": "Sau \"asked ... to\" dùng động từ nguyên mẫu.",
+        "options": [
+          {
+            "content": "submit",
+            "correct": true
+          },
+          {
+            "content": "submits",
+            "correct": false
+          },
+          {
+            "content": "submitting",
+            "correct": false
+          },
+          {
+            "content": "submission",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "VOCABULARY",
+        "content": "Ms. Lee is responsible ____ training new employees.",
+        "explanation": "\"be responsible for\" + V-ing.",
+        "options": [
+          {
+            "content": "to",
+            "correct": false
+          },
+          {
+            "content": "for",
+            "correct": true
+          },
+          {
+            "content": "with",
+            "correct": false
+          },
+          {
+            "content": "at",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "VOCABULARY",
+        "content": "Our new office is ____ than the old one.",
+        "explanation": "So sánh hơn của tính từ ngắn: larger.",
+        "options": [
+          {
+            "content": "large",
+            "correct": false
+          },
+          {
+            "content": "largest",
+            "correct": false
+          },
+          {
+            "content": "larger",
+            "correct": true
+          },
+          {
+            "content": "more large",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "VOCABULARY",
+        "content": "Please ____ me know if you cannot attend the meeting.",
+        "explanation": "Cụm cố định \"let me know\".",
+        "options": [
+          {
+            "content": "make",
+            "correct": false
+          },
+          {
+            "content": "tell",
+            "correct": false
+          },
+          {
+            "content": "say",
+            "correct": false
+          },
+          {
+            "content": "let",
+            "correct": true
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "VOCABULARY",
+        "content": "The invoice must be paid ____ thirty days.",
+        "explanation": "\"within thirty days\" = trong vòng 30 ngày.",
+        "options": [
+          {
+            "content": "within",
+            "correct": true
+          },
+          {
+            "content": "during",
+            "correct": false
+          },
+          {
+            "content": "among",
+            "correct": false
+          },
+          {
+            "content": "between",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "VOCABULARY",
+        "content": "The company announced a ____ increase in sales this quarter.",
+        "explanation": "Cần tính từ đứng trước danh từ \"increase\".",
+        "options": [
+          {
+            "content": "significantly",
+            "correct": false
+          },
+          {
+            "content": "significant",
+            "correct": true
+          },
+          {
+            "content": "signify",
+            "correct": false
+          },
+          {
+            "content": "significance",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "VOCABULARY",
+        "content": "Mr. Tan, ____ works in the finance department, will lead the project.",
+        "explanation": "Đại từ quan hệ chỉ người, làm chủ ngữ: who.",
+        "options": [
+          {
+            "content": "which",
+            "correct": false
+          },
+          {
+            "content": "whose",
+            "correct": false
+          },
+          {
+            "content": "who",
+            "correct": true
+          },
+          {
+            "content": "whom",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "VOCABULARY",
+        "content": "We regret to ____ you that the flight has been cancelled.",
+        "explanation": "\"inform someone that ...\" là cấu trúc đúng.",
+        "options": [
+          {
+            "content": "tell",
+            "correct": false
+          },
+          {
+            "content": "say",
+            "correct": false
+          },
+          {
+            "content": "speak",
+            "correct": false
+          },
+          {
+            "content": "inform",
+            "correct": true
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "VOCABULARY",
+        "content": "All applicants must ____ a valid passport.",
+        "explanation": "Sau \"must\" dùng động từ nguyên mẫu: present.",
+        "options": [
+          {
+            "content": "present",
+            "correct": true
+          },
+          {
+            "content": "presence",
+            "correct": false
+          },
+          {
+            "content": "presently",
+            "correct": false
+          },
+          {
+            "content": "presented",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "VOCABULARY",
+        "content": "The seminar has been ____ until next Monday.",
+        "explanation": "Bị động thì hoàn thành: has been + V3.",
+        "options": [
+          {
+            "content": "postpone",
+            "correct": false
+          },
+          {
+            "content": "postponed",
+            "correct": true
+          },
+          {
+            "content": "postponing",
+            "correct": false
+          },
+          {
+            "content": "postponement",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "VOCABULARY",
+        "content": "He has worked here ____ 2019.",
+        "explanation": "\"since\" + mốc thời gian.",
+        "options": [
+          {
+            "content": "for",
+            "correct": false
+          },
+          {
+            "content": "during",
+            "correct": false
+          },
+          {
+            "content": "since",
+            "correct": true
+          },
+          {
+            "content": "from",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "VOCABULARY",
+        "content": "If the shipment ____ on time, we will meet the deadline.",
+        "explanation": "Câu điều kiện loại 1: mệnh đề If dùng hiện tại đơn.",
+        "options": [
+          {
+            "content": "will arrive",
+            "correct": false
+          },
+          {
+            "content": "arrived",
+            "correct": false
+          },
+          {
+            "content": "arriving",
+            "correct": false
+          },
+          {
+            "content": "arrives",
+            "correct": true
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "WRITING",
+        "content": "Complete with the correct form of \"decide\": The board has ____ to open a new branch.",
+        "explanation": "Hiện tại hoàn thành: has + decided.",
+        "options": [],
+        "acceptedAnswers": [
+          "decided"
+        ]
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "WRITING",
+        "content": "Complete with one word: Please fill ____ the form and return it.",
+        "explanation": "\"fill out/in a form\" = điền vào mẫu đơn.",
+        "options": [],
+        "acceptedAnswers": [
+          "out",
+          "in"
+        ]
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "WRITING",
+        "content": "Complete with one word: I look forward ____ hearing from you.",
+        "explanation": "\"look forward to\" + V-ing.",
+        "options": [],
+        "acceptedAnswers": [
+          "to"
+        ]
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "WRITING",
+        "content": "Complete with one word: The meeting starts ____ 9 a.m.",
+        "explanation": "Giờ cụ thể dùng \"at\".",
+        "options": [],
+        "acceptedAnswers": [
+          "at"
+        ]
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "Listen: \"The meeting has been moved from two o'clock to three thirty.\"\nWhen is the meeting now?",
+        "explanation": "Cuộc họp dời sang \"three thirty\".",
+        "options": [
+          {
+            "content": "3:30",
+            "correct": true
+          },
+          {
+            "content": "2:00",
+            "correct": false
+          },
+          {
+            "content": "2:30",
+            "correct": false
+          },
+          {
+            "content": "3:00",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "Listen: \"Man: Is the printer working? Woman: No, the technician is coming tomorrow morning.\"\nWhen will the technician come?",
+        "explanation": "Kỹ thuật viên đến \"tomorrow morning\".",
+        "options": [
+          {
+            "content": "Today",
+            "correct": false
+          },
+          {
+            "content": "Tomorrow morning",
+            "correct": true
+          },
+          {
+            "content": "Tomorrow afternoon",
+            "correct": false
+          },
+          {
+            "content": "Next week",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "Listen: \"Your flight to Osaka now boards at gate B7.\"\nWhere does the flight board?",
+        "explanation": "Lên máy bay ở \"gate B7\".",
+        "options": [
+          {
+            "content": "Gate B1",
+            "correct": false
+          },
+          {
+            "content": "Gate D7",
+            "correct": false
+          },
+          {
+            "content": "Gate B7",
+            "correct": true
+          },
+          {
+            "content": "Gate A7",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "Listen: \"The sale ends on Sunday, and all items are thirty percent off.\"\nHow much is the discount?",
+        "explanation": "\"thirty percent off\" = giảm 30%.",
+        "options": [
+          {
+            "content": "13%",
+            "correct": false
+          },
+          {
+            "content": "20%",
+            "correct": false
+          },
+          {
+            "content": "50%",
+            "correct": false
+          },
+          {
+            "content": "30%",
+            "correct": true
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "Listen: \"Woman: Could you send me the sales report? Man: Sure, I'll email it after lunch.\"\nWhen will the man send the report?",
+        "explanation": "\"I'll email it after lunch\".",
+        "options": [
+          {
+            "content": "After lunch",
+            "correct": true
+          },
+          {
+            "content": "This morning",
+            "correct": false
+          },
+          {
+            "content": "Tomorrow",
+            "correct": false
+          },
+          {
+            "content": "Before lunch",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "Listen: \"The restaurant is fully booked tonight, but there is a table free at nine tomorrow.\"\nWhat does the speaker offer?",
+        "explanation": "Tối nay hết chỗ, đề nghị bàn lúc 9 giờ mai.",
+        "options": [
+          {
+            "content": "A table tonight at nine",
+            "correct": false
+          },
+          {
+            "content": "A table tomorrow at nine",
+            "correct": true
+          },
+          {
+            "content": "A table for lunch",
+            "correct": false
+          },
+          {
+            "content": "A free meal",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Read: \"Notice: The staff parking lot will be closed for repairs from June 3 to June 5. Please use the visitor lot on Oak Street.\"\nWhere should staff park during the repairs?",
+        "explanation": "Nhân viên dùng bãi khách trên phố Oak.",
+        "options": [
+          {
+            "content": "On Main Street",
+            "correct": false
+          },
+          {
+            "content": "Inside the building",
+            "correct": false
+          },
+          {
+            "content": "In the visitor lot on Oak Street",
+            "correct": true
+          },
+          {
+            "content": "Nowhere",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Read: \"Email: Dear Mr. Green, thank you for your order #4521. It will be shipped on Monday and should arrive within three working days.\"\nWhen should the order arrive?",
+        "explanation": "\"arrive within three working days\".",
+        "options": [
+          {
+            "content": "On Monday",
+            "correct": false
+          },
+          {
+            "content": "Within one week",
+            "correct": false
+          },
+          {
+            "content": "Tomorrow",
+            "correct": false
+          },
+          {
+            "content": "Within three working days",
+            "correct": true
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Read: \"Job ad: We are looking for a part-time receptionist. Experience is preferred but not required. Send your CV to hr@brightco.com by May 20.\"\nWhat is stated about experience?",
+        "explanation": "\"preferred but not required\".",
+        "options": [
+          {
+            "content": "It is not required",
+            "correct": true
+          },
+          {
+            "content": "It is compulsory",
+            "correct": false
+          },
+          {
+            "content": "Five years are needed",
+            "correct": false
+          },
+          {
+            "content": "It is not mentioned",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Read: \"Memo: All employees must complete the safety training before the end of the month. Sessions are available on Tuesday and Thursday.\"\nWhat must employees do?",
+        "explanation": "Phải hoàn thành đào tạo an toàn.",
+        "options": [
+          {
+            "content": "Attend a party",
+            "correct": false
+          },
+          {
+            "content": "Complete safety training",
+            "correct": true
+          },
+          {
+            "content": "Submit a report",
+            "correct": false
+          },
+          {
+            "content": "Take a day off",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Read: \"Hotel notice: Breakfast is served from 6:30 to 10:00 in the garden restaurant. Guests staying in suites receive a free drink.\"\nWho receives a free drink?",
+        "explanation": "Chỉ khách ở phòng suite được tặng đồ uống.",
+        "options": [
+          {
+            "content": "All guests",
+            "correct": false
+          },
+          {
+            "content": "Children",
+            "correct": false
+          },
+          {
+            "content": "Guests staying in suites",
+            "correct": true
+          },
+          {
+            "content": "Restaurant staff",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Read: \"Email: Hi Anna, I'm sorry I missed your call. I'm in meetings all day, but I can talk at 5:30 if that suits you.\"\nWhy did the writer miss the call?",
+        "explanation": "\"I'm in meetings all day\".",
+        "options": [
+          {
+            "content": "The phone was broken",
+            "correct": false
+          },
+          {
+            "content": "The writer was on holiday",
+            "correct": false
+          },
+          {
+            "content": "The writer was asleep",
+            "correct": false
+          },
+          {
+            "content": "The writer was in meetings",
+            "correct": true
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Read: \"Advertisement: Fresh Bites Café opens on 1 July. The first fifty customers will receive a free coffee.\"\nWhat is offered to the first fifty customers?",
+        "explanation": "\"a free coffee\".",
+        "options": [
+          {
+            "content": "A free coffee",
+            "correct": true
+          },
+          {
+            "content": "A discount card",
+            "correct": false
+          },
+          {
+            "content": "A free meal",
+            "correct": false
+          },
+          {
+            "content": "A cup",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Read: \"Notice: Due to maintenance, the elevator in Building B will be out of service on Saturday. Use the stairs or the elevator in Building A.\"\nWhat should people do on Saturday?",
+        "explanation": "Thang máy tòa B ngừng hoạt động.",
+        "options": [
+          {
+            "content": "Stay at home",
+            "correct": false
+          },
+          {
+            "content": "Use the stairs or the Building A elevator",
+            "correct": true
+          },
+          {
+            "content": "Wait for maintenance",
+            "correct": false
+          },
+          {
+            "content": "Use the Building B elevator",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      }
+    ]
+  },
+  {
+    "status": "ACTIVE",
+    "titleVi": "TOEIC mini 2",
+    "titleEn": "TOEIC Mini Test 2",
+    "descriptionVi": "Đề rút gọn thứ hai với tình huống công sở và du lịch.",
+    "descriptionEn": "A second shortened test with workplace and travel situations.",
+    "level": "INTERMEDIATE",
+    "timeLimitMinutes": 30,
+    "questions": [
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "VOCABULARY",
+        "content": "The new policy will take ____ next month.",
+        "explanation": "Cụm cố định \"take effect\".",
+        "options": [
+          {
+            "content": "effective",
+            "correct": false
+          },
+          {
+            "content": "effectively",
+            "correct": false
+          },
+          {
+            "content": "effect",
+            "correct": true
+          },
+          {
+            "content": "effects",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "VOCABULARY",
+        "content": "Please submit your expense report ____ the end of the week.",
+        "explanation": "\"by\" + mốc thời gian = chậm nhất vào lúc đó.",
+        "options": [
+          {
+            "content": "since",
+            "correct": false
+          },
+          {
+            "content": "among",
+            "correct": false
+          },
+          {
+            "content": "over",
+            "correct": false
+          },
+          {
+            "content": "by",
+            "correct": true
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "VOCABULARY",
+        "content": "The CEO is ____ for the annual meeting next week.",
+        "explanation": "Hiện tại tiếp diễn: is preparing.",
+        "options": [
+          {
+            "content": "preparing",
+            "correct": true
+          },
+          {
+            "content": "prepared",
+            "correct": false
+          },
+          {
+            "content": "prepare",
+            "correct": false
+          },
+          {
+            "content": "preparation",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "VOCABULARY",
+        "content": "Neither the manager ____ the assistants were informed.",
+        "explanation": "Cặp \"neither ... nor\".",
+        "options": [
+          {
+            "content": "or",
+            "correct": false
+          },
+          {
+            "content": "nor",
+            "correct": true
+          },
+          {
+            "content": "and",
+            "correct": false
+          },
+          {
+            "content": "but",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "VOCABULARY",
+        "content": "This machine is ____ than that one.",
+        "explanation": "So sánh hơn của tính từ dài.",
+        "options": [
+          {
+            "content": "most efficient",
+            "correct": false
+          },
+          {
+            "content": "efficient",
+            "correct": false
+          },
+          {
+            "content": "more efficient",
+            "correct": true
+          },
+          {
+            "content": "efficiently",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "VOCABULARY",
+        "content": "Customers can return any item ____ a receipt.",
+        "explanation": "\"with a receipt\" = kèm hoá đơn.",
+        "options": [
+          {
+            "content": "by",
+            "correct": false
+          },
+          {
+            "content": "of",
+            "correct": false
+          },
+          {
+            "content": "in",
+            "correct": false
+          },
+          {
+            "content": "with",
+            "correct": true
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "VOCABULARY",
+        "content": "The contract was signed ____ both parties.",
+        "explanation": "Bị động chỉ người thực hiện: by.",
+        "options": [
+          {
+            "content": "by",
+            "correct": true
+          },
+          {
+            "content": "with",
+            "correct": false
+          },
+          {
+            "content": "to",
+            "correct": false
+          },
+          {
+            "content": "at",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "VOCABULARY",
+        "content": "She has been the team leader ____ five years.",
+        "explanation": "\"for\" + khoảng thời gian.",
+        "options": [
+          {
+            "content": "since",
+            "correct": false
+          },
+          {
+            "content": "for",
+            "correct": true
+          },
+          {
+            "content": "during",
+            "correct": false
+          },
+          {
+            "content": "ago",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "VOCABULARY",
+        "content": "We need someone ____ can speak Japanese.",
+        "explanation": "Đại từ quan hệ chỉ người làm chủ ngữ.",
+        "options": [
+          {
+            "content": "whom",
+            "correct": false
+          },
+          {
+            "content": "whose",
+            "correct": false
+          },
+          {
+            "content": "who",
+            "correct": true
+          },
+          {
+            "content": "what",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "VOCABULARY",
+        "content": "The store offers a ____ discount to loyal customers.",
+        "explanation": "Cần tính từ bổ nghĩa cho \"discount\".",
+        "options": [
+          {
+            "content": "specially",
+            "correct": false
+          },
+          {
+            "content": "specialize",
+            "correct": false
+          },
+          {
+            "content": "specialty",
+            "correct": false
+          },
+          {
+            "content": "special",
+            "correct": true
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "VOCABULARY",
+        "content": "Because of heavy rain, the outdoor event was ____.",
+        "explanation": "Bị động: was + V3.",
+        "options": [
+          {
+            "content": "cancelled",
+            "correct": true
+          },
+          {
+            "content": "cancel",
+            "correct": false
+          },
+          {
+            "content": "cancelling",
+            "correct": false
+          },
+          {
+            "content": "cancellation",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "VOCABULARY",
+        "content": "I would appreciate it if you could ____ me a quote.",
+        "explanation": "Sau \"could\" dùng động từ nguyên mẫu.",
+        "options": [
+          {
+            "content": "sending",
+            "correct": false
+          },
+          {
+            "content": "send",
+            "correct": true
+          },
+          {
+            "content": "sends",
+            "correct": false
+          },
+          {
+            "content": "to send",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "WRITING",
+        "content": "Complete with one word: The train arrives ____ platform 3.",
+        "explanation": "Dùng \"at\" với sân ga.",
+        "options": [],
+        "acceptedAnswers": [
+          "at"
+        ]
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "WRITING",
+        "content": "Complete with the correct form of \"success\": The launch was very ____.",
+        "explanation": "Cần tính từ sau \"very\".",
+        "options": [],
+        "acceptedAnswers": [
+          "successful"
+        ]
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "WRITING",
+        "content": "Complete with one word: She apologised ____ the delay.",
+        "explanation": "\"apologise for\".",
+        "options": [],
+        "acceptedAnswers": [
+          "for"
+        ]
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "WRITING",
+        "content": "Complete with one word: We are pleased ____ announce a new product.",
+        "explanation": "\"be pleased to + V\".",
+        "options": [],
+        "acceptedAnswers": [
+          "to"
+        ]
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "Listen: \"Attention passengers: the ferry to Green Island leaves at eight fifteen from pier two.\"\nWhich pier does the ferry leave from?",
+        "explanation": "\"from pier two\".",
+        "options": [
+          {
+            "content": "Pier one",
+            "correct": false
+          },
+          {
+            "content": "Pier twelve",
+            "correct": false
+          },
+          {
+            "content": "Pier two",
+            "correct": true
+          },
+          {
+            "content": "Pier five",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "Listen: \"Woman: How was the conference? Man: Very useful, but the hotel was too far from the venue.\"\nWhat was the problem?",
+        "explanation": "Vấn đề là khách sạn quá xa.",
+        "options": [
+          {
+            "content": "The conference was boring",
+            "correct": false
+          },
+          {
+            "content": "The hotel was full",
+            "correct": false
+          },
+          {
+            "content": "The food was bad",
+            "correct": false
+          },
+          {
+            "content": "The hotel was far from the venue",
+            "correct": true
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "Listen: \"The library will close early on Friday at four p.m. for a staff meeting.\"\nWhy will the library close early?",
+        "explanation": "\"for a staff meeting\".",
+        "options": [
+          {
+            "content": "For a staff meeting",
+            "correct": true
+          },
+          {
+            "content": "For repairs",
+            "correct": false
+          },
+          {
+            "content": "For a holiday",
+            "correct": false
+          },
+          {
+            "content": "For cleaning",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "Listen: \"Man: I'd like to book a room for two nights. Woman: A double or a single? Man: A single, please.\"\nWhich room does the man book?",
+        "explanation": "Ông chọn \"a single\".",
+        "options": [
+          {
+            "content": "A double room",
+            "correct": false
+          },
+          {
+            "content": "A single room",
+            "correct": true
+          },
+          {
+            "content": "A suite",
+            "correct": false
+          },
+          {
+            "content": "Two rooms",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "Listen: \"Today's special is grilled fish with vegetables for twelve dollars.\"\nHow much is the special?",
+        "explanation": "\"twelve dollars\".",
+        "options": [
+          {
+            "content": "$2",
+            "correct": false
+          },
+          {
+            "content": "$20",
+            "correct": false
+          },
+          {
+            "content": "$12",
+            "correct": true
+          },
+          {
+            "content": "$120",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "Listen: \"Woman: The presentation starts in ten minutes. Man: I'll get the laptop from my office.\"\nWhat will the man do?",
+        "explanation": "\"I'll get the laptop\".",
+        "options": [
+          {
+            "content": "Start the presentation",
+            "correct": false
+          },
+          {
+            "content": "Call the office",
+            "correct": false
+          },
+          {
+            "content": "Leave early",
+            "correct": false
+          },
+          {
+            "content": "Get his laptop",
+            "correct": true
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Read: \"Notice: Free Wi-Fi is available in the lobby. The password can be requested at the front desk.\"\nHow can guests get the password?",
+        "explanation": "Mật khẩu xin ở quầy lễ tân.",
+        "options": [
+          {
+            "content": "Ask at the front desk",
+            "correct": true
+          },
+          {
+            "content": "Check their email",
+            "correct": false
+          },
+          {
+            "content": "Call the manager",
+            "correct": false
+          },
+          {
+            "content": "Read the sign",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Read: \"Email: Thank you for applying. We would like to invite you to an interview on Thursday at 10 a.m. Please bring your ID.\"\nWhat should the applicant bring?",
+        "explanation": "\"Please bring your ID\".",
+        "options": [
+          {
+            "content": "A CV",
+            "correct": false
+          },
+          {
+            "content": "An ID",
+            "correct": true
+          },
+          {
+            "content": "A gift",
+            "correct": false
+          },
+          {
+            "content": "A laptop",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Read: \"Ad: Summer sale! Buy two T-shirts and get the third one free. Offer valid until August 31.\"\nWhat is the offer?",
+        "explanation": "Mua hai tặng một.",
+        "options": [
+          {
+            "content": "Half price for all",
+            "correct": false
+          },
+          {
+            "content": "Two T-shirts for free",
+            "correct": false
+          },
+          {
+            "content": "The third T-shirt is free",
+            "correct": true
+          },
+          {
+            "content": "Free delivery",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Read: \"Memo: The annual staff party will be held on December 12 at the Riverside Hotel. Please confirm attendance by December 1.\"\nWhat should staff do by December 1?",
+        "explanation": "\"confirm attendance by December 1\".",
+        "options": [
+          {
+            "content": "Pay a fee",
+            "correct": false
+          },
+          {
+            "content": "Book a hotel",
+            "correct": false
+          },
+          {
+            "content": "Bring a guest",
+            "correct": false
+          },
+          {
+            "content": "Confirm attendance",
+            "correct": true
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Read: \"Sign: Please do not park in front of the loading dock. Vehicles will be towed at the owner's expense.\"\nWhat will happen to vehicles parked there?",
+        "explanation": "\"will be towed\".",
+        "options": [
+          {
+            "content": "They will be towed",
+            "correct": true
+          },
+          {
+            "content": "They will be washed",
+            "correct": false
+          },
+          {
+            "content": "They will be fined only",
+            "correct": false
+          },
+          {
+            "content": "Nothing",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Read: \"Email: Dear Ms. Park, your subscription will expire on March 31. Renew before that date to keep your 10% discount.\"\nWhy should Ms. Park renew before March 31?",
+        "explanation": "Gia hạn sớm để giữ ưu đãi 10%.",
+        "options": [
+          {
+            "content": "To get a gift",
+            "correct": false
+          },
+          {
+            "content": "To keep her discount",
+            "correct": true
+          },
+          {
+            "content": "To cancel it",
+            "correct": false
+          },
+          {
+            "content": "To change her name",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Read: \"Notice: The gym is open from 6 a.m. to 10 p.m. on weekdays and from 8 a.m. to 6 p.m. on weekends.\"\nWhen is the gym open on weekends?",
+        "explanation": "Cuối tuần mở 8h–18h.",
+        "options": [
+          {
+            "content": "6 a.m. to 10 p.m.",
+            "correct": false
+          },
+          {
+            "content": "8 a.m. to 10 p.m.",
+            "correct": false
+          },
+          {
+            "content": "8 a.m. to 6 p.m.",
+            "correct": true
+          },
+          {
+            "content": "It is closed",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Read: \"Article: The city plans to build a new bridge to reduce traffic. Construction will begin next spring and take two years.\"\nHow long will construction take?",
+        "explanation": "\"take two years\".",
+        "options": [
+          {
+            "content": "Two months",
+            "correct": false
+          },
+          {
+            "content": "One year",
+            "correct": false
+          },
+          {
+            "content": "Five years",
+            "correct": false
+          },
+          {
+            "content": "Two years",
+            "correct": true
+          }
+        ],
+        "acceptedAnswers": []
+      }
+    ]
+  },
+  {
+    "status": "ACTIVE",
+    "titleVi": "IELTS mini 1",
+    "titleEn": "IELTS Mini Test 1",
+    "descriptionVi": "Đề rút gọn: đọc True/False/Not Given, từ vựng học thuật, nghe và ngữ pháp.",
+    "descriptionEn": "A shortened test: True/False/Not Given reading, academic vocabulary, listening and grammar.",
+    "level": "INTERMEDIATE",
+    "timeLimitMinutes": 45,
+    "questions": [
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Passage: Honey never spoils. Archaeologists have found edible honey in ancient Egyptian tombs that is over three thousand years old.\nStatement: Honey found in Egyptian tombs was still edible.",
+        "explanation": "Đoạn văn nói mật ong vẫn ăn được.",
+        "options": [
+          {
+            "content": "True",
+            "correct": true
+          },
+          {
+            "content": "False",
+            "correct": false
+          },
+          {
+            "content": "Not Given",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Passage: Coffee was first grown in Ethiopia, but it became popular in Europe in the seventeenth century.\nStatement: Coffee was first grown in Europe.",
+        "explanation": "Cà phê được trồng đầu tiên ở Ethiopia.",
+        "options": [
+          {
+            "content": "True",
+            "correct": false
+          },
+          {
+            "content": "False",
+            "correct": true
+          },
+          {
+            "content": "Not Given",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Passage: The city library offers free classes in computer skills to adults. Classes are held on weekday evenings.\nStatement: The classes are also held at weekends.",
+        "explanation": "Bài không nhắc tới cuối tuần.",
+        "options": [
+          {
+            "content": "True",
+            "correct": false
+          },
+          {
+            "content": "False",
+            "correct": false
+          },
+          {
+            "content": "Not Given",
+            "correct": true
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Passage: Electric cars produce no exhaust fumes, but their batteries require rare metals that are difficult to mine.\nStatement: Electric cars produce exhaust fumes.",
+        "explanation": "Xe điện \"produce no exhaust fumes\".",
+        "options": [
+          {
+            "content": "True",
+            "correct": false
+          },
+          {
+            "content": "False",
+            "correct": true
+          },
+          {
+            "content": "Not Given",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Passage: In a survey of 1,000 students, sixty percent said they studied better in the morning.\nStatement: Most students in the survey preferred studying in the morning.",
+        "explanation": "60% là đa số.",
+        "options": [
+          {
+            "content": "True",
+            "correct": true
+          },
+          {
+            "content": "False",
+            "correct": false
+          },
+          {
+            "content": "Not Given",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Passage: The museum's new exhibition on ancient Rome opens in March. Tickets can be booked online.\nStatement: The exhibition will be open for six months.",
+        "explanation": "Không có thông tin về thời gian mở cửa.",
+        "options": [
+          {
+            "content": "True",
+            "correct": false
+          },
+          {
+            "content": "False",
+            "correct": false
+          },
+          {
+            "content": "Not Given",
+            "correct": true
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Read: \"Bees communicate the location of flowers by performing a \"waggle dance\". The angle of the dance shows the direction, and its length shows the distance.\"\nWhat does the length of the dance show?",
+        "explanation": "Độ dài điệu nhảy cho biết khoảng cách.",
+        "options": [
+          {
+            "content": "The distance to the flowers",
+            "correct": true
+          },
+          {
+            "content": "The direction",
+            "correct": false
+          },
+          {
+            "content": "The type of flower",
+            "correct": false
+          },
+          {
+            "content": "The number of bees",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Read: \"Because plastic takes hundreds of years to break down, many countries are banning single-use bags.\"\nWhy are countries banning single-use bags?",
+        "explanation": "Nhựa phân huỷ rất chậm.",
+        "options": [
+          {
+            "content": "Bags are expensive",
+            "correct": false
+          },
+          {
+            "content": "Plastic breaks down very slowly",
+            "correct": true
+          },
+          {
+            "content": "Bags are dangerous to touch",
+            "correct": false
+          },
+          {
+            "content": "People dislike them",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Read: \"Although the town's population has doubled in ten years, public transport has hardly improved. As a result, most residents now rely on cars.\"\nWhat is the result of poor public transport?",
+        "explanation": "\"As a result, most residents now rely on cars\".",
+        "options": [
+          {
+            "content": "Residents move away",
+            "correct": false
+          },
+          {
+            "content": "Traffic has fallen",
+            "correct": false
+          },
+          {
+            "content": "Residents rely on cars",
+            "correct": true
+          },
+          {
+            "content": "Buses are free",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "READING",
+        "content": "Read: \"The Great Barrier Reef, off the coast of Australia, is the largest coral reef system in the world.\"\nThe Great Barrier Reef is located off the coast of ____.",
+        "explanation": "Rạn san hô nằm ngoài khơi Úc.",
+        "options": [],
+        "acceptedAnswers": [
+          "australia"
+        ]
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "VOCABULARY",
+        "content": "Choose the word closest in meaning to \"reluctant\":",
+        "explanation": "\"reluctant\" = miễn cưỡng, không sẵn lòng.",
+        "options": [
+          {
+            "content": "eager",
+            "correct": false
+          },
+          {
+            "content": "careful",
+            "correct": false
+          },
+          {
+            "content": "tired",
+            "correct": false
+          },
+          {
+            "content": "unwilling",
+            "correct": true
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "VOCABULARY",
+        "content": "The government introduced new ____ to reduce air pollution.",
+        "explanation": "\"introduce measures\" = đưa ra biện pháp.",
+        "options": [
+          {
+            "content": "measures",
+            "correct": true
+          },
+          {
+            "content": "measurements",
+            "correct": false
+          },
+          {
+            "content": "meanings",
+            "correct": false
+          },
+          {
+            "content": "matters",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "VOCABULARY",
+        "content": "\"A sharp decline\" means:",
+        "explanation": "\"sharp decline\" = sụt giảm mạnh.",
+        "options": [
+          {
+            "content": "a slight rise",
+            "correct": false
+          },
+          {
+            "content": "a big fall",
+            "correct": true
+          },
+          {
+            "content": "a steady level",
+            "correct": false
+          },
+          {
+            "content": "a sudden start",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "VOCABULARY",
+        "content": "Choose the antonym of \"scarce\":",
+        "explanation": "\"scarce\" = khan hiếm, trái nghĩa \"abundant\".",
+        "options": [
+          {
+            "content": "rare",
+            "correct": false
+          },
+          {
+            "content": "limited",
+            "correct": false
+          },
+          {
+            "content": "abundant",
+            "correct": true
+          },
+          {
+            "content": "tiny",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "VOCABULARY",
+        "content": "Many young people find it hard to ____ a balance between work and study.",
+        "explanation": "Cụm \"strike a balance\".",
+        "options": [
+          {
+            "content": "throw",
+            "correct": false
+          },
+          {
+            "content": "break",
+            "correct": false
+          },
+          {
+            "content": "pull",
+            "correct": false
+          },
+          {
+            "content": "strike",
+            "correct": true
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "VOCABULARY",
+        "content": "The company's profits have ____ steadily since 2020.",
+        "explanation": "\"rise\" nội động từ; hiện tại hoàn thành: have risen.",
+        "options": [
+          {
+            "content": "risen",
+            "correct": true
+          },
+          {
+            "content": "raised",
+            "correct": false
+          },
+          {
+            "content": "arisen",
+            "correct": false
+          },
+          {
+            "content": "rose",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "VOCABULARY",
+        "content": "\"Renewable energy\" comes from sources that:",
+        "explanation": "Năng lượng tái tạo tự bổ sung.",
+        "options": [
+          {
+            "content": "are very expensive",
+            "correct": false
+          },
+          {
+            "content": "can be replaced naturally",
+            "correct": true
+          },
+          {
+            "content": "cause pollution",
+            "correct": false
+          },
+          {
+            "content": "are running out",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "VOCABULARY",
+        "content": "The lecture was so ____ that half the audience fell asleep.",
+        "explanation": "\"tedious\" = tẻ nhạt.",
+        "options": [
+          {
+            "content": "thrilling",
+            "correct": false
+          },
+          {
+            "content": "fascinating",
+            "correct": false
+          },
+          {
+            "content": "tedious",
+            "correct": true
+          },
+          {
+            "content": "brief",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "Listen: \"Please hand in your essays by the fifteenth of May. Late work will lose ten percent for each day.\"\nWhat is the penalty for late work?",
+        "explanation": "\"ten percent for each day\".",
+        "options": [
+          {
+            "content": "10% in total",
+            "correct": false
+          },
+          {
+            "content": "15% for each day",
+            "correct": false
+          },
+          {
+            "content": "No marks",
+            "correct": false
+          },
+          {
+            "content": "10% for each day",
+            "correct": true
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "Listen: \"Student: Which building is the science library in? Guide: It's behind the main hall, next to the café.\"\nWhere is the science library?",
+        "explanation": "\"behind the main hall\".",
+        "options": [
+          {
+            "content": "Behind the main hall",
+            "correct": true
+          },
+          {
+            "content": "Next to the gym",
+            "correct": false
+          },
+          {
+            "content": "In the main hall",
+            "correct": false
+          },
+          {
+            "content": "Opposite the café",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "Listen: \"The bus tour of the city takes about two hours and costs twenty-five pounds, including lunch.\"\nWhat is included in the price?",
+        "explanation": "\"including lunch\".",
+        "options": [
+          {
+            "content": "A guide book",
+            "correct": false
+          },
+          {
+            "content": "Lunch",
+            "correct": true
+          },
+          {
+            "content": "A souvenir",
+            "correct": false
+          },
+          {
+            "content": "Dinner",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "Listen: \"Tutor: Your presentation was clear, but you spoke too quickly. Try to slow down and pause between ideas.\"\nWhat advice does the tutor give?",
+        "explanation": "\"slow down\".",
+        "options": [
+          {
+            "content": "Speak louder",
+            "correct": false
+          },
+          {
+            "content": "Use more slides",
+            "correct": false
+          },
+          {
+            "content": "Speak more slowly",
+            "correct": true
+          },
+          {
+            "content": "Talk for longer",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "Listen: \"The survey shows that forty percent of residents cycle to work at least once a week.\"\nWhat proportion of residents cycle to work weekly?",
+        "explanation": "\"forty percent\".",
+        "options": [
+          {
+            "content": "14%",
+            "correct": false
+          },
+          {
+            "content": "4%",
+            "correct": false
+          },
+          {
+            "content": "400",
+            "correct": false
+          },
+          {
+            "content": "40%",
+            "correct": true
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "Listen: \"Officer: The lost property office is open from nine to one on weekdays.\"\nWhen is the office open?",
+        "explanation": "Mở từ chín giờ đến một giờ.",
+        "options": [
+          {
+            "content": "9 a.m. to 1 p.m.",
+            "correct": true
+          },
+          {
+            "content": "1 p.m. to 9 p.m.",
+            "correct": false
+          },
+          {
+            "content": "9 a.m. to 5 p.m.",
+            "correct": false
+          },
+          {
+            "content": "Only at weekends",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "Listen: \"Student: I'd like to change my course. Advisor: You'll need to fill in a form and get your tutor's signature.\"\nWhat does the student need?",
+        "explanation": "\"a form and your tutor's signature\".",
+        "options": [
+          {
+            "content": "A new tutor",
+            "correct": false
+          },
+          {
+            "content": "A form and a signature",
+            "correct": true
+          },
+          {
+            "content": "A payment",
+            "correct": false
+          },
+          {
+            "content": "A certificate",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "LISTENING",
+        "content": "Listen: \"The conference will be held in Melbourne from the third to the sixth of October.\"\nThe conference lasts ____ days.",
+        "explanation": "Từ ngày 3 đến ngày 6 là bốn ngày.",
+        "options": [],
+        "acceptedAnswers": [
+          "4",
+          "four"
+        ]
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "WRITING",
+        "content": "Complete with one word: Despite ____ tired, she finished the report.",
+        "explanation": "\"Despite\" + V-ing.",
+        "options": [],
+        "acceptedAnswers": [
+          "being"
+        ]
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "WRITING",
+        "content": "Complete with the correct form of \"take\": He suggested ____ a taxi.",
+        "explanation": "\"suggest\" + V-ing.",
+        "options": [],
+        "acceptedAnswers": [
+          "taking"
+        ]
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "WRITING",
+        "content": "Complete with one word: The more you practise, ____ better you become.",
+        "explanation": "So sánh kép: the more ..., the better ...",
+        "options": [],
+        "acceptedAnswers": [
+          "the"
+        ]
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "WRITING",
+        "content": "Complete with the correct form of \"be\": If I ____ you, I would accept the offer.",
+        "explanation": "Điều kiện loại 2: If I were you.",
+        "options": [],
+        "acceptedAnswers": [
+          "were"
+        ]
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "WRITING",
+        "content": "Complete with the correct form of \"write\": The report ____ by the time we arrived. (past perfect passive)",
+        "explanation": "Quá khứ hoàn thành bị động.",
+        "options": [],
+        "acceptedAnswers": [
+          "had been written"
+        ]
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "WRITING",
+        "content": "Complete with one word: She is interested ____ studying abroad.",
+        "explanation": "\"interested in\".",
+        "options": [],
+        "acceptedAnswers": [
+          "in"
+        ]
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "WRITING",
+        "content": "Complete with one word: Not only ____ he late, but he also forgot his notes.",
+        "explanation": "Đảo ngữ sau \"Not only\": was he.",
+        "options": [],
+        "acceptedAnswers": [
+          "was"
+        ]
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "WRITING",
+        "content": "Complete with one word: The number of visitors has increased ____ 20% since last year.",
+        "explanation": "\"increase by 20%\".",
+        "options": [],
+        "acceptedAnswers": [
+          "by"
+        ]
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "WRITING",
+        "content": "Complete with one word: This is the house ____ I was born.",
+        "explanation": "\"the house where ...\" chỉ nơi chốn.",
+        "options": [],
+        "acceptedAnswers": [
+          "where"
+        ]
+      }
+    ]
+  },
+  {
+    "status": "INACTIVE",
+    "titleVi": "IELTS mini 2",
+    "titleEn": "IELTS Mini Test 2",
+    "descriptionVi": "Đề rút gọn nâng cao với từ vựng và ngữ pháp band 7.",
+    "descriptionEn": "An advanced shortened test with band 7 vocabulary and grammar.",
+    "level": "ADVANCED",
+    "timeLimitMinutes": 45,
+    "questions": [
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Passage: Sleep researchers recommend that adults get seven to nine hours of sleep per night.\nStatement: Adults need at least ten hours of sleep.",
+        "explanation": "Khuyến nghị là 7–9 giờ.",
+        "options": [
+          {
+            "content": "True",
+            "correct": false
+          },
+          {
+            "content": "False",
+            "correct": true
+          },
+          {
+            "content": "Not Given",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Passage: The novel was published in 1925 and has been translated into more than forty languages.\nStatement: The novel has been translated into over forty languages.",
+        "explanation": "\"more than forty languages\".",
+        "options": [
+          {
+            "content": "True",
+            "correct": true
+          },
+          {
+            "content": "False",
+            "correct": false
+          },
+          {
+            "content": "Not Given",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Passage: Many cities have introduced congestion charges to reduce traffic. London introduced its charge in 2003.\nStatement: The London charge is the highest in Europe.",
+        "explanation": "Không có thông tin so sánh mức phí.",
+        "options": [
+          {
+            "content": "True",
+            "correct": false
+          },
+          {
+            "content": "False",
+            "correct": false
+          },
+          {
+            "content": "Not Given",
+            "correct": true
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Passage: Recycling paper saves trees, water and energy, but the process still creates some waste.\nStatement: Recycling paper creates no waste.",
+        "explanation": "Quá trình vẫn tạo ra một ít rác.",
+        "options": [
+          {
+            "content": "True",
+            "correct": false
+          },
+          {
+            "content": "False",
+            "correct": true
+          },
+          {
+            "content": "Not Given",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Passage: The university has three campuses, and the largest, in the north of the city, hosts most science departments.\nStatement: Most science departments are on the northern campus.",
+        "explanation": "Khuôn viên lớn nhất ở phía bắc chứa phần lớn khoa khoa học.",
+        "options": [
+          {
+            "content": "True",
+            "correct": true
+          },
+          {
+            "content": "False",
+            "correct": false
+          },
+          {
+            "content": "Not Given",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Passage: Researchers interviewed two hundred commuters about their journeys.\nStatement: The commuters were interviewed in 2019.",
+        "explanation": "Không nêu năm.",
+        "options": [
+          {
+            "content": "True",
+            "correct": false
+          },
+          {
+            "content": "False",
+            "correct": false
+          },
+          {
+            "content": "Not Given",
+            "correct": true
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Read: \"Glaciers store about 70% of the world's fresh water, so their melting threatens future supplies.\"\nWhy is glacier melting a concern?",
+        "explanation": "Băng tan đe doạ nguồn nước ngọt.",
+        "options": [
+          {
+            "content": "It raises air temperature",
+            "correct": false
+          },
+          {
+            "content": "It closes ports",
+            "correct": false
+          },
+          {
+            "content": "It threatens fresh-water supplies",
+            "correct": true
+          },
+          {
+            "content": "It kills all fish",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Read: \"Unlike mammals, reptiles cannot generate their own body heat and must rely on the sun.\"\nHow do reptiles warm their bodies?",
+        "explanation": "Bò sát phải dựa vào mặt trời.",
+        "options": [
+          {
+            "content": "They generate heat inside",
+            "correct": false
+          },
+          {
+            "content": "They eat more",
+            "correct": false
+          },
+          {
+            "content": "They stay underground",
+            "correct": false
+          },
+          {
+            "content": "They rely on the sun",
+            "correct": true
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Read: \"The festival began as a small local market but now attracts over half a million visitors annually.\"\nWhat is true about the festival?",
+        "explanation": "Từ chợ nhỏ thành lễ hội hơn nửa triệu khách.",
+        "options": [
+          {
+            "content": "It has grown much larger",
+            "correct": true
+          },
+          {
+            "content": "It is still a small market",
+            "correct": false
+          },
+          {
+            "content": "It is held every month",
+            "correct": false
+          },
+          {
+            "content": "It is free",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "READING",
+        "content": "Read: \"Rainforests cover about six percent of the Earth's surface but contain more than half of its plant and animal species.\"\nRainforests cover about ____ percent of the Earth's surface.",
+        "explanation": "\"about six percent\".",
+        "options": [],
+        "acceptedAnswers": [
+          "6",
+          "six"
+        ]
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "VOCABULARY",
+        "content": "Choose the word closest in meaning to \"ambiguous\":",
+        "explanation": "\"ambiguous\" = mơ hồ, không rõ.",
+        "options": [
+          {
+            "content": "obvious",
+            "correct": false
+          },
+          {
+            "content": "unclear",
+            "correct": true
+          },
+          {
+            "content": "harmful",
+            "correct": false
+          },
+          {
+            "content": "brief",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "VOCABULARY",
+        "content": "The two studies produced ____ results, so scientists remain uncertain.",
+        "explanation": "Kết quả mâu thuẫn khiến các nhà khoa học chưa chắc.",
+        "options": [
+          {
+            "content": "identical",
+            "correct": false
+          },
+          {
+            "content": "similar",
+            "correct": false
+          },
+          {
+            "content": "contradictory",
+            "correct": true
+          },
+          {
+            "content": "reliable",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "VOCABULARY",
+        "content": "The new law aims to ____ discrimination in the workplace.",
+        "explanation": "\"eliminate\" = xoá bỏ.",
+        "options": [
+          {
+            "content": "illuminate",
+            "correct": false
+          },
+          {
+            "content": "elevate",
+            "correct": false
+          },
+          {
+            "content": "evaluate",
+            "correct": false
+          },
+          {
+            "content": "eliminate",
+            "correct": true
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "VOCABULARY",
+        "content": "To \"undermine\" someone's confidence means to:",
+        "explanation": "\"undermine\" = làm suy yếu.",
+        "options": [
+          {
+            "content": "weaken it",
+            "correct": true
+          },
+          {
+            "content": "build it",
+            "correct": false
+          },
+          {
+            "content": "test it",
+            "correct": false
+          },
+          {
+            "content": "measure it",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "VOCABULARY",
+        "content": "Choose the antonym of \"temporary\":",
+        "explanation": "\"temporary\" trái nghĩa \"permanent\".",
+        "options": [
+          {
+            "content": "brief",
+            "correct": false
+          },
+          {
+            "content": "permanent",
+            "correct": true
+          },
+          {
+            "content": "short-term",
+            "correct": false
+          },
+          {
+            "content": "unstable",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "VOCABULARY",
+        "content": "Rapid urbanisation has put enormous ____ on public services.",
+        "explanation": "Cụm \"put pressure on\".",
+        "options": [
+          {
+            "content": "strength",
+            "correct": false
+          },
+          {
+            "content": "distance",
+            "correct": false
+          },
+          {
+            "content": "pressure",
+            "correct": true
+          },
+          {
+            "content": "surface",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "VOCABULARY",
+        "content": "\"An overwhelming majority\" means:",
+        "explanation": "\"overwhelming\" = áp đảo.",
+        "options": [
+          {
+            "content": "a small majority",
+            "correct": false
+          },
+          {
+            "content": "an equal share",
+            "correct": false
+          },
+          {
+            "content": "no majority",
+            "correct": false
+          },
+          {
+            "content": "a very large majority",
+            "correct": true
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "VOCABULARY",
+        "content": "The town was completely ____ by the earthquake.",
+        "explanation": "\"devastated\" = bị tàn phá.",
+        "options": [
+          {
+            "content": "devastated",
+            "correct": true
+          },
+          {
+            "content": "delighted",
+            "correct": false
+          },
+          {
+            "content": "decorated",
+            "correct": false
+          },
+          {
+            "content": "determined",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "Listen: \"Tutor: The seminar on climate policy has moved from room 204 to room 310.\"\nWhat is the new room?",
+        "explanation": "Chuyển sang phòng 310.",
+        "options": [
+          {
+            "content": "Room 204",
+            "correct": false
+          },
+          {
+            "content": "Room 310",
+            "correct": true
+          },
+          {
+            "content": "Room 301",
+            "correct": false
+          },
+          {
+            "content": "Room 410",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "Listen: \"The guided walk begins at ten thirty at the north gate and lasts about ninety minutes.\"\nWhere does the walk begin?",
+        "explanation": "\"at the north gate\".",
+        "options": [
+          {
+            "content": "At the museum",
+            "correct": false
+          },
+          {
+            "content": "At the south gate",
+            "correct": false
+          },
+          {
+            "content": "At the north gate",
+            "correct": true
+          },
+          {
+            "content": "At the station",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "Listen: \"Student: Do I have to buy the textbook? Lecturer: No, copies are available in the library.\"\nWhere can the student find the textbook?",
+        "explanation": "\"available in the library\".",
+        "options": [
+          {
+            "content": "In the bookshop",
+            "correct": false
+          },
+          {
+            "content": "Online only",
+            "correct": false
+          },
+          {
+            "content": "In the lecturer's office",
+            "correct": false
+          },
+          {
+            "content": "In the library",
+            "correct": true
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "Listen: \"The average temperature in the region has risen by one point five degrees over the last fifty years.\"\nBy how much has the temperature risen?",
+        "explanation": "\"one point five degrees\".",
+        "options": [
+          {
+            "content": "1.5 degrees",
+            "correct": true
+          },
+          {
+            "content": "0.5 degrees",
+            "correct": false
+          },
+          {
+            "content": "5 degrees",
+            "correct": false
+          },
+          {
+            "content": "15 degrees",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "Listen: \"Advisor: Applications for the scholarship close on the twentieth of November.\"\nWhen do applications close?",
+        "explanation": "\"the twentieth of November\".",
+        "options": [
+          {
+            "content": "On 2 November",
+            "correct": false
+          },
+          {
+            "content": "On 20 November",
+            "correct": true
+          },
+          {
+            "content": "On 12 November",
+            "correct": false
+          },
+          {
+            "content": "On 30 November",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "Listen: \"Woman: Would you like the window seat? Man: I'd prefer the aisle. I need to stretch my legs.\"\nWhy does the man prefer the aisle?",
+        "explanation": "\"I need to stretch my legs\".",
+        "options": [
+          {
+            "content": "He likes the view",
+            "correct": false
+          },
+          {
+            "content": "He is afraid of heights",
+            "correct": false
+          },
+          {
+            "content": "He wants to stretch his legs",
+            "correct": true
+          },
+          {
+            "content": "He is cold",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "Listen: \"Lecturer: There will be no lecture next week because I will be attending a conference.\"\nWhy will there be no lecture?",
+        "explanation": "\"attending a conference\".",
+        "options": [
+          {
+            "content": "The room is closed",
+            "correct": false
+          },
+          {
+            "content": "It is a holiday",
+            "correct": false
+          },
+          {
+            "content": "The lecturer is ill",
+            "correct": false
+          },
+          {
+            "content": "The lecturer is at a conference",
+            "correct": true
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "LISTENING",
+        "content": "Listen: \"The exhibition features works by artists from twelve countries.\"\nThe exhibition includes works from ____ countries.",
+        "explanation": "\"twelve countries\".",
+        "options": [],
+        "acceptedAnswers": [
+          "12",
+          "twelve"
+        ]
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "WRITING",
+        "content": "Complete with one word: Hardly ____ he sat down when the phone rang.",
+        "explanation": "Đảo ngữ: Hardly had + S + V3 ... when ...",
+        "options": [],
+        "acceptedAnswers": [
+          "had"
+        ]
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "WRITING",
+        "content": "Complete with one word: She insisted ____ paying for dinner.",
+        "explanation": "\"insist on + V-ing\".",
+        "options": [],
+        "acceptedAnswers": [
+          "on"
+        ]
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "WRITING",
+        "content": "Complete with the correct form of \"go\": By next year, I ____ to university.",
+        "explanation": "Tương lai hoàn thành.",
+        "options": [],
+        "acceptedAnswers": [
+          "will have gone",
+          "ll have gone"
+        ]
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "WRITING",
+        "content": "Complete with the correct form of \"leave\": It's high time we ____.",
+        "explanation": "\"It's high time\" + quá khứ đơn.",
+        "options": [],
+        "acceptedAnswers": [
+          "left"
+        ]
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "WRITING",
+        "content": "Complete with one word: He is used ____ getting up early.",
+        "explanation": "\"be used to + V-ing\".",
+        "options": [],
+        "acceptedAnswers": [
+          "to"
+        ]
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "WRITING",
+        "content": "Complete with one word: Neither of the answers ____ correct.",
+        "explanation": "\"Neither of\" + động từ số ít.",
+        "options": [],
+        "acceptedAnswers": [
+          "is"
+        ]
+      }
+    ]
+  },
+  {
+    "status": "ACTIVE",
+    "titleVi": "Đề tổng hợp cơ bản",
+    "titleEn": "Beginner Mixed Test",
+    "descriptionVi": "Đề tổng hợp trình độ cơ bản: từ vựng, ngữ pháp, nghe, đọc và điền từ.",
+    "descriptionEn": "A beginner mixed test: vocabulary, grammar, listening, reading and gap-fill.",
+    "level": "BEGINNER",
+    "timeLimitMinutes": 40,
+    "questions": [
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "VOCABULARY",
+        "content": "What is the opposite of \"hot\"?",
+        "explanation": "\"hot\" trái nghĩa \"cold\".",
+        "options": [
+          {
+            "content": "cold",
+            "correct": true
+          },
+          {
+            "content": "warm",
+            "correct": false
+          },
+          {
+            "content": "big",
+            "correct": false
+          },
+          {
+            "content": "fast",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "VOCABULARY",
+        "content": "\"Breakfast\" is a meal you eat in the ____.",
+        "explanation": "Bữa sáng ăn vào buổi sáng.",
+        "options": [
+          {
+            "content": "evening",
+            "correct": false
+          },
+          {
+            "content": "morning",
+            "correct": true
+          },
+          {
+            "content": "night",
+            "correct": false
+          },
+          {
+            "content": "afternoon",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "VOCABULARY",
+        "content": "A place where you borrow books is a ____.",
+        "explanation": "Thư viện cho mượn sách.",
+        "options": [
+          {
+            "content": "bakery",
+            "correct": false
+          },
+          {
+            "content": "bank",
+            "correct": false
+          },
+          {
+            "content": "library",
+            "correct": true
+          },
+          {
+            "content": "cinema",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "VOCABULARY",
+        "content": "I ____ a student.",
+        "explanation": "Chủ ngữ I đi với am.",
+        "options": [
+          {
+            "content": "is",
+            "correct": false
+          },
+          {
+            "content": "are",
+            "correct": false
+          },
+          {
+            "content": "be",
+            "correct": false
+          },
+          {
+            "content": "am",
+            "correct": true
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "VOCABULARY",
+        "content": "She ____ to school every day.",
+        "explanation": "Chủ ngữ ngôi thứ ba số ít thêm -es.",
+        "options": [
+          {
+            "content": "goes",
+            "correct": true
+          },
+          {
+            "content": "go",
+            "correct": false
+          },
+          {
+            "content": "going",
+            "correct": false
+          },
+          {
+            "content": "gone",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "VOCABULARY",
+        "content": "There ____ two apples on the table.",
+        "explanation": "\"apples\" số nhiều nên dùng are.",
+        "options": [
+          {
+            "content": "is",
+            "correct": false
+          },
+          {
+            "content": "are",
+            "correct": true
+          },
+          {
+            "content": "am",
+            "correct": false
+          },
+          {
+            "content": "be",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "VOCABULARY",
+        "content": "This is my brother. ____ name is Tom.",
+        "explanation": "Tính từ sở hữu của \"he\" là his.",
+        "options": [
+          {
+            "content": "Her",
+            "correct": false
+          },
+          {
+            "content": "He",
+            "correct": false
+          },
+          {
+            "content": "His",
+            "correct": true
+          },
+          {
+            "content": "Him",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "VOCABULARY",
+        "content": "I have ____ umbrella.",
+        "explanation": "\"umbrella\" bắt đầu bằng nguyên âm nên dùng an.",
+        "options": [
+          {
+            "content": "a",
+            "correct": false
+          },
+          {
+            "content": "the",
+            "correct": false
+          },
+          {
+            "content": "some",
+            "correct": false
+          },
+          {
+            "content": "an",
+            "correct": true
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "VOCABULARY",
+        "content": "We ____ football yesterday.",
+        "explanation": "\"yesterday\" dùng quá khứ đơn.",
+        "options": [
+          {
+            "content": "played",
+            "correct": true
+          },
+          {
+            "content": "play",
+            "correct": false
+          },
+          {
+            "content": "plays",
+            "correct": false
+          },
+          {
+            "content": "playing",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "VOCABULARY",
+        "content": "What time ____ you get up?",
+        "explanation": "Với \"you\" dùng trợ động từ do.",
+        "options": [
+          {
+            "content": "does",
+            "correct": false
+          },
+          {
+            "content": "do",
+            "correct": true
+          },
+          {
+            "content": "are",
+            "correct": false
+          },
+          {
+            "content": "is",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "VOCABULARY",
+        "content": "The cat is ____ the table.",
+        "explanation": "Giới từ chỉ vị trí: under = ở dưới.",
+        "options": [
+          {
+            "content": "for",
+            "correct": false
+          },
+          {
+            "content": "of",
+            "correct": false
+          },
+          {
+            "content": "under",
+            "correct": true
+          },
+          {
+            "content": "with",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "VOCABULARY",
+        "content": "Which word means \"very big\"?",
+        "explanation": "\"huge\" = rất to.",
+        "options": [
+          {
+            "content": "tiny",
+            "correct": false
+          },
+          {
+            "content": "thin",
+            "correct": false
+          },
+          {
+            "content": "slow",
+            "correct": false
+          },
+          {
+            "content": "huge",
+            "correct": true
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "VOCABULARY",
+        "content": "My mother's sister is my ____.",
+        "explanation": "Chị/em gái của mẹ là dì (aunt).",
+        "options": [
+          {
+            "content": "aunt",
+            "correct": true
+          },
+          {
+            "content": "uncle",
+            "correct": false
+          },
+          {
+            "content": "cousin",
+            "correct": false
+          },
+          {
+            "content": "niece",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "VOCABULARY",
+        "content": "I'd like a cup of ____.",
+        "explanation": "Chỉ \"tea\" uống được.",
+        "options": [
+          {
+            "content": "shoes",
+            "correct": false
+          },
+          {
+            "content": "tea",
+            "correct": true
+          },
+          {
+            "content": "chair",
+            "correct": false
+          },
+          {
+            "content": "bus",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "VOCABULARY",
+        "content": "How much ____ this shirt?",
+        "explanation": "\"this shirt\" số ít nên dùng is.",
+        "options": [
+          {
+            "content": "are",
+            "correct": false
+          },
+          {
+            "content": "do",
+            "correct": false
+          },
+          {
+            "content": "is",
+            "correct": true
+          },
+          {
+            "content": "does",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "Listen: \"My name is Anna and I am twenty years old.\"\nHow old is Anna?",
+        "explanation": "\"twenty years old\".",
+        "options": [
+          {
+            "content": "12",
+            "correct": false
+          },
+          {
+            "content": "2",
+            "correct": false
+          },
+          {
+            "content": "200",
+            "correct": false
+          },
+          {
+            "content": "20",
+            "correct": true
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "Listen: \"The bank opens at nine o'clock and closes at five.\"\nWhen does the bank close?",
+        "explanation": "\"closes at five\".",
+        "options": [
+          {
+            "content": "At five o'clock",
+            "correct": true
+          },
+          {
+            "content": "At nine o'clock",
+            "correct": false
+          },
+          {
+            "content": "At noon",
+            "correct": false
+          },
+          {
+            "content": "At seven o'clock",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "Listen: \"Man: Can I have a coffee, please? Woman: Sure. Milk or sugar? Man: Milk, please.\"\nWhat does the man want in his coffee?",
+        "explanation": "\"Milk, please\".",
+        "options": [
+          {
+            "content": "Sugar",
+            "correct": false
+          },
+          {
+            "content": "Milk",
+            "correct": true
+          },
+          {
+            "content": "Cream",
+            "correct": false
+          },
+          {
+            "content": "Ice",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "Listen: \"It is sunny in Hanoi today, but it is raining in Hue.\"\nWhat is the weather in Hue?",
+        "explanation": "\"raining in Hue\".",
+        "options": [
+          {
+            "content": "Sunny",
+            "correct": false
+          },
+          {
+            "content": "Windy",
+            "correct": false
+          },
+          {
+            "content": "Raining",
+            "correct": true
+          },
+          {
+            "content": "Snowing",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "Listen: \"The bus to the airport leaves every twenty minutes.\"\nHow often does the bus leave?",
+        "explanation": "\"every twenty minutes\".",
+        "options": [
+          {
+            "content": "Every 2 minutes",
+            "correct": false
+          },
+          {
+            "content": "Every hour",
+            "correct": false
+          },
+          {
+            "content": "Every 12 minutes",
+            "correct": false
+          },
+          {
+            "content": "Every 20 minutes",
+            "correct": true
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "Listen: \"Tom has two sisters and one brother.\"\nHow many brothers and sisters does Tom have?",
+        "explanation": "2 chị/em gái + 1 anh/em trai = 3.",
+        "options": [
+          {
+            "content": "Three",
+            "correct": true
+          },
+          {
+            "content": "Two",
+            "correct": false
+          },
+          {
+            "content": "One",
+            "correct": false
+          },
+          {
+            "content": "Four",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Read: \"Mai lives in a small house near the sea. She likes swimming in summer.\"\nWhere does Mai live?",
+        "explanation": "\"near the sea\".",
+        "options": [
+          {
+            "content": "In the city",
+            "correct": false
+          },
+          {
+            "content": "Near the sea",
+            "correct": true
+          },
+          {
+            "content": "In the mountains",
+            "correct": false
+          },
+          {
+            "content": "Near a lake",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Read: \"Lunch break is from twelve to one. The canteen is on the second floor.\"\nWhere is the canteen?",
+        "explanation": "\"on the second floor\".",
+        "options": [
+          {
+            "content": "On the first floor",
+            "correct": false
+          },
+          {
+            "content": "In the garden",
+            "correct": false
+          },
+          {
+            "content": "On the second floor",
+            "correct": true
+          },
+          {
+            "content": "On the roof",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Read: \"Sam has a dog called Lucky. Lucky likes to play in the park in the evening.\"\nWhen does Lucky play in the park?",
+        "explanation": "\"in the evening\".",
+        "options": [
+          {
+            "content": "In the morning",
+            "correct": false
+          },
+          {
+            "content": "At noon",
+            "correct": false
+          },
+          {
+            "content": "At night only",
+            "correct": false
+          },
+          {
+            "content": "In the evening",
+            "correct": true
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Read: \"Sale! T-shirts are only ten dollars this week.\"\nHow much are the T-shirts?",
+        "explanation": "\"only ten dollars\".",
+        "options": [
+          {
+            "content": "$10",
+            "correct": true
+          },
+          {
+            "content": "$1",
+            "correct": false
+          },
+          {
+            "content": "$100",
+            "correct": false
+          },
+          {
+            "content": "$20",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Read: \"Dear Ben, Happy birthday! Let's have dinner on Saturday at seven. Love, Amy.\"\nWhen is the dinner?",
+        "explanation": "\"on Saturday at seven\".",
+        "options": [
+          {
+            "content": "On Sunday at seven",
+            "correct": false
+          },
+          {
+            "content": "On Saturday at seven",
+            "correct": true
+          },
+          {
+            "content": "On Saturday at eleven",
+            "correct": false
+          },
+          {
+            "content": "On Friday at seven",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Read: \"The museum is closed on Mondays. It is open from ten to six on other days.\"\nOn which day is the museum closed?",
+        "explanation": "\"closed on Mondays\".",
+        "options": [
+          {
+            "content": "Sunday",
+            "correct": false
+          },
+          {
+            "content": "Friday",
+            "correct": false
+          },
+          {
+            "content": "Monday",
+            "correct": true
+          },
+          {
+            "content": "Tuesday",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "WRITING",
+        "content": "Complete with one word: I ____ hungry now.",
+        "explanation": "I + am.",
+        "options": [],
+        "acceptedAnswers": [
+          "am"
+        ]
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "WRITING",
+        "content": "Complete with the correct form of \"work\": My father ____ in a bank.",
+        "explanation": "Ngôi thứ ba số ít thêm -s.",
+        "options": [],
+        "acceptedAnswers": [
+          "works"
+        ]
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "WRITING",
+        "content": "Complete with one word: There ____ a book on the desk.",
+        "explanation": "\"a book\" số ít nên dùng is.",
+        "options": [],
+        "acceptedAnswers": [
+          "is"
+        ]
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "WRITING",
+        "content": "Complete with the correct form of \"tall\": She is ____ than her sister.",
+        "explanation": "So sánh hơn: taller.",
+        "options": [],
+        "acceptedAnswers": [
+          "taller"
+        ]
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "WRITING",
+        "content": "Complete with one word: I get up ____ six o'clock.",
+        "explanation": "Giờ cụ thể dùng at.",
+        "options": [],
+        "acceptedAnswers": [
+          "at"
+        ]
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "WRITING",
+        "content": "Write the short form: We (do not) like coffee. → We ____ like coffee.",
+        "explanation": "do not = don't.",
+        "options": [],
+        "acceptedAnswers": [
+          "don't",
+          "dont"
+        ]
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "WRITING",
+        "content": "Complete with one word: ____ is your name?",
+        "explanation": "Hỏi tên dùng \"What\".",
+        "options": [],
+        "acceptedAnswers": [
+          "what",
+          "What"
+        ]
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "WRITING",
+        "content": "Complete with the present continuous of \"watch\": He ____ TV now.",
+        "explanation": "Hiện tại tiếp diễn: is + V-ing.",
+        "options": [],
+        "acceptedAnswers": [
+          "is watching"
+        ]
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "WRITING",
+        "content": "Complete with one word: How ____ apples do you want?",
+        "explanation": "\"apples\" đếm được nên dùng many.",
+        "options": [],
+        "acceptedAnswers": [
+          "many"
+        ]
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "WRITING",
+        "content": "Complete with one word: I was born ____ 2001.",
+        "explanation": "Năm dùng giới từ in.",
+        "options": [],
+        "acceptedAnswers": [
+          "in"
+        ]
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "WRITING",
+        "content": "Complete with the past simple of \"go\": Yesterday, I ____ to the market.",
+        "explanation": "Quá khứ bất quy tắc của go là went.",
+        "options": [],
+        "acceptedAnswers": [
+          "went"
+        ]
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "WRITING",
+        "content": "Complete with one word: This book is ____ (I).",
+        "explanation": "Đại từ sở hữu: mine.",
+        "options": [],
+        "acceptedAnswers": [
+          "mine"
+        ]
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "WRITING",
+        "content": "Complete with the correct form of \"beauty\": Vietnam is a ____ country.",
+        "explanation": "Cần tính từ trước danh từ.",
+        "options": [],
+        "acceptedAnswers": [
+          "beautiful"
+        ]
+      }
+    ]
+  }
+]

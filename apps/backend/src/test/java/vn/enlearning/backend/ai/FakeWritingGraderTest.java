@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 
 class FakeWritingGraderTest {
 
-	private final FakeWritingGrader grader = new FakeWritingGrader(new AiProperties("", Duration.ofSeconds(60), Duration.ZERO));
+	private final FakeWritingGrader grader = new FakeWritingGrader(new AiProperties("", "gemini-2.5-flash", "http://localhost", Duration.ofSeconds(45), Duration.ofSeconds(60), Duration.ZERO));
 
 	private static WritingGrader.Request request(String content, int words, int minWords) {
 		return new WritingGrader.Request("Write something.", minWords, content, words);

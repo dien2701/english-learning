@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import vn.enlearning.backend.auth.repository.PasswordResetTokenRepository;
 import vn.enlearning.backend.auth.repository.RefreshTokenRepository;
+import vn.enlearning.backend.speaking.repository.SpeakingAttemptRepository;
 import vn.enlearning.backend.study.repository.StudySessionRepository;
 
 /** Dọn dữ liệu tạm định kỳ để các bảng token và phiên học không phình mãi. */
@@ -20,12 +21,13 @@ import vn.enlearning.backend.study.repository.StudySessionRepository;
 public class CleanupService {
 
 	/** Số dòng đã xoá ở mỗi bảng. */
-	public record Result(int refreshTokens, int resetTokens, int emptySessions) {
+	public record Result(int refreshTokens, int resetTokens, int emptySessions, int staleSpeakingAttempts) {
 	}
 
 	private final RefreshTokenRepository refreshTokens;
 	private final PasswordResetTokenRepository resetTokens;
 	private final StudySessionRepository studySessions;
+	private final SpeakingAttemptRepository speakingAttempts;
 	private final CleanupProperties properties;
 	private final Clock clock;
 
@@ -38,10 +40,12 @@ public class CleanupService {
 		Result result = new Result(
 				refreshTokens.deleteExpiredBefore(tokenCutoff),
 				resetTokens.deleteExpiredBefore(tokenCutoff),
-				studySessions.deleteEmptyBefore(now.minus(properties.emptySessionRetention())));
-		if (result.refreshTokens() + result.resetTokens() + result.emptySessions() > 0) {
-			log.info("Dọn dẹp: {} refresh token, {} mã OTP, {} phiên học rỗng", result.refreshTokens(),
-					result.resetTokens(), result.emptySessions());
+				studySessions.deleteEmptyBefore(now.minus(properties.emptySessionRetention())),
+				speakingAttempts.deleteStaleInProgress(now.minus(properties.speakingInProgressRetention())));
+		if (result.refreshTokens() + result.resetTokens() + result.emptySessions()
+				+ result.staleSpeakingAttempts() > 0) {
+			log.info("Dọn dẹp: {} refresh token, {} mã OTP, {} phiên học rỗng, {} lượt nói bỏ dở", result.refreshTokens(),
+					result.resetTokens(), result.emptySessions(), result.staleSpeakingAttempts());
 		}
 		return result;
 	}

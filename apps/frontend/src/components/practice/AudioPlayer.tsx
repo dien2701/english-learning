@@ -37,7 +37,11 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const tickRef = useRef<number | null>(null);
 
-  const usesSpeech = !src;
+  // Tệp âm thanh lỗi (URL chết, bị chặn) thì chuyển sang giọng đọc nếu có văn bản.
+  // Trạng thái gắn với đường dẫn nên đổi bài là tự thử lại tệp mới.
+  const [failedSrc, setFailedSrc] = useState<string | undefined>(undefined);
+  const audioFailed = Boolean(src) && failedSrc === src && Boolean(speakText);
+  const usesSpeech = !src || audioFailed;
 
   // Suy ra trực tiếp, không cần state: có tệp âm thanh thì luôn dùng được,
   // còn khi phải nhờ giọng đọc thì phụ thuộc vào trình duyệt.
@@ -140,10 +144,14 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({
       aria-label={label ?? t('listening.player')}
       className="rounded-lg border border-hairline bg-surface p-5 shadow-sm"
     >
-      {src && (
+      {src && !audioFailed && (
         <audio
           ref={audioRef}
           src={src}
+          onError={() => {
+            stopAll();
+            setFailedSrc(src);
+          }}
           onTimeUpdate={(e) => setElapsed(e.currentTarget.currentTime)}
           onEnded={() => setIsPlaying(false)}
           preload="metadata"

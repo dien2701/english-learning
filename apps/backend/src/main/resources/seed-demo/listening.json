@@ -1,0 +1,1603 @@
+[
+  {
+    "status": "ACTIVE",
+    "topic": "travel",
+    "level": "BEGINNER",
+    "titleVi": "Làm thủ tục tại sân bay",
+    "titleEn": "Airport Check-in",
+    "descriptionVi": "Hội thoại ngắn giữa hành khách và nhân viên quầy làm thủ tục.",
+    "descriptionEn": "A short dialogue between a passenger and a check-in agent.",
+    "transcript": "Agent: Good morning. Where are you flying today?\nMinh: Good morning. I'm flying to Singapore on flight VN 651.\nAgent: May I see your passport, please?\nMinh: Here you are.\nAgent: Thank you. Would you like a window seat or an aisle seat?\nMinh: A window seat, please.\nAgent: Do you have any bags to check in?\nMinh: Yes, one suitcase.\nAgent: Please put it on the scale. It's 18 kilos, that's fine. Your flight boards at gate 12. Here is your boarding pass.\nMinh: Thank you. What time does the flight leave?\nAgent: At 11:15. Please arrive at the gate thirty minutes early. Have a nice trip!",
+    "questions": [
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "Where is Minh flying to?",
+        "explanation": "Minh nói: \"I'm flying to Singapore\".",
+        "options": [
+          {
+            "content": "Singapore",
+            "correct": true
+          },
+          {
+            "content": "Bangkok",
+            "correct": false
+          },
+          {
+            "content": "Hanoi",
+            "correct": false
+          },
+          {
+            "content": "Tokyo",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "Which seat does Minh choose?",
+        "explanation": "Minh chọn \"A window seat, please\".",
+        "options": [
+          {
+            "content": "An aisle seat",
+            "correct": false
+          },
+          {
+            "content": "A window seat",
+            "correct": true
+          },
+          {
+            "content": "A seat near the exit",
+            "correct": false
+          },
+          {
+            "content": "A seat next to a friend",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "How heavy is the suitcase?",
+        "explanation": "Nhân viên nói \"It's 18 kilos\".",
+        "options": [
+          {
+            "content": "8 kilos",
+            "correct": false
+          },
+          {
+            "content": "20 kilos",
+            "correct": false
+          },
+          {
+            "content": "18 kilos",
+            "correct": true
+          },
+          {
+            "content": "28 kilos",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "Which gate does the flight board at?",
+        "explanation": "Chuyến bay lên máy bay ở \"gate 12\".",
+        "options": [
+          {
+            "content": "Gate 2",
+            "correct": false
+          },
+          {
+            "content": "Gate 11",
+            "correct": false
+          },
+          {
+            "content": "Gate 21",
+            "correct": false
+          },
+          {
+            "content": "Gate 12",
+            "correct": true
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "LISTENING",
+        "content": "The flight leaves at ____ (time).",
+        "explanation": "Chuyến bay khởi hành lúc 11:15.",
+        "options": [],
+        "acceptedAnswers": [
+          "11:15",
+          "11.15",
+          "11h15",
+          "eleven fifteen"
+        ]
+      }
+    ],
+    "audioUrl": null,
+    "durationSeconds": 47
+  },
+  {
+    "status": "ACTIVE",
+    "topic": "food-drink",
+    "level": "BEGINNER",
+    "titleVi": "Gọi món ở nhà hàng",
+    "titleEn": "Ordering at a Restaurant",
+    "descriptionVi": "Hai người bạn gọi món và hỏi về món tráng miệng.",
+    "descriptionEn": "Two friends order food and ask about dessert.",
+    "transcript": "Waiter: Good evening. Are you ready to order?\nLan: Yes. I'd like the chicken soup, please.\nWaiter: Would you like something to drink?\nLan: Just water for me. And my friend will have an orange juice.\nTom: Can I have the beef noodles, please? Not too spicy.\nWaiter: Of course. Would you like anything else?\nLan: No, thank you. Oh, wait. Is there a dessert menu?\nWaiter: Yes, we have mango ice cream and fruit salad.\nLan: We will decide later.\nWaiter: No problem. I'll bring the food in fifteen minutes.",
+    "questions": [
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "What does Lan order?",
+        "explanation": "Lan: \"I'd like the chicken soup\".",
+        "options": [
+          {
+            "content": "Chicken soup",
+            "correct": true
+          },
+          {
+            "content": "Beef noodles",
+            "correct": false
+          },
+          {
+            "content": "Fruit salad",
+            "correct": false
+          },
+          {
+            "content": "Fried rice",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "What does Tom ask for with his noodles?",
+        "explanation": "Tom: \"Not too spicy\".",
+        "options": [
+          {
+            "content": "Extra spicy",
+            "correct": false
+          },
+          {
+            "content": "Not too spicy",
+            "correct": true
+          },
+          {
+            "content": "No onions",
+            "correct": false
+          },
+          {
+            "content": "A large portion",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "Which desserts are available?",
+        "explanation": "Người phục vụ nói có \"mango ice cream and fruit salad\".",
+        "options": [
+          {
+            "content": "Chocolate cake and coffee",
+            "correct": false
+          },
+          {
+            "content": "Apple pie and tea",
+            "correct": false
+          },
+          {
+            "content": "Mango ice cream and fruit salad",
+            "correct": true
+          },
+          {
+            "content": "Pancakes and honey",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "How long will the food take?",
+        "explanation": "\"I'll bring the food in fifteen minutes.\"",
+        "options": [
+          {
+            "content": "Five minutes",
+            "correct": false
+          },
+          {
+            "content": "Thirty minutes",
+            "correct": false
+          },
+          {
+            "content": "One hour",
+            "correct": false
+          },
+          {
+            "content": "Fifteen minutes",
+            "correct": true
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "LISTENING",
+        "content": "Lan drinks ____ with her meal.",
+        "explanation": "Lan: \"Just water for me\".",
+        "options": [],
+        "acceptedAnswers": [
+          "water"
+        ]
+      }
+    ],
+    "audioUrl": null,
+    "durationSeconds": 40
+  },
+  {
+    "status": "ACTIVE",
+    "topic": "shopping",
+    "level": "BEGINNER",
+    "titleVi": "Mua áo khoác",
+    "titleEn": "Buying a Jacket",
+    "descriptionVi": "Khách hàng thử áo, đổi cỡ và hỏi về chính sách đổi trả.",
+    "descriptionEn": "A customer tries on a jacket, changes size and asks about returns.",
+    "transcript": "Clerk: Hello, can I help you?\nCustomer: Yes, I'm looking for a blue jacket in size medium.\nClerk: We have this one. It's forty-five dollars.\nCustomer: Can I try it on?\nClerk: Sure. The fitting rooms are at the back.\nCustomer: It's a bit small. Do you have a large?\nClerk: Let me check. Yes, here you are.\nCustomer: This one fits well. Can I pay by card?\nClerk: Yes. If you don't like it, you can return it within fourteen days with the receipt.\nCustomer: Great, thank you.",
+    "questions": [
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "What colour is the jacket the customer wants?",
+        "explanation": "Khách tìm \"a blue jacket\".",
+        "options": [
+          {
+            "content": "Blue",
+            "correct": true
+          },
+          {
+            "content": "Black",
+            "correct": false
+          },
+          {
+            "content": "Green",
+            "correct": false
+          },
+          {
+            "content": "Red",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "How much is the jacket?",
+        "explanation": "\"It's forty-five dollars.\"",
+        "options": [
+          {
+            "content": "$14",
+            "correct": false
+          },
+          {
+            "content": "$45",
+            "correct": true
+          },
+          {
+            "content": "$54",
+            "correct": false
+          },
+          {
+            "content": "$40",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "What is wrong with the medium jacket?",
+        "explanation": "Khách nói \"It's a bit small\".",
+        "options": [
+          {
+            "content": "It is too long",
+            "correct": false
+          },
+          {
+            "content": "It is too expensive",
+            "correct": false
+          },
+          {
+            "content": "It is too small",
+            "correct": true
+          },
+          {
+            "content": "It is the wrong colour",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "How will the customer pay?",
+        "explanation": "Khách hỏi \"Can I pay by card?\".",
+        "options": [
+          {
+            "content": "In cash",
+            "correct": false
+          },
+          {
+            "content": "By phone",
+            "correct": false
+          },
+          {
+            "content": "By bank transfer",
+            "correct": false
+          },
+          {
+            "content": "By card",
+            "correct": true
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "LISTENING",
+        "content": "The customer can return the jacket within ____ days.",
+        "explanation": "Được đổi trả trong \"fourteen days\" kèm hoá đơn.",
+        "options": [],
+        "acceptedAnswers": [
+          "14",
+          "fourteen"
+        ]
+      }
+    ],
+    "audioUrl": null,
+    "durationSeconds": 39
+  },
+  {
+    "status": "ACTIVE",
+    "topic": "family",
+    "level": "BEGINNER",
+    "titleVi": "Kế hoạch cuối tuần của gia đình",
+    "titleEn": "Weekend Family Plans",
+    "descriptionVi": "Mai hỏi bố về kế hoạch cuối tuần của cả nhà.",
+    "descriptionEn": "Mai asks her father about the family plans for the weekend.",
+    "transcript": "Mai: Dad, what are we doing this weekend?\nDad: On Saturday, we're visiting Grandma in the countryside. We'll leave at seven in the morning.\nMai: Can my cousin Nam come with us?\nDad: Of course. Your aunt will drive him to our house first.\nMai: And on Sunday?\nDad: Sunday is for resting at home. Your mother wants to cook a big lunch for the whole family.\nMai: Great! I'll help her make spring rolls.",
+    "questions": [
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "Where is the family going on Saturday?",
+        "explanation": "\"we're visiting Grandma in the countryside\".",
+        "options": [
+          {
+            "content": "To Grandma's house in the countryside",
+            "correct": true
+          },
+          {
+            "content": "To the beach",
+            "correct": false
+          },
+          {
+            "content": "To a shopping centre",
+            "correct": false
+          },
+          {
+            "content": "To the cinema",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "What time will they leave?",
+        "explanation": "\"We'll leave at seven in the morning.\"",
+        "options": [
+          {
+            "content": "6:00 a.m.",
+            "correct": false
+          },
+          {
+            "content": "7:00 a.m.",
+            "correct": true
+          },
+          {
+            "content": "8:00 a.m.",
+            "correct": false
+          },
+          {
+            "content": "7:00 p.m.",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "How will Nam get to their house?",
+        "explanation": "\"Your aunt will drive him to our house first.\"",
+        "options": [
+          {
+            "content": "He will take a bus",
+            "correct": false
+          },
+          {
+            "content": "He will walk",
+            "correct": false
+          },
+          {
+            "content": "His aunt will drive him",
+            "correct": true
+          },
+          {
+            "content": "Dad will pick him up",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "What will the family do on Sunday?",
+        "explanation": "Chủ nhật nghỉ ở nhà và mẹ nấu bữa trưa lớn.",
+        "options": [
+          {
+            "content": "Go camping",
+            "correct": false
+          },
+          {
+            "content": "Visit friends",
+            "correct": false
+          },
+          {
+            "content": "Clean the house",
+            "correct": false
+          },
+          {
+            "content": "Rest at home and have a big lunch",
+            "correct": true
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "LISTENING",
+        "content": "Mai will help her mother make ____.",
+        "explanation": "Mai nói \"I'll help her make spring rolls\".",
+        "options": [],
+        "acceptedAnswers": [
+          "spring rolls"
+        ]
+      }
+    ],
+    "audioUrl": null,
+    "durationSeconds": 33
+  },
+  {
+    "status": "ACTIVE",
+    "topic": "health",
+    "level": "BEGINNER",
+    "titleVi": "Khám bệnh cảm lạnh",
+    "titleEn": "A Visit to the Doctor",
+    "descriptionVi": "Bệnh nhân bị đau họng và đau đầu đi gặp bác sĩ.",
+    "descriptionEn": "A patient with a sore throat and a headache sees the doctor.",
+    "transcript": "Doctor: Good afternoon. What seems to be the problem?\nPatient: I've had a sore throat and a headache since Monday.\nDoctor: Do you have a fever?\nPatient: A little. Yesterday it was thirty-eight degrees.\nDoctor: Let me check. Open your mouth, please. Your throat is red. It looks like a cold.\nPatient: Do I need antibiotics?\nDoctor: No, not for a cold. Drink plenty of water, rest, and take these tablets twice a day after meals. Come back if you don't feel better in five days.",
+    "questions": [
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "What are the patient's symptoms?",
+        "explanation": "Bệnh nhân: \"a sore throat and a headache\".",
+        "options": [
+          {
+            "content": "A sore throat and a headache",
+            "correct": true
+          },
+          {
+            "content": "A cough and a stomach ache",
+            "correct": false
+          },
+          {
+            "content": "A backache and a fever",
+            "correct": false
+          },
+          {
+            "content": "A toothache and a rash",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "When did the symptoms start?",
+        "explanation": "\"since Monday\".",
+        "options": [
+          {
+            "content": "Yesterday",
+            "correct": false
+          },
+          {
+            "content": "On Monday",
+            "correct": true
+          },
+          {
+            "content": "Last week",
+            "correct": false
+          },
+          {
+            "content": "Today",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "What was the patient's temperature yesterday?",
+        "explanation": "\"thirty-eight degrees\".",
+        "options": [
+          {
+            "content": "36 degrees",
+            "correct": false
+          },
+          {
+            "content": "39 degrees",
+            "correct": false
+          },
+          {
+            "content": "38 degrees",
+            "correct": true
+          },
+          {
+            "content": "40 degrees",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "Does the doctor give the patient antibiotics?",
+        "explanation": "Bác sĩ nói \"No, not for a cold\".",
+        "options": [
+          {
+            "content": "Yes, for five days",
+            "correct": false
+          },
+          {
+            "content": "Yes, twice a day",
+            "correct": false
+          },
+          {
+            "content": "No, because it is a serious illness",
+            "correct": false
+          },
+          {
+            "content": "No, because it is a cold",
+            "correct": true
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "LISTENING",
+        "content": "The patient should take the tablets ____ a day.",
+        "explanation": "Uống thuốc \"twice a day\" sau bữa ăn.",
+        "options": [],
+        "acceptedAnswers": [
+          "twice",
+          "two times",
+          "2 times",
+          "twice a day"
+        ]
+      }
+    ],
+    "audioUrl": null,
+    "durationSeconds": 38
+  },
+  {
+    "status": "ACTIVE",
+    "topic": "workplace",
+    "level": "INTERMEDIATE",
+    "titleVi": "Cuộc họp nhóm hằng tuần",
+    "titleEn": "The Weekly Team Meeting",
+    "descriptionVi": "Nhóm dự án cập nhật tiến độ ra mắt sản phẩm và bài thuyết trình.",
+    "descriptionEn": "A project team updates the product launch and client presentation.",
+    "transcript": "Manager: Let's begin. First, the product launch. Priya, where are we?\nPriya: The design is finished, but the testing has been delayed by two days because we're waiting for the new server.\nManager: So the launch moves from the twelfth to the fourteenth?\nPriya: Correct. Marketing has already been informed.\nManager: Good. Next, the client presentation. Kevin, can you prepare the slides by Wednesday?\nKevin: I can do the draft by Wednesday, but I need the sales figures from Anna first.\nAnna: I'll send them tomorrow morning.\nManager: Perfect. Let's meet again on Friday at ten to review the slides.",
+    "questions": [
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "Why has the testing been delayed?",
+        "explanation": "Priya: \"we're waiting for the new server\".",
+        "options": [
+          {
+            "content": "They are waiting for a new server",
+            "correct": true
+          },
+          {
+            "content": "The design is not finished",
+            "correct": false
+          },
+          {
+            "content": "Marketing has not replied",
+            "correct": false
+          },
+          {
+            "content": "A colleague is on holiday",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "What is the new launch date?",
+        "explanation": "Ra mắt dời từ ngày 12 sang ngày 14.",
+        "options": [
+          {
+            "content": "The twelfth",
+            "correct": false
+          },
+          {
+            "content": "The fourteenth",
+            "correct": true
+          },
+          {
+            "content": "The tenth",
+            "correct": false
+          },
+          {
+            "content": "The sixteenth",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "Who will send Kevin the sales figures?",
+        "explanation": "Anna: \"I'll send them tomorrow morning\".",
+        "options": [
+          {
+            "content": "Priya",
+            "correct": false
+          },
+          {
+            "content": "The manager",
+            "correct": false
+          },
+          {
+            "content": "Anna",
+            "correct": true
+          },
+          {
+            "content": "Marketing",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "When is the next meeting?",
+        "explanation": "\"Let's meet again on Friday at ten\".",
+        "options": [
+          {
+            "content": "Wednesday at ten",
+            "correct": false
+          },
+          {
+            "content": "Tomorrow morning",
+            "correct": false
+          },
+          {
+            "content": "Friday afternoon",
+            "correct": false
+          },
+          {
+            "content": "Friday at ten",
+            "correct": true
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "LISTENING",
+        "content": "Kevin will finish the draft by ____.",
+        "explanation": "Kevin: \"I can do the draft by Wednesday\".",
+        "options": [],
+        "acceptedAnswers": [
+          "wednesday"
+        ]
+      }
+    ],
+    "audioUrl": null,
+    "durationSeconds": 44
+  },
+  {
+    "status": "ACTIVE",
+    "topic": "it-tech",
+    "level": "INTERMEDIATE",
+    "titleVi": "Gọi bộ phận hỗ trợ IT",
+    "titleEn": "Calling the IT Helpdesk",
+    "descriptionVi": "Nhân viên quên đặt lại mật khẩu laptop công ty.",
+    "descriptionEn": "An employee needs to reset an expired password on a work laptop.",
+    "transcript": "Support: IT helpdesk, this is Sam. How can I help?\nCaller: Hi, I can't log in to my work laptop. It says my password has expired.\nSupport: No problem. Can I have your employee number?\nCaller: It's four seven two nine.\nSupport: Thank you. I've sent a reset link to your phone. Please open it and choose a new password with at least twelve characters, including a number and a symbol.\nCaller: Got it. ... It works, thanks! Should I also update the password on my phone email?\nSupport: Yes, otherwise your phone will keep trying the old one and lock your account.\nCaller: Understood. Thanks for your help.",
+    "questions": [
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "What is the caller's problem?",
+        "explanation": "Máy báo \"my password has expired\".",
+        "options": [
+          {
+            "content": "His password has expired",
+            "correct": true
+          },
+          {
+            "content": "His laptop is broken",
+            "correct": false
+          },
+          {
+            "content": "He lost his phone",
+            "correct": false
+          },
+          {
+            "content": "He forgot his employee number",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "What is the caller's employee number?",
+        "explanation": "Số nhân viên là \"four seven two nine\".",
+        "options": [
+          {
+            "content": "4279",
+            "correct": false
+          },
+          {
+            "content": "4729",
+            "correct": true
+          },
+          {
+            "content": "7429",
+            "correct": false
+          },
+          {
+            "content": "4792",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "How does the support agent send the reset link?",
+        "explanation": "\"I've sent a reset link to your phone\".",
+        "options": [
+          {
+            "content": "By email to the manager",
+            "correct": false
+          },
+          {
+            "content": "By post",
+            "correct": false
+          },
+          {
+            "content": "To the caller's phone",
+            "correct": true
+          },
+          {
+            "content": "Through the laptop",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "Why should the caller update the password on his phone?",
+        "explanation": "Nếu không, điện thoại sẽ thử mật khẩu cũ và khoá tài khoản.",
+        "options": [
+          {
+            "content": "To save battery",
+            "correct": false
+          },
+          {
+            "content": "To read emails faster",
+            "correct": false
+          },
+          {
+            "content": "To change his username",
+            "correct": false
+          },
+          {
+            "content": "To stop the account from locking",
+            "correct": true
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "LISTENING",
+        "content": "The new password needs at least ____ characters.",
+        "explanation": "Yêu cầu \"at least twelve characters\".",
+        "options": [],
+        "acceptedAnswers": [
+          "12",
+          "twelve"
+        ]
+      }
+    ],
+    "audioUrl": null,
+    "durationSeconds": 48
+  },
+  {
+    "status": "ACTIVE",
+    "topic": "exam-prep",
+    "level": "INTERMEDIATE",
+    "titleVi": "Hỏi thuê phòng ký túc xá (dạng IELTS)",
+    "titleEn": "Student Accommodation Enquiry (IELTS style)",
+    "descriptionVi": "Điền thông tin khi sinh viên gọi hỏi thuê phòng.",
+    "descriptionEn": "Complete the details as a student phones about a room.",
+    "transcript": "Woman: Hello, Greenfield Student Housing.\nStudent: Hi, I'd like to ask about a room for next semester. My name is Linh Tran, that's L-I-N-H, T-R-A-N.\nWoman: Thank you, Linh. Do you want a single room or a shared one?\nStudent: A single room, please. What's the rent?\nWoman: Single rooms are two hundred and eighty pounds a month, including internet. Shared rooms are one hundred and ninety.\nStudent: Is the kitchen shared?\nWoman: Yes, there's one kitchen for every six students. The building is ten minutes' walk from the main campus, and there is a bus stop right outside.\nStudent: Sounds good. When can I visit?\nWoman: We have open days every Thursday at two o'clock.",
+    "questions": [
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "What type of room does Linh want?",
+        "explanation": "Linh: \"A single room, please\".",
+        "options": [
+          {
+            "content": "A single room",
+            "correct": true
+          },
+          {
+            "content": "A shared room",
+            "correct": false
+          },
+          {
+            "content": "A studio flat",
+            "correct": false
+          },
+          {
+            "content": "A room with a private kitchen",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "LISTENING",
+        "content": "A single room costs £____ a month.",
+        "explanation": "Giá phòng đơn là 280 bảng mỗi tháng.",
+        "options": [],
+        "acceptedAnswers": [
+          "280",
+          "two hundred and eighty",
+          "two hundred eighty"
+        ]
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "What is included in the rent?",
+        "explanation": "\"including internet\".",
+        "options": [
+          {
+            "content": "Meals",
+            "correct": false
+          },
+          {
+            "content": "Internet",
+            "correct": true
+          },
+          {
+            "content": "Electricity",
+            "correct": false
+          },
+          {
+            "content": "Cleaning",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "How far is the building from the main campus?",
+        "explanation": "\"ten minutes' walk from the main campus\".",
+        "options": [
+          {
+            "content": "Ten minutes by bus",
+            "correct": false
+          },
+          {
+            "content": "Twenty minutes on foot",
+            "correct": false
+          },
+          {
+            "content": "Ten minutes on foot",
+            "correct": true
+          },
+          {
+            "content": "One kilometre",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "How many students share each kitchen?",
+        "explanation": "\"one kitchen for every six students\".",
+        "options": [
+          {
+            "content": "Two",
+            "correct": false
+          },
+          {
+            "content": "Four",
+            "correct": false
+          },
+          {
+            "content": "Ten",
+            "correct": false
+          },
+          {
+            "content": "Six",
+            "correct": true
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "When are the open days?",
+        "explanation": "\"every Thursday at two o'clock\".",
+        "options": [
+          {
+            "content": "Every Thursday at 2 p.m.",
+            "correct": true
+          },
+          {
+            "content": "Every Tuesday at 2 p.m.",
+            "correct": false
+          },
+          {
+            "content": "Every Thursday at 12 p.m.",
+            "correct": false
+          },
+          {
+            "content": "Every weekend",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      }
+    ],
+    "audioUrl": null,
+    "durationSeconds": 51
+  },
+  {
+    "status": "ACTIVE",
+    "topic": "daily-life",
+    "level": "BEGINNER",
+    "titleVi": "Hỏi đường đến bưu điện",
+    "titleEn": "Asking for Directions",
+    "descriptionVi": "Du khách hỏi đường đến bưu điện và hiệu thuốc.",
+    "descriptionEn": "A tourist asks the way to the post office and a pharmacy.",
+    "transcript": "Tourist: Excuse me, how do I get to the post office?\nLocal: Go straight along this street for two blocks. Turn left at the traffic lights. The post office is next to the bank, opposite the park.\nTourist: Is it far?\nLocal: No, about five minutes on foot.\nTourist: Thank you! Is there a pharmacy near there?\nLocal: Yes, there's one behind the bank.",
+    "questions": [
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "How far should the tourist go straight?",
+        "explanation": "\"Go straight along this street for two blocks\".",
+        "options": [
+          {
+            "content": "One block",
+            "correct": false
+          },
+          {
+            "content": "Two blocks",
+            "correct": true
+          },
+          {
+            "content": "Five blocks",
+            "correct": false
+          },
+          {
+            "content": "Until the park",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "Where should the tourist turn left?",
+        "explanation": "\"Turn left at the traffic lights\".",
+        "options": [
+          {
+            "content": "At the bank",
+            "correct": false
+          },
+          {
+            "content": "At the park",
+            "correct": false
+          },
+          {
+            "content": "At the traffic lights",
+            "correct": true
+          },
+          {
+            "content": "At the pharmacy",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "Where is the post office?",
+        "explanation": "\"next to the bank, opposite the park\".",
+        "options": [
+          {
+            "content": "Behind the bank",
+            "correct": false
+          },
+          {
+            "content": "Next to the pharmacy",
+            "correct": false
+          },
+          {
+            "content": "Inside the park",
+            "correct": false
+          },
+          {
+            "content": "Next to the bank",
+            "correct": true
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "How long does it take on foot?",
+        "explanation": "\"about five minutes on foot\".",
+        "options": [
+          {
+            "content": "About five minutes",
+            "correct": true
+          },
+          {
+            "content": "About fifteen minutes",
+            "correct": false
+          },
+          {
+            "content": "About one hour",
+            "correct": false
+          },
+          {
+            "content": "About two minutes",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "LISTENING",
+        "content": "The pharmacy is ____ the bank.",
+        "explanation": "Hiệu thuốc nằm \"behind the bank\".",
+        "options": [],
+        "acceptedAnswers": [
+          "behind"
+        ]
+      }
+    ],
+    "audioUrl": null,
+    "durationSeconds": 28
+  },
+  {
+    "status": "ACTIVE",
+    "topic": "academic",
+    "level": "ADVANCED",
+    "titleVi": "Bài giảng: đảo nhiệt đô thị",
+    "titleEn": "Lecture: The Urban Heat Island Effect",
+    "descriptionVi": "Bài giảng học thuật về nguyên nhân, hệ quả và giải pháp cho đảo nhiệt.",
+    "descriptionEn": "An academic lecture on the causes, effects and solutions of urban heat islands.",
+    "transcript": "Lecturer: Today I'd like to talk about the urban heat island effect. In simple terms, cities are usually warmer than the rural areas around them, sometimes by as much as five degrees Celsius at night. There are three main causes. First, dark surfaces such as asphalt and roofs absorb more sunlight than grass or soil, and they release the heat slowly after sunset. Second, tall buildings block the wind, which reduces natural cooling. Third, human activity, especially air conditioning and traffic, adds waste heat directly to the air.\nThe consequences are serious. Higher temperatures increase electricity demand in summer, and they raise the risk of heat-related illness, particularly among elderly residents. Some cities have responded with green roofs and light-coloured pavements. A study in Chicago found that green roofs lowered the surface temperature of buildings by up to thirty degrees, although the effect on the surrounding air was much smaller. Therefore, most researchers now argue that planting trees along streets is the more effective long-term solution, because trees provide both shade and evaporative cooling.",
+    "questions": [
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "What does the \"urban heat island effect\" describe?",
+        "explanation": "Đảo nhiệt = thành phố thường nóng hơn vùng nông thôn xung quanh.",
+        "options": [
+          {
+            "content": "Islands with hot climates",
+            "correct": false
+          },
+          {
+            "content": "Cities being warmer than nearby rural areas",
+            "correct": true
+          },
+          {
+            "content": "Cities that use too much electricity",
+            "correct": false
+          },
+          {
+            "content": "Rural areas suffering from droughts",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "By how much can night-time temperatures differ?",
+        "explanation": "\"as much as five degrees Celsius at night\".",
+        "options": [
+          {
+            "content": "Up to two degrees Celsius",
+            "correct": false
+          },
+          {
+            "content": "Up to ten degrees Celsius",
+            "correct": false
+          },
+          {
+            "content": "Up to five degrees Celsius",
+            "correct": true
+          },
+          {
+            "content": "Up to thirty degrees Celsius",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "Which of the following is NOT mentioned as a cause?",
+        "explanation": "Bài chỉ nêu bề mặt tối, toà nhà chắn gió và nhiệt thải; không nhắc mưa lớn.",
+        "options": [
+          {
+            "content": "Dark surfaces",
+            "correct": false
+          },
+          {
+            "content": "Tall buildings blocking wind",
+            "correct": false
+          },
+          {
+            "content": "Air conditioning and traffic",
+            "correct": false
+          },
+          {
+            "content": "Heavy rainfall",
+            "correct": true
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "What did the Chicago study find about green roofs?",
+        "explanation": "Nhiệt độ bề mặt giảm tới 30 độ nhưng tác động lên không khí nhỏ hơn nhiều.",
+        "options": [
+          {
+            "content": "They cooled the buildings a lot but the air only slightly",
+            "correct": true
+          },
+          {
+            "content": "They cooled the surrounding air by thirty degrees",
+            "correct": false
+          },
+          {
+            "content": "They had no effect on buildings",
+            "correct": false
+          },
+          {
+            "content": "They increased electricity use",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "What do most researchers now prefer?",
+        "explanation": "\"planting trees along streets is the more effective long-term solution\".",
+        "options": [
+          {
+            "content": "Building more roads",
+            "correct": false
+          },
+          {
+            "content": "Planting trees along streets",
+            "correct": true
+          },
+          {
+            "content": "Painting roofs black",
+            "correct": false
+          },
+          {
+            "content": "Installing more air conditioners",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "LISTENING",
+        "content": "Trees provide shade and ____ cooling.",
+        "explanation": "Cây cho \"shade and evaporative cooling\".",
+        "options": [],
+        "acceptedAnswers": [
+          "evaporative"
+        ]
+      }
+    ],
+    "audioUrl": null,
+    "durationSeconds": 76
+  },
+  {
+    "status": "ACTIVE",
+    "topic": "exam-prep",
+    "level": "INTERMEDIATE",
+    "titleVi": "Thông báo nhà ga (dạng TOEIC)",
+    "titleEn": "Train Station Announcement (TOEIC style)",
+    "descriptionVi": "Thông báo tàu trễ, đổi sân ga và hoàn vé.",
+    "descriptionEn": "An announcement about a delayed train, a platform change and refunds.",
+    "transcript": "May I have your attention, please. The 6:45 express service to Brighton has been delayed by approximately twenty-five minutes due to a signal failure near Croydon. The new departure time is 7:10 from platform four, not platform two as previously announced. Passengers who wish to travel on the earlier local service should go to platform six, where a train will depart at 6:50 and stop at every station. Customers with tickets for the delayed service may claim a refund at the information desk. We apologize for the inconvenience.",
+    "questions": [
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "Why is the express train delayed?",
+        "explanation": "\"due to a signal failure near Croydon\".",
+        "options": [
+          {
+            "content": "Bad weather",
+            "correct": false
+          },
+          {
+            "content": "A staff shortage",
+            "correct": false
+          },
+          {
+            "content": "There is a signal failure",
+            "correct": true
+          },
+          {
+            "content": "A broken door",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "What is the new departure time of the express?",
+        "explanation": "\"The new departure time is 7:10\".",
+        "options": [
+          {
+            "content": "6:45",
+            "correct": false
+          },
+          {
+            "content": "6:50",
+            "correct": false
+          },
+          {
+            "content": "7:25",
+            "correct": false
+          },
+          {
+            "content": "7:10",
+            "correct": true
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "Which platform will the express leave from?",
+        "explanation": "Sân ga mới là số 4, không phải số 2.",
+        "options": [
+          {
+            "content": "Platform four",
+            "correct": true
+          },
+          {
+            "content": "Platform two",
+            "correct": false
+          },
+          {
+            "content": "Platform six",
+            "correct": false
+          },
+          {
+            "content": "Platform ten",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "What is special about the 6:50 train?",
+        "explanation": "\"stop at every station\" (tàu địa phương).",
+        "options": [
+          {
+            "content": "It goes directly to Brighton",
+            "correct": false
+          },
+          {
+            "content": "It stops at every station",
+            "correct": true
+          },
+          {
+            "content": "It is free of charge",
+            "correct": false
+          },
+          {
+            "content": "It leaves from platform two",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "Where can passengers ask for a refund?",
+        "explanation": "\"claim a refund at the information desk\".",
+        "options": [
+          {
+            "content": "On the train",
+            "correct": false
+          },
+          {
+            "content": "At platform six",
+            "correct": false
+          },
+          {
+            "content": "At the information desk",
+            "correct": true
+          },
+          {
+            "content": "Online only",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "LISTENING",
+        "content": "The express is delayed by about ____ minutes.",
+        "explanation": "Trễ khoảng \"twenty-five minutes\".",
+        "options": [],
+        "acceptedAnswers": [
+          "25",
+          "twenty-five",
+          "twenty five"
+        ]
+      }
+    ],
+    "audioUrl": null,
+    "durationSeconds": 39
+  },
+  {
+    "status": "INACTIVE",
+    "topic": "travel",
+    "level": "INTERMEDIATE",
+    "titleVi": "Đổi đặt phòng khách sạn",
+    "titleEn": "Changing a Hotel Reservation",
+    "descriptionVi": "Khách đổi ngày đến, kéo dài kỳ nghỉ và xin trả phòng muộn.",
+    "descriptionEn": "A guest changes the arrival date, extends the stay and asks for a late check-out.",
+    "transcript": "Guest: Hello, I have a reservation under the name Carter for three nights from the fifth of June, but I need to change it.\nReceptionist: Certainly. What would you like to change?\nGuest: My flight has been rescheduled, so I'll arrive one day later, on the sixth. And I'd like to stay four nights instead of three.\nReceptionist: Let me check availability. A double room is available, but the price is higher on the weekend. It will be a hundred and ten dollars per night instead of ninety-five.\nGuest: That's fine. Does the price include breakfast?\nReceptionist: Yes, breakfast is served from seven to ten.\nGuest: Great. Could I also get a late check-out?\nReceptionist: Check-out is at eleven, but I can arrange one o'clock for an extra twenty dollars.",
+    "questions": [
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "Why does the guest want to change the booking?",
+        "explanation": "\"My flight has been rescheduled\".",
+        "options": [
+          {
+            "content": "He found a cheaper hotel",
+            "correct": false
+          },
+          {
+            "content": "He is ill",
+            "correct": false
+          },
+          {
+            "content": "The hotel is full",
+            "correct": false
+          },
+          {
+            "content": "His flight has been rescheduled",
+            "correct": true
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "What is the new arrival date?",
+        "explanation": "\"I'll arrive one day later, on the sixth\".",
+        "options": [
+          {
+            "content": "The sixth of June",
+            "correct": true
+          },
+          {
+            "content": "The fifth of June",
+            "correct": false
+          },
+          {
+            "content": "The seventh of June",
+            "correct": false
+          },
+          {
+            "content": "The third of June",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "How many nights will the guest stay?",
+        "explanation": "\"four nights instead of three\".",
+        "options": [
+          {
+            "content": "Two",
+            "correct": false
+          },
+          {
+            "content": "Four",
+            "correct": true
+          },
+          {
+            "content": "Three",
+            "correct": false
+          },
+          {
+            "content": "Five",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "How much is the room per night now?",
+        "explanation": "\"a hundred and ten dollars per night\".",
+        "options": [
+          {
+            "content": "$95",
+            "correct": false
+          },
+          {
+            "content": "$100",
+            "correct": false
+          },
+          {
+            "content": "$110",
+            "correct": true
+          },
+          {
+            "content": "$120",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "When is breakfast served?",
+        "explanation": "\"breakfast is served from seven to ten\".",
+        "options": [
+          {
+            "content": "From 6 to 9",
+            "correct": false
+          },
+          {
+            "content": "From 8 to 11",
+            "correct": false
+          },
+          {
+            "content": "All day",
+            "correct": false
+          },
+          {
+            "content": "From 7 to 10",
+            "correct": true
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "LISTENING",
+        "content": "A late check-out costs an extra $____.",
+        "explanation": "Trả phòng muộn phụ thu \"twenty dollars\".",
+        "options": [],
+        "acceptedAnswers": [
+          "20",
+          "twenty"
+        ]
+      }
+    ],
+    "audioUrl": null,
+    "durationSeconds": 57
+  }
+]

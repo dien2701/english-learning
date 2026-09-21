@@ -2,7 +2,8 @@ import { http } from '../shared/api/client';
 import type {
   ChatConversation,
   ChatConversationDetail,
-  ChatMessage,
+  ChatQuota,
+  SendMessageResult,
 } from '../types/chat';
 
 export const chatService = {
@@ -22,11 +23,14 @@ export const chatService = {
   sendMessage: (
     conversationId: string,
     content: string,
-  ): Promise<{ userMessage: ChatMessage; reply: ChatMessage }> =>
-    http.post<{ userMessage: ChatMessage; reply: ChatMessage }>(
+  ): Promise<SendMessageResult> =>
+    http.post<SendMessageResult>(
       `/chat/conversations/${conversationId}/messages`,
       { content },
     ),
+
+  /** Số lượt nhắn còn lại hôm nay. */
+  quota: (): Promise<ChatQuota> => http.get<ChatQuota>('/chat/quota'),
 
   /** Câu hỏi gợi ý cho hội thoại trống. */
   starters: (): Promise<string[]> => http.get<string[]>('/chat/starters'),

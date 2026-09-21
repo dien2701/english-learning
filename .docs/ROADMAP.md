@@ -1,4 +1,4 @@
-# ROADMAP: hoàn thiện EN-Learning
+﻿# ROADMAP: hoàn thiện EN-Learning
 
 Cập nhật: 21/09/2026. Mỗi phiên chỉ đọc file này và đúng một file đợt trong `.docs/roadmap/`.
 Quyết định nền (nối FE theo module, AI bản giả, hạ tầng đơn giản, phạm vi) nằm trong `CLAUDE.md`.
@@ -16,9 +16,14 @@ Quyết định nền (nối FE theo module, AI bản giả, hạ tầng đơn g
 | 6 | Email nhắc học, rate limit, cache, dọn dẹp | 1, 5 | [x] |
 | 7 | Hoàn tất song ngữ VI/EN (làm xen kẽ được) | không | [x] |
 | Cuối | Xoá mock, cập nhật tài liệu, nợ kỹ thuật nhỏ | tất cả | [ ] |
+| 8 | Dữ liệu demo cho từng trang (`dot-8-du-lieu-demo.md`) | Cuối | [x] |
+| 10 | Sửa lỗi giao diện: thời gian làm bài, màu sidebar, xác nhận rời bài (`dot-10-sua-loi-giao-dien.md`) | không | [x] |
+| 11 | AI thật Gemini: Viết, Chat (30 tin/ngày), Nói chấm phát âm từng câu (`dot-11-ai-that-gemini.md`) | 4 | [x] |
+| 12 | Audio bài nghe: OpenAI TTS đa giọng, Cloudinary, sinh cho bài seed (`dot-12-audio-bai-nghe.md`) | 5 | [ ] |
 
 Chi tiết: `.docs/roadmap/dot-0-noi-auth-fe.md`, `dot-1-flashcard-ho-so.md`, `dot-2-bo-may-lam-bai.md`,
-`dot-3-dashboard.md`, `dot-4-ai.md`, `dot-5-quan-tri.md`, `dot-6-ha-tang-phu.md`, `dot-7-song-ngu.md`.
+`dot-3-dashboard.md`, `dot-4-ai.md`, `dot-5-quan-tri.md`, `dot-6-ha-tang-phu.md`, `dot-7-song-ngu.md`,
+`dot-10-sua-loi-giao-dien.md`, `dot-11-ai-that-gemini.md`, `dot-12-audio-bai-nghe.md`. Đợt 10, 11, 12 độc lập nhau.
 Đợt 1 và 2 có thể song song. Đợt 4 chỉ cần Auth nên làm sớm được.
 
 ## Phiên làm việc (gói Pro)
@@ -56,6 +61,24 @@ Opus chỉ dùng khi Sonnet sai hai lần liên tiếp ở cùng một việc (g
 | 7b | 7 | Song ngữ: Hồ sơ, Cài đặt, Thống kê, Thông báo, Chat | Sonnet | low | [x] |
 | 7c | 7 | Song ngữ: Quản trị, trang lỗi, xác thực, `messageKey` từ BE; đóng đợt | Sonnet | low | [x] |
 | 9a | Cuối | Xoá mock, cập nhật tài liệu, nợ nhỏ, chia chunk build | Sonnet | medium | [x] |
+| 8a | 8 | BE: cờ `app.seed.mode`, 50 user + settings, đánh dấu demo, `reset-demo` (8.1) | Sonnet | medium | [x] |
+| 8b | 8 | Nội dung: `topics.json`, `decks.json` 15×20 thẻ, cập nhật SeedService (8.2) | Sonnet | medium | [x] |
+| 8c | 8 | Nội dung: `listening.json`, `reading.json` 12 bài mỗi loại (8.2) | Sonnet | medium | [x] |
+| 8d | 8 | Nội dung: `writing.json`, `speaking.json`, `exams.json` 5 đề, bài `INACTIVE` (8.2) | Sonnet | medium | [x] |
+| 8e | 8 | BE: lịch sử 90 ngày, attempts, flashcard progress, viết/nói/chat (8.3) | Sonnet | high | [x] |
+| 8f | 8 | BE thông báo + email_logs (8.4); FE fallback ảnh/audio (8.5) | Sonnet | low | [x] |
+| 8z | 8 | Đóng đợt | Haiku | low | [x] |
+| 10a | 10 | FE: thời gian làm bài `mm:ss`, sidebar chữ trắng cố định, `useLeaveGuard` xác nhận rời bài; đóng đợt | Sonnet | low | [x] |
+| 11a | 11 | BE `GeminiClient`, điều kiện key, `GeminiWritingGrader` (11.1) | Sonnet | high | [x] |
+| 11b | 11 | BE `GeminiChatAssistant`, hạn mức 30 tin/ngày, `GET /chat/quota`, test (11.2) | Sonnet | medium | [x] |
+| 11c | 11 | FE Chat: hiện lượt còn lại, khoá khi hết lượt, nút thử lại khi AI lỗi (11.2) | Sonnet | low | [x] |
+| 11d | 11 | BE Nói: migration, lượt `IN_PROGRESS`, `assess` từng câu (Gemini audio), submit tổng hợp, test (11.3) | Sonnet | high | [x] |
+| 11e | 11 | FE Nói: thẻ nhận xét phát âm sau mỗi câu, thu lại, nộp; xoá submit multipart cũ (11.3) | Sonnet | medium | [x] |
+| 11z | 11 | Đóng đợt | Haiku | low | [x] |
+| 12a | 12 | BE `AudioStorage` (Cloudinary/cục bộ), `SpeechSynthesizer` (OpenAI/giả), migration, sinh MP3 đa giọng, API admin, test (12.1) | Sonnet | high | [ ] |
+| 12b | 12 | FE: phát `audioUrl`, fallback đọc transcript; form quản trị audio (12.2) | Sonnet | low | [ ] |
+| 12c | 12 | Lệnh sinh audio 12 bài seed, ghi URL vào seed JSON, cập nhật CLAUDE.md/ARCHITECTURE (12.3) | Sonnet | medium | [ ] |
+| 12z | 12 | Đóng đợt | Haiku | low | [ ] |
 
 Mẹo tiết kiệm hạn mức Pro: mỗi phiên một dòng; hết phiên thì `/clear`, không nối tiếp phiên cũ.
 Nếu phiên dài quá (context > ~60%), dừng lại, tick phần đã xong và tách phần còn lại thành dòng mới (vd `2b-2`).

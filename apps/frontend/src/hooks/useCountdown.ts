@@ -23,6 +23,7 @@ export function useCountdown(
   isActive = true,
 ): UseCountdownResult {
   const [elapsed, setElapsed] = useState(0);
+  const elapsedRef = useRef(0);
 
   const onExpireRef = useRef(onExpire);
   useEffect(() => {
@@ -34,8 +35,12 @@ export function useCountdown(
   useEffect(() => {
     if (!isActive) return;
 
+    // Tính theo đồng hồ thật để tab nền bị hạn chế timer vẫn không đếm thiếu.
+    const startedAt = Date.now() - elapsedRef.current * 1000;
     const id = window.setInterval(() => {
-      setElapsed((prev) => prev + 1);
+      const next = Math.floor((Date.now() - startedAt) / 1000);
+      elapsedRef.current = next;
+      setElapsed(next);
     }, 1000);
 
     return () => window.clearInterval(id);

@@ -5,7 +5,7 @@ import java.util.List;
 
 import vn.enlearning.backend.entity.AiFeedbackIssue;
 
-/** Cổng chấm bài viết. Bản giả: {@code FakeWritingGrader}; bản OpenAI thật gắn ở bước 4.4. */
+/** Cổng chấm bài viết. Bản giả: {@code FakeWritingGrader}; bản Gemini: {@code GeminiWritingGrader}. */
 public interface WritingGrader {
 
 	/** @throws AiGradingException khi AI không trả được kết quả hợp lệ */

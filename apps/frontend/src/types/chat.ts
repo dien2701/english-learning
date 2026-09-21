@@ -23,6 +23,21 @@ export interface ChatMessage {
   isRefusal?: boolean;
 }
 
+/** Hạn mức tin nhắn trong ngày; `resetAt` là 0h ngày mai (giờ Việt Nam). */
+export interface ChatQuota {
+  limit: number;
+  used: number;
+  remaining: number;
+  resetAt: string;
+}
+
+/** Kết quả gửi tin: cả hai tin và số lượt còn lại hôm nay. */
+export interface SendMessageResult {
+  userMessage: ChatMessage;
+  reply: ChatMessage;
+  remaining: number;
+}
+
 export interface ChatConversation {
   id: string;
   title: string;

@@ -1,5 +1,6 @@
 package vn.enlearning.backend.chat.repository;
 
+import java.time.Instant;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -28,6 +29,15 @@ public interface ChatMessageRepository extends JpaRepository<ChatMessage, UUID> 
 	Optional<ChatMessage> findFirstByConversationIdOrderByCreatedAtDescIdDesc(UUID conversationId);
 
 	long countByConversationId(UUID conversationId);
+
+	/**
+	 * Số câu trợ lý đã trả lời một người trong khoảng [from, to), tính cả hội thoại đã xoá mềm (native để không
+	 * dính {@code @SQLRestriction}, tránh xoá hội thoại để lách hạn mức).
+	 */
+	@Query(value = "select count(*) from chat_messages m join chat_conversations c on c.id = m.conversation_id "
+			+ "where c.user_id = :userId and m.role = 'ASSISTANT' and m.created_at >= :from and m.created_at < :to",
+			nativeQuery = true)
+	int countAssistantReplies(@Param("userId") UUID userId, @Param("from") Instant from, @Param("to") Instant to);
 
 	@Query("select m.conversation.id as conversationId, count(m) as total from ChatMessage m "
 			+ "where m.conversation.id in :ids group by m.conversation.id")

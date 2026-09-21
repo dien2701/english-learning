@@ -13,6 +13,7 @@ import { ErrorState, Skeleton } from '../../components/ui/StateBlocks';
 import { useApi } from '../../hooks/useApi';
 import { useApiError } from '../../hooks/useApiError';
 import { useCountdown } from '../../hooks/useCountdown';
+import { useLeaveGuard } from '../../hooks/useLeaveGuard';
 import { useStudyHeartbeat } from '../../hooks/useStudyHeartbeat';
 import { readingService } from '../../services/contentService';
 import type { AnswerSubmission } from '../../types/practice';
@@ -35,6 +36,8 @@ const ReadingPracticePage: React.FC = () => {
   const [answers, setAnswers] = useState<Record<string, AnswerSubmission>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const release = useLeaveGuard(Boolean(lesson));
+
   // Giữ cờ riêng để hết giờ chỉ nộp đúng một lần.
   const hasSubmitted = useRef(false);
 
@@ -56,6 +59,7 @@ const ReadingPracticePage: React.FC = () => {
 
         if (isTimeout) message.warning(t('exam.timeUpAuto'));
 
+        release();
         navigate(`/reading/result/${result.attemptId}`, {
           state: { result },
           replace: true,
@@ -66,7 +70,7 @@ const ReadingPracticePage: React.FC = () => {
         setIsSubmitting(false);
       }
     },
-    [id, answers, navigate, message, describe, t],
+    [id, answers, release, navigate, message, describe, t],
   );
 
   const timeLimitSeconds = (lesson?.timeLimitMinutes ?? 0) * 60;

@@ -1,0 +1,190 @@
+[
+  {
+    "status": "ACTIVE",
+    "topic": "daily-life",
+    "level": "BEGINNER",
+    "suggestedMinutes": 15,
+    "minWords": 60,
+    "titleVi": "Mô tả thói quen hằng ngày",
+    "titleEn": "Describe Your Daily Routine",
+    "instructions": "Write a short paragraph (at least 60 words) about your daily routine on a school or work day. Say what time you get up, what you do during the day and when you go to bed.",
+    "hints": [
+      "Use the present simple: I get up, I go, I study.",
+      "Use time words: in the morning, at noon, in the evening.",
+      "Connect ideas with and, then, after that."
+    ]
+  },
+  {
+    "status": "ACTIVE",
+    "topic": "family",
+    "level": "BEGINNER",
+    "suggestedMinutes": 15,
+    "minWords": 60,
+    "titleVi": "Giới thiệu gia đình bạn",
+    "titleEn": "Write About Your Family",
+    "instructions": "Write a paragraph (at least 60 words) about your family. Who is in your family? What do they do? What do you like doing together?",
+    "hints": [
+      "Name each person and say how they are related to you.",
+      "Describe one person in more detail: age, job, personality.",
+      "Finish with an activity your family enjoys together."
+    ]
+  },
+  {
+    "status": "ACTIVE",
+    "topic": "travel",
+    "level": "BEGINNER",
+    "suggestedMinutes": 20,
+    "minWords": 80,
+    "titleVi": "Email kể về chuyến đi",
+    "titleEn": "Email to a Friend About a Trip",
+    "instructions": "You have just come back from a holiday. Write an email (at least 80 words) to an English-speaking friend. Tell them where you went, what you did and what you liked most.",
+    "hints": [
+      "Start with Dear ... and a friendly opening line.",
+      "Use the past simple: I went, we visited, I ate.",
+      "End with a closing such as Best wishes and your name."
+    ]
+  },
+  {
+    "status": "ACTIVE",
+    "topic": "food-drink",
+    "level": "BEGINNER",
+    "suggestedMinutes": 15,
+    "minWords": 70,
+    "titleVi": "Món ăn yêu thích của bạn",
+    "titleEn": "Your Favourite Food",
+    "instructions": "Write a paragraph (at least 70 words) about your favourite food or dish. What is it? What is it made of? When and where do you usually eat it? Why do you like it?",
+    "hints": [
+      "Name the dish and say where it comes from.",
+      "Describe the taste, smell and ingredients.",
+      "Give at least two reasons why you like it."
+    ]
+  },
+  {
+    "status": "ACTIVE",
+    "topic": "shopping",
+    "level": "INTERMEDIATE",
+    "suggestedMinutes": 20,
+    "minWords": 100,
+    "titleVi": "Email khiếu nại hàng bị hỏng",
+    "titleEn": "Complaint About a Damaged Item",
+    "instructions": "You bought a pair of headphones online, but they arrived damaged. Write an email (at least 100 words) to the shop. Explain the problem, say what you want them to do and give your order number (#48213).",
+    "hints": [
+      "State the purpose in the first sentence.",
+      "Describe the problem with specific details.",
+      "Say clearly what you want: a refund or a replacement.",
+      "Use a polite, formal tone: I would be grateful if ..."
+    ]
+  },
+  {
+    "status": "ACTIVE",
+    "topic": "workplace",
+    "level": "INTERMEDIATE",
+    "suggestedMinutes": 25,
+    "minWords": 120,
+    "titleVi": "Email xin dời cuộc họp",
+    "titleEn": "Email to Reschedule a Meeting",
+    "instructions": "You cannot attend a meeting with your manager on Thursday at 10 a.m. because you must visit a client. Write an email (at least 120 words) explaining why and suggesting two new times.",
+    "hints": [
+      "Apologise briefly for the inconvenience.",
+      "Give the reason in one clear sentence.",
+      "Offer two alternative times and ask for confirmation.",
+      "Close with Kind regards."
+    ]
+  },
+  {
+    "status": "ACTIVE",
+    "topic": "it-tech",
+    "level": "INTERMEDIATE",
+    "suggestedMinutes": 25,
+    "minWords": 150,
+    "titleVi": "Làm việc từ xa: lợi và hại",
+    "titleEn": "Working from Home: Pros and Cons",
+    "instructions": "Many companies now allow employees to work from home. Write an essay (at least 150 words) discussing the advantages and disadvantages of working from home. Give your own opinion in the conclusion.",
+    "hints": [
+      "Introduction: paraphrase the topic in one or two sentences.",
+      "One paragraph for advantages, one for disadvantages.",
+      "Use linking words: however, in addition, as a result.",
+      "Conclusion: state clearly whether you think it is a good idea."
+    ]
+  },
+  {
+    "status": "ACTIVE",
+    "topic": "health",
+    "level": "INTERMEDIATE",
+    "suggestedMinutes": 25,
+    "minWords": 150,
+    "titleVi": "Thể thao có giúp bạn khoẻ mạnh?",
+    "titleEn": "Does Sport Keep You Healthy?",
+    "instructions": "Some people say that playing sport is the best way to stay healthy. Do you agree or disagree? Write an essay (at least 150 words) with reasons and examples.",
+    "hints": [
+      "State your opinion clearly in the introduction.",
+      "Give two main reasons, each with an example.",
+      "Mention at least one other way to stay healthy.",
+      "Do not repeat the same words; use synonyms."
+    ]
+  },
+  {
+    "status": "ACTIVE",
+    "topic": "exam-prep",
+    "level": "INTERMEDIATE",
+    "suggestedMinutes": 20,
+    "minWords": 150,
+    "titleVi": "IELTS Task 1: mô tả số liệu",
+    "titleEn": "IELTS Task 1: Describe the Data",
+    "instructions": "The table shows the percentage of people who used three types of transport in a city in 2010 and 2020 (Bus: 40% to 30%; Bicycle: 10% to 25%; Car: 50% to 45%). Summarise the information by selecting and reporting the main features. Write at least 150 words.",
+    "hints": [
+      "Paragraph 1: one sentence to say what the table shows.",
+      "Paragraph 2: overview of the main trend, without numbers.",
+      "Paragraph 3: compare figures for each type of transport.",
+      "Use: increased from ... to ..., fell by ..., remained the highest."
+    ]
+  },
+  {
+    "status": "ACTIVE",
+    "topic": "exam-prep",
+    "level": "ADVANCED",
+    "suggestedMinutes": 40,
+    "minWords": 250,
+    "titleVi": "IELTS Task 2: công nghệ và giáo dục",
+    "titleEn": "IELTS Task 2: Technology in Education",
+    "instructions": "Some people believe that computers and tablets will replace teachers in the classroom in the future. To what extent do you agree or disagree? Give reasons for your answer and include relevant examples. Write at least 250 words.",
+    "hints": [
+      "Introduction: paraphrase the question and state your position.",
+      "Body 1: what technology can do well.",
+      "Body 2: what teachers do that technology cannot.",
+      "Conclusion: restate your opinion with a brief summary."
+    ]
+  },
+  {
+    "status": "ACTIVE",
+    "topic": "academic",
+    "level": "ADVANCED",
+    "suggestedMinutes": 40,
+    "minWords": 250,
+    "titleVi": "IELTS Task 2: sống ở thành phố hay nông thôn",
+    "titleEn": "IELTS Task 2: City or Countryside",
+    "instructions": "Some people prefer to live in a big city, while others prefer a quiet life in the countryside. Discuss both views and give your own opinion. Write at least 250 words.",
+    "hints": [
+      "Introduction: mention both views and say you will discuss them.",
+      "Body 1: reasons people choose cities (jobs, services, culture).",
+      "Body 2: reasons people choose the countryside (space, health, cost).",
+      "Conclusion: give and justify your own opinion."
+    ]
+  },
+  {
+    "status": "INACTIVE",
+    "topic": "workplace",
+    "level": "INTERMEDIATE",
+    "suggestedMinutes": 25,
+    "minWords": 120,
+    "titleVi": "Thư xin việc ngắn",
+    "titleEn": "A Short Cover Letter",
+    "instructions": "You saw a job advertisement for a customer service assistant at a travel company. Write a short cover letter (at least 120 words) to apply. Say who you are, what experience you have and why you want the job.",
+    "hints": [
+      "Start with Dear Hiring Manager.",
+      "Mention the job title in the first paragraph.",
+      "Give two skills and one example of experience.",
+      "End by saying you are available for an interview."
+    ]
+  }
+]

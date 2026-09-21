@@ -274,7 +274,7 @@
     "searchPlaceholder": "Search speaking lessons…",
     "allLessons": "All speaking lessons",
     "promptCount": "{{count}} lines",
-    "recordedCount": "{{done}} of {{total}} lines recorded",
+    "recordedCount": "{{done}} of {{total}} lines assessed",
     "sentenceOf": "Line {{current}} of {{total}}",
     "listenSample": "Hear the model",
     "startRecording": "Start recording",
@@ -308,7 +308,19 @@
     "gradingHint": "The AI is listening to and scoring the lines you read. This usually takes a few seconds.",
     "failedTitle": "Could not grade your speaking",
     "failedHint": "The AI did not respond. Recordings are not stored, so this cannot be regraded. Please record again.",
-    "transcript": "AI heard:"
+    "transcript": "AI heard:",
+    "assessing": "The AI is listening and scoring this line…",
+    "assessFailed": "Couldn't score this line. Your recording is still here, please try again.",
+    "retryAssess": "Try scoring again",
+    "submitNeedAll": "Record and assess every line before submitting.",
+    "feedback": {
+      "title": "Pronunciation feedback",
+      "score": "Line score: {{score}}/10",
+      "heardAs": "Heard as: \"{{heard}}\"",
+      "noSpeech": "The AI didn't hear any speech in this recording.",
+      "allGood": "Great pronunciation, no words to fix.",
+      "needsWork": "Needs work"
+    }
   },
   "exam": {
     "title": "Exams",
@@ -329,6 +341,10 @@
     "submitWithUnanswered": "{{count}} questions are still blank and will be marked wrong. Submit anyway?",
     "submitAllDone": "You have answered every question. Submit now?",
     "review": "Review",
+    "leaveTitle": "Leave this exercise?",
+    "leaveBody": "You are in the middle of an exercise; leaving will discard your answers.",
+    "leaveOk": "Leave",
+    "leaveStay": "Stay",
     "unansweredTitle": "Some questions are blank",
     "unansweredBody": "{{count}} questions are still blank and will be marked wrong. Submit anyway?",
     "keepGoing": "Keep going",
@@ -376,7 +392,10 @@
     "sendError": "Could not send the message. Check your connection and try again.",
     "createError": "Could not start a new conversation.",
     "deleteError": "Could not delete the conversation.",
-    "loadError": "Could not load your conversations."
+    "loadError": "Could not load your conversations.",
+    "quotaLeft": "{{remaining}}/{{limit}} messages left today",
+    "quotaExhausted": "You've used all your messages for today. Come back tomorrow.",
+    "retry": "Retry"
   },
   "notifications": {
     "title": "Notifications",
@@ -773,6 +792,8 @@
       "statusInvalid": "Invalid status."
     },
     "invalidState": "This action is not available in the current state.",
+    "chatDailyLimit": "You've used all your messages for today. Come back tomorrow.",
+    "speakingIncomplete": "Record and assess every sentence before submitting.",
     "aiUnavailable": "The AI assistant is busy. Please try again later.",
     "tooManyRequests": "Too many attempts. Please wait a moment and try again.",
     "audioTooLarge": "The recording is too large. Record less audio or fewer lines.",

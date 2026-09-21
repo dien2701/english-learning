@@ -19,6 +19,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import vn.enlearning.backend.chat.dto.ChatConversationDetailResponse;
 import vn.enlearning.backend.chat.dto.ChatConversationResponse;
+import vn.enlearning.backend.chat.dto.ChatQuotaResponse;
 import vn.enlearning.backend.chat.dto.RenameConversationRequest;
 import vn.enlearning.backend.chat.dto.SendMessageRequest;
 import vn.enlearning.backend.chat.dto.SendMessageResponse;
@@ -70,6 +71,11 @@ public class ChatController {
 	ApiResponse<SendMessageResponse> send(@AuthenticationPrincipal Jwt jwt, @PathVariable UUID id,
 			@Valid @RequestBody SendMessageRequest request) {
 		return ApiResponse.ok(chat.send(userId(jwt), id, request.content()));
+	}
+
+	@GetMapping("/quota")
+	ApiResponse<ChatQuotaResponse> quota(@AuthenticationPrincipal Jwt jwt) {
+		return ApiResponse.ok(chat.quota(userId(jwt)));
 	}
 
 	@GetMapping("/starters")

@@ -3,7 +3,11 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 import ChatComposer from './ChatComposer';
+import ChatStatusBar from './ChatStatusBar';
 import ChatThread from './ChatThread';
+import { useApiError } from '../../hooks/useApiError';
+import { useChatQuota } from '../../hooks/useChatQuota';
+import { ApiError } from '../../shared/api/types';
 import { chatService } from '../../services/chatService';
 import type { ChatMessage } from '../../types/chat';
 
@@ -22,6 +26,13 @@ const ChatWidget: React.FC<{ isOpen: boolean; onClose: () => void }> = ({
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [starters, setStarters] = useState<string[]>([]);
   const [isThinking, setIsThinking] = useState(false);
+  const { describe } = useApiError();
+  const { quota, setRemaining, markExhausted, exhausted } = useChatQuota(isOpen);
+  const [failure, setFailure] = useState<{
+    optimisticId: string;
+    text: string;
+    message: string;
+  } | null>(null);
 
   const panelRef = useRef<HTMLDivElement>(null);
 
@@ -74,35 +85,44 @@ const ChatWidget: React.FC<{ isOpen: boolean; onClose: () => void }> = ({
       };
 
       setMessages((prev) => [...prev, optimistic]);
+      setFailure(null);
       setIsThinking(true);
 
       try {
-        const { userMessage, reply } = await chatService.sendMessage(
+        const { userMessage, reply, remaining } = await chatService.sendMessage(
           conversationId,
           text,
         );
+        setRemaining(remaining);
         // Thay tin tạm bằng tin thật từ server rồi nối câu trả lời.
         setMessages((prev) => [
           ...prev.filter((m) => m.id !== optimistic.id),
           userMessage,
           reply,
         ]);
-      } catch {
-        setMessages((prev) => [
-          ...prev,
-          {
-            id: `err-${Date.now()}`,
-            role: 'ASSISTANT',
-            content: t('chat.sendError'),
-            createdAt: new Date().toISOString(),
-          },
-        ]);
+      } catch (sendError: unknown) {
+        if (sendError instanceof ApiError && sendError.code === 'CHAT_DAILY_LIMIT') {
+          markExhausted();
+          setMessages((prev) => prev.filter((m) => m.id !== optimistic.id));
+        } else {
+          setFailure({
+            optimisticId: optimistic.id,
+            text,
+            message: describe(sendError, 'chat.sendError'),
+          });
+        }
       } finally {
         setIsThinking(false);
       }
     },
-    [conversationId, t],
+    [conversationId, describe, setRemaining, markExhausted],
   );
+
+  const retrySend = () => {
+    if (!failure) return;
+    setMessages((prev) => prev.filter((m) => m.id !== failure.optimisticId));
+    void send(failure.text);
+  };
 
   if (!isOpen) return null;
 
@@ -158,7 +178,16 @@ const ChatWidget: React.FC<{ isOpen: boolean; onClose: () => void }> = ({
         onPickStarter={send}
       />
 
-      <ChatComposer onSend={send} disabled={!conversationId || isThinking} />
+      <ChatStatusBar
+        quota={quota}
+        exhausted={exhausted}
+        errorMessage={failure?.message}
+        onRetry={retrySend}
+      />
+      <ChatComposer
+        onSend={send}
+        disabled={!conversationId || isThinking || exhausted}
+      />
     </div>
   );
 };

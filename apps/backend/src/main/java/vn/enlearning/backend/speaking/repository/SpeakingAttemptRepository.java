@@ -40,6 +40,21 @@ public interface SpeakingAttemptRepository extends JpaRepository<SpeakingAttempt
 	int transition(@Param("id") UUID id, @Param("from") SpeakingAttemptStatus from,
 			@Param("to") SpeakingAttemptStatus to, @Param("now") Instant now);
 
+	/** Lượt đang thu của người dùng ở bài này, mới nhất trước; dùng lại thay vì tạo lượt mới. */
+	Optional<SpeakingAttempt> findFirstByUserIdAndLessonIdAndStatusOrderByCreatedAtDescIdDesc(UUID userId,
+			UUID lessonId, SpeakingAttemptStatus status);
+
+	/** Làm mới {@code updatedAt} để job dọn dẹp không xoá lượt vẫn đang được dùng. */
+	@Modifying(flushAutomatically = true, clearAutomatically = true)
+	@Query("update SpeakingAttempt a set a.updatedAt = :now where a.id = :id")
+	int touch(@Param("id") UUID id, @Param("now") Instant now);
+
+	/** Lượt IN_PROGRESS bị bỏ dở: dòng kết quả từng câu bị xoá theo khoá ngoại ON DELETE CASCADE. */
+	@Modifying
+	@Query("delete from SpeakingAttempt a where a.status = vn.enlearning.backend.entity.enums.SpeakingAttemptStatus.IN_PROGRESS "
+			+ "and a.updatedAt < :cutoff")
+	int deleteStaleInProgress(@Param("cutoff") Instant cutoff);
+
 	@Query("select distinct a.lesson.id from SpeakingAttempt a where a.lesson.id in :ids")
 	List<UUID> usedLessonIds(@Param("ids") Collection<UUID> ids);
 

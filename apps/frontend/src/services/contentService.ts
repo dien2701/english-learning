@@ -24,7 +24,13 @@ import type {
   WritingPromptSummary,
   WritingSubmission,
 } from '../types/writing';
-import type { SpeakingDetail, SpeakingResult, SpeakingSummary } from '../types/speaking';
+import type {
+  SpeakingAttempt,
+  SpeakingDetail,
+  SpeakingPromptAssessment,
+  SpeakingResult,
+  SpeakingSummary,
+} from '../types/speaking';
 
 /** Bộ lọc dùng chung cho các trang danh sách. */
 export interface ListQuery {
@@ -147,24 +153,36 @@ export const speakingService = {
   get: (id: string): Promise<SpeakingDetail> =>
     http.get<SpeakingDetail>(`/speaking/lessons/${id}`),
 
-  /** Gửi bản ghi từng câu (multipart); kết quả ban đầu thường là GRADING, hỏi lại bằng getResult. */
-  submit: (
-    id: string,
-    recordings: { promptId: string; blob: Blob }[],
-    totalDurationSeconds: number,
-  ): Promise<SpeakingResult> => {
+  /** Mở lượt IN_PROGRESS (dùng lại lượt đang dở, kèm các câu đã chấm). */
+  startAttempt: (lessonId: string): Promise<SpeakingAttempt> =>
+    http.post<SpeakingAttempt>(`/speaking/lessons/${lessonId}/attempts`),
+
+  /** Gửi bản thu một câu và chờ AI đánh giá phát âm (đồng bộ); thu lại thì ghi đè. */
+  assess: (
+    attemptId: string,
+    promptId: string,
+    blob: Blob,
+  ): Promise<SpeakingPromptAssessment> => {
     const form = new FormData();
-    recordings.forEach(({ promptId, blob }, i) => {
-      form.append('promptIds', promptId);
-      form.append('audio', blob, `prompt-${i + 1}.${audioExtension(blob.type)}`);
-    });
-    form.append('durationSeconds', String(totalDurationSeconds));
-    return http.post<SpeakingResult>(`/speaking/lessons/${id}/submit`, form, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-      // Tải âm thanh lên có thể lâu hơn request thường.
-      timeout: 60_000,
-    });
+    form.append('audio', blob, `prompt.${audioExtension(blob.type)}`);
+    return http.post<SpeakingPromptAssessment>(
+      `/speaking/attempts/${attemptId}/prompts/${promptId}/assess`,
+      form,
+      {
+        headers: { 'Content-Type': 'multipart/form-data' },
+        // AI nghe và chấm đồng bộ nên lâu hơn request thường.
+        timeout: 60_000,
+      },
+    );
   },
+
+  /** Nộp cuối: tổng hợp kết quả từng câu (cần đủ mọi câu đã chấm). */
+  submit: (attemptId: string, durationSeconds: number): Promise<SpeakingResult> =>
+    http.post<SpeakingResult>(
+      `/speaking/attempts/${attemptId}/submit`,
+      { durationSeconds },
+      { timeout: 60_000 },
+    ),
 
   getResult: (attemptId: string): Promise<SpeakingResult> =>
     http.get<SpeakingResult>(`/speaking/results/${attemptId}`),

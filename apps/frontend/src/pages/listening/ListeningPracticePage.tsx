@@ -13,6 +13,7 @@ import { ErrorState, Skeleton } from '../../components/ui/StateBlocks';
 import { useApi } from '../../hooks/useApi';
 import { useApiError } from '../../hooks/useApiError';
 import { useCountdown } from '../../hooks/useCountdown';
+import { useLeaveGuard } from '../../hooks/useLeaveGuard';
 import { useStudyHeartbeat } from '../../hooks/useStudyHeartbeat';
 import { listeningService } from '../../services/contentService';
 import type { AnswerSubmission } from '../../types/practice';
@@ -39,6 +40,8 @@ const ListeningPracticePage: React.FC = () => {
   // Bài nghe không giới hạn thời gian, đồng hồ chỉ ghi lại thời gian làm.
   const { elapsed } = useCountdown(0, undefined, Boolean(lesson));
 
+  const release = useLeaveGuard(Boolean(lesson) && !isSubmitting);
+
   const answeredCount = Object.keys(answers).length;
   const totalQuestions = lesson?.questions.length ?? 0;
 
@@ -52,6 +55,7 @@ const ListeningPracticePage: React.FC = () => {
         Object.values(answers),
         elapsed,
       );
+      release();
       navigate(`/listening/result/${result.attemptId}`, {
         state: { result },
         replace: true,
@@ -60,7 +64,7 @@ const ListeningPracticePage: React.FC = () => {
       message.error(describe(submitError, 'errors.submitFailed'));
       setIsSubmitting(false);
     }
-  }, [id, answers, elapsed, isSubmitting, navigate, message, describe]);
+  }, [id, answers, elapsed, isSubmitting, release, navigate, message, describe]);
 
   const handleSubmitClick = () => {
     const unanswered = totalQuestions - answeredCount;
