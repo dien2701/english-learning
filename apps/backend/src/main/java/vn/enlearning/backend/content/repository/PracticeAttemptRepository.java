@@ -1,6 +1,7 @@
 package vn.enlearning.backend.content.repository;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -28,6 +29,27 @@ public interface PracticeAttemptRepository extends JpaRepository<PracticeAttempt
 	}
 
 	String COMPLETED = "vn.enlearning.backend.entity.enums.AttemptStatus.COMPLETED";
+
+	/** Số lượt đã chấm điểm và điểm trung bình (thang 10) trong một khoảng; {@code average} là null nếu không có lượt nào. */
+	interface SkillAverage {
+		long getAttempts();
+
+		Double getAverage();
+	}
+
+	String AVERAGE = "select count(a) as attempts, avg(a.score) as average from PracticeAttempt a "
+			+ "where a.user.id = :userId and a.status = " + COMPLETED + " and a.score is not null "
+			+ "and a.submittedAt >= :from and a.submittedAt < :to and ";
+
+	/** Ba truy vấn cùng dạng, khác cột cha: tránh GROUP BY trên biểu thức CASE (MySQL ONLY_FULL_GROUP_BY). */
+	@Query(AVERAGE + "a.listeningLesson is not null")
+	SkillAverage listeningAverage(@Param("userId") UUID userId, @Param("from") Instant from, @Param("to") Instant to);
+
+	@Query(AVERAGE + "a.readingLesson is not null")
+	SkillAverage readingAverage(@Param("userId") UUID userId, @Param("from") Instant from, @Param("to") Instant to);
+
+	@Query(AVERAGE + "a.exam is not null")
+	SkillAverage examAverage(@Param("userId") UUID userId, @Param("from") Instant from, @Param("to") Instant to);
 
 	@Query("select a.listeningLesson.id as parentId, a.score as score from PracticeAttempt a "
 			+ "where a.user.id = :userId and a.status = " + COMPLETED + " and a.listeningLesson.id in :ids "

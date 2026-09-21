@@ -14,9 +14,12 @@ import lombok.RequiredArgsConstructor;
 public class DevSeedRunner implements ApplicationRunner {
 
 	private final SeedService seedService;
+	private final HistorySeedService historySeed;
 
 	@Override
 	public void run(ApplicationArguments args) {
 		seedService.seedIfEmpty();
+		// Chạy cả khi DB đã có người dùng từ trước: chỉ nạp nếu học viên mẫu chưa có lịch sử học.
+		historySeed.seedIfEmpty();
 	}
 }

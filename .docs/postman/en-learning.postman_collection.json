@@ -2411,6 +2411,497 @@
           }
         }
       ]
+    },
+    {
+      "name": "Dot 3 - Dashboard, Thống kê",
+      "item": [
+        {
+          "name": "01 GET /dashboard/summary",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "const d = pm.response.json().data;",
+                  "pm.test('có greetingName, continueLearning (object hoặc null), attendedLessons', () => { pm.expect(d.greetingName).to.be.a('string'); pm.expect(d.attendedLessons).to.be.an('array'); pm.expect(d).to.have.property('continueLearning'); });",
+                  "pm.test('mỗi bài có status IN_PROGRESS|COMPLETED, progress 0-100, detailPath', () => d.attendedLessons.forEach(l => { pm.expect(['IN_PROGRESS','COMPLETED']).to.include(l.status); pm.expect(l.progress).to.be.within(0,100); pm.expect(l.detailPath).to.be.a('string'); pm.expect(l.title).to.have.all.keys('vi','en'); }));",
+                  "pm.test('tối đa 20 bài', () => pm.expect(d.attendedLessons.length).to.be.at.most(20));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/dashboard/summary",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "dashboard",
+                "summary"
+              ]
+            }
+          }
+        },
+        {
+          "name": "02 GET /dashboard/summary?status=COMPLETED",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('chỉ còn bài COMPLETED', () => pm.response.json().data.attendedLessons.forEach(l => pm.expect(l.status).to.eql('COMPLETED')));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/dashboard/summary?status=COMPLETED",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "dashboard",
+                "summary"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "COMPLETED"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "03 GET /dashboard/summary?status=IN_PROGRESS",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('chỉ còn bài IN_PROGRESS', () => pm.response.json().data.attendedLessons.forEach(l => pm.expect(l.status).to.eql('IN_PROGRESS')));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/dashboard/summary?status=IN_PROGRESS",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "dashboard",
+                "summary"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "IN_PROGRESS"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "04 GET /dashboard/study-time?period=WEEK",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "const d = pm.response.json().data;",
+                  "pm.test('7 cột, mỗi cột có label.vi/en, minutes, previousMinutes', () => { pm.expect(d.points).to.have.lengthOf(7); d.points.forEach(p => { pm.expect(p.label).to.have.all.keys('vi','en'); pm.expect(p.minutes).to.be.a('number'); pm.expect(p.previousMinutes).to.be.a('number'); }); });",
+                  "pm.test('tổng và phần trăm là số hữu hạn', () => { [d.totalMinutes, d.previousTotalMinutes, d.changePercent].forEach(x => pm.expect(Number.isFinite(x)).to.eql(true)); });",
+                  "pm.test('period WEEK', () => pm.expect(pm.response.json().data.period).to.eql('WEEK'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/dashboard/study-time?period=WEEK",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "dashboard",
+                "study-time"
+              ],
+              "query": [
+                {
+                  "key": "period",
+                  "value": "WEEK"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "05 GET /dashboard/study-time?period=month",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "const d = pm.response.json().data;",
+                  "pm.test('4 cột, mỗi cột có label.vi/en, minutes, previousMinutes', () => { pm.expect(d.points).to.have.lengthOf(4); d.points.forEach(p => { pm.expect(p.label).to.have.all.keys('vi','en'); pm.expect(p.minutes).to.be.a('number'); pm.expect(p.previousMinutes).to.be.a('number'); }); });",
+                  "pm.test('tổng và phần trăm là số hữu hạn', () => { [d.totalMinutes, d.previousTotalMinutes, d.changePercent].forEach(x => pm.expect(Number.isFinite(x)).to.eql(true)); });",
+                  "pm.test('period MONTH, nhãn Tuần 1', () => { const d = pm.response.json().data; pm.expect(d.period).to.eql('MONTH'); pm.expect(d.points[0].label.vi).to.eql('Tuần 1'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/dashboard/study-time?period=month",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "dashboard",
+                "study-time"
+              ],
+              "query": [
+                {
+                  "key": "period",
+                  "value": "month"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "06 GET /statistics/overview",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "const d = pm.response.json().data;",
+                  "pm.test('7 cột tuần, 4 cột tháng, tổng phút là số', () => { pm.expect(d.weekPoints).to.have.lengthOf(7); pm.expect(d.monthPoints).to.have.lengthOf(4); pm.expect(d.totalMinutes).to.be.a('number'); pm.expect(d.totalMinutesPrevious).to.be.a('number'); });",
+                  "pm.test('3 kỹ năng LISTENING, READING, EXAM; điểm 0-10', () => { pm.expect(d.skills.map(s => s.skill)).to.eql(['LISTENING','READING','EXAM']); d.skills.forEach(s => { pm.expect(s.averageScore).to.be.within(0,10); pm.expect(s.attempts).to.be.a('number'); pm.expect(s.change).to.be.a('number'); }); });",
+                  "pm.test('recentAttempts tối đa 8, có detailPath', () => { pm.expect(d.recentAttempts.length).to.be.at.most(8); d.recentAttempts.forEach(a => pm.expect(a.detailPath).to.be.a('string')); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/statistics/overview",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "statistics",
+                "overview"
+              ]
+            }
+          }
+        },
+        {
+          "name": "07 GET /profile (số liệu tổng)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "const d = pm.response.json().data;",
+                  "pm.test('có totalMinutes, completedLessons, masteredWords', () => { ['totalMinutes','completedLessons','masteredWords'].forEach(k => pm.expect(d[k]).to.be.a('number')); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/profile",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "profile"
+              ]
+            }
+          }
+        },
+        {
+          "name": "08 GET /dashboard/study-time?period=year (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 400', () => pm.response.to.have.status(400));",
+                  "pm.test('fieldErrorKeys.period', () => pm.expect(pm.response.json().fieldErrorKeys.period).to.eql('errors.badRequest'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/dashboard/study-time?period=year",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "dashboard",
+                "study-time"
+              ],
+              "query": [
+                {
+                  "key": "period",
+                  "value": "year"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "09 GET /dashboard/summary?status=DONE (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 400', () => pm.response.to.have.status(400));",
+                  "pm.test('fieldErrorKeys.status', () => pm.expect(pm.response.json().fieldErrorKeys.status).to.eql('errors.badRequest'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/dashboard/summary?status=DONE",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "dashboard",
+                "summary"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "DONE"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "10 GET /dashboard/summary không token (401)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 401', () => pm.response.to.have.status(401));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/dashboard/summary",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "dashboard",
+                "summary"
+              ]
+            }
+          }
+        },
+        {
+          "name": "11 GET /statistics/overview không token (401)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 401', () => pm.response.to.have.status(401));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/statistics/overview",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "statistics",
+                "overview"
+              ]
+            }
+          }
+        },
+        {
+          "name": "12 GET /dashboard/summary bằng adminToken (cách ly, rỗng)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "const d = pm.response.json().data;",
+                  "pm.test('admin chưa học gì: không thấy bài của học viên', () => { pm.expect(d.continueLearning).to.eql(null); pm.expect(d.attendedLessons).to.be.empty; });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/dashboard/summary",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "dashboard",
+                "summary"
+              ]
+            }
+          }
+        },
+        {
+          "name": "13 GET /dashboard/study-time bằng adminToken (rỗng, không NaN)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "const d = pm.response.json().data;",
+                  "pm.test('toàn 0, changePercent 0', () => { pm.expect(d.totalMinutes).to.eql(0); pm.expect(d.previousTotalMinutes).to.eql(0); pm.expect(d.changePercent).to.eql(0); d.points.forEach(p => pm.expect(p.minutes).to.eql(0)); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/dashboard/study-time?period=WEEK",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "dashboard",
+                "study-time"
+              ],
+              "query": [
+                {
+                  "key": "period",
+                  "value": "WEEK"
+                }
+              ]
+            }
+          }
+        }
+      ]
     }
   ]
 }

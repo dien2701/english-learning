@@ -10,7 +10,7 @@ Quyết định nền (nối FE theo module, AI bản giả, hạ tầng đơn g
 | 0 | Nối Auth với FE, mock theo module | không | [x] |
 | 1 | Flashcard, Hồ sơ/Cài đặt, heartbeat | 0 | [x] |
 | 2 | Bộ máy làm bài: Nghe, Đọc, Kiểm tra | 0 | [x] |
-| 3 | Dashboard, Thống kê | 1, 2 | [ ] |
+| 3 | Dashboard, Thống kê | 1, 2 | [x] |
 | 4 | AI: Viết, Chat, Nói (bản giả trước) | 0 | [ ] |
 | 5 | Quản trị, Thông báo | 2, 4 | [ ] |
 | 6 | Email nhắc học, rate limit, cache, dọn dẹp | 1, 5 | [ ] |
@@ -38,9 +38,9 @@ Opus chỉ dùng khi Sonnet sai hai lần liên tiếp ở cùng một việc (g
 | 2b | 2 | BE endpoint Nghe/Đọc/Kiểm tra, ẩn đáp án, lịch sử, `study_sessions`, test 403/lộ đáp án | Sonnet | medium | [x] |
 | 2c | 2 | FE: bỏ mock `listening,reading,exams,attempts`, sửa kiểu | Sonnet | low | [x] |
 | 2z | 2 | Đóng đợt | Haiku | low | [x] |
-| 3a | 3 | BE seed lịch sử học + truy vấn Dashboard/Thống kê (múi giờ, biên tuần/tháng), test | Sonnet | high | [ ] |
-| 3b | 3 | FE: bỏ mock `dashboard,statistics`, trạng thái rỗng | Sonnet | low | [ ] |
-| 3z | 3 | Đóng đợt | Haiku | low | [ ] |
+| 3a | 3 | BE seed lịch sử học + truy vấn Dashboard/Thống kê (múi giờ, biên tuần/tháng), test | Sonnet | high | [x] |
+| 3b | 3 | FE: bỏ mock `dashboard,statistics`, trạng thái rỗng | Sonnet | low | [x] |
+| 3z | 3 | Đóng đợt | Haiku | low | [x] |
 | 4a | 4 | BE khung AI (interface + bản giả `@Profile("dev")`) + Luyện viết (4.1) | Sonnet | high | [ ] |
 | 4b | 4 | BE Chat AI (4.2) | Sonnet | medium | [ ] |
 | 4c | 4 | BE Luyện nói (4.3): nhận file, transcript, `FAILED` | Sonnet | medium | [ ] |
