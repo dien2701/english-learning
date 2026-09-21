@@ -13,6 +13,7 @@ import { ErrorState, Skeleton } from '../../components/ui/StateBlocks';
 import { useApi } from '../../hooks/useApi';
 import { useApiError } from '../../hooks/useApiError';
 import { useCountdown } from '../../hooks/useCountdown';
+import { useStudyHeartbeat } from '../../hooks/useStudyHeartbeat';
 import { readingService } from '../../services/contentService';
 import type { AnswerSubmission } from '../../types/practice';
 import { useLanguage } from '../../hooks/useLanguage';
@@ -22,6 +23,7 @@ const ReadingPracticePage: React.FC = () => {
   const { L } = useLanguage();
   const { describe } = useApiError();
   const { id = '' } = useParams();
+  useStudyHeartbeat('READING', id);
   const navigate = useNavigate();
   const { message } = App.useApp();
 

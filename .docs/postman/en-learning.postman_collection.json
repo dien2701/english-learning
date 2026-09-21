@@ -2204,6 +2204,213 @@
           }
         }
       ]
+    },
+    {
+      "name": "Dot 2 - Nghe, Đọc, Kiểm tra",
+      "item": [
+        {
+          "name": "GET /listening/lessons",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/listening/lessons?search=&topicId=&level=&status=&page=1&pageSize=12",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "listening",
+                "lessons"
+              ],
+              "query": [
+                {
+                  "key": "search",
+                  "value": ""
+                },
+                {
+                  "key": "topicId",
+                  "value": ""
+                },
+                {
+                  "key": "level",
+                  "value": ""
+                },
+                {
+                  "key": "status",
+                  "value": ""
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "pageSize",
+                  "value": "12"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "POST /listening/lessons/:id/submit",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"answers\":[{\"questionId\":\"<id>\",\"optionId\":\"<id>\"}],\"durationSeconds\":120}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/listening/lessons/<id>/submit",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "listening",
+                "lessons",
+                "<id>",
+                "submit"
+              ]
+            }
+          }
+        },
+        {
+          "name": "GET /reading/lessons",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/reading/lessons",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reading",
+                "lessons"
+              ]
+            }
+          }
+        },
+        {
+          "name": "POST /reading/lessons/:id/submit",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"answers\":[],\"durationSeconds\":120}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/reading/lessons/<id>/submit",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reading",
+                "lessons",
+                "<id>",
+                "submit"
+              ]
+            }
+          }
+        },
+        {
+          "name": "GET /exams",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/exams",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "exams"
+              ]
+            }
+          }
+        },
+        {
+          "name": "POST /exams/:id/submit",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"answers\":[],\"durationSeconds\":120}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/exams/<id>/submit",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "exams",
+                "<id>",
+                "submit"
+              ]
+            }
+          }
+        },
+        {
+          "name": "GET /attempts",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/attempts?skill=LISTENING&page=1&pageSize=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "attempts"
+              ],
+              "query": [
+                {
+                  "key": "skill",
+                  "value": "LISTENING"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "pageSize",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "GET /attempts/:attemptId",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/attempts/<id>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "attempts",
+                "<id>"
+              ]
+            }
+          }
+        }
+      ]
     }
   ]
 }
