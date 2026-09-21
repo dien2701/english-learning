@@ -121,7 +121,7 @@ const ProfilePage: React.FC = () => {
             <div className="mx-auto w-fit">
               <div className="mx-auto grid h-24 w-24 place-items-center overflow-hidden rounded-pill bg-action text-[28px] font-extrabold text-white">
                 {avatarUrl ? (
-                  <img src={avatarUrl} alt="Avatar" className="h-full w-full object-cover" />
+                  <img src={avatarUrl} alt={t('profile.avatarUrl')} className="h-full w-full object-cover" />
                 ) : (
                   initials
                 )}

@@ -33,4 +33,9 @@ public interface RefreshTokenRepository extends JpaRepository<RefreshToken, UUID
 	@Modifying(flushAutomatically = true)
 	@Query("update RefreshToken t set t.revokedAt = :now where t.user.id = :userId and t.revokedAt is null")
 	int revokeAllActiveByUserId(@Param("userId") UUID userId, @Param("now") Instant now);
+
+	/** Xoá token đã hết hạn trước {@code cutoff}. Token bị thu hồi nhưng chưa hết hạn phải giữ để nhận ra dùng lại. */
+	@Modifying
+	@Query("delete from RefreshToken t where t.expiresAt < :cutoff")
+	int deleteExpiredBefore(@Param("cutoff") Instant cutoff);
 }

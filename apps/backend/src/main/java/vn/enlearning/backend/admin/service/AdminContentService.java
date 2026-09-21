@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ import vn.enlearning.backend.admin.dto.ContentType;
 import vn.enlearning.backend.common.ApiException;
 import vn.enlearning.backend.common.ErrorCode;
 import vn.enlearning.backend.common.PageResponse;
+import vn.enlearning.backend.config.CacheConfig;
 import vn.enlearning.backend.content.repository.ExamRepository;
 import vn.enlearning.backend.content.repository.FlashcardDeckRepository;
 import vn.enlearning.backend.content.repository.ListeningLessonRepository;
@@ -82,12 +84,14 @@ public class AdminContentService {
 	}
 
 	@Transactional
+	@CacheEvict(cacheNames = CacheConfig.TOPICS, allEntries = true)
 	public AdminContentDetailResponse create(UUID adminId, AdminContentRequest request) {
 		UUID id = writer.create(adminId, request);
 		return reader.detail(find(id));
 	}
 
 	@Transactional
+	@CacheEvict(cacheNames = CacheConfig.TOPICS, allEntries = true)
 	public AdminContentDetailResponse update(UUID id, AdminContentRequest request) {
 		ContentEntity entity = find(id);
 		writer.update(entity, request, usage.isUsed(AdminContentReader.typeOf(entity), id));
@@ -96,6 +100,7 @@ public class AdminContentService {
 	}
 
 	@Transactional
+	@CacheEvict(cacheNames = CacheConfig.TOPICS, allEntries = true)
 	public ContentStatusResponse setStatus(UUID id, ContentStatus status) {
 		ContentEntity entity = find(id);
 		entity.setStatus(status);
@@ -104,6 +109,7 @@ public class AdminContentService {
 
 	/** Xoá mềm nội dung chưa từng được học; đã có trong lịch sử thì 409. */
 	@Transactional
+	@CacheEvict(cacheNames = CacheConfig.TOPICS, allEntries = true)
 	public void delete(UUID id) {
 		ContentEntity entity = find(id);
 		ContentType type = AdminContentReader.typeOf(entity);

@@ -3,7 +3,6 @@ package vn.enlearning.backend.mail;
 import java.time.Clock;
 import java.time.Duration;
 
-import org.springframework.core.NestedExceptionUtils;
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
@@ -23,8 +22,6 @@ import vn.enlearning.backend.entity.enums.UiLanguage;
 @Component
 @RequiredArgsConstructor
 public class PasswordResetMailer {
-
-	private static final int MAX_ERROR_LENGTH = 500;
 
 	private final EmailSender emailSender;
 	private final EmailLogRepository emailLogs;
@@ -48,23 +45,8 @@ public class PasswordResetMailer {
 		} catch (RuntimeException e) {
 			log.error("Gửi email đặt lại mật khẩu thất bại (email_logs {})", entry.getId(), e);
 			entry.setStatus(EmailStatus.FAILED);
-			entry.setErrorMessage(describe(e));
+			entry.setErrorMessage(EmailErrors.describe(e));
 		}
 		emailLogs.save(entry);
-	}
-
-	/**
-	 * Gồm cả nguyên nhân gốc (ví dụ "535 Username and Password not accepted") vì câu bọc ngoài một mình
-	 * không đủ để biết vì sao gửi hỏng. Thông báo lỗi SMTP không chứa mật khẩu.
-	 */
-	private static String describe(RuntimeException e) {
-		Throwable root = NestedExceptionUtils.getMostSpecificCause(e);
-		String text = root == e ? e.getMessage()
-				: e.getMessage() + " | " + root.getClass().getSimpleName() + ": " + root.getMessage();
-		if (text == null) {
-			return e.getClass().getSimpleName();
-		}
-		String oneLine = text.replaceAll("\\s+", " ").trim();
-		return oneLine.length() <= MAX_ERROR_LENGTH ? oneLine : oneLine.substring(0, MAX_ERROR_LENGTH);
 	}
 }

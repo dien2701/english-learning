@@ -6,7 +6,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import vn.enlearning.backend.entity.StudySession;
 
@@ -32,4 +34,14 @@ public interface StudySessionRepository extends JpaRepository<StudySession, UUID
 	long totalActiveSeconds(UUID userId);
 
 	long countByStartedAtGreaterThanEqual(Instant since);
+
+	/** Tổng giây học của người dùng trong các phiên bắt đầu ở nửa khoảng [from, to). */
+	@Query("select coalesce(sum(s.activeSeconds), 0) from StudySession s "
+			+ "where s.user.id = :userId and s.startedAt >= :from and s.startedAt < :to")
+	long sumActiveSeconds(@Param("userId") UUID userId, @Param("from") Instant from, @Param("to") Instant to);
+
+	/** Phiên chưa được cộng giây nào (chỉ có một heartbeat rồi im) và đã cũ: không đóng góp gì cho thống kê. */
+	@Modifying
+	@Query("delete from StudySession s where s.activeSeconds = 0 and s.lastHeartbeatAt < :cutoff")
+	int deleteEmptyBefore(@Param("cutoff") Instant cutoff);
 }

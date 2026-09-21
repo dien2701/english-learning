@@ -15,6 +15,7 @@ import type { ExamStatus } from '../../types/practice';
 import { formatScore } from '../../utils/format';
 import { useLanguage } from '../../hooks/useLanguage';
 import { useTranslation } from 'react-i18next';
+import { useApiError } from '../../hooks/useApiError';
 
 const STATUS_OPTIONS = [
   { value: '', labelKey: 'filter.allStatuses' },
@@ -30,6 +31,7 @@ const STATUS_KEY: Record<ExamStatus, string> = {
 
 const ExamListPage: React.FC = () => {
   const { t } = useTranslation();
+  const { describe } = useApiError();
   const { skill } = useLabels();
   const { L } = useLanguage();
   const [filter, setFilter] = useState<FilterState>(EMPTY_FILTER);
@@ -68,7 +70,7 @@ const ExamListPage: React.FC = () => {
 
       {exams.error ? (
         <Card flush>
-          <ErrorState message={exams.error.message} onRetry={exams.reload} />
+          <ErrorState message={describe(exams.error)} onRetry={exams.reload} />
         </Card>
       ) : exams.isLoading || !exams.data ? (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">

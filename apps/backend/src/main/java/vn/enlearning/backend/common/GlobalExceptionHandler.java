@@ -36,6 +36,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		return ResponseEntity.status(code.status()).body(body);
 	}
 
+	@ExceptionHandler(RateLimitedException.class)
+	ResponseEntity<Object> handleRateLimited(RateLimitedException ex) {
+		return ResponseEntity.status(ErrorCode.RATE_LIMITED.status())
+				.header(HttpHeaders.RETRY_AFTER, String.valueOf(ex.getRetryAfterSeconds()))
+				.body(ApiErrorResponse.of(ErrorCode.RATE_LIMITED));
+	}
+
 	/** Ném từ method security; các bộ lọc đã tự xử lý phần còn lại. */
 	@ExceptionHandler(AccessDeniedException.class)
 	ResponseEntity<Object> handleAccessDenied() {

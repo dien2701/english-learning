@@ -15,6 +15,7 @@ import type { WritingStatus } from '../../types/writing';
 import { formatScore } from '../../utils/format';
 import { useLanguage } from '../../hooks/useLanguage';
 import { useTranslation } from 'react-i18next';
+import { useApiError } from '../../hooks/useApiError';
 
 const STATUS_TONE: Record<WritingStatus, 'neutral' | 'brand' | 'success' | 'warning' | 'danger'> = {
   NOT_STARTED: 'neutral',
@@ -26,6 +27,7 @@ const STATUS_TONE: Record<WritingStatus, 'neutral' | 'brand' | 'success' | 'warn
 
 const WritingListPage: React.FC = () => {
   const { t } = useTranslation();
+  const { describe } = useApiError();
   const { writingStatus } = useLabels();
   const { L } = useLanguage();
   const [filter, setFilter] = useState<FilterState>(EMPTY_FILTER);
@@ -66,7 +68,7 @@ const WritingListPage: React.FC = () => {
 
       {prompts.error ? (
         <Card flush>
-          <ErrorState message={prompts.error.message} onRetry={prompts.reload} />
+          <ErrorState message={describe(prompts.error)} onRetry={prompts.reload} />
         </Card>
       ) : prompts.isLoading || !prompts.data ? (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">

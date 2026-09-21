@@ -13,8 +13,8 @@ Quyết định nền (nối FE theo module, AI bản giả, hạ tầng đơn g
 | 3 | Dashboard, Thống kê | 1, 2 | [x] |
 | 4 | AI: Viết, Chat, Nói (bản giả trước) | 0 | [ ] |
 | 5 | Quản trị, Thông báo | 2, 4 | [x] |
-| 6 | Email nhắc học, rate limit, cache, dọn dẹp | 1, 5 | [ ] |
-| 7 | Hoàn tất song ngữ VI/EN (làm xen kẽ được) | không | [ ] |
+| 6 | Email nhắc học, rate limit, cache, dọn dẹp | 1, 5 | [x] |
+| 7 | Hoàn tất song ngữ VI/EN (làm xen kẽ được) | không | [x] |
 | Cuối | Xoá mock, cập nhật tài liệu, nợ kỹ thuật nhỏ | tất cả | [ ] |
 
 Chi tiết: `.docs/roadmap/dot-0-noi-auth-fe.md`, `dot-1-flashcard-ho-so.md`, `dot-2-bo-may-lam-bai.md`,
@@ -50,11 +50,11 @@ Opus chỉ dùng khi Sonnet sai hai lần liên tiếp ở cùng một việc (g
 | 5b | 5 | BE quản trị người dùng + Thông báo (`UserNotification`, đã đọc) + `/admin/dashboard` | Sonnet | medium | [x] |
 | 5c | 5 | FE: bỏ mock `admin,notifications` | Sonnet | low | [x] |
 | 5z | 5 | Đóng đợt | Haiku | low | [x] |
-| 6a | 6 | Email nhắc học `@Scheduled`, bucket4j 429, Caffeine, job dọn dẹp, test | Sonnet | medium | [ ] |
-| 6z | 6 | Đóng đợt + `ARCHITECTURE.md` mục 4 | Haiku | low | [ ] |
-| 7a | 7 | Song ngữ: trang làm bài và kết quả | Sonnet | low | [ ] |
-| 7b | 7 | Song ngữ: Hồ sơ, Cài đặt, Thống kê, Thông báo, Chat | Sonnet | low | [ ] |
-| 7c | 7 | Song ngữ: Quản trị, trang lỗi, xác thực, `messageKey` từ BE; đóng đợt | Sonnet | low | [ ] |
+| 6a | 6 | Email nhắc học `@Scheduled`, bucket4j 429, Caffeine, job dọn dẹp, test | Sonnet | medium | [x] |
+| 6z | 6 | Đóng đợt + `ARCHITECTURE.md` mục 4 | Haiku | low | [x] |
+| 7a | 7 | Song ngữ: trang làm bài và kết quả | Sonnet | low | [x] |
+| 7b | 7 | Song ngữ: Hồ sơ, Cài đặt, Thống kê, Thông báo, Chat | Sonnet | low | [x] |
+| 7c | 7 | Song ngữ: Quản trị, trang lỗi, xác thực, `messageKey` từ BE; đóng đợt | Sonnet | low | [x] |
 | 9a | Cuối | Xoá mock, cập nhật tài liệu, nợ nhỏ, chia chunk build | Sonnet | medium | [ ] |
 
 Mẹo tiết kiệm hạn mức Pro: mỗi phiên một dòng; hết phiên thì `/clear`, không nối tiếp phiên cũ.

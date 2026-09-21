@@ -293,3 +293,29 @@ chỉ được chuyển sang ngừng hoạt động.
 ## Đợt 5 (phiên 5z: đóng đợt)
 
 - Đợt 5 xong: BE quản trị nội dung/chủ đề/người dùng/thông báo/dashboard + hộp thư người học, FE đã nối (không còn module mock). BE `./mvnw test` 158 test xanh; FE lint và build sạch. Folder Postman "Dot 5 - Admin, Thong bao" (63 request) và bảng "Kiểm tra hoàn thành" đã chốt theo DTO thật. Các ô "Tiêu chí xong" chờ bạn tự kiểm rồi tick.
+
+## Đợt 6 (phiên 6a: hạ tầng phụ)
+
+- Nhắc học: `reminder/StudyReminderService` (`@Scheduled` mỗi phút) chọn người đã bật nhắc, đến giờ theo múi giờ riêng (bù tối đa `app.reminder.catch-up`=1h), chưa đủ mục tiêu; ghi `email_logs` PENDING trước khi gửi, UNIQUE (user, ngày) chặn trùng, lỗi gửi ghi FAILED và không thử lại trong ngày. Template `StudyReminderMailTemplate` VI/EN.
+- Giới hạn tần suất: `ratelimit/` (bucket4j + Caffeine, theo IP) cho `POST /auth/login` (10/phút), `GET /auth/check-email` (30/phút), `POST /auth/forgot-password` (5/phút), chỉnh ở `app.rate-limit.*`; 429 `RATE_LIMITED` kèm `Retry-After`, `messageKey` `errors.tooManyRequests` (đã thêm vào `vi.json`/`en.json`).
+- Caffeine: thực tế chưa có từ đợt 1, nay thêm `CacheConfig` + `spring.cache.*`; đệm `topics` (TTL 5 phút) cho `TopicService.list`, xoá ở mọi thao tác ghi chủ đề/nội dung của admin. Test đặt `spring.cache.type=none`, `app.scheduling.enabled=false`, `app.rate-limit.enabled=false`.
+- Dọn dẹp: `cleanup/CleanupService` (`@Scheduled` phút 15 hằng giờ) xoá refresh token và OTP hết hạn quá 1 ngày, phiên học 0 giây cũ hơn 30 ngày (`app.cleanup.*`).
+- Test mới: `RateLimitApiTests`, `StudyReminderServiceTests`, `CleanupServiceTests`; cả bộ BE 171 test xanh.
+
+## Đợt 6 (phiên 6z: đóng đợt)
+
+- Đợt 6 xong: nhắc học, rate limit 429, Caffeine, job dọn dẹp; `ARCHITECTURE.md` mục 4 đã cập nhật (Caffeine, `@Scheduled`, bucket4j thay Redis/RabbitMQ/Cloudinary). BE 171 test xanh (phiên 6a). Folder Postman "Dot 6 - Gioi han tan suat" (3 request lặp bằng script) và bảng "Kiểm tra hoàn thành" đã chốt. Hai ô "Tiêu chí xong" về email và 429 chờ bạn tự kiểm rồi tick.
+
+## Đợt 7 (phiên 7a: song ngữ trang làm bài và kết quả)
+
+- Quét `pages`/`components` của Flashcard, Viết, Nghe, Đọc, Nói, Kiểm tra, `practice`: không còn chuỗi tiếng Việt cứng ngoài chú thích code; mọi khoá `t(...)` đã có ở cả `vi.json` và `en.json` (hai file khớp bộ khoá). Lint, build sạch; không phải sửa mã nguồn.
+
+## Đợt 7 (phiên 7b: song ngữ Hồ sơ, Cài đặt, Thống kê, Thông báo, Chat)
+
+- Quét `profile/`, `statistics/`, `notification/`, `chat/`, `components/chat`, `StudyTimeChart`: chỉ còn tiếng Việt trong chú thích code; mọi khoá `t(...)` đủ ở `vi.json` và `en.json`. Sửa duy nhất `alt` ảnh đại diện ở `ProfilePage.tsx` dùng `profile.avatarUrl`. Lint, build sạch.
+
+## Đợt 7 (phiên 7c: song ngữ Quản trị, xác thực, lỗi BE; đóng đợt)
+
+- Form nội dung quản trị (`components/admin/content-forms`, 8 file) và tab CSV chuyển sang `t()`/`Trans`; thêm namespace `contentForm` cùng các khoá còn thiếu (`common.saved/created`, `admin.addContent/editContent/titleVi/titleEn/detailsForSkill/loadError/saveError`, `errors.invalidAnswers` mà BE trả) vào `vi.json`/`en.json`.
+- 6 trang danh sách + Dashboard + `WritingPracticePage` hiển thị lỗi qua `describe()` (dịch theo `messageKey`) thay vì `error.message`; `useApi` gắn `errors.unknown`; placeholder email đổi sang `name@example.com`.
+- Mọi khoá `messageKey` BE dùng đều có ở cả hai locale; quét mã ngoài chú thích không còn chuỗi tiếng Việt hiển thị. Lint, build sạch. Hai ô duyệt giao diện VI/EN và sáng/tối chờ bạn tự kiểm rồi tick.

@@ -24,6 +24,12 @@ spring:
   flyway:
     enabled: true
     locations: classpath:db/migration
+  # Bộ nhớ đệm Caffeine trong tiến trình. Mỗi tên đệm cần @CacheEvict ở nơi ghi tương ứng (xem CacheConfig).
+  cache:
+    type: caffeine
+    cache-names: topics
+    caffeine:
+      spec: maximumSize=100,expireAfterWrite=5m
   # Gmail SMTP. Để trống MAIL_USERNAME/MAIL_PASSWORD thì email chỉ được ghi ra log (xem MailConfig).
   mail:
     host: ${MAIL_HOST:smtp.gmail.com}
@@ -69,3 +75,18 @@ app:
     openai-api-key: ${OPENAI_API_KEY:}
     grading-timeout: ${AI_GRADING_TIMEOUT:60s}
     fake-latency: ${AI_FAKE_LATENCY:1500ms}
+  scheduling:
+    enabled: true
+  # Nhắc học: quét mỗi phút; người dùng đến giờ nhắc (theo múi giờ riêng) mà trễ tối đa catch-up thì vẫn được nhắc.
+  reminder:
+    catch-up: 1h
+  # Dọn dẹp định kỳ; các *-retention là thời gian giữ lại sau khi hết hạn.
+  cleanup:
+    token-retention: 1d
+    empty-session-retention: 30d
+  # Giới hạn tần suất theo IP: tối đa capacity request mỗi window.
+  rate-limit:
+    enabled: true
+    login: { capacity: 10, window: 1m }
+    check-email: { capacity: 30, window: 1m }
+    forgot-password: { capacity: 5, window: 1m }

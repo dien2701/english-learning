@@ -1,6 +1,7 @@
 import React from 'react';
 import { Form, Input, Select, Button, Card, Radio } from 'antd';
 import type { FormListFieldData } from 'antd';
+import { useTranslation } from 'react-i18next';
 
 interface SharedQuestionListProps {
   name: string | (string | number)[];
@@ -10,6 +11,7 @@ interface SharedQuestionListProps {
 }
 
 const QuestionItem: React.FC<{ fieldName: number; restField: Omit<FormListFieldData, 'key' | 'name'>; remove: (name: number) => void; index: number; listName: string | (string | number)[]; withSkill?: boolean }> = ({ fieldName, restField, remove, index, listName, withSkill }) => {
+  const { t } = useTranslation();
   const typePath = Array.isArray(listName) ? [...listName, fieldName, 'type'] : [listName, fieldName, 'type'];
   const type = Form.useWatch(typePath) || 'MULTIPLE_CHOICE';
 
@@ -25,14 +27,14 @@ const QuestionItem: React.FC<{ fieldName: number; restField: Omit<FormListFieldD
     <Card
       size="small"
       className="relative mb-4 overflow-visible border-hairline shadow-sm"
-      title={<span className="text-[14px] font-medium">Câu hỏi {index + 1}</span>}
+      title={<span className="text-[14px] font-medium">{t('contentForm.questionN', { n: index + 1 })}</span>}
       extra={
         <Button
           type="text"
           danger
           onClick={() => remove(fieldName)}
           icon={<span className="material-symbols-outlined text-[18px]">delete</span>}
-          title="Xóa câu hỏi"
+          title={t('contentForm.deleteQuestion')}
         />
       }
     >
@@ -44,15 +46,15 @@ const QuestionItem: React.FC<{ fieldName: number; restField: Omit<FormListFieldD
         <Form.Item
           {...restField}
           name={[fieldName, 'skill']}
-          label="Kỹ năng"
-          rules={[{ required: true, message: 'Chọn kỹ năng cho câu hỏi' }]}
+          label={t('contentForm.skill')}
+          rules={[{ required: true, message: t('contentForm.skillRequired') }]}
         >
           <Select
             options={[
-              { value: 'LISTENING', label: 'Nghe' },
-              { value: 'READING', label: 'Đọc' },
-              { value: 'VOCABULARY', label: 'Từ vựng' },
-              { value: 'WRITING', label: 'Viết' },
+              { value: 'LISTENING', label: t('skill.LISTENING') },
+              { value: 'READING', label: t('skill.READING') },
+              { value: 'VOCABULARY', label: t('skill.VOCABULARY') },
+              { value: 'WRITING', label: t('skill.WRITING') },
             ]}
           />
         </Form.Item>
@@ -61,27 +63,27 @@ const QuestionItem: React.FC<{ fieldName: number; restField: Omit<FormListFieldD
       <Form.Item
         {...restField}
         name={[fieldName, 'type']}
-        label="Loại câu hỏi"
+        label={t('contentForm.questionType')}
         initialValue="MULTIPLE_CHOICE"
       >
         <Radio.Group buttonStyle="solid">
-          <Radio.Button value="MULTIPLE_CHOICE">Trắc nghiệm</Radio.Button>
-          <Radio.Button value="FILL_BLANK">Điền từ</Radio.Button>
+          <Radio.Button value="MULTIPLE_CHOICE">{t('contentForm.multipleChoice')}</Radio.Button>
+          <Radio.Button value="FILL_BLANK">{t('contentForm.fillBlank')}</Radio.Button>
         </Radio.Group>
       </Form.Item>
 
       <Form.Item
         {...restField}
         name={[fieldName, 'content']}
-        label="Nội dung câu hỏi"
-        rules={[{ required: true, message: 'Vui lòng nhập nội dung' }]}
+        label={t('contentForm.questionContent')}
+        rules={[{ required: true, message: t('contentForm.contentRequired') }]}
       >
-        <Input.TextArea rows={2} placeholder="Nhập câu hỏi (Với điền từ, dùng [blank] cho ô trống)" />
+        <Input.TextArea rows={2} placeholder={t('contentForm.questionPlaceholder')} />
       </Form.Item>
 
       {type === 'MULTIPLE_CHOICE' && (
         <div className="mb-4">
-          <div className="mb-2 text-[14px] text-ink">Các lựa chọn</div>
+          <div className="mb-2 text-[14px] text-ink">{t('contentForm.options')}</div>
           <Form.List name={[fieldName, 'options']} initialValue={['', '']}>
             {(fields, { add, remove }) => (
               <div className="flex flex-col gap-2">
@@ -90,9 +92,9 @@ const QuestionItem: React.FC<{ fieldName: number; restField: Omit<FormListFieldD
                     <Form.Item
                       {...field}
                       noStyle
-                      rules={[{ required: true, message: 'Vui lòng nhập nội dung lựa chọn' }]}
+                      rules={[{ required: true, message: t('contentForm.optionRequired') }]}
                     >
-                      <Input placeholder={`Lựa chọn ${idx + 1}`} />
+                      <Input placeholder={t('contentForm.optionN', { n: idx + 1 })} />
                     </Form.Item>
                     <Button
                       type="text"
@@ -109,7 +111,7 @@ const QuestionItem: React.FC<{ fieldName: number; restField: Omit<FormListFieldD
                   block
                   icon={<span className="material-symbols-outlined mr-1 text-[18px]">add</span>}
                 >
-                  Thêm lựa chọn
+                  {t('contentForm.addOption')}
                 </Button>
               </div>
             )}
@@ -121,29 +123,29 @@ const QuestionItem: React.FC<{ fieldName: number; restField: Omit<FormListFieldD
         <Form.Item
           {...restField}
           name={[fieldName, 'correctAnswers']}
-          label="Đáp án đúng"
-          rules={[{ required: true, message: 'Cần có đáp án đúng', type: 'array', min: 1 }]}
+          label={t('contentForm.correctAnswer')}
+          rules={[{ required: true, message: t('contentForm.correctRequired'), type: 'array', min: 1 }]}
           getValueProps={(value: string[] | undefined) => ({ value: value?.[0] })}
           getValueFromEvent={(value: string | undefined) => (value === undefined ? [] : [value])}
         >
           <Select
-            placeholder="Chọn đáp án đúng từ danh sách lựa chọn"
+            placeholder={t('contentForm.correctPlaceholder')}
             style={{ width: '100%' }}
             options={validOptions}
-            notFoundContent="Vui lòng nhập các lựa chọn trước"
+            notFoundContent={t('contentForm.noOptionsYet')}
           />
         </Form.Item>
       ) : (
         <Form.Item
           {...restField}
           name={[fieldName, 'correctAnswers']}
-          label="Đáp án đúng (Nhấn Enter để thêm)"
-          rules={[{ required: true, message: 'Cần có đáp án đúng', type: 'array', min: 1 }]}
+          label={t('contentForm.correctAnswerTags')}
+          rules={[{ required: true, message: t('contentForm.correctRequired'), type: 'array', min: 1 }]}
         >
-          <Select mode="tags" placeholder="Nhập đáp án đúng và nhấn Enter" style={{ width: '100%' }} />
+          <Select mode="tags" placeholder={t('contentForm.correctTagsPlaceholder')} style={{ width: '100%' }} />
         </Form.Item>
       )}
-      <Form.Item {...restField} name={[fieldName, 'explanation']} label="Giải thích (tuỳ chọn, hiện sau khi nộp bài)">
+      <Form.Item {...restField} name={[fieldName, 'explanation']} label={t('contentForm.explanation')}>
         <Input.TextArea rows={2} />
       </Form.Item>
     </Card>
@@ -151,6 +153,8 @@ const QuestionItem: React.FC<{ fieldName: number; restField: Omit<FormListFieldD
 };
 
 export const SharedQuestionList: React.FC<SharedQuestionListProps> = ({ name, label, withSkill }) => {
+  const { t } = useTranslation();
+
   return (
     <div className="mt-4">
       {label && <h4 className="mb-3 text-[15px] font-semibold text-ink">{label}</h4>}
@@ -175,7 +179,7 @@ export const SharedQuestionList: React.FC<SharedQuestionListProps> = ({ name, la
               icon={<span className="material-symbols-outlined mr-1 text-[18px]">add</span>}
               className="mt-2 border-action text-action hover:border-action-hover hover:text-action-hover"
             >
-              Thêm câu hỏi
+              {t('contentForm.addQuestion')}
             </Button>
           </div>
         )}

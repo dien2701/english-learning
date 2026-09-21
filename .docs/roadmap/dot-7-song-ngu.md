@@ -10,17 +10,17 @@ Hạ tầng đã đủ: `vi.json`/`en.json`, kiểu `L10n`, hook `useLanguage`. 
 
 ## Thứ tự
 Đã xong: sidebar, header, footer, bộ lọc, sáu trang danh sách, Dashboard.
-- [ ] Trang làm bài và kết quả (Flashcard, Viết, Nghe, Đọc, Nói, Kiểm tra, `practice`)
-- [ ] Hồ sơ, Cài đặt, Thống kê, Thông báo
-- [ ] Chat
-- [ ] Quản trị (5 trang)
-- [ ] Trang lỗi (`system/`) và xác thực
-- [ ] Lỗi từ BE hiển thị qua `messageKey` và `fieldErrorKeys`
+- [x] Trang làm bài và kết quả (Flashcard, Viết, Nghe, Đọc, Nói, Kiểm tra, `practice`)
+- [x] Hồ sơ, Cài đặt, Thống kê, Thông báo
+- [x] Chat
+- [x] Quản trị (5 trang)
+- [x] Trang lỗi (`system/`) và xác thực
+- [x] Lỗi từ BE hiển thị qua `messageKey` và `fieldErrorKeys`
 
 ## Tiêu chí xong
-- [ ] Quét chuỗi có dấu tiếng Việt ngoài file locale trong `src/pages` và `src/components` không còn kết quả.
+- [x] Quét chuỗi có dấu tiếng Việt ngoài file locale trong `src/pages` và `src/components` không còn kết quả.
 - [ ] Duyệt nhanh hai chế độ VI/EN và sáng/tối trên các trang đã sửa (đọc bằng `read_page`, chụp ảnh tối đa một lần cuối).
-- [ ] `npm run lint` và `npm run build` sạch.
+- [x] `npm run lint` và `npm run build` sạch.
 
 ## Kiểm tra hoàn thành
 
