@@ -36,7 +36,7 @@ export class ApiError extends Error {
    * Khoá dịch của thông báo lỗi, ví dụ `errors.emailTaken`.
    *
    * Lỗi phải đổi theo ngôn ngữ đang chọn, mà lớp API thì nằm ngoài cây
-   * React nên không gọi được `t()`. Vì vậy phía server (và mock) chỉ trả
+   * React nên không gọi được `t()`. Vì vậy phía server chỉ trả
    * khoá; tầng giao diện dịch bằng `useApiError()`. Backend thật chưa có
    * khoá thì `message` vẫn là câu dựng sẵn để không mất thông tin.
    */

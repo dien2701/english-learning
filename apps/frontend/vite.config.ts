@@ -21,6 +21,23 @@ export default defineConfig({
     },
   },
 
+  build: {
+    /* antd tự nó đã hơn 1 MB; chunk vendor-antd là mức nền, không tách thêm. */
+    chunkSizeWarningLimit: 1200,
+    rolldownOptions: {
+      output: {
+        /* Tách thư viện lớn thành chunk riêng để tránh một file ~1,5 MB. */
+        codeSplitting: {
+          groups: [
+            { name: 'vendor-antd', test: /node_modules[\\/](antd|@ant-design|rc-[^\\/]+|@rc-component)[\\/]/, priority: 30 },
+            { name: 'vendor-charts', test: /node_modules[\\/](recharts|d3-[^\\/]+|victory-vendor|es-toolkit)[\\/]/, priority: 20 },
+            { name: 'vendor', test: /node_modules[\\/]/, priority: 10 },
+          ],
+        },
+      },
+    },
+  },
+
   optimizeDeps: {
     // Khai báo rõ để Vite gộp sẵn, tránh phải tối ưu lại giữa chừng.
     include: ['react', 'react-dom', 'antd', '@ant-design/cssinjs'],

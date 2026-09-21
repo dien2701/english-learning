@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { App, Form, Input } from 'antd';
-import { Trans, useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
 
 import AuthLayout from '../../components/auth/AuthLayout';
@@ -38,12 +38,6 @@ const ForgotPasswordPage: React.FC = () => {
       >
         <div className="rounded-md bg-surface-muted p-4">
           <p className="text-body text-ink-muted">{t('auth.codeValid')}</p>
-          <p className="mt-2 text-caption text-ink-subtle">
-            <Trans
-              i18nKey="auth.demoCode"
-              components={{ code: <span className="font-bold text-ink" /> }}
-            />
-          </p>
         </div>
 
         <Button
