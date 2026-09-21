@@ -16,4 +16,6 @@ public interface SpeakingLessonRepository
 
 	/** Nội dung ACTIVE đầu tiên, dùng làm gợi ý bài học trong Chat. */
 	Optional<SpeakingLesson> findFirstByStatusOrderByCreatedAtAscIdAsc(ContentStatus status);
+
+	long countByTopicId(UUID topicId);
 }

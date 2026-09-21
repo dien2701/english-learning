@@ -1,26 +1,36 @@
 import React from 'react';
-import { Form, Input, Button } from 'antd';
+import { Form, Input, InputNumber, Button } from 'antd';
+import { TopicField } from './TopicField';
 
 export const WritingForm: React.FC = () => {
   return (
     <div className="mt-4">
-      <Form.Item name="prompt" label="Đề bài chung (nếu có bài viết lớn)">
-        <Input.TextArea rows={2} />
+      <TopicField />
+      <Form.Item name="instructions" label="Đề bài (tiếng Anh)" rules={[{ required: true }]}>
+        <Input.TextArea rows={4} />
       </Form.Item>
-      <Form.List name="items">
+      <div className="grid grid-cols-2 gap-4">
+        <Form.Item name="suggestedMinutes" label="Thời gian gợi ý (phút)" initialValue={30}>
+          <InputNumber min={1} className="w-full" />
+        </Form.Item>
+        <Form.Item name="minWords" label="Số từ tối thiểu" initialValue={0}>
+          <InputNumber min={0} className="w-full" />
+        </Form.Item>
+      </div>
+      <Form.List name="hints">
         {(fields, { add, remove }) => (
-          <div className="space-y-4">
-            <h4 className="mb-2 text-[15px] font-semibold text-ink">Danh sách Đề viết chi tiết</h4>
-            {fields.map(({ key, name, ...restField }) => (
-              <div key={key} className="relative rounded border border-hairline bg-surface p-4 pr-10 shadow-sm">
-                <Form.Item {...restField} name={[name, 'prompt']} label="Đề bài" rules={[{ required: true }]}>
-                  <Input.TextArea rows={3} />
+          <div className="space-y-2">
+            <h4 className="mb-2 text-[15px] font-semibold text-ink">Gợi ý triển khai</h4>
+            {fields.map((field) => (
+              <div key={field.key} className="flex items-center gap-2">
+                <Form.Item {...field} noStyle rules={[{ required: true }]}>
+                  <Input />
                 </Form.Item>
-                <Button type="text" danger onClick={() => remove(name)} className="absolute right-2 top-2" icon={<span className="material-symbols-outlined text-[18px]">delete</span>} />
+                <Button type="text" danger onClick={() => remove(field.name)} icon={<span className="material-symbols-outlined text-[18px]">remove</span>} />
               </div>
             ))}
-            <Button type="dashed" onClick={() => add()} block icon={<span className="material-symbols-outlined mr-1 text-[18px]">add</span>} className="border-action text-action hover:border-action-hover hover:text-action-hover">
-              Thêm đề viết
+            <Button type="dashed" onClick={() => add('')} block icon={<span className="material-symbols-outlined mr-1 text-[18px]">add</span>}>
+              Thêm gợi ý
             </Button>
           </div>
         )}

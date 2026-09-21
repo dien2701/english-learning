@@ -17,39 +17,39 @@ Với CRUD nội dung: làm MỘT loại hoàn chỉnh trước, rồi nhân the
 - Xoá cache Caffeine (đợt 1) khi Admin sửa bộ thẻ hoặc chủ đề.
 
 ## Việc làm
-- [ ] `/admin/**` cần `ROLE_ADMIN`; có test 403 cho USER và 401 khi chưa đăng nhập.
-- [ ] Nội dung đã có trong lịch sử học: không xoá, chỉ chuyển `INACTIVE`. Bắt lỗi khoá ngoại và trả lỗi rõ ràng, không để lộ thành 500.
-- [ ] Gửi thông báo tạo bản nhận `UserNotification` cho người học; trạng thái đã đọc.
-- [ ] FE: bỏ `admin`, `notifications` khỏi `VITE_MOCK_MODULES`.
+- [x] `/admin/**` cần `ROLE_ADMIN`; có test 403 cho USER và 401 khi chưa đăng nhập (5a: nội dung + chủ đề; 5b bổ sung test cho người dùng/thông báo).
+- [x] Nội dung đã có trong lịch sử học: không xoá, chỉ chuyển `INACTIVE`. Bắt lỗi khoá ngoại và trả lỗi rõ ràng, không để lộ thành 500.
+- [x] Gửi thông báo tạo bản nhận `UserNotification` cho người học; trạng thái đã đọc.
+- [x] FE: bỏ `admin`, `notifications` khỏi `VITE_MOCK_MODULES`.
 
 ## Tiêu chí xong
 - [ ] Admin tạo, sửa, ngừng hoạt động từng loại nội dung; người học thấy thay đổi.
-- [ ] Gửi một thông báo, người học nhận và đánh dấu đã đọc.
+- [x] Gửi một thông báo, người học nhận và đánh dấu đã đọc (BE; kiểm tra bằng test).
 - [ ] Test xanh, lint/build sạch.
 
 ## Kiểm tra hoàn thành
 
-Folder "Dot 5 - Admin, Thong bao" sẽ được thêm khi đợt xong. Bảng dưới là DỰ KIẾN. Dùng `{{adminToken}}` cho `/admin/**`, `{{token}}` cho phía người học. Cách chạy chung: mục "Kiểm tra bằng Postman" trong `ROADMAP.md`.
+Folder Postman "Dot 5 - Admin, Thong bao" (63 request, tự chạy theo thứ tự, tự tạo rồi dọn dữ liệu `Postman5`). Bảng dưới đã chốt theo DTO thật. Dùng `{{adminToken}}` cho `/admin/**`, `{{token}}` cho phía người học. Cách chạy chung: mục "Kiểm tra bằng Postman" trong `ROADMAP.md`.
 
 ### A. Postman: đường thành công
 | # | Request | Kỳ vọng |
 |---|---|---|
-| 1 | `GET /admin/dashboard` | 200, biểu đồ đăng ký và thống kê kho nội dung |
-| 2 | `GET /admin/users`, `/admin/users/{{userId}}` | 200, không có `passwordHash` |
-| 3 | `PATCH /admin/users/{{userId}}` khoá tài khoản (trường và giá trị chốt khi làm) | 200; Login tài khoản đó trả 403 `ACCOUNT_LOCKED`; mở khoá lại thì Login 200 |
-| 4 | `POST /admin/topics`, `PUT /admin/topics/{{id}}` | 200/201; `GET /topics` bằng token người học thấy thay đổi |
-| 5 | `POST /admin/content` cho từng loại (bộ thẻ, nghe, đọc, nói, viết, đề); `GET /admin/content`, `/:id`; `PATCH`/`PUT` | tạo, đọc, sửa được; người học thấy nội dung mới |
-| 6 | `PATCH` đưa một nội dung sang INACTIVE | người học không còn thấy trong danh sách |
-| 7 | `POST /admin/notifications` (nháp), rồi `POST /admin/notifications/{{id}}/send` | 200; `status` SENT, `recipientCount` > 0 |
-| 8 | (token người học) `GET /notifications`, `/notifications/unread-count` | thấy thông báo vừa gửi, số chưa đọc tăng |
-| 9 | `PATCH /notifications/{{id}}/read`, `POST /notifications/read-all` | số chưa đọc giảm rồi về 0 |
+| 1 | `GET /admin/dashboard` | 200; `overview{totalUsers,activeUsers,studySessions,totalContent}`, `signups` 6 tháng, `contentCounts` 6 loại, `activities` rỗng |
+| 2 | `GET /admin/users?search=..&role=..&status=..`, `/admin/users/{{userId}}` | 200; phân trang; có `completedLessons`, không có `passwordHash` |
+| 3 | `PATCH /admin/users/{{userId}}` `{"status":"LOCKED"}` rồi `"ACTIVE"` | 200; khoá thu hồi mọi refresh token (Refresh của tài khoản đó 401, Login 403 `ACCOUNT_LOCKED`); mở khoá thì Login 200 |
+| 4 | `POST /admin/topics` `{nameVi,nameEn}`, `PUT /admin/topics/{{id}}`, `GET /admin/topics` | 201/200; có `slug`, `itemCount`; `GET /topics` bằng token người học thấy thay đổi |
+| 5 | `POST /admin/content` body theo `skill` (`VOCABULARY,LISTENING,READING,WRITING,SPEAKING,EXAM`, chủ đề bằng `topicId`); `GET /admin/content`, `/{id}`; `PUT /{id}` | 201/200; GET chi tiết có `payload` cùng dạng body kèm id thẻ/câu hỏi/câu nói; PUT giữ id cũ, thêm phần tử không id |
+| 6 | `PATCH /admin/content/{{id}}` `{"status":"INACTIVE"}` | 200; người học không còn thấy trong danh sách; `ACTIVE` lại thì thấy |
+| 7 | `POST /admin/notifications` (nháp, hoặc `send:true`), `POST /admin/notifications/{{id}}/send` | 201/200; `status` SENT, `recipientCount` > 0, `sentAt` |
+| 8 | (token người học) `GET /notifications`, `/notifications/unread-count` | thấy thông báo vừa gửi (`isRead:false`), số chưa đọc tăng |
+| 9 | `PATCH /notifications/{{inboxId}}/read` (id bản nhận), `POST /notifications/read-all` | `isRead:true`; số chưa đọc giảm rồi về 0 |
 
 ### B. Ca lỗi và bảo mật
 - Mọi `/admin/**` với token USER: 403; không token: 401 (thêm vào folder cho từng nhóm endpoint).
-- Xoá hoặc ngừng nội dung đã có trong lịch sử học (ví dụ bộ thẻ hocvien đã học): kết quả là 409 hoặc chuyển INACTIVE, tuyệt đối không phải 500.
+- Xoá hoặc ngừng nội dung đã có trong lịch sử học (ví dụ bộ thẻ hocvien đã học): kết quả là 409 `CONTENT_IN_USE` (chỉ PATCH sang INACTIVE được), tuyệt đối không phải 500. Chủ đề còn nội dung: DELETE trả 409.
 - Tạo nội dung thiếu trường bắt buộc: 400 kèm `fieldErrorKeys`.
 - Người học A đánh dấu đã đọc thông báo của B: 404.
-- Ghi nhận hành vi: token của tài khoản vừa bị khoá còn hiệu lực tối đa 15 phút (hoặc bị chặn ngay, tuỳ quyết định ở mục "Việc cần quyết").
+- Đã chốt: access token của tài khoản vừa bị khoá còn hiệu lực tối đa 15 phút; refresh token bị thu hồi ngay. Admin tự khoá/đổi vai trò mình: 409. Gửi lại thông báo đã gửi: 409.
 
 ### C. SQL kiểm tra dữ liệu
 ```sql

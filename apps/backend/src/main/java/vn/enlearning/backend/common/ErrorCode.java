@@ -18,6 +18,7 @@ public enum ErrorCode {
 	FORBIDDEN(HttpStatus.FORBIDDEN, "errors.forbidden"),
 	NOT_FOUND(HttpStatus.NOT_FOUND, "errors.notFound"),
 	INVALID_STATE(HttpStatus.CONFLICT, "errors.invalidState"),
+	CONTENT_IN_USE(HttpStatus.CONFLICT, "errors.contentInUse"),
 	AUDIO_TOO_LARGE(HttpStatus.CONTENT_TOO_LARGE, "errors.audioTooLarge"),
 	AUDIO_UNSUPPORTED(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "errors.audioUnsupported"),
 	AI_UNAVAILABLE(HttpStatus.SERVICE_UNAVAILABLE, "errors.aiUnavailable"),

@@ -12,7 +12,7 @@ Quyết định nền (nối FE theo module, AI bản giả, hạ tầng đơn g
 | 2 | Bộ máy làm bài: Nghe, Đọc, Kiểm tra | 0 | [x] |
 | 3 | Dashboard, Thống kê | 1, 2 | [x] |
 | 4 | AI: Viết, Chat, Nói (bản giả trước) | 0 | [ ] |
-| 5 | Quản trị, Thông báo | 2, 4 | [ ] |
+| 5 | Quản trị, Thông báo | 2, 4 | [x] |
 | 6 | Email nhắc học, rate limit, cache, dọn dẹp | 1, 5 | [ ] |
 | 7 | Hoàn tất song ngữ VI/EN (làm xen kẽ được) | không | [ ] |
 | Cuối | Xoá mock, cập nhật tài liệu, nợ kỹ thuật nhỏ | tất cả | [ ] |
@@ -46,10 +46,10 @@ Opus chỉ dùng khi Sonnet sai hai lần liên tiếp ở cùng một việc (g
 | 4c | 4 | BE Luyện nói (4.3): nhận file, transcript, `FAILED` | Sonnet | medium | [x] |
 | 4d | 4 | FE: bỏ mock `writing,chat,speaking`, trạng thái `GRADING`/lỗi | Sonnet | low | [x] |
 | 4z | 4 | Đóng đợt (4.4 OpenAI thật để sau, phiên riêng khi có key: Sonnet/medium) | Haiku | low | [x] |
-| 5a | 5 | BE quản trị nội dung (CRUD, `INACTIVE`, lỗi khoá ngoại), test 401/403 | Sonnet | medium | [ ] |
-| 5b | 5 | BE quản trị người dùng + Thông báo (`UserNotification`, đã đọc) | Sonnet | medium | [ ] |
-| 5c | 5 | FE: bỏ mock `admin,notifications` | Sonnet | low | [ ] |
-| 5z | 5 | Đóng đợt | Haiku | low | [ ] |
+| 5a | 5 | BE quản trị nội dung (CRUD, `INACTIVE`, lỗi khoá ngoại), test 401/403 | Sonnet | medium | [x] |
+| 5b | 5 | BE quản trị người dùng + Thông báo (`UserNotification`, đã đọc) + `/admin/dashboard` | Sonnet | medium | [x] |
+| 5c | 5 | FE: bỏ mock `admin,notifications` | Sonnet | low | [x] |
+| 5z | 5 | Đóng đợt | Haiku | low | [x] |
 | 6a | 6 | Email nhắc học `@Scheduled`, bucket4j 429, Caffeine, job dọn dẹp, test | Sonnet | medium | [ ] |
 | 6z | 6 | Đóng đợt + `ARCHITECTURE.md` mục 4 | Haiku | low | [ ] |
 | 7a | 7 | Song ngữ: trang làm bài và kết quả | Sonnet | low | [ ] |

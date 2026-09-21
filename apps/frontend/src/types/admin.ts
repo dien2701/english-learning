@@ -1,4 +1,4 @@
-import type { AccountStatus, Role, Skill } from './common';
+import type { AccountStatus, Level, Role, Skill } from './common';
 import type { L10n } from './l10n';
 
 /** Số liệu tổng quan trên bảng điều khiển của quản trị viên. */
@@ -49,7 +49,8 @@ export interface AdminUser {
   role: Role;
   status: AccountStatus;
   createdAt: string;
-  lastActiveAt: string;
+  /** Vắng khi tài khoản chưa từng hoạt động. */
+  lastActiveAt?: string;
   /** Tổng số bài đã hoàn thành. */
   completedLessons: number;
 }
@@ -62,7 +63,8 @@ export interface AdminContentItem {
   id: string;
   title: L10n;
   skill: Skill;
-  topicName: L10n;
+  /** Vắng với đề kiểm tra (không thuộc chủ đề). */
+  topicName?: L10n;
   level: string;
   status: ContentStatus;
   /** Số câu hỏi hoặc số thẻ, tuỳ loại nội dung. */
@@ -94,28 +96,89 @@ export interface AdminNotification {
   sentAt?: string;
 }
 
-export type QuestionType = 'MULTIPLE_CHOICE' | 'FILL_BLANK';
+/** Loại câu hỏi phía BE: trắc nghiệm đúng một đáp án, hoặc điền từ. */
+export type QuestionKindInput = 'SINGLE_CHOICE' | 'FILL_BLANK';
 
-export interface AdminQuestion {
-  id?: string;
-  type: QuestionType;
+export interface AdminOptionInput {
   content: string;
-  options?: string[];
-  correctAnswers: string[];
+  correct: boolean;
 }
 
-/** Phần tử con của nội dung (thẻ từ, câu hỏi...), hình dạng tuỳ kỹ năng. */
-export type AdminContentChild = Record<string, unknown>;
-
-/** Payload dùng chung khi thêm/sửa nội dung. */
-export interface AdminContentPayload {
-  skill: Skill;
-  title: L10n;
-  topicName?: L10n; // Flashcard dùng topicName
-  level: string;
-  prompt?: string; // Đề bài chung cho bài tập (nếu có)
-  mediaUrl?: string; // Audio/Video URL
-  contentBody?: string; // Đoạn văn / Transcript
-  items: AdminContentChild[]; // Dữ liệu con tuỳ thuộc vào kỹ năng (từ vựng, câu hỏi nghe/đọc...)
+/** Câu hỏi Nghe/Đọc/Kiểm tra. `skill` chỉ cần cho đề kiểm tra. */
+export interface AdminQuestionInput {
+  id?: string;
+  skill?: Skill;
+  kind: QuestionKindInput;
+  content: string;
+  explanation?: string;
+  options?: AdminOptionInput[];
+  acceptedAnswers?: string[];
 }
 
+export interface AdminCardInput {
+  id?: string;
+  word: string;
+  phonetic?: string;
+  meaningVi: string;
+  meaningEn?: string;
+  partOfSpeechVi?: string;
+  partOfSpeechEn?: string;
+  example?: string;
+  exampleMeaning?: string;
+  imageUrl?: string;
+  audioUrl?: string;
+}
+
+export interface AdminPromptInput {
+  id?: string;
+  text: string;
+  phonetic?: string;
+  meaningVi?: string;
+}
+
+interface ContentPayloadBase {
+  titleVi: string;
+  titleEn?: string;
+  level: Level;
+}
+
+interface TopicalPayload extends ContentPayloadBase {
+  topicId: string;
+}
+
+interface DescribedPayload {
+  descriptionVi?: string;
+  descriptionEn?: string;
+}
+
+/**
+ * Body POST/PUT `/admin/content`: kiểu đa hình theo `skill`, khớp BE (`AdminContentRequest`).
+ * PUT thay toàn bộ; phần tử con có `id` thì sửa tại chỗ, không có thì tạo mới, vắng mặt thì bị xoá.
+ */
+export type AdminContentPayload =
+  | (TopicalPayload & DescribedPayload & { skill: 'VOCABULARY'; coverImageUrl?: string; cards: AdminCardInput[] })
+  | (TopicalPayload &
+      DescribedPayload & {
+        skill: 'LISTENING';
+        audioUrl?: string;
+        durationSeconds?: number;
+        transcript: string;
+        questions: AdminQuestionInput[];
+      })
+  | (TopicalPayload &
+      DescribedPayload & {
+        skill: 'READING';
+        timeLimitMinutes?: number;
+        paragraphs: string[];
+        questions: AdminQuestionInput[];
+      })
+  | (TopicalPayload & {
+      skill: 'WRITING';
+      instructions: string;
+      suggestedMinutes?: number;
+      minWords?: number;
+      hints?: string[];
+    })
+  | (TopicalPayload & DescribedPayload & { skill: 'SPEAKING'; prompts: AdminPromptInput[] })
+  | (ContentPayloadBase &
+      DescribedPayload & { skill: 'EXAM'; timeLimitMinutes?: number; questions: AdminQuestionInput[] });

@@ -8,6 +8,7 @@ import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import vn.enlearning.backend.entity.UserFlashcardProgress;
 import vn.enlearning.backend.entity.enums.RecallLevel;
@@ -57,4 +58,7 @@ public interface UserFlashcardProgressRepository extends JpaRepository<UserFlash
 			where p.user.id = :userId and p.flashcard.deck.id in :deckIds
 			group by p.flashcard.deck.id""")
 	List<DeckProgress> summarize(UUID userId, Collection<UUID> deckIds, RecallLevel remembered);
+
+	@Query("select distinct p.flashcard.deck.id from UserFlashcardProgress p where p.flashcard.deck.id in :ids")
+	List<UUID> usedDeckIds(@Param("ids") Collection<UUID> ids);
 }

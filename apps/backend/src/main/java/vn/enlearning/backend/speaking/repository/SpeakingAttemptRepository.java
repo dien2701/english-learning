@@ -39,4 +39,12 @@ public interface SpeakingAttemptRepository extends JpaRepository<SpeakingAttempt
 	@Query("update SpeakingAttempt a set a.status = :to, a.updatedAt = :now where a.id = :id and a.status = :from")
 	int transition(@Param("id") UUID id, @Param("from") SpeakingAttemptStatus from,
 			@Param("to") SpeakingAttemptStatus to, @Param("now") Instant now);
+
+	@Query("select distinct a.lesson.id from SpeakingAttempt a where a.lesson.id in :ids")
+	List<UUID> usedLessonIds(@Param("ids") Collection<UUID> ids);
+
+	@Query("select a.user.id as id, count(a) as total from SpeakingAttempt a "
+			+ "where a.status = vn.enlearning.backend.entity.enums.SpeakingAttemptStatus.GRADED and a.user.id in :ids "
+			+ "group by a.user.id")
+	List<vn.enlearning.backend.common.IdCount> gradedByUsers(@Param("ids") Collection<UUID> ids);
 }

@@ -92,7 +92,7 @@ const ManageContentPage: React.FC = () => {
         <div className="min-w-0">
           <p className="truncate text-[13.5px] font-bold text-ink">{L(item.title)}</p>
           <p className="truncate text-[12px] text-ink-muted">
-            {L(item.topicName)} · {item.itemCount}{' '}
+            {item.topicName ? L(item.topicName) : t('admin.noTopic')} · {item.itemCount}{' '}
             {item.skill === 'VOCABULARY'
               ? t('admin.cardsUnit')
               : t('admin.itemsUnit')}

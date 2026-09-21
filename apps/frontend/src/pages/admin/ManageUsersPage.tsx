@@ -136,9 +136,9 @@ const ManageUsersPage: React.FC = () => {
       title: t('admin.lastActive'),
       dataIndex: 'lastActiveAt',
       width: 150,
-      render: (value: string) => (
+      render: (value?: string) => (
         <span className="text-[12.5px] text-ink-muted">
-          {relativeTime(value)}
+          {value ? relativeTime(value) : t('admin.never')}
         </span>
       ),
     },

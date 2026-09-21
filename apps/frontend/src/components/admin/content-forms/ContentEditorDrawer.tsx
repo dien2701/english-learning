@@ -1,7 +1,7 @@
 import React, { useEffect, useEffectEvent, useState } from 'react';
 import { Drawer, Form, Input, Select, Space, Button, App, Spin, Tabs, Upload } from 'antd';
 import { useTranslation } from 'react-i18next';
-import type { AdminContentChild, AdminContentPayload } from '../../../types/admin';
+import { toFormValues, toPayload, type ContentFormValues, type QuestionFormValue } from './contentMapping';
 import type { Skill, Level } from '../../../types/common';
 import { useLabels } from '../../../hooks/useLabels';
 import { adminService } from '../../../services/adminService';
@@ -20,19 +20,6 @@ interface ContentEditorDrawerProps {
   onSuccess: () => void;
   /** Nếu null => Thêm mới. Nếu có id => Cập nhật */
   editingId: string | null;
-}
-
-interface ContentFormValues {
-  skill: Skill;
-  level: string;
-  titleVi: string;
-  titleEn: string;
-  topicNameVi?: string;
-  topicNameEn: string;
-  prompt?: string;
-  mediaUrl?: string;
-  contentBody?: string;
-  items?: AdminContentChild[];
 }
 
 const SKILLS: Skill[] = ['VOCABULARY', 'LISTENING', 'READING', 'WRITING', 'SPEAKING', 'EXAM'];
@@ -56,18 +43,7 @@ export const ContentEditorDrawer: React.FC<ContentEditorDrawerProps> = ({
   const loading = open && !!editingId && loadedId !== editingId;
 
   const onLoaded = useEffectEvent((id: string, data: Awaited<ReturnType<typeof adminService.getContent>>) => {
-    form.setFieldsValue({
-      skill: data.payload.skill,
-      titleVi: data.payload.title?.vi,
-      titleEn: data.payload.title?.en,
-      level: data.payload.level,
-      topicNameVi: data.payload.topicName?.vi,
-      topicNameEn: data.payload.topicName?.en,
-      prompt: data.payload.prompt,
-      mediaUrl: data.payload.mediaUrl,
-      contentBody: data.payload.contentBody,
-      items: data.payload.items,
-    });
+    form.setFieldsValue(toFormValues(data.payload));
     setLoadedId(id);
   });
 
@@ -93,16 +69,7 @@ export const ContentEditorDrawer: React.FC<ContentEditorDrawerProps> = ({
   const handleFinish = async (values: ContentFormValues) => {
     try {
       setSaving(true);
-      const payload: AdminContentPayload = {
-        skill: values.skill,
-        level: values.level,
-        title: { vi: values.titleVi, en: values.titleEn },
-        topicName: values.topicNameVi ? { vi: values.topicNameVi, en: values.topicNameEn } : undefined,
-        prompt: values.prompt,
-        mediaUrl: values.mediaUrl,
-        contentBody: values.contentBody,
-        items: values.items || [],
-      };
+      const payload = toPayload(values);
 
       if (editingId) {
         await adminService.updateContent(editingId, payload);
@@ -189,7 +156,7 @@ export const ContentEditorDrawer: React.FC<ContentEditorDrawerProps> = ({
                 return result;
               };
               
-              const importedItems: AdminContentChild[] = [];
+              const importedItems: QuestionFormValue[] = [];
               let commonPrompt = form.getFieldValue('prompt') || '';
               
               for (let i = 1; i < lines.length; i++) {
@@ -198,7 +165,7 @@ export const ContentEditorDrawer: React.FC<ContentEditorDrawerProps> = ({
                 const prompt = values[0];
                 if (prompt && !commonPrompt) commonPrompt = prompt;
                 
-                const type = values[1] === 'FILL_BLANK' ? 'FILL_BLANK' : 'MULTIPLE_CHOICE';
+                const type: QuestionFormValue['type'] = values[1] === 'FILL_BLANK' ? 'FILL_BLANK' : 'MULTIPLE_CHOICE';
                 const content = values[2] || '';
                 
                 const options = [];
@@ -208,7 +175,9 @@ export const ContentEditorDrawer: React.FC<ContentEditorDrawerProps> = ({
                 if (values[6]) options.push(values[6]);
                 
                 const correctStr = values[7] || '';
-                const correctAnswers = correctStr.split(';').map(s => s.trim()).filter(Boolean);
+                const parsedAnswers = correctStr.split(';').map(s => s.trim()).filter(Boolean);
+                // Trắc nghiệm chỉ có đúng một đáp án đúng.
+                const correctAnswers = type === 'MULTIPLE_CHOICE' ? parsedAnswers.slice(0, 1) : parsedAnswers;
                 
                 importedItems.push({
                   type,

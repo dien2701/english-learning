@@ -4,6 +4,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -44,6 +45,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 	@ExceptionHandler(AuthenticationException.class)
 	ResponseEntity<Object> handleAuthentication() {
 		return ResponseEntity.status(ErrorCode.UNAUTHORIZED.status()).body(ApiErrorResponse.of(ErrorCode.UNAUTHORIZED));
+	}
+
+	/** Khoá ngoại RESTRICT bị chạm (xoá nội dung đã có trong lịch sử học): trả 409 rõ ràng thay vì 500. */
+	@ExceptionHandler(DataIntegrityViolationException.class)
+	ResponseEntity<Object> handleIntegrity(DataIntegrityViolationException ex) {
+		log.warn("Vi phạm ràng buộc dữ liệu: {}", ex.getMostSpecificCause().getMessage());
+		return ResponseEntity.status(ErrorCode.CONTENT_IN_USE.status()).body(ApiErrorResponse.of(ErrorCode.CONTENT_IN_USE));
 	}
 
 	/** Lưới an toàn cuối: ghi log đầy đủ ở server, không lộ chi tiết ra ngoài. */

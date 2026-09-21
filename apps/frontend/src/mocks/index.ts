@@ -14,7 +14,6 @@ import './handlers/writing';
 import './handlers/practice';
 import './handlers/speaking';
 import './handlers/chat';
-import './handlers/admin';
 import './handlers/misc';
 
 /** Ghi một dòng log để biết module nào đang mock và có bao nhiêu route. */

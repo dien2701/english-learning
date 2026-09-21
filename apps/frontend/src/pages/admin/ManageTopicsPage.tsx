@@ -13,7 +13,8 @@ import type { Topic } from '../../types/practice';
 import { useLanguage } from '../../hooks/useLanguage';
 
 interface TopicForm {
-  name: string;
+  nameVi: string;
+  nameEn?: string;
 }
 
 const ManageTopicsPage: React.FC = () => {
@@ -40,7 +41,7 @@ const ManageTopicsPage: React.FC = () => {
 
   const openEdit = (topic: Topic) => {
     setEditing(topic);
-    form.setFieldsValue({ name: L(topic.name) });
+    form.setFieldsValue({ nameVi: topic.name.vi, nameEn: topic.name.en });
     setIsOpen(true);
   };
 
@@ -48,10 +49,10 @@ const ManageTopicsPage: React.FC = () => {
     setIsSaving(true);
     try {
       if (editing) {
-        await adminService.updateTopic(editing.id, values.name);
+        await adminService.updateTopic(editing.id, values);
         message.success(t('admin.topicUpdated'));
       } else {
-        await adminService.createTopic(values.name);
+        await adminService.createTopic(values);
         message.success(t('admin.topicAdded'));
       }
       setIsOpen(false);
@@ -155,11 +156,14 @@ const ManageTopicsPage: React.FC = () => {
       >
         <Form form={form} layout="vertical" onFinish={save} requiredMark={false}>
           <Form.Item
-            label={t('admin.topicName')}
-            name="name"
+            label={t('admin.topicNameVi')}
+            name="nameVi"
             rules={[{ required: true, message: t('admin.topicRequired') }]}
           >
             <Input size="large" placeholder={t('admin.topicPlaceholder')} autoFocus />
+          </Form.Item>
+          <Form.Item label={t('admin.topicNameEn')} name="nameEn">
+            <Input size="large" />
           </Form.Item>
 
           <div className="flex justify-end gap-2">
