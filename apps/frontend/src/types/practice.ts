@@ -70,6 +70,8 @@ export interface PracticeResult {
   /** Thời gian làm bài, tính bằng giây. */
   durationSeconds: number;
   submittedAt: string;
+  /** Nộp quá giới hạn thời gian (backend vẫn nhận và chấm). */
+  timedOut?: boolean;
   answers: GradedAnswer[];
   /** Lời thoại, chỉ có với bài nghe. */
   transcript?: string;
@@ -95,7 +97,8 @@ export interface ListeningSummary {
 }
 
 export interface ListeningDetail extends ListeningSummary {
-  audioUrl: string;
+  /** Trống khi bài chưa có tệp mp3; trình phát đọc bằng giọng trình duyệt. */
+  audioUrl?: string | null;
   questions: Question[];
 }
 

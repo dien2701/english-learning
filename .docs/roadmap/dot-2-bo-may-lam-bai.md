@@ -14,18 +14,18 @@ Ba chức năng dùng chung `Question`, `QuestionOption`, `PracticeAttempt`, `Pr
 - Bài có tiến độ dở dang: FE có lưu nháp không; nếu không thì "đang học dở" chỉ dựa vào `study_sessions` (cần cho đợt 3).
 
 ## Việc làm
-- [ ] Service chấm điểm chung: trắc nghiệm theo `QuestionOption`; câu điền từ so khớp `acceptedAnswers` không phân biệt hoa/thường. Đảm bảo mỗi `Question` thuộc đúng một cha (bài nghe, bài đọc hoặc đề).
-- [ ] Lưu `PracticeAttempt` + `PracticeAttemptAnswer` (đúng một chủ sở hữu). Điểm thang 10, `DECIMAL(3,1)`.
-- [ ] Chi tiết bài học KHÔNG trả đáp án đúng và transcript; chỉ trả sau khi nộp.
-- [ ] Kết quả Exam tách điểm theo kỹ năng; danh sách lịch sử làm bài lọc theo kỹ năng.
-- [ ] `study_sessions` nhận `skill` và `refId` cho bài nghe/đọc/kiểm tra.
-- [ ] FE: bỏ `listening`, `reading`, `exams`, `attempts` khỏi `VITE_MOCK_MODULES`.
+- [x] Service chấm điểm chung: trắc nghiệm theo `QuestionOption`; câu điền từ so khớp `acceptedAnswers` không phân biệt hoa/thường. Đảm bảo mỗi `Question` thuộc đúng một cha (bài nghe, bài đọc hoặc đề).
+- [x] Lưu `PracticeAttempt` + `PracticeAttemptAnswer` (đúng một chủ sở hữu). Điểm thang 10, `DECIMAL(3,1)`.
+- [x] Chi tiết bài học KHÔNG trả đáp án đúng và transcript; chỉ trả sau khi nộp.
+- [x] Kết quả Exam tách điểm theo kỹ năng; danh sách lịch sử làm bài lọc theo kỹ năng.
+- [x] `study_sessions` nhận `skill` và `refId` cho bài nghe/đọc/kiểm tra (heartbeat của đợt 1 đã nhận sẵn LISTENING/READING/EXAM; FE gắn hook ở phiên 2c).
+- [x] FE: bỏ `listening`, `reading`, `exams`, `attempts` khỏi `VITE_MOCK_MODULES`.
 
 ## Tiêu chí xong
-- [ ] Làm trọn một bài nghe, một bài đọc, một đề kiểm tra trên seed; kết quả và xem lại đáp án đúng.
-- [ ] Không có API nào lộ đáp án trước khi nộp (có test cho điều này).
-- [ ] Người dùng A không xem được lượt làm của người dùng B (test 403/404).
-- [ ] Test xanh, lint/build sạch.
+- [x] Làm trọn một bài nghe, một bài đọc, một đề kiểm tra trên seed; kết quả và xem lại đáp án đúng.
+- [x] Không có API nào lộ đáp án trước khi nộp (có test cho điều này).
+- [x] Người dùng A không xem được lượt làm của người dùng B (test 403/404).
+- [x] Test xanh, lint/build sạch.
 
 ## Kiểm tra hoàn thành
 
@@ -45,9 +45,9 @@ Folder "Dot 2 - Nghe, Doc, Kiem tra" sẽ được thêm khi đợt xong. Bảng
 ### B. Ca lỗi và bảo mật
 - Chi tiết bài trước khi nộp không chứa các khoá `isCorrect`, `correctOptionId`, `acceptedAnswers`, `transcript` (thêm test tìm chuỗi này trong phản hồi).
 - Câu điền từ: nộp `"Apple"` khi đáp án là `apple` vẫn đúng.
-- Nộp `questionId` thuộc bài khác hoặc thiếu câu: 400, không phải 500.
+- Nộp `questionId` thuộc bài khác, trùng câu, hoặc `optionId` không thuộc câu: 400, không phải 500. Câu bỏ trống tính sai (không lỗi).
 - Nộp trễ hạn (Reading/Exam có giới hạn thời gian): vẫn nhận, có đánh dấu hết giờ.
-- Nộp hai lần cho cùng một lượt: bị từ chối (409 hoặc 400, chốt khi làm).
+- Nộp lại cùng một bài: hợp lệ, tạo lượt mới (không có bước "bắt đầu làm"; đã chốt ở phiên 2a).
 - Người dùng B gọi `GET /attempts/{{attemptId của A}}`: 404 hoặc 403.
 - Không có token: 401.
 

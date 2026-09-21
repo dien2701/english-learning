@@ -211,3 +211,20 @@ chỉ được chuyển sang ngừng hoạt động.
 ## Đợt 1 (đóng đợt, phiên 1z)
 
 - Folder Postman "Dot 1 - Flashcard, Profile" (35 request) đã thêm vào collection; bảng "Kiểm tra hoàn thành" chốt theo DTO thật.
+
+## Đợt 2 (phiên 2a: bộ chấm điểm chung)
+
+- `practice/service/AnswerGrader`: chấm trắc nghiệm theo `QuestionOption`, điền từ so `acceptedAnswers` (bỏ khoảng trắng thừa, không phân biệt hoa/thường); câu bỏ trống tính sai; điểm thang 10 một chữ số; tách điểm theo `Skill`.
+- `PracticeAttemptService.submitListening/Reading/Exam`: chỉ nhận bài ACTIVE (404 nếu không), lưu `PracticeAttempt` COMPLETED + một `PracticeAttemptAnswer` cho MỖI câu; nộp lại = lượt mới; `timedOut` khi quá giới hạn + 10 giây (không lưu DB, suy ra từ `durationSeconds`).
+- DTO `SubmitRequest`/`AnswerSubmission`; sai `questionId`/`optionId`/trùng câu/text > 500 ký tự: 400 `errors.invalidAnswers`. Test: `AnswerGraderTest`, `PracticeAttemptServiceTest`.
+
+## Đợt 2 (phiên 2b: endpoint Nghe, Đọc, Kiểm tra, lịch sử)
+
+- `GET /listening/lessons|/reading/lessons|/exams` (lọc `search/topicId/level/status`, phân trang) và `GET .../{id}`: chỉ nội dung ACTIVE, có `isCompleted`/`lastScore` (exam: `status` NOT_TAKEN/COMPLETED); chi tiết không có đáp án, giải thích, transcript.
+- `POST .../{id}/submit` trả `PracticeResultResponse` (điểm, từng câu kèm đáp án đúng, `transcript` cho bài nghe, `breakdown` cho đề, `timedOut`); `GET /attempts` (lọc `skill`, `SPEAKING` luôn rỗng) và `GET /attempts/{id}` (lượt người khác: 404), `detailPath` dạng `/listening/result/{id}`.
+- Test tích hợp `PracticeApiTests` (10 ca: lộ đáp án, 400, 404/401, nộp trễ, tách điểm, quyền xem lượt, heartbeat); bộ `practice` 22 test xanh.
+
+## Đợt 2 (phiên 2c: nối FE)
+
+- `.env.example`: bỏ `listening,reading,exams,attempts` khỏi `VITE_MOCK_MODULES` (người dùng tự sửa `.env` cục bộ). Kiểu FE: `ListeningDetail.audioUrl` nhận null, `PracticeResult.timedOut?`; các kiểu còn lại đã khớp DTO.
+- `useStudyHeartbeat` gắn vào trang làm bài Nghe, Đọc, Kiểm tra. Lint và build sạch.
