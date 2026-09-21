@@ -42,19 +42,30 @@ export interface SpeakingScores {
 /** Nhận xét cho một câu cụ thể. */
 export interface SpeakingPromptFeedback {
   promptId: string;
+  /** Câu đề bài. */
   text: string;
+  /** Văn bản AI nghe được (âm thanh gốc không được lưu). */
+  transcript: string;
   score: number;
   /** Các từ phát âm chưa chuẩn. */
   mispronounced: string[];
   comment: string;
 }
 
+/**
+ * GRADING: AI đang chấm. FAILED: AI lỗi, không chấm lại được (không lưu âm thanh)
+ * nên người học ghi âm lại.
+ */
+export type SpeakingStatus = 'GRADING' | 'GRADED' | 'FAILED';
+
 export interface SpeakingResult {
   attemptId: string;
   lessonId: string;
   lessonTitle: L10n;
-  overallScore: number;
-  scores: SpeakingScores;
+  status: SpeakingStatus;
+  /** Điểm chỉ có khi status là GRADED. */
+  overallScore?: number;
+  scores?: SpeakingScores;
   /** Những điểm cần cải thiện, viết ngắn gọn. */
   improvements: string[];
   promptFeedback: SpeakingPromptFeedback[];

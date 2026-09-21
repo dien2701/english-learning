@@ -41,11 +41,11 @@ Opus chỉ dùng khi Sonnet sai hai lần liên tiếp ở cùng một việc (g
 | 3a | 3 | BE seed lịch sử học + truy vấn Dashboard/Thống kê (múi giờ, biên tuần/tháng), test | Sonnet | high | [x] |
 | 3b | 3 | FE: bỏ mock `dashboard,statistics`, trạng thái rỗng | Sonnet | low | [x] |
 | 3z | 3 | Đóng đợt | Haiku | low | [x] |
-| 4a | 4 | BE khung AI (interface + bản giả `@Profile("dev")`) + Luyện viết (4.1) | Sonnet | high | [ ] |
-| 4b | 4 | BE Chat AI (4.2) | Sonnet | medium | [ ] |
-| 4c | 4 | BE Luyện nói (4.3): nhận file, transcript, `FAILED` | Sonnet | medium | [ ] |
-| 4d | 4 | FE: bỏ mock `writing,chat,speaking`, trạng thái `GRADING`/lỗi | Sonnet | low | [ ] |
-| 4z | 4 | Đóng đợt (4.4 OpenAI thật để sau, phiên riêng khi có key: Sonnet/medium) | Haiku | low | [ ] |
+| 4a | 4 | BE khung AI (interface + bản giả `@Profile("dev")`) + Luyện viết (4.1) | Sonnet | high | [x] |
+| 4b | 4 | BE Chat AI (4.2) | Sonnet | medium | [x] |
+| 4c | 4 | BE Luyện nói (4.3): nhận file, transcript, `FAILED` | Sonnet | medium | [x] |
+| 4d | 4 | FE: bỏ mock `writing,chat,speaking`, trạng thái `GRADING`/lỗi | Sonnet | low | [x] |
+| 4z | 4 | Đóng đợt (4.4 OpenAI thật để sau, phiên riêng khi có key: Sonnet/medium) | Haiku | low | [x] |
 | 5a | 5 | BE quản trị nội dung (CRUD, `INACTIVE`, lỗi khoá ngoại), test 401/403 | Sonnet | medium | [ ] |
 | 5b | 5 | BE quản trị người dùng + Thông báo (`UserNotification`, đã đọc) | Sonnet | medium | [ ] |
 | 5c | 5 | FE: bỏ mock `admin,notifications` | Sonnet | low | [ ] |

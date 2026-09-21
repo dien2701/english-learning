@@ -16,6 +16,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 public class AsyncConfig {
 
 	public static final String AUTH_TASK_EXECUTOR = "authTaskExecutor";
+	public static final String AI_TASK_EXECUTOR = "aiTaskExecutor";
 
 	/**
 	 * Test đặt {@code app.async.synchronous=true} để việc bất đồng bộ chạy ngay trong giao dịch test
@@ -32,6 +33,25 @@ public class AsyncConfig {
 		executor.setQueueCapacity(100);
 		executor.setThreadNamePrefix("auth-async-");
 		// Tắt server thì chờ nốt các email đang gửi thay vì bỏ ngang.
+		executor.setWaitForTasksToCompleteOnShutdown(true);
+		executor.setAwaitTerminationSeconds(15);
+		return executor;
+	}
+
+	/**
+	 * Luồng chấm AI, tách khỏi luồng email để cuộc gọi AI chậm không chặn việc gửi mail. Hàng đợi có giới hạn:
+	 * đầy thì {@code TaskRejectedException}, người gọi chuyển bài sang chấm lại thay vì chờ vô hạn.
+	 */
+	@Bean(name = AI_TASK_EXECUTOR)
+	Executor aiTaskExecutor(@Value("${app.async.synchronous:false}") boolean synchronous) {
+		if (synchronous) {
+			return new SyncTaskExecutor();
+		}
+		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+		executor.setCorePoolSize(2);
+		executor.setMaxPoolSize(4);
+		executor.setQueueCapacity(50);
+		executor.setThreadNamePrefix("ai-async-");
 		executor.setWaitForTasksToCompleteOnShutdown(true);
 		executor.setAwaitTerminationSeconds(15);
 		return executor;

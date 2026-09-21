@@ -27,9 +27,8 @@ function isRecordingSupported(): boolean {
 /**
  * Thu âm bằng micro thật của người dùng qua MediaRecorder.
  *
- * Bản ghi chỉ nằm trong trình duyệt, không được gửi đi đâu — giai đoạn này
- * chưa có backend để nhận tệp. Người học vẫn nghe lại được giọng mình, đó
- * mới là phần có giá trị khi luyện nói.
+ * Bản ghi nằm trong trình duyệt để người học nghe lại; chỉ khi nộp bài mới
+ * được gửi lên backend (multipart), backend chuyển thành văn bản rồi bỏ đi.
  *
  * Quyền micro do trình duyệt hỏi, người dùng có toàn quyền từ chối; khi đó
  * hook trả về trạng thái DENIED để giao diện hướng dẫn cách bật lại.
@@ -109,7 +108,10 @@ export function useRecorder() {
       };
 
       recorder.onstop = () => {
-        const blob = new Blob(chunksRef.current, { type: 'audio/webm' });
+        // Giữ đúng định dạng trình duyệt thu (webm, ogg hoặc mp4) để backend nhận diện được.
+        const blob = new Blob(chunksRef.current, {
+          type: recorder.mimeType || 'audio/webm',
+        });
         const durationSeconds = (Date.now() - startedAtRef.current) / 1000;
 
         cleanup();

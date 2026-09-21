@@ -134,6 +134,12 @@ export const readingService = {
 
 /* --- Luyện nói ------------------------------------------------------ */
 
+function audioExtension(mime: string): string {
+  if (mime.includes('ogg')) return 'ogg';
+  if (mime.includes('mp4')) return 'm4a';
+  return 'webm';
+}
+
 export const speakingService = {
   list: (query: ListQuery = {}): Promise<Page<SpeakingSummary>> =>
     http.get<Page<SpeakingSummary>>('/speaking/lessons', { params: clean(query) }),
@@ -141,15 +147,24 @@ export const speakingService = {
   get: (id: string): Promise<SpeakingDetail> =>
     http.get<SpeakingDetail>(`/speaking/lessons/${id}`),
 
+  /** Gửi bản ghi từng câu (multipart); kết quả ban đầu thường là GRADING, hỏi lại bằng getResult. */
   submit: (
     id: string,
-    recordedPromptIds: string[],
+    recordings: { promptId: string; blob: Blob }[],
     totalDurationSeconds: number,
-  ): Promise<SpeakingResult> =>
-    http.post<SpeakingResult>(`/speaking/lessons/${id}/submit`, {
-      recordedPromptIds,
-      totalDurationSeconds,
-    }),
+  ): Promise<SpeakingResult> => {
+    const form = new FormData();
+    recordings.forEach(({ promptId, blob }, i) => {
+      form.append('promptIds', promptId);
+      form.append('audio', blob, `prompt-${i + 1}.${audioExtension(blob.type)}`);
+    });
+    form.append('durationSeconds', String(totalDurationSeconds));
+    return http.post<SpeakingResult>(`/speaking/lessons/${id}/submit`, form, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+      // Tải âm thanh lên có thể lâu hơn request thường.
+      timeout: 60_000,
+    });
+  },
 
   getResult: (attemptId: string): Promise<SpeakingResult> =>
     http.get<SpeakingResult>(`/speaking/results/${attemptId}`),

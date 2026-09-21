@@ -14,13 +14,13 @@ import vn.enlearning.backend.entity.enums.ContentStatus;
 import vn.enlearning.backend.entity.enums.Level;
 
 /** Bộ lọc danh sách cho nội dung có tiêu đề/mô tả song ngữ; người học chỉ thấy nội dung ACTIVE. */
-final class ContentSpecs {
+public final class ContentSpecs {
 
 	private ContentSpecs() {
 	}
 
 	/** {@code withTopic}: nội dung có chủ đề (Nghe, Đọc); đề kiểm tra thì không. */
-	static <T extends ContentEntity> Specification<T> learnerFilter(String search, UUID topicId, Level level,
+	public static <T extends ContentEntity> Specification<T> learnerFilter(String search, UUID topicId, Level level,
 			boolean withTopic) {
 		return (root, query, cb) -> {
 			if (withTopic) {

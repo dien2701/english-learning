@@ -301,7 +301,12 @@
       "fluency": "Độ trôi chảy",
       "relevance": "Bám sát chủ đề"
     },
-    "stopRecordingWithTime": "Dừng thu · {{time}}"
+    "stopRecordingWithTime": "Dừng thu · {{time}}",
+    "grading": "AI đang chấm bài nói",
+    "gradingHint": "AI đang nghe và chấm các câu bạn đã đọc. Việc này thường mất vài giây.",
+    "failedTitle": "Chưa chấm được bài nói",
+    "failedHint": "AI không phản hồi. Bản ghi không được lưu nên không chấm lại được, hãy ghi âm lại.",
+    "transcript": "AI nghe được:"
   },
   "exam": {
     "title": "Bài kiểm tra",
@@ -722,7 +727,18 @@
       "topicNameRequired": "Vui lòng nhập tên chủ đề.",
       "essayRequired": "Vui lòng nhập nội dung bài viết.",
       "titleRequired": "Vui lòng nhập tiêu đề.",
-      "contentRequired": "Vui lòng nhập nội dung."
-    }
+      "contentRequired": "Vui lòng nhập nội dung.",
+      "essayTooShort": "Bài viết chưa đủ số từ tối thiểu.",
+      "essayTooLong": "Bài viết quá dài.",
+      "messageRequired": "Vui lòng nhập nội dung tin nhắn.",
+      "messageTooLong": "Tin nhắn quá dài (tối đa 2000 ký tự).",
+      "titleTooLong": "Tiêu đề quá dài (tối đa 200 ký tự).",
+      "audioMismatch": "Số bản ghi không khớp số câu đã chọn.",
+      "invalidPrompt": "Có câu không thuộc bài luyện nói này."
+    },
+    "invalidState": "Thao tác này không dùng được ở trạng thái hiện tại.",
+    "aiUnavailable": "Trợ lý AI đang bận. Vui lòng thử lại sau.",
+    "audioTooLarge": "Bản ghi quá lớn. Hãy ghi ngắn hơn hoặc ít câu hơn.",
+    "audioUnsupported": "Định dạng âm thanh không được hỗ trợ."
   }
 }
