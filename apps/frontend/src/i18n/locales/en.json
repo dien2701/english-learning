@@ -301,7 +301,12 @@
       "fluency": "Fluency",
       "relevance": "On topic"
     },
-    "stopRecordingWithTime": "Stop · {{time}}"
+    "stopRecordingWithTime": "Stop · {{time}}",
+    "grading": "AI is grading your speaking",
+    "gradingHint": "The AI is listening to and scoring the lines you read. This usually takes a few seconds.",
+    "failedTitle": "Could not grade your speaking",
+    "failedHint": "The AI did not respond. Recordings are not stored, so this cannot be regraded. Please record again.",
+    "transcript": "AI heard:"
   },
   "exam": {
     "title": "Exams",
@@ -722,7 +727,18 @@
       "topicNameRequired": "Please enter a topic name.",
       "essayRequired": "Please write your essay.",
       "titleRequired": "Please enter a title.",
-      "contentRequired": "Please enter the content."
-    }
+      "contentRequired": "Please enter the content.",
+      "essayTooShort": "The essay is below the minimum word count.",
+      "essayTooLong": "The essay is too long.",
+      "messageRequired": "Please enter a message.",
+      "messageTooLong": "The message is too long (max 2000 characters).",
+      "titleTooLong": "The title is too long (max 200 characters).",
+      "audioMismatch": "The number of recordings does not match the selected lines.",
+      "invalidPrompt": "A line does not belong to this speaking lesson."
+    },
+    "invalidState": "This action is not available in the current state.",
+    "aiUnavailable": "The AI assistant is busy. Please try again later.",
+    "audioTooLarge": "The recording is too large. Record less audio or fewer lines.",
+    "audioUnsupported": "This audio format is not supported."
   }
 }

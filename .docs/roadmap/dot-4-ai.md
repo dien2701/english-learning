@@ -11,26 +11,27 @@ Dùng mô hình mạnh cho 4.1 (dựng khung bất đồng bộ). 4.2 và 4.3 t�
 
 ## 4.1 Luyện viết
 Endpoint: `GET /writing/prompts`, `GET /writing/prompts/:id`, `POST /writing/prompts/:id/submit`, `GET /writing/submissions`, `GET /writing/submissions/:id`, `POST /writing/submissions/:id/regrade`.
-- [ ] Nộp bài (kiểm số từ tối thiểu ở BE), lưu `WritingSubmission`, chấm nền, lưu `AiFeedback` (danh sách lỗi ở cột JSON `issues`). FE hỏi lại tới khi có kết quả.
-- [ ] `regrade` cho trạng thái `NEEDS_RETRY`.
+- [x] Nộp bài (kiểm số từ tối thiểu ở BE), lưu `WritingSubmission`, chấm nền, lưu `AiFeedback` (danh sách lỗi ở cột JSON `issues`). FE hỏi lại tới khi có kết quả.
+- [x] `regrade` cho trạng thái `NEEDS_RETRY`.
 
 ## 4.2 Chat AI
-Endpoint: `GET|POST /chat/conversations`, `GET /chat/conversations/:id`, `POST /chat/conversations/:id/messages`, `GET /chat/starters`. FE còn thiếu xoá hội thoại (xoá mềm) và đổi tiêu đề: đề xuất thêm khi làm.
-- [ ] Lưu tin nhắn người học trước, gọi AI sau, lưu câu trả lời kèm `modelName`, token, gợi ý bài học (cột JSON `links`).
-- [ ] Từ chối câu ngoài phạm vi học tiếng Anh (`isRefusal`). Giới hạn độ dài ngữ cảnh gửi lên.
+Endpoint: `GET|POST /chat/conversations`, `GET /chat/conversations/:id`, `POST /chat/conversations/:id/messages`, `GET /chat/starters`. Đã thêm `DELETE /chat/conversations/:id` (xoá mềm) và `PATCH /chat/conversations/:id` `{title}` (đổi tiêu đề); FE (4d) cần gọi thêm PATCH nếu muốn dùng. `POST .../messages` trả `{userMessage, reply}`; AI lỗi thì 503 `AI_UNAVAILABLE` (tin người học vẫn được lưu). Bản giả lỗi khi tin chứa `[fail]`.
+- [x] Lưu tin nhắn người học trước, gọi AI sau, lưu câu trả lời kèm `modelName`, token, gợi ý bài học (cột JSON `links`).
+- [x] Từ chối câu ngoài phạm vi học tiếng Anh (`isRefusal`). Giới hạn độ dài ngữ cảnh gửi lên.
 
 ## 4.3 Luyện nói
 Endpoint: `GET /speaking/lessons`, `GET /speaking/lessons/:id`, `POST /speaking/lessons/:id/submit` (multipart), `GET /speaking/results/:attemptId`.
-- [ ] Nhận file âm thanh (kiểm kích thước, định dạng), chuyển thành văn bản, chấm, lưu `SpeakingAttempt` (transcript, sáu điểm thành phần, `improvements`, `promptFeedback`), rồi BỎ âm thanh.
-- [ ] Lỗi thì `FAILED` và người học ghi âm lại (không chấm lại được vì không lưu âm thanh). Bản giả trả transcript cố định.
+Hợp đồng multipart (đã chốt): `promptIds` (UUID, lặp lại), `audio` (tệp, lặp lại, cùng thứ tự với `promptIds`), `durationSeconds`. Mỗi tệp tối đa 5MB, cả lần nộp 15MB; định dạng `audio/webm|ogg|mpeg|mp4|aac|wav`. Sai: 400 (`errors.noRecording`, `errors.field.audioMismatch`, `errors.field.invalidPrompt`), 415 `AUDIO_UNSUPPORTED`, 413 `AUDIO_TOO_LARGE`. Trả `SpeakingResult` có thêm `status` (GRADING|GRADED|FAILED); điểm và `scores` chỉ có khi GRADED; `promptFeedback[]` có `text` (câu đề) và `transcript`. Bản giả: tên tệp chứa `fail` thì FAILED. FE (4d) phải đổi mock submit từ JSON sang multipart.
+- [x] Nhận file âm thanh (kiểm kích thước, định dạng), chuyển thành văn bản, chấm, lưu `SpeakingAttempt` (transcript, sáu điểm thành phần, `improvements`, `promptFeedback`), rồi BỎ âm thanh.
+- [x] Lỗi thì `FAILED` và người học ghi âm lại (không chấm lại được vì không lưu âm thanh). Bản giả trả transcript cố định.
 
 ## 4.4 OpenAI thật (chờ người dùng có key)
 - [ ] Thêm client OpenAI, prompt chấm, cấu hình model qua biến môi trường; test tự động vẫn dùng bản giả.
 
 ## Tiêu chí xong
-- [ ] Ba luồng chạy trọn với bản giả, gồm cả trạng thái `GRADING`, lỗi (`NEEDS_RETRY` với bài viết, `FAILED` với bài nói) và chấm lại/ghi âm lại.
-- [ ] FE bỏ `writing`, `chat`, `speaking` khỏi `VITE_MOCK_MODULES`.
-- [ ] Người dùng chỉ xem được dữ liệu của mình. Test xanh, lint/build sạch.
+- [x] Ba luồng chạy trọn với bản giả, gồm cả trạng thái `GRADING`, lỗi (`NEEDS_RETRY` với bài viết, `FAILED` với bài nói) và chấm lại/ghi âm lại.
+- [x] FE bỏ `writing`, `chat`, `speaking` khỏi `VITE_MOCK_MODULES` (`.env.example` đã sửa; bạn tự sửa `.env` cục bộ thành `notifications,admin`).
+- [x] Người dùng chỉ xem được dữ liệu của mình. Test xanh, lint/build sạch.
 
 ## Kiểm tra hoàn thành
 
@@ -43,14 +44,14 @@ Folder "Dot 4 - AI (ban gia)" sẽ được thêm khi đợt xong. Bảng dướ
 | 2 | `POST /writing/prompts/{{promptId}}/submit` body `{"content":"<đủ số từ tối thiểu>"}` | 200/202, `status` = GRADING (hoặc GRADED nếu bản giả trả ngay) |
 | 3 | `GET /writing/submissions/{{submissionId}}` (chạy lại vài lần, cách 1-2 giây) | chuyển sang GRADED; có điểm tổng, 3 điểm thành phần, nhận xét, danh sách lỗi kèm cách sửa |
 | 4 | `GET /writing/submissions` | có bài vừa nộp |
-| 5 | Nộp nội dung chứa dấu hiệu lỗi của bản giả (chốt khi làm, ví dụ `[fail]`), rồi `POST /writing/submissions/{{id}}/regrade` | NEEDS_RETRY; sau regrade thành GRADED |
+| 5 | Nộp nội dung chứa dấu hiệu lỗi của bản giả (đã chốt: thêm `[fail]` vào nội dung, lỗi ở lần đầu; `[fail-always]` thì chấm lại vẫn lỗi), rồi `POST /writing/submissions/{{id}}/regrade` | NEEDS_RETRY; sau regrade thành GRADED |
 | 6 | `GET /chat/starters` | 200 |
 | 7 | `POST /chat/conversations` | 200/201, có `id` |
 | 8 | `POST /chat/conversations/{{convId}}/messages` body `{"content":"How do I use the present perfect?"}` | 200, có tin của trợ lý kèm gợi ý bài học |
 | 9 | Cùng hội thoại: `{"content":"Who won the last World Cup?"}` | tin trợ lý có `isRefusal` = true, từ chối lịch sự |
 | 10 | `GET /chat/conversations`, `/chat/conversations/{{convId}}` | thấy hội thoại, tin nhắn đúng thứ tự |
 | 11 | `GET /speaking/lessons`, `/speaking/lessons/{{lessonId}}` | 200 |
-| 12 | `POST /speaking/lessons/{{lessonId}}/submit` (Body: form-data, file âm thanh; tên trường chốt khi làm) | 200/202, status GRADING |
+| 12 | `POST /speaking/lessons/{{lessonId}}/submit` (Body: form-data, file âm thanh; đã chốt: `promptIds` lặp lại + `audio` lặp lại cùng thứ tự + `durationSeconds`) | 200/202, status GRADING |
 | 13 | `GET /speaking/results/{{attemptId}}` | GRADED; điểm tổng và 5 điểm thành phần (phát âm, từ vựng, ngữ pháp, trôi chảy, đúng chủ đề); có `improvements` và nhận xét từng câu kèm transcript |
 
 ### B. Ca lỗi và bảo mật

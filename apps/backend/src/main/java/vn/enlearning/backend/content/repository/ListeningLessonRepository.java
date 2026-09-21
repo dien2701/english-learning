@@ -13,4 +13,7 @@ public interface ListeningLessonRepository
 		extends JpaRepository<ListeningLesson, UUID>, JpaSpecificationExecutor<ListeningLesson> {
 
 	Optional<ListeningLesson> findByIdAndStatus(UUID id, ContentStatus status);
+
+	/** Nội dung ACTIVE đầu tiên, dùng làm gợi ý bài học trong Chat. */
+	Optional<ListeningLesson> findFirstByStatusOrderByCreatedAtAscIdAsc(ContentStatus status);
 }

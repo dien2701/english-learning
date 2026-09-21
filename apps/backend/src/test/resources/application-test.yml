@@ -10,6 +10,10 @@ app:
   async:
     # @Async chạy ngay trong luồng test để thấy dữ liệu chưa commit của giao dịch test.
     synchronous: true
+  ai:
+    # Test luôn dùng bản giả, không độ trễ, dù .env có điền OPENAI_API_KEY.
+    openai-api-key: ""
+    fake-latency: 0ms
   security:
     jwt-secret: khoa-jwt-chi-dung-cho-test-0123456789abcdef0123456789abcdef
     reset-code-secret: khoa-otp-chi-dung-cho-test-0123456789abcdef0123456789abcdef

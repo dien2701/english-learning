@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { App, Input, Modal } from 'antd';
+import { App, Input } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -18,7 +18,7 @@ import { useLanguage } from '../../hooks/useLanguage';
 const WritingPracticePage: React.FC = () => {
   const { t } = useTranslation();
   const { L } = useLanguage();
-  const { describe } = useApiError();
+  const { describe, fieldErrors } = useApiError();
   const { id = '' } = useParams();
   const navigate = useNavigate();
   const { message } = App.useApp();
@@ -47,28 +47,16 @@ const WritingPracticePage: React.FC = () => {
         replace: true,
       });
     } catch (submitError) {
-      message.error(describe(submitError, 'errors.submitFailed'));
+      message.error(
+        fieldErrors(submitError)?.content ?? describe(submitError, 'errors.submitFailed'),
+      );
       setIsSubmitting(false);
     }
-  }, [id, content, isSubmitting, navigate, message, describe]);
+  }, [id, content, isSubmitting, navigate, message, describe, fieldErrors]);
 
   /* Hết thời lượng gợi ý thì nhắc, nhưng không tự nộp — đây là thời gian
      tham khảo, không phải giới hạn cứng như bài kiểm tra. */
   const { elapsed } = useCountdown(0, undefined, Boolean(prompt));
-
-  const handleSubmitClick = () => {
-    if (!meetsMinimum) {
-      Modal.confirm({
-        title: t('writing.belowMinTitle'),
-        content: t('writing.belowMinBody', { count: wordCount, min: minWords }),
-        okText: t('writing.submitAnyway'),
-        cancelText: t('writing.keepWriting'),
-        onOk: submit,
-      });
-      return;
-    }
-    void submit();
-  };
 
   if (error) {
     return (
@@ -182,8 +170,9 @@ const WritingPracticePage: React.FC = () => {
                 icon="auto_awesome"
                 iconPosition="end"
                 loading={isSubmitting}
-                disabled={wordCount === 0}
-                onClick={handleSubmitClick}
+                /* Backend từ chối bài thiếu số từ tối thiểu nên chặn ngay ở đây. */
+                disabled={wordCount === 0 || !meetsMinimum}
+                onClick={() => void submit()}
               >
                 {isSubmitting ? t('common.submitting') : t('writing.submitToAi')}
               </Button>

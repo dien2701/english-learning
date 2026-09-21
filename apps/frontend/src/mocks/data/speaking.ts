@@ -200,6 +200,7 @@ export function generateSpeakingResult(
     .map((p, index) => ({
       promptId: p.id,
       text: p.text,
+      transcript: p.text,
       score: clamp(base + (index % 3) * 0.4),
       mispronounced: pickTrickyWords(p.text),
       comment:
@@ -208,7 +209,7 @@ export function generateSpeakingResult(
           : 'Phát âm rõ ràng, thử nối âm giữa các từ cho trôi chảy.',
     }));
 
-  return { lessonId: lesson.id, lessonTitle: lesson.title, overallScore, scores, improvements, promptFeedback };
+  return { lessonId: lesson.id, lessonTitle: lesson.title, status: 'GRADED', overallScore, scores, improvements, promptFeedback };
 }
 
 /** Chọn vài từ khó trong câu để minh hoạ phần phát âm cần chú ý. */

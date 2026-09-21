@@ -243,3 +243,30 @@ chỉ được chuyển sang ngừng hoạt động.
 ## Đợt 3 (phiên 3z: đóng đợt)
 
 - Folder Postman "Dot 3 - Dashboard, Thống kê" (13 request: thành công, lọc trạng thái, 400, 401, cách ly bằng `adminToken`); bảng kiểm tra trong `dot-3-dashboard.md` khớp DTO thật. "Tiêu chí xong" chờ bạn tự kiểm.
+
+## Đợt 4 (phiên 4a: khung AI + Luyện viết BE)
+
+- Gói `ai/`: `AiProperties` (`app.ai.*`), `WritingGrader` + `FakeWritingGrader` (nạp khi `OPENAI_API_KEY` trống; `[fail]` lỗi một lần rồi chấm lại được, `[fail-always]` luôn lỗi), executor `aiTaskExecutor` có giới hạn.
+- Module `writing/`: 6 endpoint `/writing/**`; nộp bài lưu `GRADING` (commit) rồi chấm nền, ghi `AiFeedback` (`issues` JSON, `modelName`). Lỗi AI hoặc quá hạn (`AI_GRADING_TIMEOUT`, 60s, kiểm khi đọc) thì `NEEDS_RETRY`; `regrade` chuyển trạng thái nguyên tử, sai trạng thái là 409 `INVALID_STATE`.
+- Khoá lỗi mới cho FE (4d): `errors.field.essayTooShort`, `errors.field.essayTooLong`, `errors.invalidState`. Test: `WritingApiTests` (8), `FakeWritingGraderTest` (3) xanh. Chưa lưu số token cho bài viết (`ai_feedbacks` không có cột; chat thì có).
+
+## Đợt 4 (phiên 4b: Chat AI BE)
+
+- `ChatAssistant` + `FakeChatAssistant` (từ khoá, từ chối câu ngoài phạm vi, `[fail]` ép lỗi). Module `chat/`: `/chat/conversations` (list, tạo, chi tiết, PATCH đổi tên, DELETE xoá mềm), `/messages`, `/starters`.
+- Gửi tin: lưu tin người học (commit) → gọi AI ngoài giao dịch → lưu trả lời kèm `modelName`, token, `links`. AI lỗi: 503 `AI_UNAVAILABLE`. Ngữ cảnh gửi AI tối đa 10 tin, 1000 ký tự/tin, 6000 tổng; tin tối đa 2000 ký tự.
+- Gợi ý bài học do BE chọn nội dung ACTIVE thật (`/writing/:id`...), AI chỉ nêu nhóm kỹ năng. Khoá i18n mới cho FE (4d): `errors.field.messageRequired|messageTooLong|titleRequired|titleTooLong`, `errors.aiUnavailable`. Test `ChatApiTests` (8), `ChatContextTest` (2) xanh.
+
+## Đợt 4 (phiên 4c: Luyện nói BE)
+
+- `SpeakingGrader` + `FakeSpeakingGrader` (transcript = câu đề, điểm cố định; tên tệp chứa `fail` thì lỗi). Module `speaking/`: 4 endpoint `/speaking/**`; nộp multipart (`promptIds`+`audio`+`durationSeconds`), kiểm số lượng, câu hợp lệ, định dạng (415), kích thước 5MB/tệp, 15MB/lần (413).
+- Lưu lượt `GRADING` rồi chấm nền; âm thanh chỉ ở bộ nhớ, không có cột/tệp lưu. AI lỗi hoặc quá hạn (`AI_GRADING_TIMEOUT`) là `FAILED` (không chấm lại, người học ghi âm lại). Bài `isCompleted`/`lastScore` chỉ tính lượt `GRADED`.
+- Khoá i18n mới cho FE (4d): `errors.field.audioMismatch`, `errors.field.invalidPrompt`, `errors.audioTooLarge`, `errors.audioUnsupported`. `SpeakingApiTests` (7) xanh; 413 ở tầng servlet (`max-file-size`) chưa test bằng MockMvc.
+
+## Đợt 4 (phiên 4d: nối FE)
+
+- `.env.example`: `VITE_MOCK_MODULES=notifications,admin`. Luyện nói: `speakingService.submit` gửi multipart (`promptIds`+`audio`+`durationSeconds`, blob giữ đúng mime trình duyệt thu); kiểu `SpeakingResult` có `status`, điểm tuỳ chọn, `transcript` từng câu.
+- Trang kết quả nói hỏi lại tới khi hết `GRADING`, có màn `FAILED` (ghi âm lại). Trang kết quả viết: nút chấm lại cập nhật trạng thái và hỏi lại; nộp bài thiếu số từ bị chặn ở nút (BE trả 400). Chat không cần sửa mã. Thêm 16 khoá i18n VI/EN. Lint và build sạch.
+
+## Đợt 4 (phiên 4z: đóng đợt)
+
+- Ba luồng Viết (4a), Chat (4b), Nói (4c) chạy trọn với bản giả: trạng thái `GRADING`/lỗi/chấm lại/ghi âm lại đều hoạt động. BE: `./mvnw test` (35 test AI xanh); FE: `npm run lint` và `npm run build` sạch. FE bỏ `writing,chat,speaking` khỏi mock (`.env.example` đã sửa). Tiêu chí "Người dùng chỉ xem được dữ liệu của mình" được xác thực qua `*ApiTests` (cách ly bằng `userId` ở repository/service).

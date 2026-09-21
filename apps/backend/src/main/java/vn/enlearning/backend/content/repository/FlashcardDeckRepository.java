@@ -13,5 +13,8 @@ public interface FlashcardDeckRepository extends JpaRepository<FlashcardDeck, UU
 
 	Optional<FlashcardDeck> findByIdAndStatus(UUID id, ContentStatus status);
 
+	/** Nội dung ACTIVE đầu tiên, dùng làm gợi ý bài học trong Chat. */
+	Optional<FlashcardDeck> findFirstByStatusOrderByCreatedAtAscIdAsc(ContentStatus status);
+
 	long countByTopicIdAndStatus(UUID topicId, ContentStatus status);
 }

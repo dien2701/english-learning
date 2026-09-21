@@ -13,4 +13,7 @@ public interface ReadingLessonRepository
 		extends JpaRepository<ReadingLesson, UUID>, JpaSpecificationExecutor<ReadingLesson> {
 
 	Optional<ReadingLesson> findByIdAndStatus(UUID id, ContentStatus status);
+
+	/** Nội dung ACTIVE đầu tiên, dùng làm gợi ý bài học trong Chat. */
+	Optional<ReadingLesson> findFirstByStatusOrderByCreatedAtAscIdAsc(ContentStatus status);
 }

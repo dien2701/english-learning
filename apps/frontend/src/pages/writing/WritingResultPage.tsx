@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useParams } from 'react-router-dom';
+import { App } from 'antd';
 
 import { Button, ButtonLink } from '../../components/ui/Button';
 import PageHeader from '../../components/ui/PageHeader';
@@ -54,15 +55,33 @@ const WritingResultPage: React.FC = () => {
   const { describe } = useApiError();
   const { id = '' } = useParams();
   const location = useLocation();
+  const { message } = App.useApp();
 
   const submissionId = (location.state as { submissionId?: string } | null)
     ?.submissionId;
 
   const [submission, setSubmission] = useState<WritingSubmission | null>(null);
   const [error, setError] = useState<ApiError | null>(null);
+  const [isRegrading, setIsRegrading] = useState(false);
+  /** Tăng lên để bắt đầu hỏi lại (sau khi bấm chấm lại). */
+  const [pollKey, setPollKey] = useState(0);
 
   // Hỏi lại trạng thái cho tới khi AI chấm xong.
   const timerRef = useRef<number | null>(null);
+
+  const regrade = async () => {
+    if (!submission || isRegrading) return;
+    setIsRegrading(true);
+    try {
+      const next = await writingService.regrade(submission.id);
+      setSubmission(next);
+      setPollKey((k) => k + 1);
+    } catch (regradeError) {
+      message.error(describe(regradeError, 'errors.submitFailed'));
+    } finally {
+      setIsRegrading(false);
+    }
+  };
 
   useEffect(() => {
     if (!submissionId) return;
@@ -97,7 +116,7 @@ const WritingResultPage: React.FC = () => {
       active = false;
       if (timerRef.current !== null) window.clearTimeout(timerRef.current);
     };
-  }, [submissionId]);
+  }, [submissionId, pollKey]);
 
   if (!submissionId) {
     return (
@@ -167,10 +186,7 @@ const WritingResultPage: React.FC = () => {
                 {t('writing.needsRetryHint')}
               </p>
             </div>
-            <Button
-              icon="refresh"
-              onClick={() => writingService.regrade(submission.id)}
-            >
+            <Button icon="refresh" loading={isRegrading} onClick={regrade}>
               {t('writing.regrade')}
             </Button>
           </div>

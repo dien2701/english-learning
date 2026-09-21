@@ -43,7 +43,7 @@ const WaveMeter: React.FC<{ level: number; isActive: boolean }> = ({
 const SpeakingPracticePage: React.FC = () => {
   const { t } = useTranslation();
   const { L, language } = useLanguage();
-  const { describe } = useApiError();
+  const { describe, fieldErrors } = useApiError();
   const { id = '' } = useParams();
   const navigate = useNavigate();
   const { message } = App.useApp();
@@ -93,9 +93,12 @@ const SpeakingPracticePage: React.FC = () => {
         0,
       );
 
+      // Giữ đúng thứ tự câu của bài, chỉ gửi những câu đã thu.
       const result = await speakingService.submit(
         lesson.id,
-        Object.keys(recordings),
+        lesson.prompts
+          .filter((p) => recordings[p.id])
+          .map((p) => ({ promptId: p.id, blob: recordings[p.id].blob })),
         Math.round(totalDuration),
       );
 
@@ -104,7 +107,9 @@ const SpeakingPracticePage: React.FC = () => {
         replace: true,
       });
     } catch (submitError) {
-      message.error(describe(submitError, 'errors.submitFailed'));
+      message.error(
+        fieldErrors(submitError)?.audio ?? describe(submitError, 'errors.submitFailed'),
+      );
       setIsSubmitting(false);
     }
   };
@@ -235,7 +240,7 @@ const SpeakingPracticePage: React.FC = () => {
               <p className="mb-2 text-center text-caption text-ink-muted">
                 {t('speaking.playback')}
               </p>
-              {/* Bản ghi chỉ nằm trong trình duyệt, không gửi đi đâu. */}
+              {/* Bản ghi chỉ nằm trong trình duyệt cho tới khi bấm nộp bài. */}
               <audio
                 src={recorded.url}
                 controls

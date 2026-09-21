@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useParams } from 'react-router-dom';
 
@@ -8,16 +8,41 @@ import { Card } from '../../components/ui/Card';
 import { Chip } from '../../components/ui/Chip';
 import { ScoreRing } from '../../components/practice/ResultSummary';
 import { ErrorState, Skeleton } from '../../components/ui/StateBlocks';
-import { useApi } from '../../hooks/useApi';
 import { useApiError } from '../../hooks/useApiError';
 import { useLabels } from '../../hooks/useLabels';
 import { speakingService } from '../../services/contentService';
+import { ApiError } from '../../shared/api/types';
 import {
   type SpeakingResult,
   type SpeakingScores,
 } from '../../types/speaking';
 import { formatScore } from '../../utils/format';
 import { useLanguage } from '../../hooks/useLanguage';
+
+const POLL_MS = 1200;
+
+/** Màn hình chờ trong lúc AI nghe và chấm. */
+const GradingState: React.FC = () => {
+  const { t } = useTranslation();
+
+  return (
+    <Card>
+      <div
+        role="status"
+        aria-live="polite"
+        className="flex flex-col items-center gap-4 py-10 text-center"
+      >
+        <span className="h-12 w-12 animate-spin rounded-pill border-[3px] border-accent-line border-t-brand-600" />
+        <div>
+          <p className="text-[16px] font-extrabold text-ink">{t('speaking.grading')}</p>
+          <p className="mt-1 max-w-sm text-body text-ink-muted">
+            {t('speaking.gradingHint')}
+          </p>
+        </div>
+      </div>
+    </Card>
+  );
+};
 
 const SpeakingResultPage: React.FC = () => {
   const { t } = useTranslation();
@@ -29,24 +54,62 @@ const SpeakingResultPage: React.FC = () => {
 
   const passed = (location.state as { result?: SpeakingResult } | null)?.result;
 
-  const { data, isLoading, error, reload } = useApi(
-    () => speakingService.getResult(attemptId),
-    [attemptId],
-  );
+  const [result, setResult] = useState<SpeakingResult | null>(passed ?? null);
+  const [error, setError] = useState<ApiError | null>(null);
+  const [nonce, setNonce] = useState(0);
 
-  const result = passed ?? data;
+  /* Hỏi lại tới khi AI chấm xong. Kết quả truyền sang từ trang nộp bài đã
+     xong (hiếm) thì khỏi hỏi lại. */
+  useEffect(() => {
+    if (passed && passed.status !== 'GRADING' && nonce === 0) return;
 
-  if (error && !passed) {
+    let active = true;
+    let timer: number | undefined;
+
+    const poll = async () => {
+      try {
+        const next = await speakingService.getResult(attemptId);
+        if (!active) return;
+        setResult(next);
+        setError(null);
+        if (next.status === 'GRADING') timer = window.setTimeout(poll, POLL_MS);
+      } catch (pollError) {
+        if (!active) return;
+        setError(
+          pollError instanceof ApiError
+            ? pollError
+            : new ApiError(0, 'errors.loadFailed', 'UNKNOWN', undefined, {
+                messageKey: 'errors.loadFailed',
+              }),
+        );
+      }
+    };
+
+    void poll();
+
+    return () => {
+      active = false;
+      if (timer !== undefined) window.clearTimeout(timer);
+    };
+  }, [attemptId, passed, nonce]);
+
+  if (error) {
     return (
       <div className="mx-auto w-full max-w-3xl px-4 py-6 sm:px-6">
         <Card flush>
-          <ErrorState message={describe(error)} onRetry={reload} />
+          <ErrorState
+            message={describe(error)}
+            onRetry={() => {
+              setError(null);
+              setNonce((n) => n + 1);
+            }}
+          />
         </Card>
       </div>
     );
   }
 
-  if (!result || (isLoading && !passed)) {
+  if (!result) {
     return (
       <div className="mx-auto w-full max-w-3xl px-4 py-6 sm:px-6">
         <Skeleton className="h-[240px] w-full" />
@@ -55,21 +118,66 @@ const SpeakingResultPage: React.FC = () => {
     );
   }
 
-  const scoreRows = (Object.keys(result.scores) as Array<keyof SpeakingScores>).map(
-    (key) => ({ key, label: speakingScore(key), value: result.scores[key] }),
+  const header = (
+    <PageHeader
+      title={t('speaking.resultTitle')}
+      description={L(result.lessonTitle)}
+      backTo={{ label: t('speaking.allLessons'), to: '/speaking' }}
+    />
   );
+
+  if (result.status === 'GRADING') {
+    return (
+      <div className="mx-auto w-full max-w-3xl px-4 py-6 sm:px-6">
+        {header}
+        <GradingState />
+      </div>
+    );
+  }
+
+  const { scores, overallScore } = result;
+
+  if (result.status === 'FAILED' || !scores || overallScore === undefined) {
+    return (
+      <div className="mx-auto w-full max-w-3xl px-4 py-6 sm:px-6">
+        {header}
+        <Card>
+          <div role="alert" className="flex flex-col items-center gap-4 py-8 text-center">
+            <span className="grid h-12 w-12 place-items-center rounded-pill bg-warning-bg text-warning">
+              <span aria-hidden="true" className="material-symbols-outlined text-[26px]">
+                sync_problem
+              </span>
+            </span>
+            <div>
+              <p className="text-[16px] font-extrabold text-ink">
+                {t('speaking.failedTitle')}
+              </p>
+              <p className="mt-1 max-w-md text-body text-ink-muted">
+                {t('speaking.failedHint')}
+              </p>
+            </div>
+            <ButtonLink to={`/speaking/${result.lessonId}`} icon="mic">
+              {t('speaking.practiceAgain')}
+            </ButtonLink>
+          </div>
+        </Card>
+      </div>
+    );
+  }
+
+  const scoreRows = (Object.keys(scores) as Array<keyof SpeakingScores>).map((key) => ({
+    key,
+    label: speakingScore(key),
+    value: scores[key],
+  }));
 
   return (
     <div className="mx-auto w-full max-w-3xl px-4 py-6 sm:px-6">
-      <PageHeader
-        title={t('speaking.resultTitle')}
-        description={L(result.lessonTitle)}
-        backTo={{ label: t('speaking.allLessons'), to: '/speaking' }}
-      />
+      {header}
 
       <Card className="mb-5">
         <div className="flex flex-wrap items-center gap-6">
-          <ScoreRing score={result.overallScore} />
+          <ScoreRing score={overallScore} />
 
           <dl className="min-w-0 flex-1 space-y-3">
             {scoreRows.map((row) => (
@@ -130,6 +238,13 @@ const SpeakingResultPage: React.FC = () => {
                   {formatScore(item.score)}
                 </span>
               </div>
+
+              {item.transcript && (
+                <p className="mt-1.5 text-[13.5px] text-ink-muted">
+                  <span className="text-ink-subtle">{t('speaking.transcript')}</span>{' '}
+                  {item.transcript}
+                </p>
+              )}
 
               <p className="mt-1.5 text-[13.5px] text-ink-muted">{item.comment}</p>
 
