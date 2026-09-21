@@ -52,11 +52,39 @@ export interface SpeakingPromptFeedback {
   comment: string;
 }
 
+/** Một từ đọc chưa chuẩn trong câu mẫu. */
+export interface SpeakingWordIssue {
+  word: string;
+  /** AI nghe thành gì; rỗng nếu đọc thiếu. */
+  heardAs: string;
+  /** Lỗi cụ thể (âm, trọng âm, âm cuối...). */
+  issue: string;
+  /** Cách sửa ngắn. */
+  tip: string;
+}
+
+/** Kết quả chấm một câu ngay sau khi thu (âm thanh gốc không được lưu). */
+export interface SpeakingPromptAssessment {
+  promptId: string;
+  transcript: string;
+  score: number;
+  wordIssues: SpeakingWordIssue[];
+  tips: string[];
+}
+
+/** Lượt nói đang thu; `results` là các câu đã chấm (có sẵn khi mở lại lượt dở). */
+export interface SpeakingAttempt {
+  attemptId: string;
+  lessonId: string;
+  status: SpeakingStatus;
+  results: SpeakingPromptAssessment[];
+}
+
 /**
- * GRADING: AI đang chấm. FAILED: AI lỗi, không chấm lại được (không lưu âm thanh)
+ * IN_PROGRESS: đang thu và chấm từng câu. GRADING: AI đang chấm. FAILED: AI lỗi, không chấm lại được (không lưu âm thanh)
  * nên người học ghi âm lại.
  */
-export type SpeakingStatus = 'GRADING' | 'GRADED' | 'FAILED';
+export type SpeakingStatus = 'IN_PROGRESS' | 'GRADING' | 'GRADED' | 'FAILED';
 
 export interface SpeakingResult {
   attemptId: string;

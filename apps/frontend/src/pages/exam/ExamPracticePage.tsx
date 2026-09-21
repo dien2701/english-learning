@@ -12,6 +12,7 @@ import { ErrorState, Skeleton } from '../../components/ui/StateBlocks';
 import { useApi } from '../../hooks/useApi';
 import { useApiError } from '../../hooks/useApiError';
 import { useCountdown } from '../../hooks/useCountdown';
+import { useLeaveGuard } from '../../hooks/useLeaveGuard';
 import { useStudyHeartbeat } from '../../hooks/useStudyHeartbeat';
 import { examService } from '../../services/contentService';
 import type { AnswerSubmission } from '../../types/practice';
@@ -34,6 +35,7 @@ const ExamPracticePage: React.FC = () => {
   const [answers, setAnswers] = useState<Record<string, AnswerSubmission>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const release = useLeaveGuard(Boolean(exam));
   const hasSubmitted = useRef(false);
   const elapsedRef = useRef(0);
   const answersRef = useRef(answers);
@@ -55,6 +57,7 @@ const ExamPracticePage: React.FC = () => {
           message.warning(t('exam.timeUp'));
         }
 
+        release();
         navigate(`/exam/result/${result.attemptId}`, {
           state: { result },
           replace: true,
@@ -65,7 +68,7 @@ const ExamPracticePage: React.FC = () => {
         setIsSubmitting(false);
       }
     },
-    [id, navigate, message, describe, t],
+    [id, release, navigate, message, describe, t],
   );
 
   const timeLimitSeconds = (exam?.timeLimitMinutes ?? 0) * 60;

@@ -3,6 +3,7 @@ package vn.enlearning.backend.seed;
 import java.util.List;
 
 import vn.enlearning.backend.entity.enums.AccountStatus;
+import vn.enlearning.backend.entity.enums.ContentStatus;
 import vn.enlearning.backend.entity.enums.Level;
 import vn.enlearning.backend.entity.enums.QuestionKind;
 import vn.enlearning.backend.entity.enums.Role;
@@ -28,7 +29,7 @@ final class SeedFiles {
 	}
 
 	record SeedDeck(String topic, String titleVi, String titleEn, String descriptionVi, String descriptionEn,
-			String coverImageUrl, Level level, List<SeedCard> cards) {
+			String coverImageUrl, Level level, ContentStatus status, List<SeedCard> cards) {
 	}
 
 	record SeedOption(String content, boolean correct) {
@@ -40,25 +41,27 @@ final class SeedFiles {
 	}
 
 	record SeedListening(String topic, String titleVi, String titleEn, String descriptionVi, String descriptionEn,
-			Level level, String audioUrl, int durationSeconds, String transcript, List<SeedQuestion> questions) {
+			Level level, ContentStatus status, String audioUrl, int durationSeconds, String transcript,
+			List<SeedQuestion> questions) {
 	}
 
 	record SeedReading(String topic, String titleVi, String titleEn, String descriptionVi, String descriptionEn,
-			Level level, int timeLimitMinutes, List<String> paragraphs, List<SeedQuestion> questions) {
+			Level level, ContentStatus status, int timeLimitMinutes, List<String> paragraphs,
+			List<SeedQuestion> questions) {
 	}
 
 	record SeedPrompt(String text, String phonetic, String meaningVi) {
 	}
 
 	record SeedSpeaking(String topic, String titleVi, String titleEn, String descriptionVi, String descriptionEn,
-			Level level, List<SeedPrompt> prompts) {
+			Level level, ContentStatus status, List<SeedPrompt> prompts) {
 	}
 
-	record SeedWriting(String topic, String titleVi, String titleEn, Level level, int suggestedMinutes,
-			int minWords, String instructions, List<String> hints) {
+	record SeedWriting(String topic, String titleVi, String titleEn, Level level, ContentStatus status,
+			int suggestedMinutes, int minWords, String instructions, List<String> hints) {
 	}
 
 	record SeedExam(String titleVi, String titleEn, String descriptionVi, String descriptionEn, Level level,
-			int timeLimitMinutes, List<SeedQuestion> questions) {
+			ContentStatus status, int timeLimitMinutes, List<SeedQuestion> questions) {
 	}
 }

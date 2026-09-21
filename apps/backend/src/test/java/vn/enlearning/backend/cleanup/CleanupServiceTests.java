@@ -11,6 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,11 +19,19 @@ import jakarta.persistence.EntityManager;
 import vn.enlearning.backend.auth.repository.PasswordResetTokenRepository;
 import vn.enlearning.backend.auth.repository.RefreshTokenRepository;
 import vn.enlearning.backend.auth.repository.UserRepository;
+import vn.enlearning.backend.content.repository.SpeakingLessonRepository;
+import vn.enlearning.backend.content.repository.TopicRepository;
 import vn.enlearning.backend.entity.PasswordResetToken;
 import vn.enlearning.backend.entity.RefreshToken;
+import vn.enlearning.backend.entity.SpeakingAttempt;
+import vn.enlearning.backend.entity.SpeakingLesson;
+import vn.enlearning.backend.entity.Topic;
 import vn.enlearning.backend.entity.StudySession;
 import vn.enlearning.backend.entity.User;
+import vn.enlearning.backend.entity.enums.Level;
+import vn.enlearning.backend.entity.enums.SpeakingAttemptStatus;
 import vn.enlearning.backend.entity.enums.StudySkill;
+import vn.enlearning.backend.speaking.repository.SpeakingAttemptRepository;
 import vn.enlearning.backend.study.repository.StudySessionRepository;
 
 /**
@@ -44,6 +53,14 @@ class CleanupServiceTests {
 	private PasswordResetTokenRepository resetTokens;
 	@Autowired
 	private StudySessionRepository sessions;
+	@Autowired
+	private SpeakingAttemptRepository speakingAttempts;
+	@Autowired
+	private SpeakingLessonRepository speakingLessons;
+	@Autowired
+	private TopicRepository topics;
+	@Autowired
+	private JdbcTemplate jdbc;
 	@Autowired
 	private EntityManager entityManager;
 
@@ -124,5 +141,55 @@ class CleanupServiceTests {
 		assertThat(sessions.existsById(oldEmpty.getId())).isFalse();
 		assertThat(sessions.existsById(recentEmpty.getId())).isTrue();
 		assertThat(sessions.existsById(oldStudied.getId())).isTrue();
+	}
+
+	@Test
+	@DisplayName("Xoá lượt nói IN_PROGRESS bị bỏ dở quá 24 giờ, giữ lượt mới và lượt đã chấm")
+	void removesOnlyStaleInProgressSpeakingAttempts() {
+		String tag = "C" + UUID.randomUUID().toString().replace("-", "");
+		Topic topic = new Topic();
+		topic.setSlug(tag);
+		topic.setNameVi("Chủ đề " + tag);
+		topic.setNameEn("Topic " + tag);
+		topics.save(topic);
+		SpeakingLesson lesson = new SpeakingLesson();
+		lesson.setTopic(topic);
+		lesson.setTitleVi("Nói " + tag);
+		lesson.setTitleEn("Speak " + tag);
+		lesson.setLevel(Level.BEGINNER);
+		speakingLessons.saveAndFlush(lesson);
+
+		SpeakingAttempt stale = speakingAttempt(lesson, SpeakingAttemptStatus.IN_PROGRESS, Duration.ofHours(30));
+		SpeakingAttempt fresh = speakingAttempt(lesson, SpeakingAttemptStatus.IN_PROGRESS, Duration.ofHours(2));
+		SpeakingAttempt failed = speakingAttempt(lesson, SpeakingAttemptStatus.FAILED, Duration.ofHours(30));
+
+		CleanupService.Result result = service.cleanUp();
+		entityManager.clear();
+
+		assertThat(result.staleSpeakingAttempts()).isGreaterThanOrEqualTo(1);
+		assertThat(speakingAttempts.existsById(stale.getId())).isFalse();
+		assertThat(speakingAttempts.existsById(fresh.getId())).isTrue();
+		assertThat(speakingAttempts.existsById(failed.getId())).isTrue();
+	}
+
+	private SpeakingAttempt speakingAttempt(SpeakingLesson lesson, SpeakingAttemptStatus status, Duration idle) {
+		SpeakingAttempt attempt = new SpeakingAttempt();
+		attempt.setUser(user);
+		attempt.setLesson(lesson);
+		attempt.setStatus(status);
+		attempt.setStartedAt(now.minus(idle));
+		attempt.setSubmittedAt(now.minus(idle));
+		speakingAttempts.saveAndFlush(attempt);
+		// updated_at do @UpdateTimestamp luôn là "bây giờ", nên đặt lùi bằng SQL.
+		jdbc.update("update speaking_attempts set updated_at = ? where id = ?",
+				java.sql.Timestamp.from(now.minus(idle)), uuidBytes(attempt.getId()));
+		entityManager.clear();
+		return attempt;
+	}
+
+	private static byte[] uuidBytes(UUID id) {
+		java.nio.ByteBuffer buffer = java.nio.ByteBuffer.allocate(16);
+		buffer.putLong(id.getMostSignificantBits()).putLong(id.getLeastSignificantBits());
+		return buffer.array();
 	}
 }

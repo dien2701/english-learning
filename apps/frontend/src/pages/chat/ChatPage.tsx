@@ -3,11 +3,13 @@ import { App } from 'antd';
 import { useTranslation } from 'react-i18next';
 
 import ChatComposer from '../../components/chat/ChatComposer';
+import ChatStatusBar from '../../components/chat/ChatStatusBar';
 import ChatThread from '../../components/chat/ChatThread';
 import { Button, IconButton } from '../../components/ui/Button';
 import PageHeader from '../../components/ui/PageHeader';
 import { ErrorState, Skeleton } from '../../components/ui/StateBlocks';
 import { useApiError } from '../../hooks/useApiError';
+import { useChatQuota } from '../../hooks/useChatQuota';
 import { useFormat } from '../../hooks/useFormat';
 import { chatService } from '../../services/chatService';
 import { ApiError } from '../../shared/api/types';
@@ -34,6 +36,15 @@ const ChatPage: React.FC = () => {
   const [isLoadingList, setIsLoadingList] = useState(true);
   const [isThinking, setIsThinking] = useState(false);
   const [error, setError] = useState<ApiError | null>(null);
+
+  const { quota, setRemaining, markExhausted, exhausted } = useChatQuota();
+  /** Lần gửi gần nhất bị AI lỗi: giữ nội dung để nút "Thử lại" gửi lại đúng tin đó. */
+  const [failure, setFailure] = useState<{
+    conversationId: string;
+    optimisticId: string;
+    text: string;
+    message: string;
+  } | null>(null);
 
   /** Tăng lên để nạp lại danh sách hội thoại. */
   const [listNonce, setListNonce] = useState(0);
@@ -159,10 +170,15 @@ const ChatPage: React.FC = () => {
     };
 
     updateMessages((prev) => [...prev, optimistic]);
+    setFailure(null);
     setIsThinking(true);
 
     try {
-      const { userMessage, reply } = await chatService.sendMessage(targetId, text);
+      const { userMessage, reply, remaining } = await chatService.sendMessage(
+        targetId,
+        text,
+      );
+      setRemaining(remaining);
       updateMessages((prev) => [
         ...prev.filter((m) => m.id !== optimistic.id),
         userMessage,
@@ -171,12 +187,30 @@ const ChatPage: React.FC = () => {
       // Cập nhật lại danh sách để tiêu đề và đoạn xem trước đúng.
       const list = await chatService.listConversations();
       setConversations(list);
-    } catch {
-      toast.error(t('chat.sendError'));
-      updateMessages((prev) => prev.filter((m) => m.id !== optimistic.id));
+    } catch (sendError: unknown) {
+      if (sendError instanceof ApiError && sendError.code === 'CHAT_DAILY_LIMIT') {
+        // Hết lượt: backend không lưu tin, bỏ tin tạm và khoá ô nhập.
+        markExhausted();
+        updateMessages((prev) => prev.filter((m) => m.id !== optimistic.id));
+      } else {
+        setFailure({
+          conversationId: targetId,
+          optimisticId: optimistic.id,
+          text,
+          message: describe(sendError, 'chat.sendError'),
+        });
+      }
     } finally {
       setIsThinking(false);
     }
+  };
+
+  /** Gửi lại đúng tin vừa lỗi (tin tạm cũ được thay bằng tin mới). */
+  const retrySend = () => {
+    if (!failure || failure.conversationId !== activeId) return;
+    const { optimisticId, text } = failure;
+    updateMessages((prev) => prev.filter((m) => m.id !== optimisticId));
+    void send(text);
   };
 
   return (
@@ -271,7 +305,15 @@ const ChatPage: React.FC = () => {
                 />
               )}
 
-              <ChatComposer onSend={send} disabled={isThinking} />
+              <ChatStatusBar
+                quota={quota}
+                exhausted={exhausted}
+                errorMessage={
+                  failure?.conversationId === activeId ? failure?.message : null
+                }
+                onRetry={retrySend}
+              />
+              <ChatComposer onSend={send} disabled={isThinking || exhausted} />
             </div>
           </section>
         </div>

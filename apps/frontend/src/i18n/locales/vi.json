@@ -274,7 +274,7 @@
     "searchPlaceholder": "Tìm bài luyện nói…",
     "allLessons": "Tất cả bài luyện nói",
     "promptCount": "{{count}} câu",
-    "recordedCount": "Đã thu {{done}}/{{total}} câu",
+    "recordedCount": "Đã chấm {{done}}/{{total}} câu",
     "sentenceOf": "Câu {{current}}/{{total}}",
     "listenSample": "Nghe mẫu",
     "startRecording": "Bắt đầu thu âm",
@@ -308,7 +308,19 @@
     "gradingHint": "AI đang nghe và chấm các câu bạn đã đọc. Việc này thường mất vài giây.",
     "failedTitle": "Chưa chấm được bài nói",
     "failedHint": "AI không phản hồi. Bản ghi không được lưu nên không chấm lại được, hãy ghi âm lại.",
-    "transcript": "AI nghe được:"
+    "transcript": "AI nghe được:",
+    "assessing": "AI đang nghe và chấm câu này…",
+    "assessFailed": "Chưa chấm được câu này. Bản ghi của bạn vẫn còn, hãy thử lại.",
+    "retryAssess": "Thử chấm lại",
+    "submitNeedAll": "Cần thu và chấm đủ mọi câu trước khi nộp bài.",
+    "feedback": {
+      "title": "Nhận xét phát âm",
+      "score": "Điểm câu: {{score}}/10",
+      "heardAs": "AI nghe thành: \"{{heard}}\"",
+      "noSpeech": "AI không nghe thấy tiếng nói nào trong bản ghi.",
+      "allGood": "Phát âm tốt, không có từ nào cần sửa.",
+      "needsWork": "Cần cải thiện"
+    }
   },
   "exam": {
     "title": "Bài kiểm tra",
@@ -329,6 +341,10 @@
     "submitWithUnanswered": "Bạn còn {{count}} câu chưa trả lời. Các câu bỏ trống sẽ bị tính sai. Vẫn nộp bài?",
     "submitAllDone": "Bạn đã trả lời hết các câu. Nộp bài ngay?",
     "review": "Xem lại",
+    "leaveTitle": "Rời trang làm bài?",
+    "leaveBody": "Bạn đang làm bài, rời trang sẽ mất bài làm.",
+    "leaveOk": "Rời đi",
+    "leaveStay": "Ở lại",
     "unansweredTitle": "Còn câu chưa trả lời",
     "unansweredBody": "Bạn còn {{count}} câu chưa trả lời. Các câu bỏ trống sẽ bị tính sai. Nộp bài luôn?",
     "keepGoing": "Làm tiếp",
@@ -376,7 +392,10 @@
     "sendError": "Không gửi được tin nhắn. Kiểm tra kết nối rồi thử lại nhé.",
     "createError": "Không tạo được hội thoại mới.",
     "deleteError": "Không xoá được hội thoại.",
-    "loadError": "Không tải được danh sách hội thoại."
+    "loadError": "Không tải được danh sách hội thoại.",
+    "quotaLeft": "Còn {{remaining}}/{{limit}} lượt hôm nay",
+    "quotaExhausted": "Bạn đã hết lượt nhắn tin hôm nay, quay lại vào ngày mai",
+    "retry": "Thử lại"
   },
   "notifications": {
     "title": "Thông báo",
@@ -773,6 +792,8 @@
       "statusInvalid": "Trạng thái không hợp lệ."
     },
     "invalidState": "Thao tác này không dùng được ở trạng thái hiện tại.",
+    "chatDailyLimit": "Bạn đã hết lượt nhắn tin hôm nay, quay lại vào ngày mai.",
+    "speakingIncomplete": "Bạn cần thu và chấm đủ mọi câu trước khi nộp bài.",
     "aiUnavailable": "Trợ lý AI đang bận. Vui lòng thử lại sau.",
     "tooManyRequests": "Bạn thao tác quá nhanh. Vui lòng đợi một lát rồi thử lại.",
     "audioTooLarge": "Bản ghi quá lớn. Hãy ghi ngắn hơn hoặc ít câu hơn.",

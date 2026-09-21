@@ -13,10 +13,12 @@ import jakarta.validation.constraints.NotNull;
  *
  * @param tokenRetention        giữ refresh token và mã OTP thêm bao lâu sau khi hết hạn
  * @param emptySessionRetention giữ phiên học 0 giây (chỉ một heartbeat rồi im) bao lâu
+ * @param speakingInProgressRetention giữ lượt Luyện nói {@code IN_PROGRESS} bị bỏ dở (không hoạt động) bao lâu
  */
 @Validated
 @ConfigurationProperties(prefix = "app.cleanup")
 public record CleanupProperties(
 		@NotNull @DefaultValue("1d") Duration tokenRetention,
-		@NotNull @DefaultValue("30d") Duration emptySessionRetention) {
+		@NotNull @DefaultValue("30d") Duration emptySessionRetention,
+		@NotNull @DefaultValue("24h") Duration speakingInProgressRetention) {
 }

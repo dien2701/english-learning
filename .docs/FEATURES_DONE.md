@@ -326,3 +326,80 @@ chỉ được chuyển sang ngừng hoạt động.
 - Bỏ dòng "mã xác thực luôn là 123456" ở trang Quên mật khẩu (mã thật gửi qua email); đổi lời nhắc tài khoản mẫu ở trang Đăng nhập thành "tài khoản seed dev".
 - Chia build: `AdminArea` nạp động (`React.lazy`), `vite.config.ts` tách `vendor-antd`, `vendor-charts`, `vendor`; bundle chính 1,55 MB → 241 kB. Lint, build sạch.
 - `ARCHITECTURE.md`, `.agent/AGENTS.md`, `CLAUDE.md` bỏ tham chiếu Redis, RabbitMQ, Cloudinary, mock.
+
+## Đợt 8 (phiên 8a: người dùng demo + cờ seed)
+
+- Cờ pp.seed.mode (SEED_MODE; if-empty mặc định | eset-demo) qua SeedProperties; DevSeedRunner ở eset-demo xoá user demo rồi nạp lại.
+- DemoUserSeedService: 47 user giả (Random seed cố định, email @demo.enlearning.vn, avatar i.pravatar.cc, createdAt rải 6 tháng, 3 LOCKED, 5 im lặng >30 ngày) + user_settings đa dạng; cùng 3 tài khoản cố định thành 50.
+- UserRepository: countByEmailSuffixIncludingDeleted, deleteByEmailSuffix, ackdate (SQL native vì created_at không sửa được qua entity). Test: DemoUserSeedServiceTests. Compile sạch.
+
+## Đợt 8 (phiên 8b: chủ đề + bộ thẻ demo)
+
+- esources/seed-demo/topics.json (10 chủ đề) và decks.json (15 bộ × 20 thẻ, 4 mảng: giao tiếp, IELTS/TOEIC, công sở/IT, học thuật; 2 bộ INACTIVE). Sinh từ nguồn văn bản tự soạn bằng script tạm, không chép đề bản quyền.
+- SeedService đọc topics/decks từ seed-demo/, giữ chủ đề cũ ở seed/topics.json cho lesson cũ tới 8c/8d; SeedDeck thêm status tuỳ chọn. SeedServiceTests cập nhật (15 deck, 300 thẻ). Compile sạch.
+
+## Đợt 8 (phiên 8c: bài nghe + bài đọc demo)
+
+- `resources/seed-demo/listening.json` (12 bài, `audioUrl` null nên FE đọc transcript bằng giọng trình duyệt, 5-6 câu/bài, gồm dạng IELTS/TOEIC, 1 bài INACTIVE) và `reading.json` (12 bài 130-300 từ, 6-8 câu, có True/False/Not Given, 1 bài INACTIVE). Sinh từ script tạm, nội dung tự soạn.
+- `SeedService` đọc nghe/đọc từ `seed-demo/`; `SeedListening`/`SeedReading` thêm `status` tuỳ chọn. `SeedServiceTests` cập nhật (12 + 12 bài, ≥146 câu). Compile + test-compile sạch.
+
+## Đợt 8 (phiên 8d: viết, nói, đề thi demo)
+
+- `seed-demo/writing.json` (12 đề), `speaking.json` (12 bài × 5 câu), `exams.json` (5 đề, 167 câu, gồm trắc nghiệm/điền từ/True-False-Not Given); mỗi loại 1 mục `INACTIVE`. Sinh từ script tạm, nội dung tự soạn.
+- `SeedService` chỉ còn đọc `users.json` từ `seed/`; bỏ nạp chủ đề cũ. `SeedWriting`/`SeedSpeaking`/`SeedExam` thêm `status`. `SeedServiceTests` cập nhật (10 chủ đề, 12+12+12+12 bài, 5 đề, 313 câu). Compile + test-compile sạch.
+
+## Đợt 8 (phiên 8e: lịch sử học demo)
+
+- `HistorySeedService` mở rộng cho học viên mẫu chính: 90 ngày học (14 ngày liền gần đây, cuối tuần ít hơn, đủ 7 kỹ năng), 36 lượt Nghe/Đọc/Kiểm tra điểm tăng dần, tiến độ 6 bộ thẻ (new/learning/mastered, có thẻ đến hạn hôm nay).
+- Luyện viết 7 bài (6 `GRADED` kèm `ai_feedbacks`, 1 `NEEDS_RETRY`), Luyện nói 8 lượt (1 `FAILED`), 4 hội thoại Chat (có link gợi ý và 1 câu từ chối); nội dung ở `seed/HistorySeedContent.java`.
+- `seedDemoUsers()`: người dùng demo `ACTIVE` hoạt động trong 30 ngày có phiên học thưa và 3-8 lượt làm bài giữa ngày tạo và lần hoạt động cuối. `reset-demo` xoá thêm lịch sử của `hocvien@` (`deleteMainHistory`) rồi nạp lại. Compile + test-compile sạch.
+
+## Đợt 8 (phiên 8f: thông báo, email_logs, fallback media)
+
+- `NotificationSeedService` (dev): 10 thông báo (9 `SENT` + 1 `DRAFT`, đủ nhóm ALL/ACTIVE/INACTIVE/ADMIN) kèm `user_notifications` đã đọc/chưa đọc theo nhóm nhận tại thời điểm gửi; `email_logs` 30 ngày (nhắc học tuân UNIQUE theo ngày, đặt lại mật khẩu, thông báo; ~8% `FAILED`). `reset-demo` xoá theo tiêu đề/đuôi email demo.
+- FE: `components/ui/SafeImage.tsx` (ảnh lỗi thì hiện khối theo token màu hoặc chữ cái đầu) dùng cho ảnh bìa bộ thẻ, banner Dashboard, avatar Header/Hồ sơ; `AudioPlayer` chuyển sang `speechSynthesis` khi tệp audio lỗi. Compile, lint, build sạch.
+
+## Đợt 8 (phiên 8z: đóng đợt)
+
+- Đợt 8 xong phần mã: dữ liệu demo cho người dùng, nội dung, lịch sử học, thông báo, email log, fallback media. Không có endpoint mới nên không thêm folder Postman. Compile/test-compile BE, lint và build FE sạch; bảng "Kiểm tra hoàn thành" của file đợt để người dùng tự kiểm.
+
+## Đợt 10 (phiên 10a: sửa lỗi giao diện)
+
+- Thời gian làm bài đếm theo `Date.now()` (`useCountdown`), kết quả hiện `mm:ss` (`formatClock`) thay vì làm tròn phút.
+- Sidebar: chữ và icon luôn trắng ở mọi trạng thái; logo En-Learning là `Link` tới `/dashboard`.
+- `hooks/useLeaveGuard` (useBlocker + beforeunload, `release()` sau khi nộp) gắn cho Nghe, Đọc, Kiểm tra, Viết, Nói; `main.tsx` chuyển sang `createBrowserRouter` + `RouterProvider`. Lint, build sạch; không có endpoint mới nên không thêm folder Postman.
+
+## Đợt 11 (phiên 11a: khung Gemini + chấm Viết)
+
+- `ai/GeminiClient` (RestClient, `generateContent`, JSON theo `responseSchema`, đọc token), `GeminiException`, điều kiện `GeminiKeyPresent/Missing` thay cặp `OpenAiKey*`; `app.ai.gemini-api-key|model|base-url|timeout`, `GEMINI_API_KEY` trong `.env.example`.
+- `GeminiWritingGrader` + prompt `resources/ai/writing-grader.txt`: điểm kẹp 0-10 làm tròn 0.5, `issues` tối đa 8; lỗi Gemini → `AiGradingException` → NEEDS_RETRY. Test `GeminiWritingGraderTest` (HttpServer giả).
+- `FakeWritingGrader` chỉ nạp khi thiếu key Gemini; `FakeChatAssistant`/`FakeSpeakingGrader` tạm luôn nạp tới 11b/11d.
+
+## Đợt 11 (phiên 11b: Chat Gemini + hạn mức)
+
+- `ai/GeminiChatAssistant` + prompt `resources/ai/chat-assistant.txt`: JSON `content/suggestedSkills/refusal`, gộp lượt liền nhau cùng vai, lưu token (kể cả thinking) và model; `FakeChatAssistant` chỉ nạp khi thiếu key.
+- Hạn mức `app.chat.daily-limit` (30, `CHAT_DAILY_LIMIT`): đếm câu trợ lý trong DB theo ngày `Asia/Ho_Chi_Minh` (native query, tính cả hội thoại đã xoá), kiểm trước khi lưu tin; hết lượt → 429 `CHAT_DAILY_LIMIT` (`errors.chatDailyLimit`).
+- `GET /chat/quota` → `{limit, used, remaining, resetAt}`; `POST .../messages` thêm `remaining`. Test: `ChatQuotaTests`, `GeminiChatAssistantTest`.
+
+## Đợt 11 (phiên 11c: FE Chat hạn mức + thử lại)
+
+- `hooks/useChatQuota` (GET `/chat/quota`, cập nhật theo `remaining` mỗi lần gửi), `components/chat/ChatStatusBar` (đếm "Còn X/30 lượt hôm nay", thông báo hết lượt, banner lỗi AI + nút "Thử lại").
+- `ChatPage` và `ChatWidget`: 429 `CHAT_DAILY_LIMIT` khoá ô nhập; lỗi khác giữ tin và "Thử lại" gửi lại đúng tin; chuỗi VI/EN (`chat.quotaLeft|quotaExhausted|retry`, `errors.chatDailyLimit`). Lint, build sạch.
+
+## Đợt 11 (phiên 11d: BE Luyện nói chấm từng câu)
+
+- `V2__speaking_prompt_results.sql`: status thêm `IN_PROGRESS`, bảng `speaking_prompt_results` (unique attempt+prompt, `word_issues`/`tips` JSON, CASCADE); entity `SpeakingPromptResult`, `SpeakingWordIssue`.
+- `SpeakingAttemptService`: `POST /speaking/lessons/:id/attempts` (dùng lại lượt dở), `POST /speaking/attempts/:id/prompts/:promptId/assess` (multipart `audio`, AI đồng bộ, ghi đè khi thu lại, AI lỗi → 503 không lưu), `POST /speaking/attempts/:id/submit` (thiếu câu → 400 `SPEAKING_INCOMPLETE`/`errors.speakingIncomplete`; điểm từ `SpeakingScoring`, `improvements` từ AI văn bản; → GRADED). Endpoint submit multipart cũ giữ tới 11e.
+- `SpeakingGrader` thêm `assessPrompt`/`writeImprovements`; `GeminiSpeakingGrader` (audio inline base64, prompt `ai/speaking-assess.txt`, `speaking-summary.txt`); `FakeSpeakingGrader` chỉ nạp khi thiếu key. Cleanup xoá lượt `IN_PROGRESS` quá 24h (`app.cleanup.speaking-in-progress-retention`).
+- Test: `SpeakingApiTests` (luồng mới), `GeminiSpeakingGraderTest`, `SpeakingScoringTest`, `CleanupServiceTests`.
+
+## Đợt 11 (phiên 11e: FE Luyện nói chấm từng câu)
+
+- `SpeakingPracticePage`: mở lượt `IN_PROGRESS` khi vào trang (lượt dở khôi phục các câu đã chấm), dừng thu là gửi `assess` ngay (loading, lỗi + "Thử chấm lại" giữ bản thu), nộp chỉ bật khi mọi câu có kết quả; `speakingService.startAttempt|assess|submit`.
+- `components/practice/PronunciationFeedbackCard`: điểm câu, câu mẫu tô từ lỗi (gạch lượn + tooltip `heardAs`/mẹo), danh sách "Cần cải thiện"; chuỗi VI/EN `speaking.feedback.*`, `speaking.assessing|assessFailed|retryAssess|submitNeedAll`.
+- BE: xoá endpoint submit multipart cũ, `SpeakingGradingService`, `SpeakingGrader.grade`; test cũ thay bằng luồng từng câu. Lint, build, test liên quan sạch.
+
+## Đợt 11 đóng (phiên 11z)
+
+- Đợt 11 hoàn tất: Viết, Chat (30 tin/ngày) và Nói (chấm phát âm từng câu) dùng Gemini khi có `GEMINI_API_KEY`, thiếu key thì bản giả.
+- Folder Postman "Dot 11 - AI Gemini (Viet, Chat, Noi)" (8 request) và bảng "Kiểm tra hoàn thành" chốt theo DTO thật.

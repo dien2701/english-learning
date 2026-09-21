@@ -77,6 +77,7 @@ import vn.enlearning.backend.seed.SeedFiles.SeedWriting;
 public class SeedService {
 
 	private static final String RESOURCE_DIR = "seed/";
+	private static final String DEMO_RESOURCE_DIR = "seed-demo/";
 
 	/** Chặt: JSON có trường lạ (gõ sai tên) phải lỗi ngay, không được lặng lẽ bị bỏ qua. */
 	private static final JsonMapper MAPPER = JsonMapper.builder()
@@ -131,12 +132,8 @@ public class SeedService {
 		}
 
 		Map<String, Topic> topicBySlug = new HashMap<>();
-		for (SeedTopic seed : read("topics.json", SeedTopic[].class)) {
-			Topic topic = new Topic();
-			topic.setSlug(seed.slug());
-			topic.setNameVi(seed.nameVi());
-			topic.setNameEn(seed.nameEn());
-			topicBySlug.put(seed.slug(), topics.save(topic));
+		for (SeedTopic seed : readDemo("topics.json", SeedTopic[].class)) {
+			saveTopic(seed, topicBySlug);
 		}
 
 		Counter counter = new Counter();
@@ -154,10 +151,21 @@ public class SeedService {
 		return Optional.of(report);
 	}
 
+	private void saveTopic(SeedTopic seed, Map<String, Topic> topicBySlug) {
+		Topic topic = new Topic();
+		topic.setSlug(seed.slug());
+		topic.setNameVi(seed.nameVi());
+		topic.setNameEn(seed.nameEn());
+		topicBySlug.put(seed.slug(), topics.save(topic));
+	}
+
 	private void seedDecks(Map<String, Topic> topicBySlug, User admin, Counter counter) {
-		for (SeedDeck seed : read("decks.json", SeedDeck[].class)) {
+		for (SeedDeck seed : readDemo("decks.json", SeedDeck[].class)) {
 			FlashcardDeck deck = new FlashcardDeck();
 			applyContent(deck, admin, seed.titleVi(), seed.titleEn(), seed.level());
+			if (seed.status() != null) {
+				deck.setStatus(seed.status());
+			}
 			deck.setTopic(topic(topicBySlug, seed.topic()));
 			deck.setDescriptionVi(seed.descriptionVi());
 			deck.setDescriptionEn(seed.descriptionEn());
@@ -188,9 +196,12 @@ public class SeedService {
 	}
 
 	private void seedListening(Map<String, Topic> topicBySlug, User admin, Counter counter) {
-		for (SeedListening seed : read("listening.json", SeedListening[].class)) {
+		for (SeedListening seed : readDemo("listening.json", SeedListening[].class)) {
 			ListeningLesson lesson = new ListeningLesson();
 			applyContent(lesson, admin, seed.titleVi(), seed.titleEn(), seed.level());
+			if (seed.status() != null) {
+				lesson.setStatus(seed.status());
+			}
 			lesson.setTopic(topic(topicBySlug, seed.topic()));
 			lesson.setDescriptionVi(seed.descriptionVi());
 			lesson.setDescriptionEn(seed.descriptionEn());
@@ -205,9 +216,12 @@ public class SeedService {
 	}
 
 	private void seedReading(Map<String, Topic> topicBySlug, User admin, Counter counter) {
-		for (SeedReading seed : read("reading.json", SeedReading[].class)) {
+		for (SeedReading seed : readDemo("reading.json", SeedReading[].class)) {
 			ReadingLesson lesson = new ReadingLesson();
 			applyContent(lesson, admin, seed.titleVi(), seed.titleEn(), seed.level());
+			if (seed.status() != null) {
+				lesson.setStatus(seed.status());
+			}
 			lesson.setTopic(topic(topicBySlug, seed.topic()));
 			lesson.setDescriptionVi(seed.descriptionVi());
 			lesson.setDescriptionEn(seed.descriptionEn());
@@ -223,9 +237,12 @@ public class SeedService {
 	}
 
 	private void seedSpeaking(Map<String, Topic> topicBySlug, User admin, Counter counter) {
-		for (SeedSpeaking seed : read("speaking.json", SeedSpeaking[].class)) {
+		for (SeedSpeaking seed : readDemo("speaking.json", SeedSpeaking[].class)) {
 			SpeakingLesson lesson = new SpeakingLesson();
 			applyContent(lesson, admin, seed.titleVi(), seed.titleEn(), seed.level());
+			if (seed.status() != null) {
+				lesson.setStatus(seed.status());
+			}
 			lesson.setTopic(topic(topicBySlug, seed.topic()));
 			lesson.setDescriptionVi(seed.descriptionVi());
 			lesson.setDescriptionEn(seed.descriptionEn());
@@ -241,9 +258,12 @@ public class SeedService {
 	}
 
 	private void seedWriting(Map<String, Topic> topicBySlug, User admin, Counter counter) {
-		for (SeedWriting seed : read("writing.json", SeedWriting[].class)) {
+		for (SeedWriting seed : readDemo("writing.json", SeedWriting[].class)) {
 			WritingPrompt prompt = new WritingPrompt();
 			applyContent(prompt, admin, seed.titleVi(), seed.titleEn(), seed.level());
+			if (seed.status() != null) {
+				prompt.setStatus(seed.status());
+			}
 			prompt.setTopic(topic(topicBySlug, seed.topic()));
 			prompt.setInstructions(seed.instructions());
 			prompt.setSuggestedMinutes(seed.suggestedMinutes());
@@ -255,9 +275,12 @@ public class SeedService {
 	}
 
 	private void seedExams(User admin, Counter counter) {
-		for (SeedExam seed : read("exams.json", SeedExam[].class)) {
+		for (SeedExam seed : readDemo("exams.json", SeedExam[].class)) {
 			Exam exam = new Exam();
 			applyContent(exam, admin, seed.titleVi(), seed.titleEn(), seed.level());
+			if (seed.status() != null) {
+				exam.setStatus(seed.status());
+			}
 			exam.setDescriptionVi(seed.descriptionVi());
 			exam.setDescriptionEn(seed.descriptionEn());
 			exam.setTimeLimitMinutes(seed.timeLimitMinutes());
@@ -318,11 +341,21 @@ public class SeedService {
 				.sum();
 	}
 
+	/** Chỉ {@code users.json} còn ở {@code seed/}; toàn bộ nội dung học đã chuyển sang {@code seed-demo/}. */
 	private static <T> List<T> read(String file, Class<T[]> type) {
-		try (InputStream input = new ClassPathResource(RESOURCE_DIR + file).getInputStream()) {
+		return readResource(RESOURCE_DIR + file, type);
+	}
+
+	/** Nội dung demo mở rộng (phiên 8b trở đi) nằm ở {@code seed-demo/}. */
+	private static <T> List<T> readDemo(String file, Class<T[]> type) {
+		return readResource(DEMO_RESOURCE_DIR + file, type);
+	}
+
+	private static <T> List<T> readResource(String path, Class<T[]> type) {
+		try (InputStream input = new ClassPathResource(path).getInputStream()) {
 			return Arrays.asList(MAPPER.readValue(input, type));
 		} catch (IOException e) {
-			throw new UncheckedIOException("Không đọc được file seed " + file, e);
+			throw new UncheckedIOException("Không đọc được file seed " + path, e);
 		}
 	}
 

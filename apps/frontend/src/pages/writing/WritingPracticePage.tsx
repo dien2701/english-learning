@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from 'react';
+import { useLeaveGuard } from '../../hooks/useLeaveGuard';
 import { App, Input } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -30,6 +31,7 @@ const WritingPracticePage: React.FC = () => {
 
   const [content, setContent] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const release = useLeaveGuard(content.trim().length > 0 && !isSubmitting);
 
   const wordCount = content.trim() ? content.trim().split(/\s+/).length : 0;
   const minWords = prompt?.minWords ?? 0;
@@ -42,6 +44,7 @@ const WritingPracticePage: React.FC = () => {
     try {
       const submission = await writingService.submit(id, content);
       // Chuyển sang màn hình kết quả, nơi hiển thị trạng thái AI đang chấm.
+      release();
       navigate(`/writing/${id}/result`, {
         state: { submissionId: submission.id },
         replace: true,
@@ -52,7 +55,7 @@ const WritingPracticePage: React.FC = () => {
       );
       setIsSubmitting(false);
     }
-  }, [id, content, isSubmitting, navigate, message, describe, fieldErrors]);
+  }, [id, content, isSubmitting, release, navigate, message, describe, fieldErrors]);
 
   /* Hết thời lượng gợi ý thì nhắc, nhưng không tự nộp — đây là thời gian
      tham khảo, không phải giới hạn cứng như bài kiểm tra. */

@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 
 import { ButtonLink } from '../ui/Button';
 import { Chip, LevelChip } from '../ui/Chip';
+import SafeImage from '../ui/SafeImage';
 import { EmptyBlock } from '../ui/StateBlocks';
 import { SKILL_ICON } from '../../types/common';
 import type { ContinueLearning } from '../../types/dashboard';
@@ -101,10 +102,9 @@ const ContinueLearningBanner: React.FC<{ item: ContinueLearning | null }> = ({
 
         {/* Ảnh học tập. Tỉ lệ cố định để không nhảy layout khi ảnh tải xong. */}
         <div className="order-1 aspect-[16/7] w-full overflow-hidden bg-surface-muted md:order-2 md:aspect-auto md:w-[320px] lg:w-[380px]">
-          <img
+          <SafeImage
             src={item.coverUrl}
             alt=""
-            loading="lazy"
             className="h-full w-full object-cover"
           />
         </div>

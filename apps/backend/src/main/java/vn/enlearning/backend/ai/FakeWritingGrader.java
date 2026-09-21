@@ -20,7 +20,7 @@ import vn.enlearning.backend.entity.enums.IssueCategory;
  * bài chứa {@link #FAIL_ALWAYS_MARKER} luôn lỗi.
  */
 @Component
-@Conditional(OpenAiKeyMissing.class)
+@Conditional(GeminiKeyMissing.class)
 @RequiredArgsConstructor
 class FakeWritingGrader implements WritingGrader {
 

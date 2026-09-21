@@ -5450,6 +5450,389 @@
           }
         }
       ]
+    },
+    {
+      "name": "Dot 11 - AI Gemini (Viet, Chat, Noi)",
+      "description": "Chạy Login (Dot 0) trước để có {{token}}. Điền <lessonId> là id bài luyện nói ACTIVE, <promptId> là id một câu của bài đó. Bước assess cần chọn file audio (.wav/.webm/.mp3, <= 5MB). Có GEMINI_API_KEY: chấm thật; không có key: bản giả (tên tệp chứa \"fail\" thì 503).",
+      "item": [
+        {
+          "name": "GET /chat/quota",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "const d = pm.response.json().data;",
+                  "pm.test('limit 30, used + remaining = limit', () => { pm.expect(d.limit).to.eql(30); pm.expect(d.used + d.remaining).to.eql(d.limit); pm.expect(d.resetAt).to.be.a('string'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/chat/quota",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "chat",
+                "quota"
+              ]
+            }
+          }
+        },
+        {
+          "name": "POST /writing/prompts/<id>/submit",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('có id + status', () => { const d = pm.response.json().data; pm.expect(d.id).to.be.a('string'); pm.expect(d.status).to.be.oneOf(['GRADING', 'GRADED', 'NEEDS_RETRY']); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"content\":\"I goes to school every day. It are fun.\"}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/writing/prompts/<id>/submit",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "writing",
+                "prompts",
+                "<id>",
+                "submit"
+              ]
+            }
+          }
+        },
+        {
+          "name": "POST /speaking/lessons/<lessonId>/attempts",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "const d = pm.response.json().data;",
+                  "pm.test('IN_PROGRESS, results là mảng', () => { pm.expect(d.status).to.eql('IN_PROGRESS'); pm.expect(d.results).to.be.an('array'); });",
+                  "pm.environment.set('attemptId', d.attemptId);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/speaking/lessons/<lessonId>/attempts",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "speaking",
+                "lessons",
+                "<lessonId>",
+                "attempts"
+              ]
+            }
+          }
+        },
+        {
+          "name": "POST /speaking/attempts/{{attemptId}}/prompts/<promptId>/assess",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "const d = pm.response.json().data;",
+                  "pm.test('promptId, transcript, score 0-10, wordIssues[], tips[]', () => { pm.expect(d.promptId).to.be.a('string'); pm.expect(d.transcript).to.be.a('string'); pm.expect(d.score).to.be.within(0, 10); pm.expect(d.wordIssues).to.be.an('array'); pm.expect(d.tips).to.be.an('array'); });",
+                  "pm.test('wordIssues có word/heardAs/issue/tip', () => d.wordIssues.forEach(w => pm.expect(w).to.have.all.keys('word', 'heardAs', 'issue', 'tip')));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "audio",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/speaking/attempts/{{attemptId}}/prompts/<promptId>/assess",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "speaking",
+                "attempts",
+                "{{attemptId}}",
+                "prompts",
+                "<promptId>",
+                "assess"
+              ]
+            }
+          }
+        },
+        {
+          "name": "POST /speaking/attempts/{{attemptId}}/submit (còn câu chưa chấm)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('400 khi còn câu chưa chấm (bỏ qua nếu bài chỉ có 1 câu)', () => { if (pm.response.code === 200) return; pm.response.to.have.status(400); const j = pm.response.json(); pm.expect(j.code).to.eql('SPEAKING_INCOMPLETE'); pm.expect(j.messageKey).to.eql('errors.speakingIncomplete'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"durationSeconds\":60}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/speaking/attempts/{{attemptId}}/submit",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "speaking",
+                "attempts",
+                "{{attemptId}}",
+                "submit"
+              ]
+            }
+          }
+        },
+        {
+          "name": "POST /speaking/attempts/{{attemptId}}/submit (đủ câu)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('đã chấm đủ mọi câu trước khi chạy request này, status 200', () => pm.response.to.have.status(200));",
+                  "const d = pm.response.json().data;",
+                  "pm.test('GRADED, đủ điểm, có improvements và promptFeedback', () => { pm.expect(d.status).to.eql('GRADED'); pm.expect(d.overallScore).to.be.within(0, 10); pm.expect(d.scores).to.have.all.keys('pronunciation', 'vocabulary', 'grammar', 'fluency', 'relevance'); pm.expect(d.improvements).to.not.be.empty; pm.expect(d.promptFeedback).to.not.be.empty; });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"durationSeconds\":60}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/speaking/attempts/{{attemptId}}/submit",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "speaking",
+                "attempts",
+                "{{attemptId}}",
+                "submit"
+              ]
+            }
+          }
+        },
+        {
+          "name": "POST /speaking/attempts/{{attemptId}}/submit (lượt đã nộp)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('409 vì lượt đã GRADED', () => pm.response.to.have.status(409));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"durationSeconds\":60}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/speaking/attempts/{{attemptId}}/submit",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "speaking",
+                "attempts",
+                "{{attemptId}}",
+                "submit"
+              ]
+            }
+          }
+        },
+        {
+          "name": "GET /speaking/results/{{attemptId}}",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('GRADED khớp lượt vừa nộp', () => { const d = pm.response.json().data; pm.expect(d.attemptId).to.eql(pm.environment.get('attemptId')); pm.expect(d.status).to.eql('GRADED'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/speaking/results/{{attemptId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "speaking",
+                "results",
+                "{{attemptId}}"
+              ]
+            }
+          }
+        }
+      ]
     }
   ]
 }

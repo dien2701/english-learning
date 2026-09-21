@@ -1,7 +1,6 @@
 package vn.enlearning.backend.ai;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -9,14 +8,14 @@ import org.springframework.context.annotation.Conditional;
 import org.springframework.stereotype.Component;
 
 import lombok.RequiredArgsConstructor;
-import vn.enlearning.backend.entity.SpeakingPromptFeedback;
+import vn.enlearning.backend.entity.SpeakingWordIssue;
 
 /**
  * Bản giả: transcript cố định (đúng câu đề bài), điểm cố định, có độ trễ mô phỏng. Tệp âm thanh có tên chứa
  * {@link #FAIL_MARKER} (ví dụ {@code fail.webm}) làm bản giả lỗi, để thử trạng thái FAILED.
  */
 @Component
-@Conditional(OpenAiKeyMissing.class)
+@Conditional(GeminiKeyMissing.class)
 @RequiredArgsConstructor
 class FakeSpeakingGrader implements SpeakingGrader {
 
@@ -27,23 +26,23 @@ class FakeSpeakingGrader implements SpeakingGrader {
 	private final AiProperties properties;
 
 	@Override
-	public Grade grade(Request request) {
+	public PromptAssessment assessPrompt(String promptText, String filename, String contentType, byte[] audio) {
 		sleep();
-		for (PromptAudio answer : request.answers()) {
-			if (answer.filename() != null && answer.filename().toLowerCase(Locale.ROOT).contains(FAIL_MARKER)) {
-				throw new AiGradingException("Bản giả bị ép lỗi bằng tên tệp chứa \"" + FAIL_MARKER + "\"");
-			}
+		if (filename != null && filename.toLowerCase(Locale.ROOT).contains(FAIL_MARKER)) {
+			throw new AiGradingException("Bản giả bị ép lỗi bằng tên tệp chứa \"" + FAIL_MARKER + "\"");
 		}
-		List<SpeakingPromptFeedback> feedback = new ArrayList<>();
-		for (PromptAudio answer : request.answers()) {
-			feedback.add(new SpeakingPromptFeedback(answer.promptId(), answer.promptText(), BigDecimal.valueOf(7.5),
-					longWords(answer.promptText()),
-					"Đọc rõ ràng, tốc độ ổn. (Nhận xét mẫu từ bản giả, không phải chấm thật.)"));
-		}
-		return new Grade(BigDecimal.valueOf(7.6), BigDecimal.valueOf(7.0), BigDecimal.valueOf(7.5),
-				BigDecimal.valueOf(8.0), BigDecimal.valueOf(7.0), BigDecimal.valueOf(8.5),
-				List.of("Nhấn trọng âm rõ hơn ở các từ dài.", "Giữ nhịp đọc đều, tránh ngắt giữa cụm từ."),
-				feedback, MODEL_NAME);
+		List<SpeakingWordIssue> issues = longWords(promptText).stream()
+				.map(word -> new SpeakingWordIssue(word, word.substring(0, word.length() - 1),
+						"Thiếu âm cuối (nhận xét mẫu từ bản giả)", "Đọc rõ âm cuối của từ \"" + word + "\"."))
+				.toList();
+		return new PromptAssessment(promptText, BigDecimal.valueOf(7.5), issues,
+				List.of("Đọc rõ ràng, tốc độ ổn. (Nhận xét mẫu từ bản giả, không phải chấm thật.)"), MODEL_NAME);
+	}
+
+	@Override
+	public List<String> writeImprovements(String lessonTitle, List<PromptSummary> prompts) {
+		sleep();
+		return List.of("Nhấn trọng âm rõ hơn ở các từ dài.", "Giữ nhịp đọc đều, tránh ngắt giữa cụm từ.");
 	}
 
 	/** Tối đa một từ dài đầu tiên, để bản giả có dữ liệu "phát âm chưa chuẩn" mà vẫn cố định. */

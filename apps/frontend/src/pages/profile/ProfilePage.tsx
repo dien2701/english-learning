@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 import { Button } from '../../components/ui/Button';
 import PageHeader from '../../components/ui/PageHeader';
+import SafeImage from '../../components/ui/SafeImage';
 import { Card, CardHeader } from '../../components/ui/Card';
 import { ErrorState, Skeleton } from '../../components/ui/StateBlocks';
 import { useAuth } from '../../contexts/AuthContext';
@@ -120,11 +121,12 @@ const ProfilePage: React.FC = () => {
           <Card className="text-center">
             <div className="mx-auto w-fit">
               <div className="mx-auto grid h-24 w-24 place-items-center overflow-hidden rounded-pill bg-action text-[28px] font-extrabold text-white">
-                {avatarUrl ? (
-                  <img src={avatarUrl} alt={t('profile.avatarUrl')} className="h-full w-full object-cover" />
-                ) : (
-                  initials
-                )}
+                <SafeImage
+                  src={avatarUrl}
+                  alt={t('profile.avatarUrl')}
+                  className="h-full w-full object-cover"
+                  fallback={initials}
+                />
               </div>
             </div>
 

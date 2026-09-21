@@ -1,0 +1,2074 @@
+[
+  {
+    "status": "ACTIVE",
+    "topic": "daily-life",
+    "level": "BEGINNER",
+    "timeLimitMinutes": 8,
+    "titleVi": "Một ngày của Lan",
+    "titleEn": "Lan's Day",
+    "descriptionVi": "Bài đọc ngắn về thói quen hằng ngày của một sinh viên.",
+    "descriptionEn": "A short text about a university student's daily routine.",
+    "paragraphs": [
+      "Lan is a university student in Da Nang. She gets up at six o'clock every morning and runs along the beach for thirty minutes. After that, she takes a shower and has breakfast with her parents. Usually she eats bread with eggs and drinks a cup of tea. She likes this quiet time before the busy day begins, and she often talks with her father about the news.",
+      "Her first class starts at eight. She goes to school by bike because it is cheap and good for her health. In the afternoon, she studies English in the library with her friend Hoa. They practise speaking and read short stories together.",
+      "Lan goes home at five. She helps her mother cook dinner, and the family eats together at seven. In the evening, she watches one episode of her favourite series, then goes to bed at ten thirty. On Sundays she does not have classes, so she visits her grandmother."
+    ],
+    "questions": [
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "What time does Lan get up?",
+        "explanation": "Đoạn 1: \"gets up at six o'clock\".",
+        "options": [
+          {
+            "content": "At six o'clock",
+            "correct": true
+          },
+          {
+            "content": "At seven o'clock",
+            "correct": false
+          },
+          {
+            "content": "At five o'clock",
+            "correct": false
+          },
+          {
+            "content": "At eight o'clock",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "How does Lan go to school?",
+        "explanation": "Đoạn 2: \"goes to school by bike\".",
+        "options": [
+          {
+            "content": "By bus",
+            "correct": false
+          },
+          {
+            "content": "By bike",
+            "correct": true
+          },
+          {
+            "content": "On foot",
+            "correct": false
+          },
+          {
+            "content": "By motorbike",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "What does Lan do in the library?",
+        "explanation": "Đoạn 2: học tiếng Anh cùng Hoa.",
+        "options": [
+          {
+            "content": "She watches films",
+            "correct": false
+          },
+          {
+            "content": "She meets her grandmother",
+            "correct": false
+          },
+          {
+            "content": "She studies English with Hoa",
+            "correct": true
+          },
+          {
+            "content": "She cooks dinner",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "When does the family have dinner?",
+        "explanation": "Đoạn 3: \"the family eats together at seven\".",
+        "options": [
+          {
+            "content": "At five",
+            "correct": false
+          },
+          {
+            "content": "At six",
+            "correct": false
+          },
+          {
+            "content": "At ten thirty",
+            "correct": false
+          },
+          {
+            "content": "At seven",
+            "correct": true
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "READING",
+        "content": "Lan goes to bed at ____.",
+        "explanation": "Đoạn 3: \"goes to bed at ten thirty\".",
+        "options": [],
+        "acceptedAnswers": [
+          "10:30",
+          "10.30",
+          "ten thirty",
+          "10h30"
+        ]
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "What does Lan do on Sundays?",
+        "explanation": "Đoạn 3: Chủ nhật không có lớp nên đi thăm bà.",
+        "options": [
+          {
+            "content": "She visits her grandmother",
+            "correct": true
+          },
+          {
+            "content": "She goes to class",
+            "correct": false
+          },
+          {
+            "content": "She runs on the beach",
+            "correct": false
+          },
+          {
+            "content": "She works in a shop",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      }
+    ]
+  },
+  {
+    "status": "ACTIVE",
+    "topic": "food-drink",
+    "level": "BEGINNER",
+    "timeLimitMinutes": 8,
+    "titleVi": "Món ăn đường phố Hà Nội",
+    "titleEn": "Street Food in Hanoi",
+    "descriptionVi": "Giới thiệu phở, bún chả, cà phê trứng và mẹo ăn đường phố an toàn.",
+    "descriptionEn": "An introduction to pho, bun cha, egg coffee and tips for eating street food safely.",
+    "paragraphs": [
+      "Hanoi is famous for its street food. Every morning, thousands of people sit on small plastic stools beside the road and eat a hot bowl of pho. A bowl usually costs between forty and sixty thousand dong, so it is cheap for both local people and tourists.",
+      "Another popular dish is bun cha. It is grilled pork served with cold rice noodles, fresh herbs and a sweet, sour sauce. Many visitors say it tastes best at lunchtime, when the meat is fresh from the grill. Egg coffee is a special drink in Hanoi. It is made with egg yolk, sugar and strong coffee, and it tastes a little like dessert.",
+      "If you want to eat street food safely, choose a busy stall. A lot of customers means that the food is fresh. Also look for clean bowls and ask for less ice in your drink. Finally, bring some small notes, because many sellers cannot change large money."
+    ],
+    "questions": [
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "What do people sit on when they eat pho?",
+        "explanation": "Đoạn 1: \"small plastic stools\".",
+        "options": [
+          {
+            "content": "Wooden benches",
+            "correct": false
+          },
+          {
+            "content": "Small plastic stools",
+            "correct": true
+          },
+          {
+            "content": "Cushions",
+            "correct": false
+          },
+          {
+            "content": "Metal chairs",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "How much does a bowl of pho usually cost?",
+        "explanation": "Đoạn 1: \"between forty and sixty thousand dong\".",
+        "options": [
+          {
+            "content": "4,000 to 6,000 dong",
+            "correct": false
+          },
+          {
+            "content": "100,000 dong",
+            "correct": false
+          },
+          {
+            "content": "40,000 to 60,000 dong",
+            "correct": true
+          },
+          {
+            "content": "It is free",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "What is bun cha?",
+        "explanation": "Đoạn 2: thịt heo nướng ăn với bún và nước chấm.",
+        "options": [
+          {
+            "content": "A sweet soup",
+            "correct": false
+          },
+          {
+            "content": "Fried chicken with rice",
+            "correct": false
+          },
+          {
+            "content": "A cold coffee drink",
+            "correct": false
+          },
+          {
+            "content": "Grilled pork with cold rice noodles",
+            "correct": true
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "What is egg coffee made with?",
+        "explanation": "Đoạn 2: \"egg yolk, sugar and strong coffee\".",
+        "options": [
+          {
+            "content": "Egg yolk, sugar and strong coffee",
+            "correct": true
+          },
+          {
+            "content": "Milk, tea and honey",
+            "correct": false
+          },
+          {
+            "content": "Egg white and juice",
+            "correct": false
+          },
+          {
+            "content": "Chocolate and cream",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Why should you choose a busy stall?",
+        "explanation": "Đoạn 3: nhiều khách nghĩa là đồ ăn tươi.",
+        "options": [
+          {
+            "content": "The food is cheaper",
+            "correct": false
+          },
+          {
+            "content": "The food is probably fresh",
+            "correct": true
+          },
+          {
+            "content": "The seller speaks English",
+            "correct": false
+          },
+          {
+            "content": "The bowls are bigger",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "READING",
+        "content": "You should bring small ____ because sellers cannot change large money.",
+        "explanation": "Đoạn 3: \"bring some small notes\".",
+        "options": [],
+        "acceptedAnswers": [
+          "notes",
+          "banknotes",
+          "bills"
+        ]
+      }
+    ]
+  },
+  {
+    "status": "ACTIVE",
+    "topic": "travel",
+    "level": "BEGINNER",
+    "timeLimitMinutes": 8,
+    "titleVi": "Chuyến đi Đà Nẵng",
+    "titleEn": "A Trip to Da Nang",
+    "descriptionVi": "Kể về chuyến du lịch bốn ngày của một gia đình.",
+    "descriptionEn": "A family tells the story of their four-day holiday.",
+    "paragraphs": [
+      "Last summer, my family took a four-day trip to Da Nang. We flew from Ho Chi Minh City on Friday morning, and the flight took only eighty minutes. Our hotel was near My Khe beach, so we could walk to the sea in five minutes.",
+      "On the first day, we swam and built sand castles. The water was warm and the beach was clean. On Saturday we took a cable car to Ba Na Hills. The Golden Bridge was crowded, but the view of the mountains was wonderful. My little brother was afraid of the height, so he held my mother's hand the whole time.",
+      "On Sunday, we visited Hoi An, an old town about thirty kilometres from Da Nang. We ate cao lau, a local noodle dish, and my sister bought a colourful lantern. We flew home on Monday evening. It was a tired but happy trip, and we want to go back next year."
+    ],
+    "questions": [
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "How long was the flight?",
+        "explanation": "Đoạn 1: \"only eighty minutes\".",
+        "options": [
+          {
+            "content": "Eight minutes",
+            "correct": false
+          },
+          {
+            "content": "Two hours",
+            "correct": false
+          },
+          {
+            "content": "Eighty minutes",
+            "correct": true
+          },
+          {
+            "content": "Five hours",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Where was the hotel?",
+        "explanation": "Đoạn 1: \"near My Khe beach\".",
+        "options": [
+          {
+            "content": "In Hoi An",
+            "correct": false
+          },
+          {
+            "content": "On Ba Na Hills",
+            "correct": false
+          },
+          {
+            "content": "Next to the airport",
+            "correct": false
+          },
+          {
+            "content": "Near My Khe beach",
+            "correct": true
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Why did the writer's brother hold their mother's hand?",
+        "explanation": "Đoạn 2: \"afraid of the height\".",
+        "options": [
+          {
+            "content": "He was afraid of the height",
+            "correct": true
+          },
+          {
+            "content": "He was tired",
+            "correct": false
+          },
+          {
+            "content": "He was lost",
+            "correct": false
+          },
+          {
+            "content": "He was cold",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "What is cao lau?",
+        "explanation": "Đoạn 3: \"cao lau, a local noodle dish\".",
+        "options": [
+          {
+            "content": "A type of lantern",
+            "correct": false
+          },
+          {
+            "content": "A local noodle dish",
+            "correct": true
+          },
+          {
+            "content": "An old town",
+            "correct": false
+          },
+          {
+            "content": "A cable car",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "READING",
+        "content": "The writer's sister bought a colourful ____.",
+        "explanation": "Đoạn 3: \"my sister bought a colourful lantern\".",
+        "options": [],
+        "acceptedAnswers": [
+          "lantern"
+        ]
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "When did the family fly home?",
+        "explanation": "Đoạn 3: \"flew home on Monday evening\".",
+        "options": [
+          {
+            "content": "On Sunday morning",
+            "correct": false
+          },
+          {
+            "content": "On Friday evening",
+            "correct": false
+          },
+          {
+            "content": "On Monday evening",
+            "correct": true
+          },
+          {
+            "content": "On Saturday night",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      }
+    ]
+  },
+  {
+    "status": "ACTIVE",
+    "topic": "health",
+    "level": "INTERMEDIATE",
+    "timeLimitMinutes": 12,
+    "titleVi": "Giấc ngủ và việc học",
+    "titleEn": "Sleep and Study",
+    "descriptionVi": "Vì sao thức khuya học bài lại phản tác dụng.",
+    "descriptionEn": "Why staying up late to study often backfires.",
+    "paragraphs": [
+      "Many students believe that staying up late to study is the best way to prepare for an exam. However, research on sleep suggests the opposite. During sleep, the brain organises the information we learned during the day and stores it in long-term memory. When we do not sleep enough, this process is interrupted, and we forget much more.",
+      "One well-known experiment compared two groups of students who learned the same list of words. The first group slept for eight hours after studying, while the second group stayed awake all night. Two days later, the students who had slept remembered about forty percent more words. Interestingly, the effect was still visible a week later.",
+      "Sleep also affects concentration and mood. Teenagers need between eight and ten hours of sleep each night, but surveys show that most get fewer than seven. Using a phone before bed makes the problem worse, because the bright light tells the brain that it is still daytime.",
+      "Experts therefore recommend a few simple habits: go to bed at the same time every day, stop using screens an hour before sleeping, and avoid heavy meals late in the evening. Students who follow this advice often find that they can study for a shorter time but achieve better results."
+    ],
+    "questions": [
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "What is the main idea of the passage?",
+        "explanation": "Bài viết lập luận ngủ đủ giúp ghi nhớ tốt hơn.",
+        "options": [
+          {
+            "content": "Students should study only at night",
+            "correct": false
+          },
+          {
+            "content": "Teenagers should avoid exams",
+            "correct": false
+          },
+          {
+            "content": "Phones improve memory",
+            "correct": false
+          },
+          {
+            "content": "Enough sleep helps students learn and remember",
+            "correct": true
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "What does the brain do during sleep?",
+        "explanation": "Đoạn 1: não sắp xếp và lưu thông tin vào trí nhớ dài hạn.",
+        "options": [
+          {
+            "content": "It organises and stores what we learned",
+            "correct": true
+          },
+          {
+            "content": "It stops working",
+            "correct": false
+          },
+          {
+            "content": "It deletes old memories",
+            "correct": false
+          },
+          {
+            "content": "It prepares for the morning",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "What did the experiment find?",
+        "explanation": "Đoạn 2: nhóm ngủ nhớ nhiều hơn khoảng 40%.",
+        "options": [
+          {
+            "content": "Students who stayed awake remembered more words",
+            "correct": false
+          },
+          {
+            "content": "Students who slept remembered about 40% more words",
+            "correct": true
+          },
+          {
+            "content": "There was no difference between the groups",
+            "correct": false
+          },
+          {
+            "content": "Sleepers forgot everything after a week",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "How many hours of sleep do teenagers need?",
+        "explanation": "Đoạn 3: \"between eight and ten hours\".",
+        "options": [
+          {
+            "content": "Five to six",
+            "correct": false
+          },
+          {
+            "content": "Six to seven",
+            "correct": false
+          },
+          {
+            "content": "Eight to ten",
+            "correct": true
+          },
+          {
+            "content": "Ten to twelve",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Why is using a phone before bed a problem?",
+        "explanation": "Đoạn 3: ánh sáng khiến não tưởng vẫn là ban ngày.",
+        "options": [
+          {
+            "content": "It makes the room too warm",
+            "correct": false
+          },
+          {
+            "content": "It makes students hungry",
+            "correct": false
+          },
+          {
+            "content": "It uses too much data",
+            "correct": false
+          },
+          {
+            "content": "The bright light makes the brain think it is daytime",
+            "correct": true
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Which habit is NOT recommended by the experts?",
+        "explanation": "Đoạn 4 không khuyên học đến nửa đêm.",
+        "options": [
+          {
+            "content": "Studying until midnight every day",
+            "correct": true
+          },
+          {
+            "content": "Going to bed at the same time daily",
+            "correct": false
+          },
+          {
+            "content": "Avoiding heavy late meals",
+            "correct": false
+          },
+          {
+            "content": "Stopping screens before bed",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "READING",
+        "content": "Most teenagers sleep fewer than ____ hours a night.",
+        "explanation": "Đoạn 3: \"most get fewer than seven\".",
+        "options": [],
+        "acceptedAnswers": [
+          "7",
+          "seven"
+        ]
+      }
+    ]
+  },
+  {
+    "status": "ACTIVE",
+    "topic": "shopping",
+    "level": "INTERMEDIATE",
+    "timeLimitMinutes": 12,
+    "titleVi": "Đánh giá khi mua sắm trực tuyến",
+    "titleEn": "Trusting Online Reviews",
+    "descriptionVi": "Cách nhận biết đánh giá giả khi mua hàng online.",
+    "descriptionEn": "How to spot fake reviews when you shop online.",
+    "paragraphs": [
+      "Online shopping has changed the way people buy everything from shoes to sofas. Instead of asking a shop assistant for advice, customers now read reviews written by strangers. A recent survey found that nine out of ten shoppers check at least one review before they buy a product, and many say they trust these reviews almost as much as recommendations from friends.",
+      "Unfortunately, not every review is honest. Some companies pay people to write fake five-star comments, while others post negative reviews about their competitors. Researchers estimate that up to one in five reviews on some websites may be false.",
+      "There are several signs that a review might be fake. It may use extremely emotional language, repeat the product name many times, or contain no specific details about how the product was used. Real reviews usually mention both good and bad points, and they often include photos taken by the customer.",
+      "To protect yourself, read reviews from several websites rather than only one, pay attention to the three-star reviews because they tend to be more balanced, and check whether the reviewer has bought other products. Being a careful reader can save you both money and disappointment."
+    ],
+    "questions": [
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "How many shoppers check a review before buying?",
+        "explanation": "Đoạn 1: \"nine out of ten shoppers\".",
+        "options": [
+          {
+            "content": "One out of ten",
+            "correct": false
+          },
+          {
+            "content": "Nine out of ten",
+            "correct": true
+          },
+          {
+            "content": "Half of them",
+            "correct": false
+          },
+          {
+            "content": "One in five",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "How much do shoppers trust online reviews?",
+        "explanation": "Đoạn 1: tin gần như lời giới thiệu của bạn bè.",
+        "options": [
+          {
+            "content": "More than their own experience",
+            "correct": false
+          },
+          {
+            "content": "Less than advertisements",
+            "correct": false
+          },
+          {
+            "content": "Almost as much as recommendations from friends",
+            "correct": true
+          },
+          {
+            "content": "Not at all",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "What proportion of reviews may be false on some websites?",
+        "explanation": "Đoạn 2: \"up to one in five\".",
+        "options": [
+          {
+            "content": "Up to one in ten",
+            "correct": false
+          },
+          {
+            "content": "Up to half",
+            "correct": false
+          },
+          {
+            "content": "Almost all",
+            "correct": false
+          },
+          {
+            "content": "Up to one in five",
+            "correct": true
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Which is a sign of a fake review?",
+        "explanation": "Đoạn 3: thiếu chi tiết cụ thể là dấu hiệu review giả.",
+        "options": [
+          {
+            "content": "It has no specific details",
+            "correct": true
+          },
+          {
+            "content": "It includes customer photos",
+            "correct": false
+          },
+          {
+            "content": "It mentions bad points",
+            "correct": false
+          },
+          {
+            "content": "It is very short and polite",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Why should you read three-star reviews?",
+        "explanation": "Đoạn 4: \"more balanced\".",
+        "options": [
+          {
+            "content": "They are always true",
+            "correct": false
+          },
+          {
+            "content": "They tend to be more balanced",
+            "correct": true
+          },
+          {
+            "content": "They are the shortest",
+            "correct": false
+          },
+          {
+            "content": "They are written by experts",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "What do real reviews often include?",
+        "explanation": "Đoạn 3: \"photos taken by the customer\".",
+        "options": [
+          {
+            "content": "Discount codes",
+            "correct": false
+          },
+          {
+            "content": "Company names",
+            "correct": false
+          },
+          {
+            "content": "Photos taken by the customer",
+            "correct": true
+          },
+          {
+            "content": "Price comparisons",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "READING",
+        "content": "You should read reviews from several ____ , not only one.",
+        "explanation": "Đoạn 4: \"reviews from several websites\".",
+        "options": [],
+        "acceptedAnswers": [
+          "websites",
+          "sites",
+          "website"
+        ]
+      }
+    ]
+  },
+  {
+    "status": "ACTIVE",
+    "topic": "workplace",
+    "level": "INTERMEDIATE",
+    "timeLimitMinutes": 12,
+    "titleVi": "Viết email công việc hiệu quả",
+    "titleEn": "Writing a Good Work Email",
+    "descriptionVi": "Các nguyên tắc viết email rõ ràng, ngắn gọn và chuyên nghiệp.",
+    "descriptionEn": "Principles for writing clear, short and professional emails.",
+    "paragraphs": [
+      "Most office workers spend more than two hours a day reading and writing emails, yet many of these messages are unclear or too long. A well-written email saves time for both the sender and the reader, and it also creates a professional impression.",
+      "The subject line is the first thing the reader sees. It should describe the purpose in a few words, for example 'Meeting request: project budget, Tuesday' rather than 'Hello' or 'Important'. In the opening sentence, state clearly why you are writing. If you need an answer, explain what you need and give a deadline.",
+      "Keep paragraphs short and use simple words. A long, complicated sentence may look impressive, but it makes the reader work harder. If you have several questions, use a numbered list so that the reader can reply point by point. Avoid capital letters for whole sentences, since they can look like shouting.",
+      "Finally, read your message before sending it. Check the names, the dates and any attached files. A common mistake is writing 'see the attachment' and forgetting to attach it. Ending with a polite phrase such as 'Kind regards' is enough; you do not need to write more than one closing sentence."
+    ],
+    "questions": [
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "How much time do office workers spend on email each day?",
+        "explanation": "Đoạn 1: \"more than two hours a day\".",
+        "options": [
+          {
+            "content": "About ten minutes",
+            "correct": false
+          },
+          {
+            "content": "Less than one hour",
+            "correct": false
+          },
+          {
+            "content": "All day",
+            "correct": false
+          },
+          {
+            "content": "More than two hours",
+            "correct": true
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Which is the best subject line?",
+        "explanation": "Đoạn 2: tiêu đề nên nêu rõ mục đích.",
+        "options": [
+          {
+            "content": "Meeting request: project budget, Tuesday",
+            "correct": true
+          },
+          {
+            "content": "Hello",
+            "correct": false
+          },
+          {
+            "content": "Important",
+            "correct": false
+          },
+          {
+            "content": "Please read",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "What should the opening sentence do?",
+        "explanation": "Đoạn 2: \"state clearly why you are writing\".",
+        "options": [
+          {
+            "content": "Greet the reader at length",
+            "correct": false
+          },
+          {
+            "content": "State why you are writing",
+            "correct": true
+          },
+          {
+            "content": "Apologise",
+            "correct": false
+          },
+          {
+            "content": "Introduce your company history",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Why is a numbered list useful?",
+        "explanation": "Đoạn 3: người đọc trả lời từng ý.",
+        "options": [
+          {
+            "content": "It makes the email longer",
+            "correct": false
+          },
+          {
+            "content": "It looks more formal",
+            "correct": false
+          },
+          {
+            "content": "The reader can reply point by point",
+            "correct": true
+          },
+          {
+            "content": "It avoids attachments",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Why should you avoid writing whole sentences in capitals?",
+        "explanation": "Đoạn 3: \"look like shouting\".",
+        "options": [
+          {
+            "content": "It is grammatically wrong",
+            "correct": false
+          },
+          {
+            "content": "It uses more data",
+            "correct": false
+          },
+          {
+            "content": "It hides names",
+            "correct": false
+          },
+          {
+            "content": "It can look like shouting",
+            "correct": true
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "What is a common mistake mentioned in the passage?",
+        "explanation": "Đoạn 4: quên đính kèm dù có ghi \"see the attachment\".",
+        "options": [
+          {
+            "content": "Forgetting to attach the file",
+            "correct": true
+          },
+          {
+            "content": "Writing a subject line",
+            "correct": false
+          },
+          {
+            "content": "Using a polite ending",
+            "correct": false
+          },
+          {
+            "content": "Replying too fast",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "READING",
+        "content": "Ending with \"Kind ____\" is enough as a polite closing.",
+        "explanation": "Đoạn 4: \"Kind regards\".",
+        "options": [],
+        "acceptedAnswers": [
+          "regards"
+        ]
+      }
+    ]
+  },
+  {
+    "status": "ACTIVE",
+    "topic": "it-tech",
+    "level": "INTERMEDIATE",
+    "timeLimitMinutes": 12,
+    "titleVi": "Bảo mật mật khẩu",
+    "titleEn": "How to Keep Your Passwords Safe",
+    "descriptionVi": "Mật khẩu mạnh, trình quản lý mật khẩu và xác thực hai yếu tố.",
+    "descriptionEn": "Strong passwords, password managers and two-factor authentication.",
+    "paragraphs": [
+      "Every year, millions of online accounts are stolen, and in most cases the reason is a weak password. Security experts say that the most common passwords in the world are still '123456' and 'password'. Hackers do not need clever tools to break these; a simple program can test thousands of guesses every second.",
+      "A strong password should be long rather than complicated. Passwords with at least twelve characters are much harder to guess. One popular method is to combine four unrelated words, such as 'purple-bridge-coffee-lamp'. This is easy for a person to remember but very difficult for a computer to crack.",
+      "Another important rule is never to use the same password for different accounts. If a hacker steals your password from a small shopping site, he or she will immediately try it on your email and bank accounts. To manage many different passwords, experts recommend a password manager, which stores them safely and fills them in automatically.",
+      "Finally, turn on two-factor authentication whenever it is available. With this system, you need both your password and a second proof of identity, usually a code sent to your phone. Even if a hacker learns your password, he or she cannot enter your account without the code."
+    ],
+    "questions": [
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "What is the main cause of stolen accounts?",
+        "explanation": "Đoạn 1: \"the reason is a weak password\".",
+        "options": [
+          {
+            "content": "Slow internet",
+            "correct": false
+          },
+          {
+            "content": "Weak passwords",
+            "correct": true
+          },
+          {
+            "content": "Old computers",
+            "correct": false
+          },
+          {
+            "content": "Public Wi-Fi",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Which passwords are still the most common?",
+        "explanation": "Đoạn 1: \"123456\" và \"password\".",
+        "options": [
+          {
+            "content": "\"purple-lamp\" and \"coffee\"",
+            "correct": false
+          },
+          {
+            "content": "Birthdays and names",
+            "correct": false
+          },
+          {
+            "content": "\"123456\" and \"password\"",
+            "correct": true
+          },
+          {
+            "content": "Twelve-character phrases",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "READING",
+        "content": "A strong password has at least ____ characters.",
+        "explanation": "Đoạn 2: \"at least twelve characters\".",
+        "options": [],
+        "acceptedAnswers": [
+          "12",
+          "twelve"
+        ]
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "What is an example of a good method?",
+        "explanation": "Đoạn 2: ghép bốn từ không liên quan.",
+        "options": [
+          {
+            "content": "Using your birthday",
+            "correct": false
+          },
+          {
+            "content": "Using one short word",
+            "correct": false
+          },
+          {
+            "content": "Writing it on your phone",
+            "correct": false
+          },
+          {
+            "content": "Combining four unrelated words",
+            "correct": true
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "What is the risk of using the same password everywhere?",
+        "explanation": "Đoạn 3: mật khẩu bị lộ ở trang nhỏ sẽ bị thử trên email và ngân hàng.",
+        "options": [
+          {
+            "content": "A hacker can use a stolen password on other accounts",
+            "correct": true
+          },
+          {
+            "content": "The password will expire sooner",
+            "correct": false
+          },
+          {
+            "content": "The websites will slow down",
+            "correct": false
+          },
+          {
+            "content": "You will forget your email",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "What does a password manager do?",
+        "explanation": "Đoạn 3: lưu an toàn và tự điền.",
+        "options": [
+          {
+            "content": "Creates new email accounts",
+            "correct": false
+          },
+          {
+            "content": "Stores passwords safely and fills them in",
+            "correct": true
+          },
+          {
+            "content": "Blocks all hackers",
+            "correct": false
+          },
+          {
+            "content": "Deletes old accounts",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "What is the \"second proof\" in two-factor authentication?",
+        "explanation": "Đoạn 4: thường là mã gửi đến điện thoại.",
+        "options": [
+          {
+            "content": "A second password",
+            "correct": false
+          },
+          {
+            "content": "A photo of your face",
+            "correct": false
+          },
+          {
+            "content": "A code sent to your phone",
+            "correct": true
+          },
+          {
+            "content": "A letter from the bank",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      }
+    ]
+  },
+  {
+    "status": "ACTIVE",
+    "topic": "family",
+    "level": "BEGINNER",
+    "timeLimitMinutes": 8,
+    "titleVi": "Bữa cơm gia đình",
+    "titleEn": "The Family Dinner",
+    "descriptionVi": "Nét văn hoá quanh bữa cơm của nhiều gia đình Việt.",
+    "descriptionEn": "Customs around the family dinner in many Vietnamese homes.",
+    "paragraphs": [
+      "In many Vietnamese families, dinner is the most important meal of the day. Everyone comes home early, and the whole family sits around a table to eat together. There are usually rice, a soup, a vegetable dish and one or two dishes with meat or fish. The dishes are put in the middle of the table, and everyone takes food with their own chopsticks and shares it with the others. The mother often cooks, but sometimes the father or the older children also help in the kitchen.",
+      "Before eating, the youngest children invite the older people to start the meal. This is a way to show respect. The older people often put the best pieces of food into the children's bowls.",
+      "During dinner, family members talk about their day. Children tell stories about school, and parents share news from work. Phones are usually put away. After the meal, the children help to clean the table and wash the dishes. Many people say that these small daily moments make a family close."
+    ],
+    "questions": [
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Which meal is the most important?",
+        "explanation": "Đoạn 1: \"dinner is the most important meal\".",
+        "options": [
+          {
+            "content": "Breakfast",
+            "correct": false
+          },
+          {
+            "content": "Lunch",
+            "correct": false
+          },
+          {
+            "content": "Afternoon snack",
+            "correct": false
+          },
+          {
+            "content": "Dinner",
+            "correct": true
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "What is usually on the table?",
+        "explanation": "Đoạn 1 liệt kê các món quen thuộc.",
+        "options": [
+          {
+            "content": "Rice, soup, vegetables and meat or fish",
+            "correct": true
+          },
+          {
+            "content": "Only noodles",
+            "correct": false
+          },
+          {
+            "content": "Bread and cheese",
+            "correct": false
+          },
+          {
+            "content": "Cakes and fruit",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "What do the children do before eating?",
+        "explanation": "Đoạn 2: mời người lớn ăn trước.",
+        "options": [
+          {
+            "content": "Wash the dishes",
+            "correct": false
+          },
+          {
+            "content": "Invite the older people to start",
+            "correct": true
+          },
+          {
+            "content": "Serve dessert",
+            "correct": false
+          },
+          {
+            "content": "Turn on the television",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "What do older people often do?",
+        "explanation": "Đoạn 2: gắp phần ngon nhất cho các con.",
+        "options": [
+          {
+            "content": "Eat alone",
+            "correct": false
+          },
+          {
+            "content": "Cook after dinner",
+            "correct": false
+          },
+          {
+            "content": "Put the best food into the children's bowls",
+            "correct": true
+          },
+          {
+            "content": "Ask for money",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "What usually happens to phones during dinner?",
+        "explanation": "Đoạn 3: \"Phones are usually put away\".",
+        "options": [
+          {
+            "content": "They are used to call friends",
+            "correct": false
+          },
+          {
+            "content": "They are used to take videos",
+            "correct": false
+          },
+          {
+            "content": "They are charged",
+            "correct": false
+          },
+          {
+            "content": "They are put away",
+            "correct": true
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "READING",
+        "content": "Children tell stories about ____ at dinner.",
+        "explanation": "Đoạn 3: \"Children tell stories about school\".",
+        "options": [],
+        "acceptedAnswers": [
+          "school"
+        ]
+      }
+    ]
+  },
+  {
+    "status": "ACTIVE",
+    "topic": "exam-prep",
+    "level": "INTERMEDIATE",
+    "timeLimitMinutes": 20,
+    "titleVi": "Lịch sử xe đạp công cộng (dạng IELTS)",
+    "titleEn": "The Story of Bicycle Sharing (IELTS style)",
+    "descriptionVi": "Bài đọc kèm câu hỏi True/False/Not Given.",
+    "descriptionEn": "A passage with True/False/Not Given questions.",
+    "paragraphs": [
+      "Bicycle-sharing schemes first appeared in Amsterdam in 1965, when a group of activists painted fifty bicycles white and left them unlocked in the streets for anyone to use. The experiment failed within days because most of the bicycles were stolen or thrown into the canals. Nevertheless, the idea did not disappear.",
+      "The first modern system opened in Copenhagen in 1995. Users paid a small coin deposit to unlock a bike, similar to a shopping trolley. Later systems used smart cards and mobile phones, which allowed the operators to track every bicycle and charge users according to the time they rode.",
+      "Today, more than 1,600 cities around the world offer some kind of bike-sharing service, and the largest schemes, in China, have hundreds of thousands of bicycles. Supporters argue that the schemes reduce traffic jams and air pollution and encourage people to exercise. Critics point out that in some cities, thousands of unused bikes have been abandoned on pavements, causing new problems.",
+      "A study in London found that most users were not former car drivers but people who had previously travelled by bus or on foot. This suggests that bike-sharing does not always reduce car use as much as governments hope. However, many cities are still expanding their schemes because they are cheap to build compared with new metro lines."
+    ],
+    "questions": [
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "The 1965 experiment in Amsterdam was a success.",
+        "explanation": "Đoạn 1: thí nghiệm thất bại chỉ sau vài ngày.",
+        "options": [
+          {
+            "content": "True",
+            "correct": false
+          },
+          {
+            "content": "False",
+            "correct": true
+          },
+          {
+            "content": "Not Given",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "The first modern system in Copenhagen used mobile phones.",
+        "explanation": "Đoạn 2: Copenhagen dùng tiền xu đặt cọc; điện thoại chỉ có ở hệ thống sau này.",
+        "options": [
+          {
+            "content": "True",
+            "correct": false
+          },
+          {
+            "content": "False",
+            "correct": true
+          },
+          {
+            "content": "Not Given",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Smart cards and phones allowed operators to track the bicycles.",
+        "explanation": "Đoạn 2: \"allowed the operators to track every bicycle\".",
+        "options": [
+          {
+            "content": "True",
+            "correct": true
+          },
+          {
+            "content": "False",
+            "correct": false
+          },
+          {
+            "content": "Not Given",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Bike-sharing is safer than riding a private bicycle.",
+        "explanation": "Bài không so sánh mức độ an toàn.",
+        "options": [
+          {
+            "content": "True",
+            "correct": false
+          },
+          {
+            "content": "False",
+            "correct": false
+          },
+          {
+            "content": "Not Given",
+            "correct": true
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "The London study found that most users used to drive cars.",
+        "explanation": "Đoạn 4: người dùng chủ yếu từng đi bus hoặc đi bộ.",
+        "options": [
+          {
+            "content": "True",
+            "correct": false
+          },
+          {
+            "content": "False",
+            "correct": true
+          },
+          {
+            "content": "Not Given",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Bike-sharing schemes are cheaper to build than new metro lines.",
+        "explanation": "Đoạn 4: \"cheap to build compared with new metro lines\".",
+        "options": [
+          {
+            "content": "True",
+            "correct": true
+          },
+          {
+            "content": "False",
+            "correct": false
+          },
+          {
+            "content": "Not Given",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "What problem do critics mention?",
+        "explanation": "Đoạn 3: xe không dùng bị bỏ lại trên vỉa hè.",
+        "options": [
+          {
+            "content": "Abandoned bikes on pavements",
+            "correct": true
+          },
+          {
+            "content": "High prices for users",
+            "correct": false
+          },
+          {
+            "content": "Too few bicycles",
+            "correct": false
+          },
+          {
+            "content": "Damage to the canals",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "READING",
+        "content": "The first modern bike-sharing system opened in ____ .",
+        "explanation": "Đoạn 2: hệ thống hiện đại đầu tiên ở Copenhagen (1995).",
+        "options": [],
+        "acceptedAnswers": [
+          "copenhagen"
+        ]
+      }
+    ]
+  },
+  {
+    "status": "ACTIVE",
+    "topic": "academic",
+    "level": "ADVANCED",
+    "timeLimitMinutes": 20,
+    "titleVi": "Nghịch lý của sự lựa chọn",
+    "titleEn": "The Paradox of Choice",
+    "descriptionVi": "Vì sao quá nhiều lựa chọn có thể khiến người tiêu dùng do dự và kém hài lòng.",
+    "descriptionEn": "Why too many options can leave consumers hesitant and less satisfied.",
+    "paragraphs": [
+      "In 2000, two psychologists, Sheena Iyengar and Mark Lepper, set up a tasting table in an upmarket supermarket in California. On some days the table displayed twenty-four varieties of jam; on others, only six. The larger display attracted more attention, with sixty percent of passers-by stopping to taste. Yet only three percent of those who saw the large display made a purchase, compared with thirty percent of those who saw the small one.",
+      "This finding, which became known as the 'paradox of choice', challenged the assumption that more options always benefit consumers. Barry Schwartz, who popularised the concept, argued that an abundance of alternatives can lead to what he termed decision paralysis. When faced with too many possibilities, people find it hard to compare them, fear making the wrong selection, and sometimes abandon the decision altogether.",
+      "Even when a choice is made, satisfaction may suffer. Schwartz distinguished between 'maximisers', who search exhaustively for the best possible option, and 'satisficers', who accept an option that is good enough. Maximisers frequently achieve objectively better outcomes, such as higher salaries, but they report lower happiness, partly because they are haunted by the thought that a superior alternative was overlooked.",
+      "Subsequent research has qualified these claims. A meta-analysis of nearly fifty experiments concluded that the negative effect of large assortments is not universal; it appears mainly when the options are difficult to compare, when the decision-maker lacks clear preferences, or when no single option stands out. Where people already know what they want, additional choices can be beneficial rather than burdensome.",
+      "For designers of websites and services, the practical lesson is not simply to offer fewer products, but to help users navigate. Filters, sensible default options and clear recommendations can preserve the benefits of variety while reducing the mental effort required to choose."
+    ],
+    "questions": [
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "What did the jam experiment show?",
+        "explanation": "Đoạn 1: 60% dừng lại nhưng chỉ 3% mua so với 30% ở bàn nhỏ.",
+        "options": [
+          {
+            "content": "A smaller display attracted more attention",
+            "correct": false
+          },
+          {
+            "content": "A larger display attracted more attention but led to fewer purchases",
+            "correct": true
+          },
+          {
+            "content": "Both displays sold equally",
+            "correct": false
+          },
+          {
+            "content": "Shoppers preferred cheaper jam",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "What does \"decision paralysis\" refer to?",
+        "explanation": "Đoạn 2: quá nhiều khả năng khiến người ta khó so sánh và bỏ quyết định.",
+        "options": [
+          {
+            "content": "Making decisions too quickly",
+            "correct": false
+          },
+          {
+            "content": "Regretting a purchase afterwards",
+            "correct": false
+          },
+          {
+            "content": "Being unable to decide when faced with too many options",
+            "correct": true
+          },
+          {
+            "content": "Refusing to try new products",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "How do maximisers differ from satisficers?",
+        "explanation": "Đoạn 3: định nghĩa hai nhóm.",
+        "options": [
+          {
+            "content": "Maximisers choose faster than satisficers",
+            "correct": false
+          },
+          {
+            "content": "Satisficers earn higher salaries",
+            "correct": false
+          },
+          {
+            "content": "Satisficers never make decisions",
+            "correct": false
+          },
+          {
+            "content": "Maximisers search for the best option; satisficers accept a good enough one",
+            "correct": true
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "What is said about maximisers' happiness?",
+        "explanation": "Đoạn 3: kết quả tốt hơn nhưng hạnh phúc thấp hơn.",
+        "options": [
+          {
+            "content": "They are less happy despite better outcomes",
+            "correct": true
+          },
+          {
+            "content": "They are happier because they earn more",
+            "correct": false
+          },
+          {
+            "content": "Their happiness is the same as satisficers'",
+            "correct": false
+          },
+          {
+            "content": "The passage does not mention it",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "What did the meta-analysis conclude?",
+        "explanation": "Đoạn 4: hiệu ứng tiêu cực không phổ biến.",
+        "options": [
+          {
+            "content": "Choice always harms consumers",
+            "correct": false
+          },
+          {
+            "content": "The negative effect of many options is not universal",
+            "correct": true
+          },
+          {
+            "content": "Choice never affects consumers",
+            "correct": false
+          },
+          {
+            "content": "Only maximisers are affected",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "In paragraph 2, \"abundance\" is closest in meaning to",
+        "explanation": "\"abundance of alternatives\" = số lượng lớn lựa chọn.",
+        "options": [
+          {
+            "content": "a shortage",
+            "correct": false
+          },
+          {
+            "content": "a variety of prices",
+            "correct": false
+          },
+          {
+            "content": "a large quantity",
+            "correct": true
+          },
+          {
+            "content": "a fast delivery",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "What lesson is given for designers of websites?",
+        "explanation": "Đoạn 5: bộ lọc, mặc định hợp lý và gợi ý rõ ràng.",
+        "options": [
+          {
+            "content": "Always offer fewer products",
+            "correct": false
+          },
+          {
+            "content": "Remove all filters",
+            "correct": false
+          },
+          {
+            "content": "Offer only the cheapest product",
+            "correct": false
+          },
+          {
+            "content": "Help users navigate the options",
+            "correct": true
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "READING",
+        "content": "Satisficers accept an option that is good ____ .",
+        "explanation": "Đoạn 3: \"good enough\".",
+        "options": [],
+        "acceptedAnswers": [
+          "enough"
+        ]
+      }
+    ]
+  },
+  {
+    "status": "ACTIVE",
+    "topic": "academic",
+    "level": "ADVANCED",
+    "timeLimitMinutes": 20,
+    "titleVi": "Đô thị hoá và đa dạng sinh học",
+    "titleEn": "Urbanisation and Biodiversity",
+    "descriptionVi": "Thành phố có thực sự gây hại cho thiên nhiên hay có thể là môi trường sống mới?",
+    "descriptionEn": "Are cities really harmful to nature, or can they be new habitats?",
+    "paragraphs": [
+      "More than half of the world's population now lives in cities, and the United Nations projects that this share will reach nearly seventy percent by 2050. Since cities cover only about three percent of the Earth's land surface, urbanisation is often presented as an environmental success story: concentrated populations, it is argued, leave more space for wilderness.",
+      "However, the ecological footprint of a city extends far beyond its boundaries. Urban residents depend on distant farms for food, on remote reservoirs for water and on power stations, sometimes hundreds of kilometres away, for energy. Moreover, the expansion of cities frequently occurs on fertile land, forcing agriculture onto marginal areas, including forests and wetlands.",
+      "Within cities themselves, biodiversity has long been assumed to be poor. Recent studies have complicated this picture. Some European capitals contain more plant species than the surrounding countryside, partly because gardeners import exotic varieties, and partly because a patchwork of parks, cemeteries and railway embankments offers a wide range of habitats. Peregrine falcons, which nest on cliffs in nature, have adapted to skyscrapers, where pigeons provide an abundant food supply.",
+      "Nevertheless, this diversity is unevenly distributed and often dominated by generalist species that thrive alongside humans, such as foxes, rats and crows. Specialist species with narrow requirements decline as green space is fragmented. Ecologists therefore emphasise connectivity: green corridors that link isolated parks allow animals to move, feed and breed.",
+      "The challenge for planners, then, is not to choose between dense cities and nature, but to design density that accommodates nature. Measures such as green roofs, wildlife-friendly street lighting and protected river banks have already produced measurable gains in cities as different as Singapore and Berlin."
+    ],
+    "questions": [
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "What share of the world's population is expected to live in cities by 2050?",
+        "explanation": "Đoạn 1: \"nearly seventy percent by 2050\".",
+        "options": [
+          {
+            "content": "Nearly seventy percent",
+            "correct": true
+          },
+          {
+            "content": "Just over half",
+            "correct": false
+          },
+          {
+            "content": "About three percent",
+            "correct": false
+          },
+          {
+            "content": "Nearly ninety percent",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "READING",
+        "content": "Cities cover only about ____ percent of the Earth's land surface.",
+        "explanation": "Đoạn 1: \"about three percent\".",
+        "options": [],
+        "acceptedAnswers": [
+          "3",
+          "three"
+        ]
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Why does a city's ecological footprint extend beyond its boundaries?",
+        "explanation": "Đoạn 2: thành phố phụ thuộc vào nông trại, hồ chứa và nhà máy điện ở xa.",
+        "options": [
+          {
+            "content": "Cities pollute nearby oceans",
+            "correct": false
+          },
+          {
+            "content": "Residents depend on distant sources of food, water and energy",
+            "correct": true
+          },
+          {
+            "content": "Cities are built on mountains",
+            "correct": false
+          },
+          {
+            "content": "Residents travel abroad often",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Why may some European capitals have more plant species than the countryside?",
+        "explanation": "Đoạn 3: giống ngoại nhập và nhiều loại môi trường sống.",
+        "options": [
+          {
+            "content": "The soil is richer",
+            "correct": false
+          },
+          {
+            "content": "Farming is banned there",
+            "correct": false
+          },
+          {
+            "content": "Gardeners import exotic varieties and the city offers varied habitats",
+            "correct": true
+          },
+          {
+            "content": "There is less rainfall",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "How have peregrine falcons adapted to cities?",
+        "explanation": "Đoạn 3: làm tổ trên nhà chọc trời, chim bồ câu là nguồn thức ăn.",
+        "options": [
+          {
+            "content": "They migrate to parks",
+            "correct": false
+          },
+          {
+            "content": "They feed on rats only",
+            "correct": false
+          },
+          {
+            "content": "They avoid tall buildings",
+            "correct": false
+          },
+          {
+            "content": "They nest on skyscrapers and eat pigeons",
+            "correct": true
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Which species tend to dominate urban areas?",
+        "explanation": "Đoạn 4: loài \"generalist\" như cáo, chuột, quạ.",
+        "options": [
+          {
+            "content": "Generalist species",
+            "correct": true
+          },
+          {
+            "content": "Specialist species",
+            "correct": false
+          },
+          {
+            "content": "Endangered species",
+            "correct": false
+          },
+          {
+            "content": "Migratory species",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "What do ecologists recommend?",
+        "explanation": "Đoạn 4: nhấn mạnh tính kết nối.",
+        "options": [
+          {
+            "content": "Removing all parks",
+            "correct": false
+          },
+          {
+            "content": "Green corridors linking isolated parks",
+            "correct": true
+          },
+          {
+            "content": "Moving animals to the countryside",
+            "correct": false
+          },
+          {
+            "content": "Building taller skyscrapers",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "What is the author's conclusion?",
+        "explanation": "Đoạn 5: thiết kế mật độ đô thị dung nạp thiên nhiên.",
+        "options": [
+          {
+            "content": "Cities should stop growing",
+            "correct": false
+          },
+          {
+            "content": "Nature cannot survive in cities",
+            "correct": false
+          },
+          {
+            "content": "Cities should be designed to accommodate nature",
+            "correct": true
+          },
+          {
+            "content": "Urbanisation always saves wilderness",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      }
+    ]
+  },
+  {
+    "status": "INACTIVE",
+    "topic": "workplace",
+    "level": "ADVANCED",
+    "timeLimitMinutes": 15,
+    "titleVi": "Chuẩn bị cho buổi phỏng vấn xin việc",
+    "titleEn": "Preparing for a Job Interview",
+    "descriptionVi": "Nghiên cứu công ty, phương pháp STAR và cách đặt câu hỏi ngược lại.",
+    "descriptionEn": "Researching the company, the STAR method and asking your own questions.",
+    "paragraphs": [
+      "A job interview is not simply a test of your qualifications; it is also an opportunity for the employer to judge whether you will fit into the team. Candidates who prepare thoroughly tend to appear more confident, and confidence is often interpreted as competence.",
+      "Preparation begins with research. Read the company's website, recent news and the job description carefully. Try to identify the two or three skills that the employer values most, and prepare a specific example for each. Recruiters generally prefer concrete stories to general claims: instead of saying 'I am a good leader', describe a project where you organised a team and achieved a measurable result.",
+      "Many interviewers use behavioural questions such as 'Tell me about a time you disagreed with a colleague'. A useful structure for answering is known as STAR: describe the Situation, explain the Task you were responsible for, outline the Action you took and, finally, state the Result. This prevents rambling answers and demonstrates logical thinking.",
+      "Candidates should also prepare questions of their own. Asking about training opportunities or the team's biggest challenge shows genuine interest, whereas asking only about salary and holidays may give the impression that you are more interested in benefits than in the work. Finally, send a short thank-you email within twenty-four hours. It is a small gesture, but it keeps your name in the interviewer's mind."
+    ],
+    "questions": [
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Besides qualifications, what does the employer judge?",
+        "explanation": "Đoạn 1: đánh giá mức độ phù hợp với nhóm.",
+        "options": [
+          {
+            "content": "How fast you type",
+            "correct": false
+          },
+          {
+            "content": "Where you live",
+            "correct": false
+          },
+          {
+            "content": "How old you are",
+            "correct": false
+          },
+          {
+            "content": "Whether you fit into the team",
+            "correct": true
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "What do recruiters generally prefer?",
+        "explanation": "Đoạn 2: thích câu chuyện cụ thể hơn khẳng định chung chung.",
+        "options": [
+          {
+            "content": "Concrete stories",
+            "correct": true
+          },
+          {
+            "content": "General claims",
+            "correct": false
+          },
+          {
+            "content": "Long CVs",
+            "correct": false
+          },
+          {
+            "content": "Written promises",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "What does the \"R\" in STAR stand for?",
+        "explanation": "Đoạn 3: Situation, Task, Action, Result.",
+        "options": [
+          {
+            "content": "Reason",
+            "correct": false
+          },
+          {
+            "content": "Result",
+            "correct": true
+          },
+          {
+            "content": "Response",
+            "correct": false
+          },
+          {
+            "content": "Requirement",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "What does the STAR method help candidates avoid?",
+        "explanation": "Đoạn 3: \"prevents rambling answers\".",
+        "options": [
+          {
+            "content": "Difficult questions",
+            "correct": false
+          },
+          {
+            "content": "Salary discussions",
+            "correct": false
+          },
+          {
+            "content": "Rambling answers",
+            "correct": true
+          },
+          {
+            "content": "Research",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "What impression may questions only about salary and holidays give?",
+        "explanation": "Đoạn 4: có vẻ quan tâm phúc lợi hơn công việc.",
+        "options": [
+          {
+            "content": "The candidate is very organised",
+            "correct": false
+          },
+          {
+            "content": "The candidate is nervous",
+            "correct": false
+          },
+          {
+            "content": "The candidate has many offers",
+            "correct": false
+          },
+          {
+            "content": "The candidate cares more about benefits than the work",
+            "correct": true
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "READING",
+        "content": "A thank-you email should be sent within ____ hours.",
+        "explanation": "Đoạn 4: \"within twenty-four hours\".",
+        "options": [],
+        "acceptedAnswers": [
+          "24",
+          "twenty-four",
+          "twenty four"
+        ]
+      }
+    ]
+  }
+]

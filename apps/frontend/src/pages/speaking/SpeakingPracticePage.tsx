@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { App } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 
+import { PronunciationFeedbackCard } from '../../components/practice/PronunciationFeedbackCard';
 import { Button } from '../../components/ui/Button';
 import PageHeader from '../../components/ui/PageHeader';
 import { Card } from '../../components/ui/Card';
@@ -11,10 +12,12 @@ import { ErrorState, Skeleton } from '../../components/ui/StateBlocks';
 import { useApi } from '../../hooks/useApi';
 import { useApiError } from '../../hooks/useApiError';
 import { useRecorder, type Recording } from '../../hooks/useRecorder';
+import { useLeaveGuard } from '../../hooks/useLeaveGuard';
 import { useSpeech } from '../../hooks/useSpeech';
 import { formatClock } from '../../hooks/useCountdown';
 import { speakingService } from '../../services/contentService';
 import { useLanguage } from '../../hooks/useLanguage';
+import type { SpeakingPromptAssessment } from '../../types/speaking';
 
 /** Thanh sóng âm vẽ theo mức âm lượng đang thu được. */
 const WaveMeter: React.FC<{ level: number; isActive: boolean }> = ({
@@ -40,10 +43,15 @@ const WaveMeter: React.FC<{ level: number; isActive: boolean }> = ({
   </div>
 );
 
+interface AssessingState {
+  promptId: string;
+  status: 'loading' | 'error';
+}
+
 const SpeakingPracticePage: React.FC = () => {
   const { t } = useTranslation();
   const { L, language } = useLanguage();
-  const { describe, fieldErrors } = useApiError();
+  const { describe } = useApiError();
   const { id = '' } = useParams();
   const navigate = useNavigate();
   const { message } = App.useApp();
@@ -53,24 +61,61 @@ const SpeakingPracticePage: React.FC = () => {
     [id],
   );
 
+  // Mở (hoặc dùng lại) lượt IN_PROGRESS; lượt dở trả sẵn các câu đã chấm.
+  const {
+    data: attempt,
+    isLoading: isStarting,
+    error: startError,
+    reload: reloadAttempt,
+  } = useApi(() => speakingService.startAttempt(id), [id]);
+
   const recorder = useRecorder();
   const { speak, isSupported: canSpeak } = useSpeech();
 
   const [index, setIndex] = useState(0);
+  /** Bản thu của lần mở trang này, giữ lại để nghe lại và chấm lại khi AI lỗi. */
   const [recordings, setRecordings] = useState<Record<string, Recording>>({});
+  const [assessed, setAssessed] = useState<Record<string, SpeakingPromptAssessment>>({});
+  const [assessing, setAssessing] = useState<AssessingState | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const results = useMemo(() => {
+    const fromServer = Object.fromEntries(
+      (attempt?.results ?? []).map((r) => [r.promptId, r]),
+    );
+    return { ...fromServer, ...assessed };
+  }, [attempt, assessed]);
 
   const prompt = lesson?.prompts[index];
   const recorded = prompt ? recordings[prompt.id] : undefined;
-  const recordedCount = Object.keys(recordings).length;
+  const result = prompt ? results[prompt.id] : undefined;
+  const assessedCount = Object.keys(results).length;
+  const allAssessed = lesson ? lesson.prompts.every((p) => results[p.id]) : false;
+  const isAssessing = assessing?.status === 'loading';
+  const release = useLeaveGuard(assessedCount > 0 && !isSubmitting);
+
+  const assessRecording = async (promptId: string, blob: Blob) => {
+    if (!attempt) return;
+
+    setAssessing({ promptId, status: 'loading' });
+    try {
+      const assessment = await speakingService.assess(attempt.attemptId, promptId, blob);
+      setAssessed((prev) => ({ ...prev, [promptId]: assessment }));
+      setAssessing(null);
+    } catch (assessError) {
+      setAssessing({ promptId, status: 'error' });
+      message.error(describe(assessError, 'speaking.assessFailed'));
+    }
+  };
 
   const toggleRecording = async () => {
     if (!prompt) return;
 
     if (recorder.status === 'RECORDING') {
-      const result = await recorder.stop();
-      if (result) {
-        setRecordings((prev) => ({ ...prev, [prompt.id]: result }));
+      const recording = await recorder.stop();
+      if (recording) {
+        setRecordings((prev) => ({ ...prev, [prompt.id]: recording }));
+        void assessRecording(prompt.id, recording.blob);
       } else {
         message.warning(t('speaking.noAudio'));
       }
@@ -84,7 +129,7 @@ const SpeakingPracticePage: React.FC = () => {
   };
 
   const submit = async () => {
-    if (!lesson || isSubmitting) return;
+    if (!attempt || !allAssessed || isSubmitting) return;
 
     setIsSubmitting(true);
     try {
@@ -93,38 +138,39 @@ const SpeakingPracticePage: React.FC = () => {
         0,
       );
 
-      // Giữ đúng thứ tự câu của bài, chỉ gửi những câu đã thu.
-      const result = await speakingService.submit(
-        lesson.id,
-        lesson.prompts
-          .filter((p) => recordings[p.id])
-          .map((p) => ({ promptId: p.id, blob: recordings[p.id].blob })),
+      const submitted = await speakingService.submit(
+        attempt.attemptId,
         Math.round(totalDuration),
       );
 
-      navigate(`/speaking/result/${result.attemptId}`, {
-        state: { result },
+      release();
+      navigate(`/speaking/result/${submitted.attemptId}`, {
+        state: { result: submitted },
         replace: true,
       });
     } catch (submitError) {
-      message.error(
-        fieldErrors(submitError)?.audio ?? describe(submitError, 'errors.submitFailed'),
-      );
+      message.error(describe(submitError, 'errors.submitFailed'));
       setIsSubmitting(false);
     }
   };
 
-  if (error) {
+  if (error || startError) {
     return (
       <div className="mx-auto w-full max-w-3xl px-4 py-6 sm:px-6">
         <Card flush>
-          <ErrorState message={describe(error)} onRetry={reload} />
+          <ErrorState
+            message={describe(error ?? startError)}
+            onRetry={() => {
+              if (error) reload();
+              if (startError) reloadAttempt();
+            }}
+          />
         </Card>
       </div>
     );
   }
 
-  if (isLoading || !lesson || !prompt) {
+  if (isLoading || isStarting || !lesson || !prompt || !attempt) {
     return (
       <div className="mx-auto w-full max-w-3xl px-4 py-6 sm:px-6">
         <Skeleton className="h-[480px] w-full" />
@@ -147,7 +193,7 @@ const SpeakingPracticePage: React.FC = () => {
         <Chip tone="neutral">{L(lesson.topicName)}</Chip>
         <Chip tone="neutral" icon="record_voice_over">
           {t('speaking.recordedCount', {
-            done: recordedCount,
+            done: assessedCount,
             total: lesson.prompts.length,
           })}
         </Chip>
@@ -216,7 +262,11 @@ const SpeakingPracticePage: React.FC = () => {
           <button
             type="button"
             onClick={toggleRecording}
-            disabled={recorder.status === 'UNSUPPORTED' || recorder.status === 'REQUESTING'}
+            disabled={
+              recorder.status === 'UNSUPPORTED' ||
+              recorder.status === 'REQUESTING' ||
+              isAssessing
+            }
             className={`inline-flex min-h-[52px] items-center gap-2.5 rounded-pill px-8 text-[15px] font-bold transition-colors duration-200 disabled:opacity-50 ${
               isRecording
                 ? 'bg-danger text-white'
@@ -230,7 +280,7 @@ const SpeakingPracticePage: React.FC = () => {
               ? t('speaking.stopRecordingWithTime', {
                   time: formatClock(recorder.elapsed),
                 })
-              : recorded
+              : recorded || result
                 ? t('speaking.reRecord')
                 : t('speaking.startRecording')}
           </button>
@@ -240,7 +290,7 @@ const SpeakingPracticePage: React.FC = () => {
               <p className="mb-2 text-center text-caption text-ink-muted">
                 {t('speaking.playback')}
               </p>
-              {/* Bản ghi chỉ nằm trong trình duyệt cho tới khi bấm nộp bài. */}
+              {/* Bản ghi chỉ nằm trong trình duyệt để nghe lại; backend không lưu âm thanh. */}
               <audio
                 src={recorded.url}
                 controls
@@ -252,13 +302,50 @@ const SpeakingPracticePage: React.FC = () => {
         </div>
       </Card>
 
+      {/* Đánh giá phát âm của câu hiện tại */}
+      {assessing?.promptId === prompt.id && assessing.status === 'loading' && (
+        <div
+          role="status"
+          className="mb-5 flex items-center gap-2 rounded-lg border border-hairline bg-surface p-4 text-[14px] text-ink-muted"
+        >
+          <span
+            aria-hidden="true"
+            className="material-symbols-outlined text-[20px] motion-safe:animate-spin"
+          >
+            progress_activity
+          </span>
+          {t('speaking.assessing')}
+        </div>
+      )}
+
+      {assessing?.promptId === prompt.id && assessing.status === 'error' && recorded && (
+        <div
+          role="alert"
+          className="mb-5 flex flex-wrap items-center justify-between gap-3 rounded-lg border border-hairline bg-danger-bg p-4 text-[13.5px] text-danger-fg"
+        >
+          {t('speaking.assessFailed')}
+          <Button
+            variant="secondary"
+            size="sm"
+            icon="refresh"
+            onClick={() => void assessRecording(prompt.id, recorded.blob)}
+          >
+            {t('speaking.retryAssess')}
+          </Button>
+        </div>
+      )}
+
+      {result && assessing?.promptId !== prompt.id && (
+        <PronunciationFeedbackCard promptText={prompt.text} assessment={result} />
+      )}
+
       {/* Điều hướng giữa các câu */}
       <div className="flex flex-wrap items-center justify-between gap-3">
         <Button
           variant="subtle"
           icon="arrow_back"
           onClick={() => setIndex((i) => Math.max(0, i - 1))}
-          disabled={index === 0 || isRecording}
+          disabled={index === 0 || isRecording || isAssessing}
         >
           {t('speaking.prevSentence')}
         </Button>
@@ -270,7 +357,7 @@ const SpeakingPracticePage: React.FC = () => {
             iconPosition="end"
             loading={isSubmitting}
             onClick={submit}
-            disabled={recordedCount === 0 || isRecording}
+            disabled={!allAssessed || isRecording || isAssessing}
           >
             {isSubmitting ? t('speaking.sending') : t('speaking.submitToAi')}
           </Button>
@@ -279,12 +366,18 @@ const SpeakingPracticePage: React.FC = () => {
             icon="arrow_forward"
             iconPosition="end"
             onClick={() => setIndex((i) => Math.min(lesson.prompts.length - 1, i + 1))}
-            disabled={isRecording}
+            disabled={isRecording || isAssessing}
           >
             {t('speaking.nextSentence')}
           </Button>
         )}
       </div>
+
+      {isLast && !allAssessed && (
+        <p className="mt-3 text-right text-caption text-ink-muted">
+          {t('speaking.submitNeedAll')}
+        </p>
+      )}
     </div>
   );
 };

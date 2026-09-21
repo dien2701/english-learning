@@ -1,6 +1,8 @@
 package vn.enlearning.backend.chat.service;
 
 import java.time.Clock;
+import java.time.Instant;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +21,7 @@ import vn.enlearning.backend.auth.repository.UserRepository;
 import vn.enlearning.backend.chat.dto.ChatConversationDetailResponse;
 import vn.enlearning.backend.chat.dto.ChatConversationResponse;
 import vn.enlearning.backend.chat.dto.ChatMessageResponse;
+import vn.enlearning.backend.chat.dto.ChatQuotaResponse;
 import vn.enlearning.backend.chat.dto.SendMessageResponse;
 import vn.enlearning.backend.chat.repository.ChatConversationRepository;
 import vn.enlearning.backend.chat.repository.ChatMessageRepository;
@@ -33,6 +36,9 @@ import vn.enlearning.backend.entity.enums.ChatRole;
  * Hội thoại và tin nhắn của người học; hội thoại của người khác hoặc đã xoá là 404. Gửi tin nhắn luôn lưu
  * tin của người học TRƯỚC (commit), gọi AI sau (không giữ giao dịch), rồi lưu câu trả lời. AI lỗi thì tin của
  * người học vẫn còn và API trả 503 để giao diện cho thử lại.
+ *
+ * Hạn mức: mỗi người tối đa {@code app.chat.daily-limit} câu trả lời thành công của trợ lý mỗi ngày (theo giờ
+ * Asia/Ho_Chi_Minh). Kiểm trước khi lưu tin và gọi AI; lượt AI lỗi không bị tính vì chỉ đếm câu trả lời đã lưu.
  */
 @Slf4j
 @Service
@@ -47,12 +53,14 @@ public class ChatService {
 	static final int CONTEXT_MESSAGES = 10;
 	static final int CONTEXT_CHARS_PER_MESSAGE = 1000;
 	static final int CONTEXT_CHARS_TOTAL = 6000;
+	static final ZoneId QUOTA_ZONE = ZoneId.of("Asia/Ho_Chi_Minh");
 
 	private final ChatConversationRepository conversations;
 	private final ChatMessageRepository messages;
 	private final UserRepository users;
 	private final ChatAssistant assistant;
 	private final ChatLinkResolver linkResolver;
+	private final ChatProperties properties;
 	private final TransactionTemplate tx;
 	private final Clock clock;
 
@@ -105,9 +113,26 @@ public class ChatService {
 		conversations.delete(find(userId, id));
 	}
 
+	@Transactional(readOnly = true)
+	public ChatQuotaResponse quota(UUID userId) {
+		return quotaOf(userId, 0);
+	}
+
+	/** {@code extraUsed}: số lượt vừa dùng mà chưa có trong DB tại thời điểm đếm. */
+	private ChatQuotaResponse quotaOf(UUID userId, int extraUsed) {
+		Instant dayStart = clock.instant().atZone(QUOTA_ZONE).toLocalDate().atStartOfDay(QUOTA_ZONE).toInstant();
+		Instant resetAt = dayStart.atZone(QUOTA_ZONE).toLocalDate().plusDays(1).atStartOfDay(QUOTA_ZONE).toInstant();
+		int limit = properties.dailyLimit();
+		int used = messages.countAssistantReplies(userId, dayStart, resetAt) + extraUsed;
+		return new ChatQuotaResponse(limit, used, Math.max(0, limit - used), resetAt);
+	}
+
 	/** Cố ý KHÔNG mở giao dịch bao ngoài: tin của người học phải commit trước khi gọi AI (có thể chậm). */
 	public SendMessageResponse send(UUID userId, UUID id, String content) {
 		find(userId, id);
+		if (quota(userId).remaining() <= 0) {
+			throw new ApiException(ErrorCode.CHAT_DAILY_LIMIT);
+		}
 		String text = content.strip();
 
 		Prepared prepared = tx.execute(status -> {
@@ -135,6 +160,7 @@ public class ChatService {
 			throw new ApiException(ErrorCode.AI_UNAVAILABLE);
 		}
 
+		int remaining = Math.max(0, quotaOf(userId, 1).remaining());
 		ChatMessage saved = tx.execute(status -> {
 			ChatConversation conversation = conversations.findById(id)
 					.orElseThrow(() -> new ApiException(ErrorCode.NOT_FOUND));
@@ -150,7 +176,7 @@ public class ChatService {
 			conversation.setLastMessageAt(message.getCreatedAt());
 			return message;
 		});
-		return new SendMessageResponse(toResponse(prepared.userMessage()), toResponse(saved));
+		return new SendMessageResponse(toResponse(prepared.userMessage()), toResponse(saved), remaining);
 	}
 
 	private record Prepared(ChatMessage userMessage, List<ChatAssistant.Turn> history) {

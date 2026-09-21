@@ -73,18 +73,28 @@ class SeedServiceTests {
 
 		SeedService.Report report = seedService.seedIfEmpty().orElseThrow();
 
-		assertThat(report).isEqualTo(new SeedService.Report(3, 6, 6, 36, 4, 4, 3, 5, 3, 45, 144));
+		// Toàn bộ nội dung ở seed-demo: 10 chủ đề, 15 bộ thẻ, 12 bài mỗi kỹ năng, 5 đề; 64 + 82 + 167 câu.
+		assertThat(report.users()).isEqualTo(3);
+		assertThat(report.topics()).isEqualTo(10);
+		assertThat(report.decks()).isEqualTo(15);
+		assertThat(report.flashcards()).isEqualTo(300);
+		assertThat(report.listeningLessons()).isEqualTo(12);
+		assertThat(report.readingLessons()).isEqualTo(12);
+		assertThat(report.speakingLessons()).isEqualTo(12);
+		assertThat(report.writingPrompts()).isEqualTo(12);
+		assertThat(report.exams()).isEqualTo(5);
+		assertThat(report.questions()).isEqualTo(64 + 82 + 167);
+		assertThat(questions.count()).isEqualTo(report.questions());
 		assertThat(users.count()).isEqualTo(3);
 		assertThat(settings.count()).isEqualTo(3);
-		assertThat(topics.count()).isEqualTo(6);
-		assertThat(decks.count()).isEqualTo(6);
-		assertThat(flashcards.count()).isEqualTo(36);
-		assertThat(listeningLessons.count()).isEqualTo(4);
-		assertThat(readingLessons.count()).isEqualTo(4);
-		assertThat(speakingLessons.count()).isEqualTo(3);
-		assertThat(writingPrompts.count()).isEqualTo(5);
-		assertThat(exams.count()).isEqualTo(3);
-		assertThat(questions.count()).isEqualTo(45);
+		assertThat(topics.count()).isEqualTo(report.topics());
+		assertThat(decks.count()).isEqualTo(15);
+		assertThat(flashcards.count()).isEqualTo(300);
+		assertThat(listeningLessons.count()).isEqualTo(12);
+		assertThat(readingLessons.count()).isEqualTo(12);
+		assertThat(speakingLessons.count()).isEqualTo(12);
+		assertThat(writingPrompts.count()).isEqualTo(12);
+		assertThat(exams.count()).isEqualTo(5);
 
 		assertThat(seedService.seedIfEmpty()).isEmpty();
 		assertThat(users.count()).isEqualTo(3);

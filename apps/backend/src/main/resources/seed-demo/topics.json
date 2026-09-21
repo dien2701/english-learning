@@ -1,0 +1,52 @@
+[
+  {
+    "slug": "travel",
+    "nameVi": "Du lịch",
+    "nameEn": "Travel"
+  },
+  {
+    "slug": "food-drink",
+    "nameVi": "Ăn uống",
+    "nameEn": "Food & Drink"
+  },
+  {
+    "slug": "shopping",
+    "nameVi": "Mua sắm",
+    "nameEn": "Shopping"
+  },
+  {
+    "slug": "family",
+    "nameVi": "Gia đình",
+    "nameEn": "Family"
+  },
+  {
+    "slug": "health",
+    "nameVi": "Sức khoẻ",
+    "nameEn": "Health"
+  },
+  {
+    "slug": "workplace",
+    "nameVi": "Công sở",
+    "nameEn": "Workplace"
+  },
+  {
+    "slug": "it-tech",
+    "nameVi": "Công nghệ thông tin",
+    "nameEn": "IT & Technology"
+  },
+  {
+    "slug": "exam-prep",
+    "nameVi": "Luyện thi IELTS/TOEIC",
+    "nameEn": "IELTS/TOEIC Preparation"
+  },
+  {
+    "slug": "academic",
+    "nameVi": "Học thuật",
+    "nameEn": "Academic English"
+  },
+  {
+    "slug": "daily-life",
+    "nameVi": "Đời sống hằng ngày",
+    "nameEn": "Daily Life"
+  }
+]

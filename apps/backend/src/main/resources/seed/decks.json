@@ -496,5 +496,171 @@
         "audioUrl": null
       }
     ]
+  },
+  {
+    "topic": "ielts",
+    "titleVi": "IELTS — Chủ đề Giáo dục",
+    "titleEn": "IELTS — Education",
+    "descriptionVi": "Từ vựng nâng cao chủ đề giáo dục, học tập và trường học cho phần IELTS Writing và Speaking.",
+    "descriptionEn": "Advanced vocabulary about education, studying and schools for IELTS Writing and Speaking.",
+    "coverImageUrl": "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=600&q=70&auto=format&fit=crop",
+    "level": "ADVANCED",
+    "cards": [
+      {
+        "word": "curriculum",
+        "phonetic": "/kəˈrɪk.jə.ləm/",
+        "meaningVi": "chương trình giảng dạy",
+        "meaningEn": "the subjects comprising a course of study",
+        "partOfSpeechVi": "danh từ",
+        "partOfSpeechEn": "noun",
+        "example": "The school curriculum should be updated to include programming.",
+        "exampleMeaning": "Chương trình giảng dạy của trường nên được cập nhật để thêm môn lập trình.",
+        "imageUrl": "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=480&q=70&auto=format&fit=crop",
+        "audioUrl": null
+      },
+      {
+        "word": "pedagogy",
+        "phonetic": "/ˈped.ə.ɡɒdʒ.i/",
+        "meaningVi": "phương pháp giảng dạy",
+        "meaningEn": "the method and practice of teaching",
+        "partOfSpeechVi": "danh từ",
+        "partOfSpeechEn": "noun",
+        "example": "Innovative pedagogy can significantly improve student engagement.",
+        "exampleMeaning": "Phương pháp giảng dạy đổi mới có thể cải thiện đáng kể sự tham gia của học sinh.",
+        "imageUrl": "https://images.unsplash.com/photo-1577896851231-70ef18881754?w=480&q=70&auto=format&fit=crop",
+        "audioUrl": null
+      },
+      {
+        "word": "literacy",
+        "phonetic": "/ˈlɪt.ər.ə.si/",
+        "meaningVi": "sự biết chữ, trình độ học vấn",
+        "meaningEn": "the ability to read and write",
+        "partOfSpeechVi": "danh từ",
+        "partOfSpeechEn": "noun",
+        "example": "The country has achieved a high level of adult literacy.",
+        "exampleMeaning": "Quốc gia này đã đạt được tỷ lệ biết chữ cao ở người trưởng thành.",
+        "imageUrl": "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=480&q=70&auto=format&fit=crop",
+        "audioUrl": null
+      },
+      {
+        "word": "extracurricular",
+        "phonetic": "/ˌek.strə.kəˈrɪk.jə.lər/",
+        "meaningVi": "ngoại khoá",
+        "meaningEn": "pursued in addition to the normal course of study",
+        "partOfSpeechVi": "tính từ",
+        "partOfSpeechEn": "adjective",
+        "example": "Students are encouraged to participate in extracurricular activities.",
+        "exampleMeaning": "Học sinh được khuyến khích tham gia các hoạt động ngoại khoá.",
+        "imageUrl": "https://images.unsplash.com/photo-1529390079861-591de354faf5?w=480&q=70&auto=format&fit=crop",
+        "audioUrl": null
+      },
+      {
+        "word": "plagiarism",
+        "phonetic": "/ˈpleɪ.dʒər.ɪ.zəm/",
+        "meaningVi": "sự đạo văn",
+        "meaningEn": "the practice of taking someone else's work and passing them off as one's own",
+        "partOfSpeechVi": "danh từ",
+        "partOfSpeechEn": "noun",
+        "example": "The university has strict rules against plagiarism.",
+        "exampleMeaning": "Trường đại học có những quy định nghiêm ngặt chống lại việc đạo văn.",
+        "imageUrl": "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=480&q=70&auto=format&fit=crop",
+        "audioUrl": null
+      },
+      {
+        "word": "scholarship",
+        "phonetic": "/ˈskɒl.ə.ʃɪp/",
+        "meaningVi": "học bổng",
+        "meaningEn": "a grant or payment made to support a student's education",
+        "partOfSpeechVi": "danh từ",
+        "partOfSpeechEn": "noun",
+        "example": "She won a scholarship to study at Oxford.",
+        "exampleMeaning": "Cô ấy đã giành được một suất học bổng để học tại Oxford.",
+        "imageUrl": "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=480&q=70&auto=format&fit=crop",
+        "audioUrl": null
+      }
+    ]
+  },
+  {
+    "topic": "toeic",
+    "titleVi": "TOEIC 600 — Chủ đề Tiếp thị (Marketing)",
+    "titleEn": "TOEIC 600 — Marketing",
+    "descriptionVi": "Từ vựng thường gặp trong các chiến dịch quảng cáo và bán hàng.",
+    "descriptionEn": "Common vocabulary in advertising campaigns and sales.",
+    "coverImageUrl": "https://images.unsplash.com/photo-1557838923-2985c318b67e?w=600&q=70&auto=format&fit=crop",
+    "level": "INTERMEDIATE",
+    "cards": [
+      {
+        "word": "campaign",
+        "phonetic": "/kæmˈpeɪn/",
+        "meaningVi": "chiến dịch",
+        "meaningEn": "a planned set of activities to achieve a goal",
+        "partOfSpeechVi": "danh từ",
+        "partOfSpeechEn": "noun",
+        "example": "The new marketing campaign will launch next month.",
+        "exampleMeaning": "Chiến dịch tiếp thị mới sẽ ra mắt vào tháng tới.",
+        "imageUrl": "https://images.unsplash.com/photo-1533750516457-a7f992034fec?w=480&q=70&auto=format&fit=crop",
+        "audioUrl": null
+      },
+      {
+        "word": "strategy",
+        "phonetic": "/ˈstræt.ə.dʒi/",
+        "meaningVi": "chiến lược",
+        "meaningEn": "a detailed plan for achieving success",
+        "partOfSpeechVi": "danh từ",
+        "partOfSpeechEn": "noun",
+        "example": "We need to rethink our pricing strategy.",
+        "exampleMeaning": "Chúng ta cần xem xét lại chiến lược định giá của mình.",
+        "imageUrl": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=480&q=70&auto=format&fit=crop",
+        "audioUrl": null
+      },
+      {
+        "word": "promote",
+        "phonetic": "/prəˈmoʊt/",
+        "meaningVi": "thúc đẩy, quảng bá",
+        "meaningEn": "to encourage people to like, buy, or use something",
+        "partOfSpeechVi": "động từ",
+        "partOfSpeechEn": "verb",
+        "example": "They are promoting their new product on social media.",
+        "exampleMeaning": "Họ đang quảng bá sản phẩm mới trên mạng xã hội.",
+        "imageUrl": "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=480&q=70&auto=format&fit=crop",
+        "audioUrl": null
+      },
+      {
+        "word": "target",
+        "phonetic": "/ˈtɑː.ɡɪt/",
+        "meaningVi": "mục tiêu",
+        "meaningEn": "a result, level, or situation that you intend to achieve",
+        "partOfSpeechVi": "danh từ, động từ",
+        "partOfSpeechEn": "noun, verb",
+        "example": "Our target audience is young professionals.",
+        "exampleMeaning": "Đối tượng mục tiêu của chúng tôi là các chuyên gia trẻ.",
+        "imageUrl": "https://images.unsplash.com/photo-1505330622279-bf7d7fc918f4?w=480&q=70&auto=format&fit=crop",
+        "audioUrl": null
+      },
+      {
+        "word": "brand",
+        "phonetic": "/brænd/",
+        "meaningVi": "thương hiệu",
+        "meaningEn": "a type of product made by a particular company",
+        "partOfSpeechVi": "danh từ",
+        "partOfSpeechEn": "noun",
+        "example": "Apple is a globally recognized brand.",
+        "exampleMeaning": "Apple là một thương hiệu được nhận diện toàn cầu.",
+        "imageUrl": "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=480&q=70&auto=format&fit=crop",
+        "audioUrl": null
+      },
+      {
+        "word": "attract",
+        "phonetic": "/əˈtrækt/",
+        "meaningVi": "thu hút",
+        "meaningEn": "to pull or draw someone or something towards",
+        "partOfSpeechVi": "động từ",
+        "partOfSpeechEn": "verb",
+        "example": "The bright packaging is designed to attract children.",
+        "exampleMeaning": "Bao bì sáng màu được thiết kế để thu hút trẻ em.",
+        "imageUrl": "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=480&q=70&auto=format&fit=crop",
+        "audioUrl": null
+      }
+    ]
   }
 ]

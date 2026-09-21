@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -18,6 +19,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
+import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ActiveProfiles;
@@ -125,106 +127,133 @@ class SpeakingApiTests {
 	}
 
 	@Test
-	@DisplayName("Nộp hai bản ghi: chấm xong có điểm, transcript từng câu; bài chuyển hoàn thành; DB không có cột âm thanh")
-	void submitGrades() throws Exception {
-		String attemptId = idOf(submit(tokenA, List.of(p1, p2), List.of(file("a.webm", "audio/webm;codecs=opus"),
-				file("b.webm", "audio/webm")), 42)
+	@DisplayName("Chấm từng câu: mở lượt, dùng lại lượt, chấm/thu lại ghi đè, thiếu câu thì 400, đủ câu nộp ra GRADED")
+	void perPromptFlow() throws Exception {
+		String attemptId = idOf(startAttempt(tokenA)
 				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.data.status").value("GRADED")));
+				.andExpect(jsonPath("$.data.status").value("IN_PROGRESS"))
+				.andExpect(jsonPath("$.data.results", hasSize(0))));
+		assertThat(idOf(startAttempt(tokenA))).isEqualTo(attemptId);
+		fetch("/speaking/lessons/" + lesson.getId(), tokenA).andExpect(jsonPath("$.data.isCompleted").value(false));
+
+		assess(tokenA, attemptId, p1, file("a.webm", "audio/webm;codecs=opus"))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.data.promptId").value(p1.toString()))
+				.andExpect(jsonPath("$.data.transcript").value("Nice to meet you, my name is Alex."))
+				.andExpect(jsonPath("$.data.score").value(7.5))
+				.andExpect(jsonPath("$.data.wordIssues", hasSize(0)))
+				.andExpect(jsonPath("$.data.tips", hasSize(1)));
+		em.flush();
+		em.clear();
+		startAttempt(tokenA)
+				.andExpect(jsonPath("$.data.attemptId").value(attemptId))
+				.andExpect(jsonPath("$.data.results", hasSize(1)));
+
+		submitAttempt(tokenA, attemptId, 30)
+				.andExpect(status().isBadRequest())
+				.andExpect(jsonPath("$.code").value("SPEAKING_INCOMPLETE"))
+				.andExpect(jsonPath("$.messageKey").value("errors.speakingIncomplete"));
+
+		assess(tokenA, attemptId, p2, file("b.webm", "audio/webm"))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.data.wordIssues[0].word").value("usually"))
+				.andExpect(jsonPath("$.data.wordIssues[0].heardAs").value("usuall"))
+				.andExpect(jsonPath("$.data.wordIssues[0].tip").isNotEmpty());
+		assess(tokenA, attemptId, p1, file("c.webm", "audio/webm")).andExpect(status().isOk());
+		em.flush();
+		em.clear();
+		assertThat(jdbc.queryForObject("select count(*) from speaking_prompt_results where attempt_id = ?",
+				Integer.class, uuidBytes(UUID.fromString(attemptId)))).isEqualTo(2);
+
+		submitAttempt(tokenA, attemptId, 42)
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.data.status").value("GRADED"))
+				.andExpect(jsonPath("$.data.overallScore").value(7.5))
+				.andExpect(jsonPath("$.data.scores.pronunciation").value(7.5))
+				.andExpect(jsonPath("$.data.improvements", hasSize(2)))
+				.andExpect(jsonPath("$.data.promptFeedback", hasSize(2)))
+				.andExpect(jsonPath("$.data.promptFeedback[1].mispronounced[0]").value("usually"));
 		em.flush();
 		em.clear();
 
-		fetch("/speaking/results/" + attemptId, tokenA)
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.data.status").value("GRADED"))
-				.andExpect(jsonPath("$.data.overallScore").isNumber())
-				.andExpect(jsonPath("$.data.scores.pronunciation").isNumber())
-				.andExpect(jsonPath("$.data.scores.relevance").isNumber())
-				.andExpect(jsonPath("$.data.improvements", hasSize(2)))
-				.andExpect(jsonPath("$.data.promptFeedback", hasSize(2)))
-				.andExpect(jsonPath("$.data.promptFeedback[0].promptId").value(p1.toString()))
-				.andExpect(jsonPath("$.data.promptFeedback[0].text").value("Nice to meet you, my name is Alex."))
-				.andExpect(jsonPath("$.data.promptFeedback[0].transcript").isNotEmpty())
-				.andExpect(jsonPath("$.data.promptFeedback[1].mispronounced[0]").value("usually"));
-		fetch("/speaking/lessons?search=" + tag, tokenA)
-				.andExpect(jsonPath("$.data.items[0].isCompleted").value(true))
-				.andExpect(jsonPath("$.data.items[0].lastScore").isNumber());
-
 		SpeakingAttempt saved = attempts.findById(UUID.fromString(attemptId)).orElseThrow();
+		assertThat(saved.getStatus()).isEqualTo(SpeakingAttemptStatus.GRADED);
 		assertThat(saved.getDurationSeconds()).isEqualTo(42);
 		assertThat(saved.getModelName()).isEqualTo("fake-speaking-grader");
+		fetch("/speaking/results/" + attemptId, tokenA)
+				.andExpect(jsonPath("$.data.status").value("GRADED"))
+				.andExpect(jsonPath("$.data.promptFeedback[0].text").value("Nice to meet you, my name is Alex."));
+		fetch("/speaking/lessons/" + lesson.getId(), tokenA)
+				.andExpect(jsonPath("$.data.isCompleted").value(true))
+				.andExpect(jsonPath("$.data.lastScore").isNumber());
+		submitAttempt(tokenA, attemptId, 42).andExpect(status().isConflict());
+		assess(tokenA, attemptId, p1, file("d.webm", "audio/webm")).andExpect(status().isConflict());
+		// Sau khi nộp, mở lượt mới thay vì dùng lại lượt đã xong.
+		assertThat(idOf(startAttempt(tokenA))).isNotEqualTo(attemptId);
+
+		// Âm thanh không được lưu: không bảng nào của Luyện nói có cột âm thanh.
 		List<String> columns = jdbc.queryForList(
 				"select column_name from information_schema.columns where table_schema = database() "
-						+ "and table_name = 'speaking_attempts'", String.class);
+						+ "and table_name in ('speaking_attempts', 'speaking_prompt_results')", String.class);
 		assertThat(columns).noneMatch(c -> c.toLowerCase().contains("audio"));
 	}
 
 	@Test
-	@DisplayName("AI lỗi (tên tệp chứa fail): lượt FAILED, không điểm, bài chưa hoàn thành; ghi âm lại được")
-	void failureThenRetake() throws Exception {
-		String attemptId = idOf(submit(tokenA, List.of(p1), List.of(file("fail.webm", "audio/webm")), 5)
-				.andExpect(status().isOk()));
-		em.flush();
-		em.clear();
-		fetch("/speaking/results/" + attemptId, tokenA)
-				.andExpect(jsonPath("$.data.status").value("FAILED"))
-				.andExpect(jsonPath("$.data.overallScore").doesNotExist())
-				.andExpect(jsonPath("$.data.scores").doesNotExist())
-				.andExpect(jsonPath("$.data.promptFeedback", hasSize(0)));
-		fetch("/speaking/lessons/" + lesson.getId(), tokenA).andExpect(jsonPath("$.data.isCompleted").value(false));
-
-		submit(tokenA, List.of(p1), List.of(file("ok.webm", "audio/webm")), 5)
-				.andExpect(jsonPath("$.data.status").value("GRADED"));
-		fetch("/speaking/lessons/" + lesson.getId(), tokenA).andExpect(jsonPath("$.data.isCompleted").value(true));
+	@DisplayName("Chấm câu khi AI lỗi (tên tệp chứa fail): 503, không lưu kết quả, thu lại được")
+	void assessFailure() throws Exception {
+		String attemptId = idOf(startAttempt(tokenA));
+		assess(tokenA, attemptId, p1, file("fail.webm", "audio/webm"))
+				.andExpect(status().isServiceUnavailable())
+				.andExpect(jsonPath("$.code").value("AI_UNAVAILABLE"));
+		assertThat(jdbc.queryForObject("select count(*) from speaking_prompt_results where attempt_id = ?",
+				Integer.class, uuidBytes(UUID.fromString(attemptId)))).isZero();
+		assess(tokenA, attemptId, p1, file("ok.webm", "audio/webm")).andExpect(status().isOk());
 	}
 
 	@Test
-	@DisplayName("Đầu vào sai: không có bản ghi, lệch số lượng, câu lạ hoặc trùng, tệp rỗng: 400")
-	void badInput() throws Exception {
-		submit(tokenA, List.of(), List.of(), 0)
+	@DisplayName("Chấm câu với đầu vào sai: câu lạ 400, thiếu/rỗng tệp 400, sai định dạng 415, quá lớn 413")
+	void assessBadInput() throws Exception {
+		String attemptId = idOf(startAttempt(tokenA));
+		assess(tokenA, attemptId, UUID.randomUUID(), file("a.webm", "audio/webm"))
+				.andExpect(status().isBadRequest())
+				.andExpect(jsonPath("$.fieldErrorKeys.promptId").value("errors.field.invalidPrompt"));
+		assess(tokenA, attemptId, p1)
 				.andExpect(status().isBadRequest())
 				.andExpect(jsonPath("$.fieldErrorKeys.audio").value("errors.noRecording"));
-		submit(tokenA, List.of(p1, p2), List.of(file("a.webm", "audio/webm")), 1)
-				.andExpect(status().isBadRequest())
-				.andExpect(jsonPath("$.fieldErrorKeys.audio").value("errors.field.audioMismatch"));
-		submit(tokenA, List.of(UUID.randomUUID()), List.of(file("a.webm", "audio/webm")), 1)
-				.andExpect(status().isBadRequest())
-				.andExpect(jsonPath("$.fieldErrorKeys.promptIds").value("errors.field.invalidPrompt"));
-		submit(tokenA, List.of(p1, p1), List.of(file("a.webm", "audio/webm"), file("b.webm", "audio/webm")), 1)
+		assess(tokenA, attemptId, p1, new MockMultipartFile("audio", "a.webm", "audio/webm", new byte[0]))
 				.andExpect(status().isBadRequest());
-		submit(tokenA, List.of(p1), List.of(new MockMultipartFile("audio", "a.webm", "audio/webm", new byte[0])), 1)
-				.andExpect(status().isBadRequest())
-				.andExpect(jsonPath("$.fieldErrorKeys.audio").value("errors.noRecording"));
-	}
-
-	@Test
-	@DisplayName("Tệp sai định dạng: 415; quá lớn: 413 (không phải 500); không lưu lượt nào")
-	void unsupportedAndTooLarge() throws Exception {
-		submit(tokenA, List.of(p1), List.of(file("a.txt", "text/plain")), 1)
+		assess(tokenA, attemptId, p1, file("a.txt", "text/plain"))
 				.andExpect(status().isUnsupportedMediaType())
 				.andExpect(jsonPath("$.code").value("AUDIO_UNSUPPORTED"));
-		submit(tokenA, List.of(p1), List.of(new MockMultipartFile("audio", "a.webm", "audio/webm",
-				new byte[5 * 1024 * 1024 + 1])), 1)
+		assess(tokenA, attemptId, p1, new MockMultipartFile("audio", "a.webm", "audio/webm",
+				new byte[5 * 1024 * 1024 + 1]))
 				.andExpect(status().isPayloadTooLarge())
 				.andExpect(jsonPath("$.code").value("AUDIO_TOO_LARGE"));
-		assertThat(attempts.findAll().stream().filter(a -> a.getUser().getId().equals(userA.getId()))).isEmpty();
 	}
 
 	@Test
-	@DisplayName("Không có token: 401; bài INACTIVE hoặc không có: 404; kết quả của người khác: 404")
+	@DisplayName("Không token 401; lượt/kết quả của người khác 404; bài INACTIVE ẩn khỏi danh sách và không mở được lượt")
 	void securityAndOwnership() throws Exception {
-		submit(null, List.of(p1), List.of(file("a.webm", "audio/webm")), 1).andExpect(status().isUnauthorized());
 		fetch("/speaking/lessons", null).andExpect(status().isUnauthorized());
 		fetch("/speaking/results/" + UUID.randomUUID(), null).andExpect(status().isUnauthorized());
+		startAttempt(null).andExpect(status().isUnauthorized());
+		String attemptId = idOf(startAttempt(tokenA));
+		assess(null, attemptId, p1, file("a.webm", "audio/webm")).andExpect(status().isUnauthorized());
+		submitAttempt(null, attemptId, 1).andExpect(status().isUnauthorized());
 
-		String attemptId = idOf(submit(tokenA, List.of(p1), List.of(file("a.webm", "audio/webm")), 1));
+		assess(tokenB, attemptId, p1, file("a.webm", "audio/webm")).andExpect(status().isNotFound());
+		submitAttempt(tokenB, attemptId, 1).andExpect(status().isNotFound());
 		fetch("/speaking/results/" + attemptId, tokenB).andExpect(status().isNotFound());
 		fetch("/speaking/results/" + UUID.randomUUID(), tokenA).andExpect(status().isNotFound());
+		assess(tokenA, UUID.randomUUID().toString(), p1, file("a.webm", "audio/webm"))
+				.andExpect(status().isNotFound());
+		// Lượt của mỗi người là riêng: người B mở lượt mới, không dùng lượt của A.
+		assertThat(idOf(startAttempt(tokenB))).isNotEqualTo(attemptId);
 
 		lesson.setStatus(ContentStatus.INACTIVE);
 		lessons.saveAndFlush(lesson);
 		fetch("/speaking/lessons/" + lesson.getId(), tokenA).andExpect(status().isNotFound());
-		submit(tokenA, List.of(p1), List.of(file("a.webm", "audio/webm")), 1).andExpect(status().isNotFound());
+		startAttempt(tokenA).andExpect(status().isNotFound());
 		fetch("/speaking/lessons?search=" + tag, tokenA).andExpect(jsonPath("$.data.total").value(0));
 	}
 
@@ -251,12 +280,30 @@ class SpeakingApiTests {
 		return new MockMultipartFile("audio", name, contentType, AUDIO);
 	}
 
-	private ResultActions submit(String token, List<UUID> promptIds, List<MockMultipartFile> files, int seconds)
+	private ResultActions startAttempt(String token) throws Exception {
+		var request = post("/speaking/lessons/" + lesson.getId() + "/attempts");
+		if (token != null) {
+			request.header("Authorization", token);
+		}
+		return mvc.perform(request);
+	}
+
+	private ResultActions assess(String token, String attemptId, UUID promptId, MockMultipartFile... files)
 			throws Exception {
-		MockMultipartHttpServletRequestBuilder request = multipart("/speaking/lessons/" + lesson.getId() + "/submit");
-		promptIds.forEach(id -> request.param("promptIds", id.toString()));
-		files.forEach(request::file);
-		request.param("durationSeconds", String.valueOf(seconds));
+		MockMultipartHttpServletRequestBuilder request = multipart(
+				"/speaking/attempts/" + attemptId + "/prompts/" + promptId + "/assess");
+		for (MockMultipartFile f : files) {
+			request.file(f);
+		}
+		if (token != null) {
+			request.header("Authorization", token);
+		}
+		return mvc.perform(request);
+	}
+
+	private ResultActions submitAttempt(String token, String attemptId, int seconds) throws Exception {
+		var request = post("/speaking/attempts/" + attemptId + "/submit").contentType(MediaType.APPLICATION_JSON)
+				.content("{\"durationSeconds\":" + seconds + "}");
 		if (token != null) {
 			request.header("Authorization", token);
 		}

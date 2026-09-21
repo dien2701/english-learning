@@ -6,7 +6,7 @@ import vn.enlearning.backend.entity.enums.ChatRole;
 import vn.enlearning.backend.entity.enums.StudySkill;
 
 /**
- * Cổng trợ lý chat. Bản giả: {@code FakeChatAssistant}; bản OpenAI thật gắn ở bước 4.4.
+ * Cổng trợ lý chat. Bản giả: {@code FakeChatAssistant}; bản Gemini: {@code GeminiChatAssistant}.
  * Trợ lý chỉ gợi ý NHÓM bài ({@code suggestedSkills}); liên kết tới nội dung cụ thể do backend chọn từ DB,
  * để đường dẫn không bao giờ do mô hình bịa ra.
  */

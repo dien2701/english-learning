@@ -1,0 +1,434 @@
+[
+  {
+    "status": "ACTIVE",
+    "topic": "daily-life",
+    "level": "BEGINNER",
+    "titleVi": "Tự giới thiệu bản thân",
+    "titleEn": "Introducing Yourself",
+    "descriptionVi": "Các câu chào hỏi và giới thiệu cơ bản.",
+    "descriptionEn": "Basic greetings and self-introduction sentences.",
+    "prompts": [
+      {
+        "text": "Hello, my name is Linh, and I am from Hanoi.",
+        "phonetic": null,
+        "meaningVi": "Xin chào, tên tôi là Linh và tôi đến từ Hà Nội."
+      },
+      {
+        "text": "I am twenty years old, and I am a university student.",
+        "phonetic": null,
+        "meaningVi": "Tôi hai mươi tuổi và là sinh viên đại học."
+      },
+      {
+        "text": "In my free time, I like reading books and listening to music.",
+        "phonetic": null,
+        "meaningVi": "Lúc rảnh, tôi thích đọc sách và nghe nhạc."
+      },
+      {
+        "text": "I would like to improve my English for my future career.",
+        "phonetic": null,
+        "meaningVi": "Tôi muốn cải thiện tiếng Anh cho sự nghiệp tương lai."
+      },
+      {
+        "text": "It is nice to meet you, and I hope we can be good friends.",
+        "phonetic": null,
+        "meaningVi": "Rất vui được gặp bạn, hy vọng chúng ta sẽ là bạn tốt."
+      }
+    ]
+  },
+  {
+    "status": "ACTIVE",
+    "topic": "travel",
+    "level": "BEGINNER",
+    "titleVi": "Đặt phòng khách sạn",
+    "titleEn": "Checking In at a Hotel",
+    "descriptionVi": "Các câu thường dùng khi nhận phòng.",
+    "descriptionEn": "Useful sentences for checking in at a hotel.",
+    "prompts": [
+      {
+        "text": "Good evening, I have a reservation under the name Nguyen.",
+        "phonetic": null,
+        "meaningVi": "Chào buổi tối, tôi có đặt phòng dưới tên Nguyễn."
+      },
+      {
+        "text": "Could I have a room with a view of the sea, please?",
+        "phonetic": null,
+        "meaningVi": "Cho tôi phòng nhìn ra biển được không ạ?"
+      },
+      {
+        "text": "What time is breakfast served in the morning?",
+        "phonetic": null,
+        "meaningVi": "Bữa sáng được phục vụ lúc mấy giờ?"
+      },
+      {
+        "text": "Is there free Wi-Fi in the rooms?",
+        "phonetic": null,
+        "meaningVi": "Trong phòng có Wi-Fi miễn phí không?"
+      },
+      {
+        "text": "Could you call a taxi for me at seven tomorrow?",
+        "phonetic": null,
+        "meaningVi": "Bạn gọi giúp tôi một chiếc taxi lúc bảy giờ sáng mai nhé?"
+      }
+    ]
+  },
+  {
+    "status": "ACTIVE",
+    "topic": "food-drink",
+    "level": "BEGINNER",
+    "titleVi": "Gọi món ăn",
+    "titleEn": "Ordering Food",
+    "descriptionVi": "Luyện gọi món và hỏi về thực đơn.",
+    "descriptionEn": "Practise ordering food and asking about the menu.",
+    "prompts": [
+      {
+        "text": "Could we have a table for two, please?",
+        "phonetic": null,
+        "meaningVi": "Cho chúng tôi một bàn hai người được không?"
+      },
+      {
+        "text": "What do you recommend for the main course?",
+        "phonetic": null,
+        "meaningVi": "Bạn gợi ý món chính nào?"
+      },
+      {
+        "text": "I would like the grilled chicken with rice, please.",
+        "phonetic": null,
+        "meaningVi": "Tôi muốn món gà nướng với cơm."
+      },
+      {
+        "text": "Could I have the bill, please?",
+        "phonetic": null,
+        "meaningVi": "Cho tôi xin hoá đơn được không?"
+      },
+      {
+        "text": "Everything was delicious, thank you very much.",
+        "phonetic": null,
+        "meaningVi": "Món nào cũng ngon, cảm ơn bạn rất nhiều."
+      }
+    ]
+  },
+  {
+    "status": "ACTIVE",
+    "topic": "shopping",
+    "level": "BEGINNER",
+    "titleVi": "Hỏi giá và thử đồ",
+    "titleEn": "Shopping for Clothes",
+    "descriptionVi": "Hỏi giá, cỡ và thử đồ trong cửa hàng.",
+    "descriptionEn": "Ask about prices and sizes and try things on.",
+    "prompts": [
+      {
+        "text": "How much is this jacket?",
+        "phonetic": null,
+        "meaningVi": "Cái áo khoác này giá bao nhiêu?"
+      },
+      {
+        "text": "Do you have this shirt in a smaller size?",
+        "phonetic": null,
+        "meaningVi": "Cái áo sơ mi này có cỡ nhỏ hơn không?"
+      },
+      {
+        "text": "Can I try it on, please?",
+        "phonetic": null,
+        "meaningVi": "Tôi mặc thử được không?"
+      },
+      {
+        "text": "It is a little expensive. Can you give me a discount?",
+        "phonetic": null,
+        "meaningVi": "Hơi đắt một chút. Bạn giảm giá cho tôi được không?"
+      },
+      {
+        "text": "I will take it. Can I pay by card?",
+        "phonetic": null,
+        "meaningVi": "Tôi lấy cái này. Tôi trả bằng thẻ được không?"
+      }
+    ]
+  },
+  {
+    "status": "ACTIVE",
+    "topic": "health",
+    "level": "BEGINNER",
+    "titleVi": "Nói với bác sĩ",
+    "titleEn": "Talking to a Doctor",
+    "descriptionVi": "Mô tả triệu chứng và hỏi lời khuyên.",
+    "descriptionEn": "Describe symptoms and ask for advice.",
+    "prompts": [
+      {
+        "text": "I have had a headache since yesterday morning.",
+        "phonetic": null,
+        "meaningVi": "Tôi bị đau đầu từ sáng hôm qua."
+      },
+      {
+        "text": "I also have a sore throat and a slight fever.",
+        "phonetic": null,
+        "meaningVi": "Tôi còn bị đau họng và sốt nhẹ."
+      },
+      {
+        "text": "Do I need to take any medicine?",
+        "phonetic": null,
+        "meaningVi": "Tôi có cần uống thuốc không?"
+      },
+      {
+        "text": "How many times a day should I take these tablets?",
+        "phonetic": null,
+        "meaningVi": "Tôi nên uống viên thuốc này mấy lần một ngày?"
+      },
+      {
+        "text": "Thank you, doctor. I will get some rest.",
+        "phonetic": null,
+        "meaningVi": "Cảm ơn bác sĩ. Tôi sẽ nghỉ ngơi."
+      }
+    ]
+  },
+  {
+    "status": "ACTIVE",
+    "topic": "family",
+    "level": "BEGINNER",
+    "titleVi": "Nói về gia đình",
+    "titleEn": "Talking About Your Family",
+    "descriptionVi": "Giới thiệu các thành viên trong gia đình.",
+    "descriptionEn": "Introduce the people in your family.",
+    "prompts": [
+      {
+        "text": "There are five people in my family: my parents, my sister, my brother and me.",
+        "phonetic": null,
+        "meaningVi": "Gia đình tôi có năm người: bố mẹ, chị gái, em trai và tôi."
+      },
+      {
+        "text": "My father is an engineer, and my mother is a teacher.",
+        "phonetic": null,
+        "meaningVi": "Bố tôi là kỹ sư, còn mẹ tôi là giáo viên."
+      },
+      {
+        "text": "My younger brother is fifteen, and he loves playing football.",
+        "phonetic": null,
+        "meaningVi": "Em trai tôi mười lăm tuổi và rất thích đá bóng."
+      },
+      {
+        "text": "We usually have dinner together at seven o’clock.",
+        "phonetic": null,
+        "meaningVi": "Chúng tôi thường ăn tối cùng nhau lúc bảy giờ."
+      },
+      {
+        "text": "On weekends, we visit my grandparents in the countryside.",
+        "phonetic": null,
+        "meaningVi": "Cuối tuần, chúng tôi về quê thăm ông bà."
+      }
+    ]
+  },
+  {
+    "status": "ACTIVE",
+    "topic": "workplace",
+    "level": "INTERMEDIATE",
+    "titleVi": "Phát biểu trong cuộc họp",
+    "titleEn": "Speaking in Meetings",
+    "descriptionVi": "Các mẫu câu để nêu ý kiến, đồng ý và phản đối lịch sự.",
+    "descriptionEn": "Phrases for giving opinions, agreeing and disagreeing politely.",
+    "prompts": [
+      {
+        "text": "Let me start by summarising where we are on the project.",
+        "phonetic": null,
+        "meaningVi": "Cho phép tôi bắt đầu bằng việc tóm tắt tiến độ dự án."
+      },
+      {
+        "text": "I agree with your point, but I think we should consider the cost.",
+        "phonetic": null,
+        "meaningVi": "Tôi đồng ý với ý của bạn, nhưng tôi nghĩ ta nên cân nhắc chi phí."
+      },
+      {
+        "text": "Could you clarify what you mean by a flexible deadline?",
+        "phonetic": null,
+        "meaningVi": "Bạn có thể làm rõ \"hạn chót linh hoạt\" nghĩa là gì không?"
+      },
+      {
+        "text": "I suggest that we postpone the launch by one week.",
+        "phonetic": null,
+        "meaningVi": "Tôi đề xuất hoãn ngày ra mắt một tuần."
+      },
+      {
+        "text": "To sum up, we will finish the design by Friday and start testing on Monday.",
+        "phonetic": null,
+        "meaningVi": "Tóm lại, ta sẽ hoàn thành thiết kế vào thứ Sáu và bắt đầu kiểm thử vào thứ Hai."
+      }
+    ]
+  },
+  {
+    "status": "ACTIVE",
+    "topic": "it-tech",
+    "level": "INTERMEDIATE",
+    "titleVi": "Giải thích sự cố kỹ thuật",
+    "titleEn": "Explaining a Technical Problem",
+    "descriptionVi": "Mô tả lỗi phần mềm cho đồng nghiệp hoặc bộ phận hỗ trợ.",
+    "descriptionEn": "Describe a software problem to a colleague or the support team.",
+    "prompts": [
+      {
+        "text": "The application crashes every time I try to upload a file.",
+        "phonetic": null,
+        "meaningVi": "Ứng dụng bị treo mỗi khi tôi tải tệp lên."
+      },
+      {
+        "text": "I have already restarted my computer, but the problem is still there.",
+        "phonetic": null,
+        "meaningVi": "Tôi đã khởi động lại máy nhưng lỗi vẫn còn."
+      },
+      {
+        "text": "An error message appears saying that the connection has timed out.",
+        "phonetic": null,
+        "meaningVi": "Có thông báo lỗi cho biết kết nối đã hết thời gian chờ."
+      },
+      {
+        "text": "Could you check whether the server is down at the moment?",
+        "phonetic": null,
+        "meaningVi": "Bạn kiểm tra giúp máy chủ có đang ngừng hoạt động không nhé?"
+      },
+      {
+        "text": "Thank you for fixing it so quickly, I really appreciate your help.",
+        "phonetic": null,
+        "meaningVi": "Cảm ơn bạn đã sửa nhanh như vậy, tôi rất biết ơn."
+      }
+    ]
+  },
+  {
+    "status": "ACTIVE",
+    "topic": "exam-prep",
+    "level": "INTERMEDIATE",
+    "titleVi": "IELTS Speaking Part 1: quê hương và sở thích",
+    "titleEn": "IELTS Speaking Part 1: Hometown and Hobbies",
+    "descriptionVi": "Trả lời ngắn gọn về bản thân, đúng phong cách Part 1.",
+    "descriptionEn": "Short answers about yourself in the style of Part 1.",
+    "prompts": [
+      {
+        "text": "I come from a coastal city in central Vietnam, which is famous for its beaches.",
+        "phonetic": null,
+        "meaningVi": "Tôi đến từ một thành phố ven biển ở miền Trung, nổi tiếng với các bãi biển."
+      },
+      {
+        "text": "What I like most about my hometown is the friendly people and the fresh seafood.",
+        "phonetic": null,
+        "meaningVi": "Điều tôi thích nhất ở quê là người dân thân thiện và hải sản tươi."
+      },
+      {
+        "text": "In my spare time, I enjoy cycling because it helps me relax after a long day.",
+        "phonetic": null,
+        "meaningVi": "Lúc rảnh, tôi thích đạp xe vì nó giúp tôi thư giãn sau một ngày dài."
+      },
+      {
+        "text": "I have been learning the guitar for about two years, and I practise every evening.",
+        "phonetic": null,
+        "meaningVi": "Tôi học guitar khoảng hai năm và tập mỗi tối."
+      },
+      {
+        "text": "I would say that hobbies are important because they reduce stress.",
+        "phonetic": null,
+        "meaningVi": "Tôi cho rằng sở thích quan trọng vì chúng giúp giảm căng thẳng."
+      }
+    ]
+  },
+  {
+    "status": "ACTIVE",
+    "topic": "exam-prep",
+    "level": "INTERMEDIATE",
+    "titleVi": "IELTS Speaking Part 2: tả một người",
+    "titleEn": "IELTS Speaking Part 2: Describe a Person",
+    "descriptionVi": "Bài nói dài: mô tả một người đã ảnh hưởng đến bạn.",
+    "descriptionEn": "A long turn: describe a person who has influenced you.",
+    "prompts": [
+      {
+        "text": "I would like to talk about my old English teacher, Mrs. Hoa.",
+        "phonetic": null,
+        "meaningVi": "Tôi muốn nói về cô giáo tiếng Anh cũ của tôi, cô Hoa."
+      },
+      {
+        "text": "I first met her when I was fifteen, at a small language centre near my house.",
+        "phonetic": null,
+        "meaningVi": "Tôi gặp cô lần đầu năm mười lăm tuổi, ở một trung tâm ngoại ngữ nhỏ gần nhà."
+      },
+      {
+        "text": "She was patient and creative, and she made every lesson enjoyable.",
+        "phonetic": null,
+        "meaningVi": "Cô kiên nhẫn và sáng tạo, và khiến bài học nào cũng thú vị."
+      },
+      {
+        "text": "Thanks to her encouragement, I stopped being afraid of making mistakes.",
+        "phonetic": null,
+        "meaningVi": "Nhờ sự động viên của cô, tôi không còn sợ mắc lỗi."
+      },
+      {
+        "text": "To conclude, she taught me that hard work matters more than talent.",
+        "phonetic": null,
+        "meaningVi": "Tóm lại, cô dạy tôi rằng chăm chỉ quan trọng hơn năng khiếu."
+      }
+    ]
+  },
+  {
+    "status": "ACTIVE",
+    "topic": "academic",
+    "level": "ADVANCED",
+    "titleVi": "IELTS Speaking Part 3: giáo dục và công nghệ",
+    "titleEn": "IELTS Speaking Part 3: Education and Technology",
+    "descriptionVi": "Thảo luận trừu tượng: lập luận, so sánh và dự đoán.",
+    "descriptionEn": "Abstract discussion: arguing, comparing and predicting.",
+    "prompts": [
+      {
+        "text": "In my opinion, technology has made education more accessible, particularly for people in remote areas.",
+        "phonetic": null,
+        "meaningVi": "Theo tôi, công nghệ khiến giáo dục dễ tiếp cận hơn, đặc biệt với người ở vùng xa."
+      },
+      {
+        "text": "On the other hand, students can easily become distracted by their devices.",
+        "phonetic": null,
+        "meaningVi": "Mặt khác, học sinh rất dễ bị thiết bị làm xao nhãng."
+      },
+      {
+        "text": "I believe that teachers will always play a vital role, since they provide guidance and motivation.",
+        "phonetic": null,
+        "meaningVi": "Tôi tin giáo viên luôn giữ vai trò thiết yếu vì họ hướng dẫn và tạo động lực."
+      },
+      {
+        "text": "It is likely that online learning will become even more popular over the next decade.",
+        "phonetic": null,
+        "meaningVi": "Nhiều khả năng học trực tuyến sẽ còn phổ biến hơn trong thập kỷ tới."
+      },
+      {
+        "text": "Ultimately, the most effective approach is probably a combination of traditional and digital methods.",
+        "phonetic": null,
+        "meaningVi": "Cuối cùng, cách hiệu quả nhất có lẽ là kết hợp phương pháp truyền thống và số."
+      }
+    ]
+  },
+  {
+    "status": "INACTIVE",
+    "topic": "workplace",
+    "level": "ADVANCED",
+    "titleVi": "Trả lời phỏng vấn xin việc",
+    "titleEn": "Answering Job Interview Questions",
+    "descriptionVi": "Các câu trả lời mẫu cho câu hỏi phỏng vấn thường gặp.",
+    "descriptionEn": "Model answers to common interview questions.",
+    "prompts": [
+      {
+        "text": "I have three years of experience in customer support, where I handled around fifty requests a day.",
+        "phonetic": null,
+        "meaningVi": "Tôi có ba năm kinh nghiệm chăm sóc khách hàng, xử lý khoảng năm mươi yêu cầu mỗi ngày."
+      },
+      {
+        "text": "My greatest strength is that I stay calm under pressure and find practical solutions.",
+        "phonetic": null,
+        "meaningVi": "Điểm mạnh lớn nhất của tôi là giữ bình tĩnh khi áp lực và tìm giải pháp thực tế."
+      },
+      {
+        "text": "One weakness I am working on is delegating tasks instead of doing everything myself.",
+        "phonetic": null,
+        "meaningVi": "Một điểm yếu tôi đang khắc phục là giao việc thay vì tự làm mọi thứ."
+      },
+      {
+        "text": "I am applying for this position because it matches my skills and my long-term goals.",
+        "phonetic": null,
+        "meaningVi": "Tôi ứng tuyển vị trí này vì nó phù hợp kỹ năng và mục tiêu dài hạn của tôi."
+      },
+      {
+        "text": "Do you have any opportunities for training and professional development?",
+        "phonetic": null,
+        "meaningVi": "Công ty có cơ hội đào tạo và phát triển nghề nghiệp không?"
+      }
+    ]
+  }
+]
