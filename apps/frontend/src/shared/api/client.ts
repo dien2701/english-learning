@@ -1,25 +1,12 @@
 import axios from 'axios';
-import type { AxiosAdapter, AxiosRequestConfig, AxiosResponse } from 'axios';
+import type { AxiosRequestConfig, AxiosResponse } from 'axios';
 
-import { isMockedRequest, mockAdapter } from './mockAdapter';
 import { ApiError } from './types';
 import type { ApiResponse } from './types';
 
 /* -------------------------------------------------------------------
  * Cấu hình
  * ----------------------------------------------------------------- */
-
-/**
- * Danh sách tiền tố đường dẫn còn đi qua mock (VITE_MOCK_MODULES, cách nhau
- * bằng dấu phẩy). Rỗng hoặc không đặt nghĩa là mọi request gọi backend thật.
- * `auth` bị loại: Auth luôn gọi backend thật.
- */
-export const MOCK_MODULES: readonly string[] = (import.meta.env.VITE_MOCK_MODULES ?? '')
-  .split(',')
-  .map((m) => m.trim().replace(/^\/+|\/+$/g, ''))
-  .filter((m) => m !== '' && m !== 'auth');
-
-export const USE_MOCK = MOCK_MODULES.length > 0;
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? '/api';
 
@@ -77,15 +64,6 @@ export const client = axios.create({
   timeout: 20_000,
   headers: { 'Content-Type': 'application/json' },
   withCredentials: true,
-  ...(USE_MOCK
-    ? {
-        /* Chọn mock hay backend thật theo từng request. */
-        adapter: ((config) =>
-          isMockedRequest(config, MOCK_MODULES)
-            ? mockAdapter(config)
-            : axios.getAdapter(axios.defaults.adapter)(config)) as AxiosAdapter,
-      }
-    : {}),
 });
 
 /** Instance trần (không interceptor) để gọi refresh mà không lặp vô hạn. */
@@ -190,8 +168,7 @@ client.interceptors.response.use(
       status === 401 &&
       original &&
       !original._retried &&
-      !skipsRefresh(original.url) &&
-      !isMockedRequest(original, MOCK_MODULES)
+      !skipsRefresh(original.url)
     ) {
       original._retried = true;
       let token: string | null = null;

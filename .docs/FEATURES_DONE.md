@@ -319,3 +319,10 @@ chỉ được chuyển sang ngừng hoạt động.
 - Form nội dung quản trị (`components/admin/content-forms`, 8 file) và tab CSV chuyển sang `t()`/`Trans`; thêm namespace `contentForm` cùng các khoá còn thiếu (`common.saved/created`, `admin.addContent/editContent/titleVi/titleEn/detailsForSkill/loadError/saveError`, `errors.invalidAnswers` mà BE trả) vào `vi.json`/`en.json`.
 - 6 trang danh sách + Dashboard + `WritingPracticePage` hiển thị lỗi qua `describe()` (dịch theo `messageKey`) thay vì `error.message`; `useApi` gắn `errors.unknown`; placeholder email đổi sang `name@example.com`.
 - Mọi khoá `messageKey` BE dùng đều có ở cả hai locale; quét mã ngoài chú thích không còn chuỗi tiếng Việt hiển thị. Lint, build sạch. Hai ô duyệt giao diện VI/EN và sáng/tối chờ bạn tự kiểm rồi tick.
+
+## Đợt cuối (phiên 9a: xoá mock, chia chunk, tài liệu)
+
+- Xoá `src/mocks`, `mockAdapter.ts`, `VITE_MOCK_MODULES`/`USE_MOCK`; `client.ts` chỉ còn adapter thật, refresh 401 áp cho mọi request. `.env` và `.env.example` chỉ còn `VITE_API_BASE_URL`.
+- Bỏ dòng "mã xác thực luôn là 123456" ở trang Quên mật khẩu (mã thật gửi qua email); đổi lời nhắc tài khoản mẫu ở trang Đăng nhập thành "tài khoản seed dev".
+- Chia build: `AdminArea` nạp động (`React.lazy`), `vite.config.ts` tách `vendor-antd`, `vendor-charts`, `vendor`; bundle chính 1,55 MB → 241 kB. Lint, build sạch.
+- `ARCHITECTURE.md`, `.agent/AGENTS.md`, `CLAUDE.md` bỏ tham chiếu Redis, RabbitMQ, Cloudinary, mock.

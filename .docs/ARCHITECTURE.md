@@ -59,7 +59,7 @@ Chưa thiết kế: Recommendation (Dashboard đã bỏ mục gợi ý) và Audi
 2. Luồng nghiệp vụ tối quan trọng (Critical Business Logic)
 Lưu kết quả học:
 User học Flashcard/làm bài → Backend kiểm tra → lưu MySQL → cập nhật thống kê và gợi ý.
-Redis chỉ dùng để cache. Tiến độ học phải luôn lưu trong MySQL.
+Caffeine chỉ dùng để cache (trong bộ nhớ). Tiến độ học phải luôn lưu trong MySQL.
 Flashcard:
 Frontend chỉ gửi flashcardId và mức độ nhớ.
 Backend tự tính ngày ôn tiếp theo.
@@ -68,7 +68,7 @@ Backend lưu bài viết trước, gọi OpenAI sau và lưu phản hồi AI.
 Không để OpenAI API key trong React.
 Luyện nói:
 Frontend gửi bản ghi âm lên backend; backend chuyển thành văn bản, chấm bằng OpenAI, lưu SpeakingAttempt
-(transcript, điểm, nhận xét) rồi bỏ âm thanh. Không lưu âm thanh nên không có Cloudinary cho giọng nói.
+(transcript, điểm, nhận xét) rồi bỏ âm thanh. Không lưu âm thanh nên không cần kho lưu trữ file cho giọng nói.
 Chat AI:
 Backend lưu tin nhắn của người học trước, gọi OpenAI sau và lưu câu trả lời kèm modelName, số token, gợi ý bài học.
 Thời gian học:
@@ -80,7 +80,7 @@ Bài kiểm tra:
 Trắc nghiệm tự chấm bằng đáp án trong database.
 Không trả đáp án đúng trước khi User nộp bài.
 Email nhắc học:
-Scheduler → RabbitMQ → gửi email → lưu EmailLog.
+`@Scheduled` mỗi phút → `EmailSender` → lưu EmailLog.
 Không gửi trùng email trong cùng ngày.
 
 3. Module Auth (Xác thực, phân quyền & bảo mật)
@@ -89,7 +89,7 @@ Mật khẩu mã hóa bằng BCrypt.
 Phân quyền cơ bản: USER, ADMIN.
 USER chỉ xem và sửa dữ liệu của chính mình.
 ADMIN quản lý người dùng, nội dung học và thông báo.
-JWT secret, OpenAI API key, Cloudinary secret và mật khẩu email đặt trong .env; không commit lên GitHub.
+JWT secret, OpenAI API key và mật khẩu email đặt trong .env; không commit lên GitHub.
 
 Đã triển khai (backend, 20/09/2026): auth (controller, service, repository, dto, validation), security (JwtService, 401/403 dạng JSON),
 mail (EmailSender), seed. Các quy tắc:
@@ -100,7 +100,7 @@ mail (EmailSender), seed. Các quy tắc:
 - Quên mật khẩu: mã OTP 6 số, hạn 10 phút, dùng một lần, sai 5 lần thì huỷ, xin mã mới cách nhau 60 giây (xin sớm hơn thì bỏ qua lặng lẽ) và mã mới vô hiệu mã cũ.
   forgot-password luôn trả cùng một thông điệp và xử lý nền để không lộ email nào có tài khoản. Đặt lại thành công thì thu hồi mọi refresh token.
 - Email: Gmail SMTP khi có MAIL_USERNAME và MAIL_PASSWORD (App Password); không thì ghi mã ra log, và profile prod từ chối khởi động. Mỗi email ghi một dòng email_logs.
-- Chưa có: giới hạn tần suất đăng nhập và check-email (chưa có Redis). Khoá tài khoản chặn được đăng nhập, refresh và /auth/me; access token đang sống còn hiệu lực tối đa 15 phút.
+- Giới hạn tần suất đăng nhập, check-email, forgot-password bằng bucket4j trong bộ nhớ (mục 4). Khoá tài khoản chặn được đăng nhập, refresh và /auth/me; access token đang sống còn hiệu lực tối đa 15 phút.
 
 Hợp đồng API auth (context-path /api, vỏ thành công {success,data}, vỏ lỗi {message,code,messageKey,fieldErrorKeys}; messageKey là khoá dịch của Frontend):
 POST /auth/register {fullName,email,password,confirmPassword} → 201 {token,user} + Set-Cookie
@@ -116,15 +116,15 @@ Mã lỗi: VALIDATION 400, INVALID_CREDENTIALS 401, ACCOUNT_LOCKED 403, EMAIL_TA
 Dữ liệu mẫu: trong apps/backend chạy SPRING_PROFILES_ACTIVE=dev ./mvnw spring-boot:run (cần .env theo .env.example). DevSeedRunner (chỉ profile dev) gọi
 SeedService.seedIfEmpty(), nạp resources/seed/*.json khi bảng users trống nên chạy lại không nhân đôi. Gồm 3 tài khoản mật khẩu 123456
 (hocvien@enlearning.vn USER, admin@enlearning.vn ADMIN, khoa@enlearning.vn USER bị khoá), 6 chủ đề, 6 bộ thẻ (36 từ), 4 bài nghe, 4 bài đọc,
-3 bài nói (13 câu), 5 đề viết, 3 đề kiểm tra, 45 câu hỏi (144 phương án). JSON được chuyển một lần từ src/mocks/data; từ nay JSON là nguồn sự thật.
+3 bài nói (13 câu), 5 đề viết, 3 đề kiểm tra, 45 câu hỏi (144 phương án). JSON trong resources/seed là nguồn sự thật (mock FE đã xoá).
 createdAt của user seed là lúc seed. Chưa seed lịch sử học (tiến độ thẻ, lượt làm bài, study_sessions, thông báo).
 
 4. Kiến trúc triển khai (Application Architecture)
 Backend dùng modular monolith: một Spring Boot, chia module auth, flashcard, writing, exam, learning, notification, admin.
 Luồng Backend: Controller → Service → Repository → MySQL.
 Frontend: React + TypeScript + Ant Design.
-Hạ tầng đơn giản, chạy trong một tiến trình, thay cho Redis, RabbitMQ, Cloudinary:
+Hạ tầng đơn giản, chạy trong một tiến trình, không cần dịch vụ ngoài:
 - Caffeine (`spring.cache.*`, `@Cacheable`/`@CacheEvict`): đệm danh sách chủ đề (TTL 5 phút, xoá khi admin ghi); cũng giữ bucket của rate limit.
 - `@Scheduled`: email nhắc học mỗi phút (`reminder/`, chống trùng bằng UNIQUE `email_logs` (user_id, reminder_date)); dọn refresh token, OTP hết hạn và phiên học rỗng mỗi giờ (`cleanup/`).
 - bucket4j trong bộ nhớ (`ratelimit/`, theo IP): `login` 10/phút, `check-email` 30/phút, `forgot-password` 5/phút, trả 429 `RATE_LIMITED`.
-- Email qua `EmailSender` (Gmail SMTP, hoặc ghi log khi chưa cấu hình); audio/ảnh giữ đường dẫn ngoài, không dùng Cloudinary..
+- Email qua `EmailSender` (Gmail SMTP, hoặc ghi log khi chưa cấu hình); audio/ảnh chỉ giữ đường dẫn ngoài.

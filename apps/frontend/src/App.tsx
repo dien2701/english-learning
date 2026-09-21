@@ -1,10 +1,9 @@
 import React from 'react';
-import { App as AntdApp, ConfigProvider } from 'antd';
+import { App as AntdApp, ConfigProvider, Spin } from 'antd';
 import { StyleProvider } from '@ant-design/cssinjs';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
 import AppShell from './components/layout/AppShell';
-import AdminLayout from './components/layout/AdminLayout';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import PublicRoute from './components/auth/PublicRoute';
 import { AuthProvider } from './contexts/AuthContext';
@@ -63,12 +62,8 @@ import NotificationCenterPage from './pages/notification/NotificationCenterPage'
 import ProfilePage from './pages/profile/ProfilePage';
 import SettingsPage from './pages/profile/SettingsPage';
 
-// Quản trị
-import AdminDashboardPage from './pages/admin/AdminDashboardPage';
-import ManageUsersPage from './pages/admin/ManageUsersPage';
-import ManageContentPage from './pages/admin/ManageContentPage';
-import ManageTopicsPage from './pages/admin/ManageTopicsPage';
-import ManageNotificationsPage from './pages/admin/ManageNotificationsPage';
+// Quản trị: nạp động để người học không tải mã của khu quản trị.
+const AdminArea = React.lazy(() => import('./pages/admin/AdminArea'));
 
 // Trang hệ thống
 import ForbiddenPage from './pages/system/ForbiddenPage';
@@ -132,20 +127,6 @@ const UserArea: React.FC = () => (
   </AppShell>
 );
 
-/** Khu vực quản trị, tách hẳn khỏi khu vực người học. */
-const AdminArea: React.FC = () => (
-  <AdminLayout>
-    <Routes>
-      <Route index element={<AdminDashboardPage />} />
-      <Route path="users" element={<ManageUsersPage />} />
-      <Route path="content" element={<ManageContentPage />} />
-      <Route path="topics" element={<ManageTopicsPage />} />
-      <Route path="notifications" element={<ManageNotificationsPage />} />
-      <Route path="*" element={<Navigate to="/admin" replace />} />
-    </Routes>
-  </AdminLayout>
-);
-
 /**
  * Lớp bọc theme: dựng lại cấu hình Ant Design mỗi khi đổi sáng/tối, để
  * component của AntD đổi màu cùng lúc với phần dựng bằng Tailwind.
@@ -176,7 +157,14 @@ const ThemedApp: React.FC = () => {
 
             {/* Cần đăng nhập */}
             <Route element={<ProtectedRoute />}>
-              <Route path="/admin/*" element={<AdminArea />} />
+              <Route
+                path="/admin/*"
+                element={
+                  <React.Suspense fallback={<Spin fullscreen />}>
+                    <AdminArea />
+                  </React.Suspense>
+                }
+              />
               <Route path="/*" element={<UserArea />} />
             </Route>
           </Routes>

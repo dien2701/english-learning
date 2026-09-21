@@ -55,7 +55,7 @@ Opus chỉ dùng khi Sonnet sai hai lần liên tiếp ở cùng một việc (g
 | 7a | 7 | Song ngữ: trang làm bài và kết quả | Sonnet | low | [x] |
 | 7b | 7 | Song ngữ: Hồ sơ, Cài đặt, Thống kê, Thông báo, Chat | Sonnet | low | [x] |
 | 7c | 7 | Song ngữ: Quản trị, trang lỗi, xác thực, `messageKey` từ BE; đóng đợt | Sonnet | low | [x] |
-| 9a | Cuối | Xoá mock, cập nhật tài liệu, nợ nhỏ, chia chunk build | Sonnet | medium | [ ] |
+| 9a | Cuối | Xoá mock, cập nhật tài liệu, nợ nhỏ, chia chunk build | Sonnet | medium | [x] |
 
 Mẹo tiết kiệm hạn mức Pro: mỗi phiên một dòng; hết phiên thì `/clear`, không nối tiếp phiên cũ.
 Nếu phiên dài quá (context > ~60%), dừng lại, tick phần đã xong và tách phần còn lại thành dòng mới (vd `2b-2`).
@@ -63,9 +63,10 @@ Lỗi do người dùng test thủ công phát hiện: phiên sửa riêng, prom
 
 ## Đợt cuối (không có file riêng)
 
-- [ ] Xoá `src/mocks`, `mockAdapter.ts` và các biến `VITE_MOCK_MODULES`/`VITE_USE_MOCK` khi danh sách mock rỗng.
-- [ ] Cập nhật `FEATURES_DONE.md` và `ARCHITECTURE.md` (hạ tầng: Caffeine, `@Scheduled`, bucket4j). Sửa `.agent/AGENTS.md` cho khớp nếu vẫn dùng Antigravity.
-- [ ] Nợ nhỏ: thư mục lồng `english-learning/english-learning`; chia chunk build 1,77 MB (nạp động khu quản trị).
+- [x] Xoá `src/mocks`, `mockAdapter.ts` và các biến `VITE_MOCK_MODULES`/`VITE_USE_MOCK` khi danh sách mock rỗng.
+- [x] Cập nhật `FEATURES_DONE.md` và `ARCHITECTURE.md` (hạ tầng: Caffeine, `@Scheduled`, bucket4j). Sửa `.agent/AGENTS.md` cho khớp nếu vẫn dùng Antigravity.
+- [x] Chia chunk build 1,77 MB: nạp động `AdminArea` + `codeSplitting.groups` trong `vite.config.ts` (chunk lớn nhất còn `vendor-antd` 1,14 MB).
+- [ ] Nợ nhỏ còn lại (làm tay, không nằm trong phiên Claude): thư mục lồng `english-learning/english-learning`, git root đang ở thư mục ngoài.
 
 Kiểm tra hoàn thành (đợt cuối):
 - [ ] `VITE_MOCK_MODULES` rỗng; chạy cả collection Postman (Dot 0 đến Dot 6) từ trên xuống, tất cả test xanh.

@@ -36,7 +36,7 @@ Tên file, tên hàm, tiêu chí xong viết tiếng Anh nếu được.
 - Không trả `passwordHash` hay dữ liệu nhạy cảm trong API. Bí mật (JWT_SECRET, RESET_CODE_SECRET, OPENAI_API_KEY, mật khẩu DB/email) ở `.env`, không commit, không để trong React.
 
 ## Quyết định đã chốt (21/09/2026)
-- Nối FE-BE theo từng module: FE có `VITE_MOCK_MODULES`; module BE xong thì bỏ khỏi danh sách; xoá `src/mocks` khi rỗng.
+- FE gọi BE thật cho mọi module; cơ chế mock (`src/mocks`, `VITE_MOCK_MODULES`) đã xoá ở phiên 9a.
 - AI: viết interface + bản giả (`@Profile("dev")`); dùng OpenAI thật khi `OPENAI_API_KEY` có giá trị. Luyện nói vẫn nhận file âm thanh ở BE, chỉ lưu transcript/điểm.
 - Hạ tầng đơn giản: `@Scheduled` + `email_logs`, Caffeine, bucket4j trong bộ nhớ, audio/ảnh giữ đường dẫn ngoài. KHÔNG thêm Redis, RabbitMQ, Cloudinary, Docker, CI hay test tự động FE trừ khi người dùng đổi ý.
 - Phạm vi ngoài 10 chức năng: chỉ thêm hoàn tất song ngữ VI/EN.
