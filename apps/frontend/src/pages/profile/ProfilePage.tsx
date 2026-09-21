@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { App, Form, Input, Upload } from 'antd';
-import type { UploadProps } from 'antd';
+import { App, Form, Input } from 'antd';
 import { useTranslation } from 'react-i18next';
 
 import { Button } from '../../components/ui/Button';
@@ -17,6 +16,7 @@ interface ProfileForm {
   fullName: string;
   email: string;
   phoneNumber?: string;
+  avatarUrl?: string;
 }
 
 interface PasswordForm {
@@ -36,9 +36,10 @@ const ProfilePage: React.FC = () => {
 
   const [isSavingProfile, setIsSavingProfile] = useState(false);
   const [isSavingPassword, setIsSavingPassword] = useState(false);
-  const [avatarUrl, setAvatarUrl] = useState<string | undefined>();
 
   const { data, isLoading, error, reload } = useApi(() => profileService.get(), []);
+  const formAvatarUrl = Form.useWatch('avatarUrl', profileForm);
+  const avatarUrl = formAvatarUrl ?? data?.avatarUrl;
 
   // Đổ dữ liệu vào form sau khi tải xong.
   useEffect(() => {
@@ -47,15 +48,15 @@ const ProfilePage: React.FC = () => {
         fullName: data.fullName,
         email: data.email,
         phoneNumber: data.phoneNumber,
+        avatarUrl: data.avatarUrl,
       });
-      setAvatarUrl(data.avatarUrl);
     }
   }, [data, profileForm]);
 
   const saveProfile = async (values: ProfileForm) => {
     setIsSavingProfile(true);
     try {
-      const updatedUser = await profileService.update({ ...values, avatarUrl });
+      const updatedUser = await profileService.update(values);
       updateUser(updatedUser);
       message.success(t('profile.updated'));
       reload();
@@ -110,23 +111,6 @@ const ProfilePage: React.FC = () => {
     .join('')
     .toUpperCase();
 
-  const uploadProps: UploadProps = {
-    showUploadList: false,
-    beforeUpload: (file) => {
-      const isImage = file.type.startsWith('image/');
-      if (!isImage) {
-        return Upload.LIST_IGNORE;
-      }
-      const reader = new FileReader();
-      reader.onload = () => {
-        setAvatarUrl(reader.result as string);
-        message.success(t('profile.uploadSuccess'));
-      };
-      reader.readAsDataURL(file);
-      return false;
-    },
-  };
-
   return (
     <div className="mx-auto w-full max-w-content px-4 py-6 sm:px-6 lg:px-8">
       <PageHeader title={t('profile.title')} />
@@ -134,18 +118,15 @@ const ProfilePage: React.FC = () => {
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-12">
         <div className="lg:col-span-4">
           <Card className="text-center">
-            <Upload {...uploadProps} accept="image/*" className="cursor-pointer group relative block w-fit mx-auto">
-              <div className="mx-auto grid h-24 w-24 place-items-center overflow-hidden rounded-pill bg-action text-[28px] font-extrabold text-white ring-2 ring-transparent transition-all group-hover:ring-action/30">
+            <div className="mx-auto w-fit">
+              <div className="mx-auto grid h-24 w-24 place-items-center overflow-hidden rounded-pill bg-action text-[28px] font-extrabold text-white">
                 {avatarUrl ? (
                   <img src={avatarUrl} alt="Avatar" className="h-full w-full object-cover" />
                 ) : (
                   initials
                 )}
-                <div className="absolute inset-0 grid place-items-center rounded-pill bg-black/40 opacity-0 transition-opacity group-hover:opacity-100">
-                  <span className="material-symbols-outlined text-white">photo_camera</span>
-                </div>
               </div>
-            </Upload>
+            </div>
 
             <h2 className="mt-4 text-[18px] font-extrabold text-ink">
               {data.fullName}
@@ -223,6 +204,14 @@ const ProfilePage: React.FC = () => {
                 name="phoneNumber"
               >
                 <Input size="large" />
+              </Form.Item>
+
+              <Form.Item
+                label={t('profile.avatarUrl')}
+                name="avatarUrl"
+                rules={[{ max: 500, message: t('errors.badRequest') }]}
+              >
+                <Input size="large" placeholder="https://" />
               </Form.Item>
 
               <Button type="submit" size="lg" loading={isSavingProfile}>

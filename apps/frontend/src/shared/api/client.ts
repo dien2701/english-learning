@@ -1,7 +1,7 @@
 import axios from 'axios';
-import type { AxiosRequestConfig, AxiosResponse } from 'axios';
+import type { AxiosAdapter, AxiosRequestConfig, AxiosResponse } from 'axios';
 
-import { mockAdapter } from './mockAdapter';
+import { isMockedRequest, mockAdapter } from './mockAdapter';
 import { ApiError } from './types';
 import type { ApiResponse } from './types';
 
@@ -9,12 +9,30 @@ import type { ApiResponse } from './types';
  * Cấu hình
  * ----------------------------------------------------------------- */
 
-export const USE_MOCK = import.meta.env.VITE_USE_MOCK !== 'false';
+/**
+ * Danh sách tiền tố đường dẫn còn đi qua mock (VITE_MOCK_MODULES, cách nhau
+ * bằng dấu phẩy). Rỗng hoặc không đặt nghĩa là mọi request gọi backend thật.
+ * `auth` bị loại: Auth luôn gọi backend thật.
+ */
+export const MOCK_MODULES: readonly string[] = (import.meta.env.VITE_MOCK_MODULES ?? '')
+  .split(',')
+  .map((m) => m.trim().replace(/^\/+|\/+$/g, ''))
+  .filter((m) => m !== '' && m !== 'auth');
+
+export const USE_MOCK = MOCK_MODULES.length > 0;
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? '/api';
 
 export const TOKEN_KEY = 'en_learning_token';
-export const REFRESH_TOKEN_KEY = 'en_learning_refresh_token';
+/** Khoá cũ từ trước khi refresh token chuyển sang cookie HttpOnly; chỉ để dọn. */
+const LEGACY_REFRESH_TOKEN_KEY = 'en_learning_refresh_token';
+
+declare module 'axios' {
+  interface AxiosRequestConfig {
+    /** Đã thử refresh và gửi lại một lần, không thử nữa. */
+    _retried?: boolean;
+  }
+}
 
 /* -------------------------------------------------------------------
  * Quản lý token
@@ -29,10 +47,10 @@ export const tokenStore = {
     }
   },
 
-  set: (token: string, refreshToken?: string): void => {
+  set: (token: string): void => {
     try {
       localStorage.setItem(TOKEN_KEY, token);
-      if (refreshToken) localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
+      localStorage.removeItem(LEGACY_REFRESH_TOKEN_KEY);
     } catch {
       /* Chế độ ẩn danh có thể chặn localStorage — bỏ qua, phiên sẽ chỉ
          tồn tại trong bộ nhớ của tab hiện tại. */
@@ -42,7 +60,7 @@ export const tokenStore = {
   clear: (): void => {
     try {
       localStorage.removeItem(TOKEN_KEY);
-      localStorage.removeItem(REFRESH_TOKEN_KEY);
+      localStorage.removeItem(LEGACY_REFRESH_TOKEN_KEY);
     } catch {
       /* bỏ qua */
     }
@@ -53,12 +71,53 @@ export const tokenStore = {
  * Khởi tạo axios
  * ----------------------------------------------------------------- */
 
+/* Cookie refresh_token (HttpOnly) chỉ được gửi khi withCredentials bật. */
 export const client = axios.create({
   baseURL: BASE_URL,
   timeout: 20_000,
   headers: { 'Content-Type': 'application/json' },
-  ...(USE_MOCK ? { adapter: mockAdapter } : {}),
+  withCredentials: true,
+  ...(USE_MOCK
+    ? {
+        /* Chọn mock hay backend thật theo từng request. */
+        adapter: ((config) =>
+          isMockedRequest(config, MOCK_MODULES)
+            ? mockAdapter(config)
+            : axios.getAdapter(axios.defaults.adapter)(config)) as AxiosAdapter,
+      }
+    : {}),
 });
+
+/** Instance trần (không interceptor) để gọi refresh mà không lặp vô hạn. */
+const refreshClient = axios.create({
+  baseURL: BASE_URL,
+  timeout: 20_000,
+  withCredentials: true,
+});
+
+const REFRESH_PATH = '/auth/refresh';
+
+/** Đường dẫn Auth mà 401 nghĩa là sai thông tin, không phải token hết hạn. */
+function skipsRefresh(url: string | undefined): boolean {
+  return url === '/auth/login' || url === REFRESH_PATH;
+}
+
+/** Nhiều request 401 cùng lúc chỉ chờ chung một lần refresh. */
+let refreshing: Promise<string> | null = null;
+
+function refreshAccessToken(): Promise<string> {
+  refreshing ??= refreshClient
+    .post<ApiResponse<{ token: string }>>(REFRESH_PATH)
+    .then((res) => {
+      const { token } = res.data.data;
+      tokenStore.set(token);
+      return token;
+    })
+    .finally(() => {
+      refreshing = null;
+    });
+  return refreshing;
+}
 
 /** Gắn token vào mọi request nếu người dùng đã đăng nhập. */
 client.interceptors.request.use((config) => {
@@ -82,7 +141,7 @@ export function setUnauthorizedHandler(handler: () => void): void {
 /** Đổi mọi loại lỗi của axios về một kiểu ApiError duy nhất. */
 client.interceptors.response.use(
   (response) => response,
-  (error: unknown) => {
+  async (error: unknown) => {
     if (!axios.isAxiosError(error)) {
       return Promise.reject(
         new ApiError(0, 'Đã xảy ra lỗi không xác định', 'UNKNOWN', undefined, {
@@ -125,6 +184,27 @@ client.interceptors.response.use(
           fieldErrorKeys?: Record<string, string>;
         }
       | undefined;
+
+    const original = error.config;
+    if (
+      status === 401 &&
+      original &&
+      !original._retried &&
+      !skipsRefresh(original.url) &&
+      !isMockedRequest(original, MOCK_MODULES)
+    ) {
+      original._retried = true;
+      let token: string | null = null;
+      try {
+        token = await refreshAccessToken();
+      } catch {
+        /* Refresh lỗi: phiên đã hết, rơi xuống nhánh xoá phiên bên dưới. */
+      }
+      if (token) {
+        original.headers.Authorization = `Bearer ${token}`;
+        return client.request(original);
+      }
+    }
 
     if (status === 401) {
       tokenStore.clear();

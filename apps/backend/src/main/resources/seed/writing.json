@@ -1,0 +1,72 @@
+[
+  {
+    "topic": "work",
+    "titleVi": "Viết email xin nghỉ phép",
+    "titleEn": "Write a Leave Request Email",
+    "level": "BEGINNER",
+    "suggestedMinutes": 20,
+    "minWords": 80,
+    "instructions": "Bạn cần nghỉ ba ngày để giải quyết việc gia đình. Viết một email gửi quản lý trực tiếp để xin nghỉ phép. Email cần nêu lý do, thời gian nghỉ cụ thể và phương án bàn giao công việc.",
+    "hints": [
+      "Mở đầu bằng lời chào trang trọng và nêu ngay mục đích.",
+      "Nói rõ ngày bắt đầu và ngày kết thúc kỳ nghỉ.",
+      "Đề xuất người nhận bàn giao và cách liên lạc khi cần gấp."
+    ]
+  },
+  {
+    "topic": "ielts",
+    "titleVi": "Mô tả một biểu đồ về thói quen đọc sách",
+    "titleEn": "Describe a Chart on Reading Habits",
+    "level": "ADVANCED",
+    "suggestedMinutes": 20,
+    "minWords": 150,
+    "instructions": "Biểu đồ cho thấy tỉ lệ người đọc sách in và sách điện tử ở bốn quốc gia trong giai đoạn 2015–2023. Hãy tóm tắt thông tin bằng cách chọn lọc và nêu bật các đặc điểm chính, đồng thời so sánh khi cần thiết.",
+    "hints": [
+      "Viết câu mở đầu diễn đạt lại đề bài bằng từ của bạn.",
+      "Nêu hai đến ba xu hướng nổi bật nhất, kèm số liệu cụ thể.",
+      "Dùng từ nối chỉ xu hướng: rose, declined, remained stable, fluctuated."
+    ]
+  },
+  {
+    "topic": "life",
+    "titleVi": "Ý kiến: Học trực tuyến có thay thế được lớp học truyền thống?",
+    "titleEn": "Opinion: Can Online Learning Replace the Classroom?",
+    "level": "INTERMEDIATE",
+    "suggestedMinutes": 30,
+    "minWords": 200,
+    "instructions": "Một số người cho rằng học trực tuyến sẽ thay thế hoàn toàn lớp học truyền thống trong mười năm tới. Bạn đồng ý hay không đồng ý? Nêu quan điểm của bạn kèm lý do và ví dụ cụ thể.",
+    "hints": [
+      "Nêu rõ quan điểm ngay trong đoạn mở bài.",
+      "Mỗi đoạn thân bài trình bày một lý do, kèm một ví dụ.",
+      "Thừa nhận quan điểm đối lập rồi phản biện để bài chặt chẽ hơn."
+    ]
+  },
+  {
+    "topic": "foundation",
+    "titleVi": "Giới thiệu bản thân với lớp học mới",
+    "titleEn": "Introduce Yourself to a New Class",
+    "level": "BEGINNER",
+    "suggestedMinutes": 15,
+    "minWords": 60,
+    "instructions": "Bạn vừa tham gia một lớp tiếng Anh mới. Viết một đoạn ngắn giới thiệu bản thân: tên, công việc hoặc ngành học, sở thích và lý do bạn học tiếng Anh.",
+    "hints": [
+      "Dùng thì hiện tại đơn để nói về bản thân.",
+      "Viết câu ngắn, mỗi câu một ý.",
+      "Kết bằng một câu về mục tiêu học tập của bạn."
+    ]
+  },
+  {
+    "topic": "toeic",
+    "titleVi": "Thư phàn nàn về sản phẩm bị lỗi",
+    "titleEn": "Complaint Letter About a Faulty Product",
+    "level": "INTERMEDIATE",
+    "suggestedMinutes": 25,
+    "minWords": 120,
+    "instructions": "Bạn mua một chiếc máy in trực tuyến nhưng hàng nhận được bị lỗi. Viết thư gửi bộ phận chăm sóc khách hàng, mô tả vấn đề và nêu rõ yêu cầu của bạn.",
+    "hints": [
+      "Nêu thông tin đơn hàng ngay đoạn đầu để người đọc tra cứu được.",
+      "Mô tả lỗi một cách khách quan, tránh cảm xúc.",
+      "Kết thúc bằng yêu cầu cụ thể: đổi hàng, hoàn tiền hay sửa chữa."
+    ]
+  }
+]

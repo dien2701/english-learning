@@ -93,31 +93,32 @@ export function toPublicUser(account: MockAccount): User {
 }
 
 /**
- * Token giả lập có dạng `mock.<userId>.<chuỗi ngẫu nhiên>`.
- *
- * Id người dùng nằm ngay trong token, giống cách JWT mang sẵn phần
- * payload, nên phiên vẫn còn hiệu lực sau khi tải lại trang dù kho dữ
- * liệu này nằm trong bộ nhớ. Nếu tra cứu qua một Map thì mỗi lần F5 sẽ
- * bị đá về màn hình đăng nhập.
+ * Token là JWT thật do backend cấp (đăng nhập không còn mock). Mock chỉ đọc
+ * claim `role` trong payload, không kiểm chữ ký: `sub` là UUID trong DB thật
+ * nên không khớp với id mock, vì vậy ADMIN dùng tài khoản mock admin, còn
+ * lại dùng học viên mock. Bỏ khi Hồ sơ/Dashboard nối backend thật.
  */
-export function issueToken(userId: string): string {
-  return `mock.${userId}.${Math.random().toString(36).slice(2, 10)}`;
+function readRoleClaim(token: string): string | undefined {
+  try {
+    const payload = token.split('.')[1];
+    if (!payload) return undefined;
+    const json = atob(payload.replace(/-/g, '+').replace(/_/g, '/'));
+    return (JSON.parse(json) as { role?: string }).role;
+  } catch {
+    return undefined;
+  }
 }
-
-/** Các token đã đăng xuất, thay cho danh sách đen trên Redis. */
-export const revokedTokens = new Set<string>();
 
 export function findAccountByToken(token?: string): MockAccount | undefined {
-  if (!token || revokedTokens.has(token)) return undefined;
+  if (!token) return undefined;
 
-  const [prefix, userId] = token.split('.');
-  if (prefix !== 'mock' || !userId) return undefined;
+  const role = readRoleClaim(token);
+  if (!role) return undefined;
 
-  return accounts.find((a) => a.id === userId);
+  return accounts.find(
+    (a) => a.status === 'ACTIVE' && a.role === (role === 'ADMIN' ? 'ADMIN' : 'USER'),
+  );
 }
-
-/** Mã đặt lại mật khẩu đã phát hành: email → mã. */
-export const resetCodes = new Map<string, string>();
 
 /* -------------------------------------------------------------------
  * Dữ liệu Dashboard

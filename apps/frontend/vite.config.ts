@@ -13,6 +13,14 @@ export default defineConfig({
     dedupe: ['react', 'react-dom'],
   },
 
+  server: {
+    /* Chuyển /api sang backend (context-path /api, không cần rewrite). FE và BE
+       cùng origin nên cookie refresh_token (SameSite=Lax) được gửi kèm. */
+    proxy: {
+      '/api': 'http://localhost:8080',
+    },
+  },
+
   optimizeDeps: {
     // Khai báo rõ để Vite gộp sẵn, tránh phải tối ưu lại giữa chừng.
     include: ['react', 'react-dom', 'antd', '@ant-design/cssinjs'],

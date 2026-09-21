@@ -1,0 +1,363 @@
+[
+  {
+    "topic": "life",
+    "titleVi": "Thói quen của người thành công",
+    "titleEn": "The Habits of Productive People",
+    "descriptionVi": "Bài đọc về các thói quen buổi sáng và ảnh hưởng tới năng suất.",
+    "descriptionEn": "A passage on morning routines and how they affect output.",
+    "level": "ADVANCED",
+    "timeLimitMinutes": 12,
+    "paragraphs": [
+      "Many highly productive people share a habit that costs nothing: they protect the first hour of their day. Instead of reaching for a phone, they spend that time on a single task chosen the night before.",
+      "Researchers at a university in Copenhagen followed 240 office workers for six months. Half of them were asked to plan one priority task each evening. The other half worked as usual. By the end of the study, the planning group reported finishing about thirty percent more meaningful work, even though both groups worked the same number of hours.",
+      "The explanation is not willpower. It is the cost of switching. Every time attention moves from one task to another, the brain needs time to rebuild context. A morning spent answering messages can therefore feel busy while producing very little.",
+      "Critics point out that the study relied on self-reported data, which tends to be generous. Still, the practical advice survives the criticism: decide the night before, and start before the inbox opens."
+    ],
+    "questions": [
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "What habit do highly productive people share?",
+        "explanation": "The first paragraph says they protect the first hour for a task chosen the night before.",
+        "options": [
+          {
+            "content": "Getting up before five",
+            "correct": false
+          },
+          {
+            "content": "Protecting the first hour of the day for a single task",
+            "correct": true
+          },
+          {
+            "content": "Exercising every morning",
+            "correct": false
+          },
+          {
+            "content": "Answering email as soon as they wake up",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "How many people did the Copenhagen study follow?",
+        "explanation": null,
+        "options": [
+          {
+            "content": "120",
+            "correct": false
+          },
+          {
+            "content": "240",
+            "correct": true
+          },
+          {
+            "content": "300",
+            "correct": false
+          },
+          {
+            "content": "600",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "According to the passage, why is switching between tasks inefficient?",
+        "explanation": "The passage calls this the cost of switching.",
+        "options": [
+          {
+            "content": "Because people get tired quickly",
+            "correct": false
+          },
+          {
+            "content": "Because the brain needs time to rebuild context each time",
+            "correct": true
+          },
+          {
+            "content": "Because of weak willpower",
+            "correct": false
+          },
+          {
+            "content": "Because the work gets broken up",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "READING",
+        "content": "Fill in the blank: critics say the study relied on ______ data.",
+        "explanation": "The passage uses the phrase self-reported data.",
+        "options": [],
+        "acceptedAnswers": [
+          "self-reported"
+        ]
+      }
+    ]
+  },
+  {
+    "topic": "toeic",
+    "titleVi": "Email xác nhận đơn hàng",
+    "titleEn": "Order Confirmation Email",
+    "descriptionVi": "Bài đọc ngắn dạng email thương mại, hợp với phần 7 của TOEIC.",
+    "descriptionEn": "A short business email in the style of TOEIC Part 7.",
+    "level": "INTERMEDIATE",
+    "timeLimitMinutes": 8,
+    "paragraphs": [
+      "Dear Ms. Tran,",
+      "Thank you for your order placed on 3 October. We are pleased to confirm that all twelve items are in stock and will be dispatched from our Hanoi warehouse within two working days.",
+      "Your invoice, number INV-20841, is attached to this email. Payment is due within thirty days of the invoice date. If you need a printed copy for your accounting department, simply reply to this message and we will post one to you.",
+      "Kind regards, Customer Service Team"
+    ],
+    "questions": [
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "How many items are in the order?",
+        "explanation": null,
+        "options": [
+          {
+            "content": "Two",
+            "correct": false
+          },
+          {
+            "content": "Twelve",
+            "correct": true
+          },
+          {
+            "content": "Twenty",
+            "correct": false
+          },
+          {
+            "content": "Thirty",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "When is payment due?",
+        "explanation": null,
+        "options": [
+          {
+            "content": "Within two days",
+            "correct": false
+          },
+          {
+            "content": "Within ten days",
+            "correct": false
+          },
+          {
+            "content": "Within thirty days",
+            "correct": true
+          },
+          {
+            "content": "Within sixty days",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "What should the customer do to get a printed invoice?",
+        "explanation": null,
+        "options": [
+          {
+            "content": "Call the switchboard",
+            "correct": false
+          },
+          {
+            "content": "Reply to this email",
+            "correct": true
+          },
+          {
+            "content": "Visit the Hanoi warehouse",
+            "correct": false
+          },
+          {
+            "content": "Fill in a form on the website",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      }
+    ]
+  },
+  {
+    "topic": "foundation",
+    "titleVi": "Lịch sinh hoạt của thư viện thành phố",
+    "titleEn": "City Library Opening Hours",
+    "descriptionVi": "Bài đọc cơ bản dạng thông báo, luyện tìm thông tin nhanh.",
+    "descriptionEn": "A simple notice for practising quick information lookup.",
+    "level": "BEGINNER",
+    "timeLimitMinutes": 6,
+    "paragraphs": [
+      "City Library — Opening Hours",
+      "Monday to Friday: 8:00 a.m. to 8:00 p.m. Saturday: 9:00 a.m. to 5:00 p.m. The library is closed on Sunday.",
+      "The children’s reading club meets every Saturday at 10:00 a.m. in Room B. Membership is free for residents. Please bring proof of address when you register."
+    ],
+    "questions": [
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Which day is the library closed?",
+        "explanation": null,
+        "options": [
+          {
+            "content": "Saturday",
+            "correct": false
+          },
+          {
+            "content": "Sunday",
+            "correct": true
+          },
+          {
+            "content": "Monday",
+            "correct": false
+          },
+          {
+            "content": "It never closes",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "What time does the children’s reading club meet?",
+        "explanation": null,
+        "options": [
+          {
+            "content": "8 a.m.",
+            "correct": false
+          },
+          {
+            "content": "10 a.m.",
+            "correct": true
+          },
+          {
+            "content": "5 p.m.",
+            "correct": false
+          },
+          {
+            "content": "8 p.m.",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "READING",
+        "content": "Fill in the blank: to register you must bring proof of ______.",
+        "explanation": null,
+        "options": [],
+        "acceptedAnswers": [
+          "address"
+        ]
+      }
+    ]
+  },
+  {
+    "topic": "ielts",
+    "titleVi": "Xu hướng làm việc từ xa",
+    "titleEn": "The Shift to Remote Work",
+    "descriptionVi": "Bài đọc học thuật có số liệu, luyện kỹ năng đọc biểu đồ bằng chữ.",
+    "descriptionEn": "An academic passage full of figures, for reading data written as prose.",
+    "level": "ADVANCED",
+    "timeLimitMinutes": 15,
+    "paragraphs": [
+      "Between 2019 and 2023, the proportion of employees working mainly from home rose from eight percent to twenty-six percent across the countries surveyed. The increase was not evenly distributed. In the technology sector the figure reached forty-one percent, while in manufacturing it barely moved.",
+      "Employers report mixed results. Some cite substantial savings on office space; others describe a significant drop in informal knowledge sharing, the kind that happens beside a coffee machine rather than in a scheduled meeting.",
+      "Employees are clearer. In every country surveyed, a majority said they would accept a smaller pay rise in exchange for keeping two remote days a week. Consequently, flexibility has become a bargaining chip in salary negotiations, a role it did not play five years ago."
+    ],
+    "questions": [
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "What proportion worked mainly from home in 2023?",
+        "explanation": null,
+        "options": [
+          {
+            "content": "8%",
+            "correct": false
+          },
+          {
+            "content": "26%",
+            "correct": true
+          },
+          {
+            "content": "41%",
+            "correct": false
+          },
+          {
+            "content": "50%",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Which sector had the highest share of remote work?",
+        "explanation": null,
+        "options": [
+          {
+            "content": "Manufacturing",
+            "correct": false
+          },
+          {
+            "content": "Education",
+            "correct": false
+          },
+          {
+            "content": "Technology",
+            "correct": true
+          },
+          {
+            "content": "Retail",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "What drawback do employers report?",
+        "explanation": null,
+        "options": [
+          {
+            "content": "Higher office costs",
+            "correct": false
+          },
+          {
+            "content": "Less informal knowledge sharing",
+            "correct": true
+          },
+          {
+            "content": "Staff working fewer hours",
+            "correct": false
+          },
+          {
+            "content": "Difficulty hiring",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      }
+    ]
+  }
+]

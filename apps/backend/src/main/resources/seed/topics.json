@@ -1,0 +1,32 @@
+[
+  {
+    "slug": "toeic",
+    "nameVi": "TOEIC",
+    "nameEn": "TOEIC"
+  },
+  {
+    "slug": "ielts",
+    "nameVi": "IELTS",
+    "nameEn": "IELTS"
+  },
+  {
+    "slug": "foundation",
+    "nameVi": "Nền tảng",
+    "nameEn": "Foundation"
+  },
+  {
+    "slug": "work",
+    "nameVi": "Công việc",
+    "nameEn": "Work"
+  },
+  {
+    "slug": "life",
+    "nameVi": "Đời sống",
+    "nameEn": "Everyday life"
+  },
+  {
+    "slug": "travel",
+    "nameVi": "Du lịch",
+    "nameEn": "Travel"
+  }
+]

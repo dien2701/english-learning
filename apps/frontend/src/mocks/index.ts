@@ -8,7 +8,6 @@
 
 import { routeCount } from './router';
 
-import './handlers/auth';
 import './handlers/dashboard';
 import './handlers/flashcard';
 import './handlers/writing';
@@ -18,14 +17,12 @@ import './handlers/chat';
 import './handlers/admin';
 import './handlers/misc';
 
-export { demoCredentials } from './handlers/auth';
-
-/** Ghi một dòng log để biết mock đang bật và có bao nhiêu route. */
-export function announceMocks(): void {
+/** Ghi một dòng log để biết module nào đang mock và có bao nhiêu route. */
+export function announceMocks(modules: readonly string[]): void {
   if (import.meta.env.DEV) {
     console.info(
-      `%c[mock] Đang chạy với dữ liệu giả lập — ${routeCount()} route. ` +
-        `Đặt VITE_USE_MOCK=false trong .env để gọi backend thật.`,
+      `%c[mock] Module giả lập: ${modules.join(', ')} (${routeCount()} route). ` +
+        `Bỏ module khỏi VITE_MOCK_MODULES trong .env để gọi backend thật.`,
       'color:#15803d;font-weight:600',
     );
   }

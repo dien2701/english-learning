@@ -6,7 +6,6 @@ export type { User };
 
 export interface AuthSession {
   token: string;
-  refreshToken: string;
   user: User;
 }
 
@@ -30,20 +29,19 @@ export interface ResetPasswordPayload {
 }
 
 /**
- * Mọi hàm ở đây gọi axios như với backend thật. Trong giai đoạn hiện tại
- * request bị mock adapter chặn lại (xem src/shared/api/mockAdapter.ts),
- * nên đổi sang server thật chỉ cần sửa biến môi trường VITE_USE_MOCK.
+ * Auth luôn gọi backend thật. Refresh token nằm trong cookie HttpOnly do
+ * backend đặt, JavaScript không đọc được; ở đây chỉ giữ access token.
  */
 export const authService = {
   login: async (payload: LoginPayload): Promise<AuthSession> => {
     const session = await http.post<AuthSession>('/auth/login', payload);
-    tokenStore.set(session.token, session.refreshToken);
+    tokenStore.set(session.token);
     return session;
   },
 
   register: async (payload: RegisterPayload): Promise<AuthSession> => {
     const session = await http.post<AuthSession>('/auth/register', payload);
-    tokenStore.set(session.token, session.refreshToken);
+    tokenStore.set(session.token);
     return session;
   },
 

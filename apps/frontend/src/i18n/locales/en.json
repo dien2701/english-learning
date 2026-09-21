@@ -405,6 +405,7 @@
     "phoneNumber": "Phone number",
     "role": "Role",
     "uploadAvatar": "Upload avatar",
+    "avatarUrl": "Avatar image URL",
     "uploadSuccess": "Avatar uploaded successfully",
     "changePassword": "Change password",
     "currentPassword": "Current password",

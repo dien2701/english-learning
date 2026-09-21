@@ -1,0 +1,2209 @@
+{
+  "info": {
+    "name": "EN-Learning API",
+    "description": "Collection tích luỹ: mỗi đợt thêm một folder. Dùng cùng local.postman_environment.json. Chạy: Run collection theo đúng thứ tự.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Dot 0 - Auth",
+      "description": "Kiểm tra API Auth (đã có sẵn). Chạy theo đúng thứ tự; cần backend chạy profile dev và Postman bật cookie.",
+      "item": [
+        {
+          "name": "01 Login admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "const j = pm.response.json();",
+                  "pm.test('token + user ADMIN', () => { pm.expect(j.success).to.eql(true); pm.expect(j.data.token).to.be.a('string').and.not.empty; pm.expect(j.data.user.role).to.eql('ADMIN'); pm.expect(j.data.user.email).to.eql('admin@enlearning.vn'); });",
+                  "pm.test('không lộ passwordHash / refreshToken', () => { const t = pm.response.text(); pm.expect(t).to.not.include('passwordHash'); pm.expect(t).to.not.include('refreshToken'); });",
+                  "const sc = pm.response.headers.filter(h => h.key.toLowerCase() === 'set-cookie').map(h => h.value).join(';');",
+                  "pm.test('cookie refresh_token, HttpOnly', () => { pm.expect(sc).to.include('refresh_token='); pm.expect(sc).to.include('HttpOnly'); });",
+                  "pm.environment.set('adminToken', j.data.token);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@enlearning.vn\",\n  \"password\": \"123456\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "02 Login user",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "const j = pm.response.json();",
+                  "pm.test('token + user USER', () => { pm.expect(j.success).to.eql(true); pm.expect(j.data.token).to.be.a('string').and.not.empty; pm.expect(j.data.user.role).to.eql('USER'); pm.expect(j.data.user.email).to.eql('hocvien@enlearning.vn'); });",
+                  "pm.test('không lộ passwordHash / refreshToken', () => { const t = pm.response.text(); pm.expect(t).to.not.include('passwordHash'); pm.expect(t).to.not.include('refreshToken'); });",
+                  "const sc = pm.response.headers.filter(h => h.key.toLowerCase() === 'set-cookie').map(h => h.value).join(';');",
+                  "pm.test('cookie refresh_token, HttpOnly', () => { pm.expect(sc).to.include('refresh_token='); pm.expect(sc).to.include('HttpOnly'); });",
+                  "pm.environment.set('token', j.data.token);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"hocvien@enlearning.vn\",\n  \"password\": \"123456\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "03 Me (có token)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "const j = pm.response.json();",
+                  "pm.test('đúng người dùng', () => { pm.expect(j.data.email).to.eql('hocvien@enlearning.vn'); });",
+                  "pm.test('không lộ passwordHash / refreshToken', () => { const t = pm.response.text(); pm.expect(t).to.not.include('passwordHash'); pm.expect(t).to.not.include('refreshToken'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "me"
+              ]
+            }
+          }
+        },
+        {
+          "name": "04 Me (không token) -> 401",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 401', () => pm.response.to.have.status(401));",
+                  "const j = pm.response.json();",
+                  "pm.test('success=false, code=UNAUTHORIZED', () => { pm.expect(j.success).to.eql(false); pm.expect(j.code).to.eql('UNAUTHORIZED'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "me"
+              ]
+            }
+          }
+        },
+        {
+          "name": "05 Refresh (dùng cookie)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "const j = pm.response.json();",
+                  "pm.test('token mới + cookie xoay', () => { pm.expect(j.data.token).to.be.a('string').and.not.empty; pm.expect(j.data.user.email).to.eql('hocvien@enlearning.vn'); });",
+                  "pm.test('không lộ passwordHash / refreshToken', () => { const t = pm.response.text(); pm.expect(t).to.not.include('passwordHash'); pm.expect(t).to.not.include('refreshToken'); });",
+                  "const sc = pm.response.headers.filter(h => h.key.toLowerCase() === 'set-cookie').map(h => h.value).join(';');",
+                  "pm.test('cookie refresh_token, HttpOnly', () => { pm.expect(sc).to.include('refresh_token='); pm.expect(sc).to.include('HttpOnly'); });",
+                  "pm.environment.set('refreshedToken', j.data.token);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/refresh",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "refresh"
+              ]
+            }
+          }
+        },
+        {
+          "name": "06 check-email đã tồn tại",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('available=false', () => pm.expect(pm.response.json().data.available).to.eql(false));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/check-email?email=hocvien@enlearning.vn",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "check-email"
+              ],
+              "query": [
+                {
+                  "key": "email",
+                  "value": "hocvien@enlearning.vn"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "07 check-email còn trống",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('available=true', () => pm.expect(pm.response.json().data.available).to.eql(true));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/check-email?email=moi.{{$timestamp}}@example.com",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "check-email"
+              ],
+              "query": [
+                {
+                  "key": "email",
+                  "value": "moi.{{$timestamp}}@example.com"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "08 Register",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.environment.set('newEmail', 'postman.' + Date.now() + '@example.com');"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 201', () => pm.response.to.have.status(201));",
+                  "const j = pm.response.json();",
+                  "pm.test('tạo USER + có token', () => { pm.expect(j.data.token).to.be.a('string').and.not.empty; pm.expect(j.data.user.role).to.eql('USER'); });",
+                  "pm.test('không lộ passwordHash / refreshToken', () => { const t = pm.response.text(); pm.expect(t).to.not.include('passwordHash'); pm.expect(t).to.not.include('refreshToken'); });",
+                  "const sc = pm.response.headers.filter(h => h.key.toLowerCase() === 'set-cookie').map(h => h.value).join(';');",
+                  "pm.test('cookie refresh_token, HttpOnly', () => { pm.expect(sc).to.include('refresh_token='); pm.expect(sc).to.include('HttpOnly'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Postman Tester\",\n  \"email\": \"{{newEmail}}\",\n  \"password\": \"123456\",\n  \"confirmPassword\": \"123456\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "09 Register trùng email -> 409",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 409', () => pm.response.to.have.status(409));",
+                  "const j = pm.response.json();",
+                  "pm.test('success=false, code=EMAIL_TAKEN', () => { pm.expect(j.success).to.eql(false); pm.expect(j.code).to.eql('EMAIL_TAKEN'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Postman Tester\",\n  \"email\": \"{{newEmail}}\",\n  \"password\": \"123456\",\n  \"confirmPassword\": \"123456\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "10 Register sai xác nhận mật khẩu -> 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 400', () => pm.response.to.have.status(400));",
+                  "const j = pm.response.json();",
+                  "pm.test('success=false, code=VALIDATION', () => { pm.expect(j.success).to.eql(false); pm.expect(j.code).to.eql('VALIDATION'); });",
+                  "pm.test('có fieldErrorKeys', () => pm.expect(j).to.have.property('fieldErrorKeys'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Postman Tester\",\n  \"email\": \"khac.{{$timestamp}}@example.com\",\n  \"password\": \"123456\",\n  \"confirmPassword\": \"654321\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "11 Login sai mật khẩu -> 401",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 401', () => pm.response.to.have.status(401));",
+                  "const j = pm.response.json();",
+                  "pm.test('success=false, code=INVALID_CREDENTIALS', () => { pm.expect(j.success).to.eql(false); pm.expect(j.code).to.eql('INVALID_CREDENTIALS'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"hocvien@enlearning.vn\",\n  \"password\": \"sai-mat-khau\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "12 Login tài khoản bị khoá -> 403",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 403', () => pm.response.to.have.status(403));",
+                  "const j = pm.response.json();",
+                  "pm.test('success=false, code=ACCOUNT_LOCKED', () => { pm.expect(j.success).to.eql(false); pm.expect(j.code).to.eql('ACCOUNT_LOCKED'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"khoa@enlearning.vn\",\n  \"password\": \"123456\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "13 Forgot password (email có tài khoản)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "const m = pm.response.json().data.message;",
+                  "pm.test('có thông điệp', () => pm.expect(m).to.be.a('string').and.not.empty);",
+                  "pm.environment.set('forgotMsg', m);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/forgot-password",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "forgot-password"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"hocvien@enlearning.vn\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "14 Forgot password (email không tồn tại) cùng thông điệp",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('không lộ email nào có tài khoản', () => pm.expect(pm.response.json().data.message).to.eql(pm.environment.get('forgotMsg')));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/forgot-password",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "forgot-password"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"khong.ton.tai.{{$timestamp}}@example.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "15 Reset password sai mã -> 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 400', () => pm.response.to.have.status(400));",
+                  "const j = pm.response.json();",
+                  "pm.test('success=false, code=INVALID_CODE', () => { pm.expect(j.success).to.eql(false); pm.expect(j.code).to.eql('INVALID_CODE'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/reset-password",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "reset-password"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"hocvien@enlearning.vn\",\n  \"code\": \"000000\",\n  \"password\": \"123456\",\n  \"confirmPassword\": \"123456\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "16 /admin với token USER -> 403",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 403', () => pm.response.to.have.status(403));",
+                  "const j = pm.response.json();",
+                  "pm.test('success=false, code=FORBIDDEN', () => { pm.expect(j.success).to.eql(false); pm.expect(j.code).to.eql('FORBIDDEN'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "users"
+              ]
+            }
+          }
+        },
+        {
+          "name": "17 /admin không token -> 401",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 401', () => pm.response.to.have.status(401));",
+                  "const j = pm.response.json();",
+                  "pm.test('success=false, code=UNAUTHORIZED', () => { pm.expect(j.success).to.eql(false); pm.expect(j.code).to.eql('UNAUTHORIZED'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "users"
+              ]
+            }
+          }
+        },
+        {
+          "name": "18 Logout",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('loggedOut=true', () => pm.expect(pm.response.json().data.loggedOut).to.eql(true));",
+                  "const sc = pm.response.headers.filter(h => h.key.toLowerCase() === 'set-cookie').map(h => h.value).join(';');",
+                  "pm.test('cookie bị xoá (Max-Age=0)', () => { pm.expect(sc).to.include('refresh_token='); pm.expect(sc).to.include('Max-Age=0'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/session",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "session"
+              ]
+            }
+          }
+        },
+        {
+          "name": "19 Refresh sau logout -> 401",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 401', () => pm.response.to.have.status(401));",
+                  "const j = pm.response.json();",
+                  "pm.test('success=false, code=UNAUTHORIZED', () => { pm.expect(j.success).to.eql(false); pm.expect(j.code).to.eql('UNAUTHORIZED'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/refresh",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "refresh"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Dot 1 - Flashcard, Profile",
+      "description": "Cần đã chạy \"02 Login user\" của Dot 0 (đặt {{token}} của hocvien@enlearning.vn). Chạy đúng thứ tự: các request 06-12 dùng deckId/cardId lưu từ 02/05; 26-28 đổi mật khẩu rồi đổi lại. Tiến độ của hocvien bị thay đổi (chạy lại được). Ca \"đổi mật khẩu thu hồi phiên ở nơi khác\" đã có trong test tự động BE (ProfileApiTests), không thử được trong một cookie jar.",
+      "item": [
+        {
+          "name": "01 GET /topics",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "const d = pm.response.json().data;",
+                  "pm.test('mảng chủ đề có id, name.vi/en, itemCount', () => { pm.expect(d).to.be.an('array').and.not.empty; pm.expect(d[0]).to.have.property('id'); pm.expect(d[0].name).to.have.all.keys('vi','en'); pm.expect(d[0].itemCount).to.be.a('number'); });",
+                  "const t = d.find(x => x.itemCount > 0) || d[0]; pm.environment.set('topicId', t.id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/topics",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "topics"
+              ]
+            }
+          }
+        },
+        {
+          "name": "02 GET /flashcard/decks (phân trang)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "const p = pm.response.json().data;",
+                  "pm.test('có phân trang', () => { pm.expect(p.items).to.be.an('array').and.not.empty; ['page','pageSize','total','totalPages'].forEach(k => pm.expect(p).to.have.property(k)); });",
+                  "pm.test('mỗi bộ có id, title, level, status hợp lệ', () => p.items.forEach(d => { pm.expect(d).to.have.property('id'); pm.expect(d.title).to.have.all.keys('vi','en'); pm.expect(['BEGINNER','INTERMEDIATE','ADVANCED']).to.include(d.level); pm.expect(['NOT_STARTED','IN_PROGRESS','COMPLETED']).to.include(d.status); }));",
+                  "const d = p.items.find(x => x.totalCards >= 2) || p.items[0]; pm.environment.set('deckId', d.id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/flashcard/decks",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "flashcard",
+                "decks"
+              ]
+            }
+          }
+        },
+        {
+          "name": "03 GET /flashcard/decks?topicId (lọc đúng tập con)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('mọi bộ thuộc topicId', () => pm.response.json().data.items.forEach(d => pm.expect(d.topicId).to.eql(pm.environment.get('topicId'))));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/flashcard/decks?topicId={{topicId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "flashcard",
+                "decks"
+              ],
+              "query": [
+                {
+                  "key": "topicId",
+                  "value": "{{topicId}}"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "04 GET /flashcard/decks?level=NOPE -> 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 400', () => pm.response.to.have.status(400));",
+                  "pm.test('VALIDATION', () => pm.expect(pm.response.json().code).to.eql('VALIDATION'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/flashcard/decks?level=NOPE",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "flashcard",
+                "decks"
+              ],
+              "query": [
+                {
+                  "key": "level",
+                  "value": "NOPE"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "05 GET /flashcard/decks/{{deckId}}",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "const d = pm.response.json().data;",
+                  "pm.test('có danh sách thẻ', () => { pm.expect(d.cards).to.be.an('array').and.not.empty; pm.expect(d.cards[0]).to.include.keys('id','word','meaning','recallLevel'); pm.expect(d.cards[0].meaning).to.have.all.keys('vi','en'); });",
+                  "pm.environment.set('cardId', d.cards[0].id); pm.environment.set('cardId2', (d.cards[1] || d.cards[0]).id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/flashcard/decks/{{deckId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "flashcard",
+                "decks",
+                "{{deckId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "06 POST progress REMEMBERED -> 200",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "const d = pm.response.json().data; pm.test('savedAt, learnedCards, progressPercent', () => { pm.expect(d.savedAt).to.be.a('string'); pm.expect(d.learnedCards).to.be.at.least(1); pm.expect(d.progressPercent).to.be.within(1, 100); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/flashcard/decks/{{deckId}}/progress",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "flashcard",
+                "decks",
+                "{{deckId}}",
+                "progress"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"flashcardId\": \"{{cardId}}\",\n  \"recallLevel\": \"REMEMBERED\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "07 POST progress NOT_REMEMBERED (thẻ 2) -> 200",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/flashcard/decks/{{deckId}}/progress",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "flashcard",
+                "decks",
+                "{{deckId}}",
+                "progress"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"flashcardId\": \"{{cardId2}}\",\n  \"recallLevel\": \"NOT_REMEMBERED\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "08 POST progress recallLevel sai -> 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 400', () => pm.response.to.have.status(400));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/flashcard/decks/{{deckId}}/progress",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "flashcard",
+                "decks",
+                "{{deckId}}",
+                "progress"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"flashcardId\": \"{{cardId}}\",\n  \"recallLevel\": \"MAYBE\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "09 POST progress thẻ không thuộc bộ -> 404",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 404', () => pm.response.to.have.status(404));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/flashcard/decks/{{deckId}}/progress",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "flashcard",
+                "decks",
+                "{{deckId}}",
+                "progress"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"flashcardId\": \"00000000-0000-7000-8000-000000000000\",\n  \"recallLevel\": \"REMEMBERED\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "10 POST finish -> từ cần ôn",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "const d = pm.response.json().data;",
+                  "pm.test('đếm đúng', () => { pm.expect(d.studiedCards).to.eql(pm.environment.get('cardId') === pm.environment.get('cardId2') ? 1 : 2); pm.expect(d.remembered).to.be.at.least(1); pm.expect(d.completionPercent).to.be.within(0, 100); });",
+                  "pm.test('wordsToReview chứa thẻ NOT_REMEMBERED', () => { if (pm.environment.get('cardId') !== pm.environment.get('cardId2')) pm.expect(d.wordsToReview.map(w => w.id)).to.include(pm.environment.get('cardId2')); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/flashcard/decks/{{deckId}}/finish",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "flashcard",
+                "decks",
+                "{{deckId}}",
+                "finish"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"studiedIds\": [\"{{cardId}}\", \"{{cardId2}}\"]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "11 POST finish id lạ -> 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 400', () => pm.response.to.have.status(400));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/flashcard/decks/{{deckId}}/finish",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "flashcard",
+                "decks",
+                "{{deckId}}",
+                "finish"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"studiedIds\": [\"00000000-0000-7000-8000-000000000000\"]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "12 GET deck: recallLevel đã lưu",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "const d = pm.response.json().data; pm.test('thẻ 1 REMEMBERED (nếu khác thẻ 2)', () => { if (pm.environment.get('cardId') !== pm.environment.get('cardId2')) pm.expect(d.cards.find(c => c.id === pm.environment.get('cardId')).recallLevel).to.eql('REMEMBERED'); });",
+                  "pm.test('status không còn NOT_STARTED', () => pm.expect(d.status).to.not.eql('NOT_STARTED'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/flashcard/decks/{{deckId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "flashcard",
+                "decks",
+                "{{deckId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "13 GET /profile",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('không lộ passwordHash', () => pm.expect(pm.response.text()).to.not.include('passwordHash'));",
+                  "const d = pm.response.json().data; pm.test('có số thống kê', () => { pm.expect(d.email).to.eql('hocvien@enlearning.vn'); ['joinedAt','totalMinutes','completedLessons','masteredWords'].forEach(k => pm.expect(d).to.have.property(k)); });",
+                  "pm.environment.set('origName', d.fullName);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/profile",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "profile"
+              ]
+            }
+          }
+        },
+        {
+          "name": "14 PATCH /profile đổi fullName",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('không lộ passwordHash', () => pm.expect(pm.response.text()).to.not.include('passwordHash'));",
+                  "pm.test('tên mới', () => pm.expect(pm.response.json().data.fullName).to.eql('Học viên Postman'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/profile",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "profile"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Học viên Postman\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "15 GET /profile khớp tên mới",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('khớp', () => pm.expect(pm.response.json().data.fullName).to.eql('Học viên Postman'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/profile",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "profile"
+              ]
+            }
+          }
+        },
+        {
+          "name": "16 PATCH /profile khôi phục tên",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/profile",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "profile"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"{{origName}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "17 PATCH /profile email sai định dạng -> 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 400', () => pm.response.to.have.status(400));",
+                  "pm.test('fieldErrorKeys.email', () => pm.expect(pm.response.json().fieldErrorKeys).to.have.property('email'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/profile",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "profile"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"khong-hop-le\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "18 PATCH /profile email đã dùng -> 409",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 409', () => pm.response.to.have.status(409));",
+                  "pm.test('EMAIL_TAKEN', () => pm.expect(pm.response.json().code).to.eql('EMAIL_TAKEN'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/profile",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "profile"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@enlearning.vn\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "19 GET /settings",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "const d = pm.response.json().data; pm.test('đủ trường', () => { ['language','theme','emailReminders','reminderTime','dailyGoalMinutes','timeZone'].forEach(k => pm.expect(d).to.have.property(k)); pm.expect(d.reminderTime).to.match(/^\\d{2}:\\d{2}$/); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/settings",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "settings"
+              ]
+            }
+          }
+        },
+        {
+          "name": "20 PATCH /settings -> en, dark, 45 phút, 07:30",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/settings",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "settings"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"language\": \"en\",\n  \"theme\": \"dark\",\n  \"dailyGoalMinutes\": 45,\n  \"reminderTime\": \"07:30\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "21 GET /settings giữ giá trị",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "const d = pm.response.json().data; pm.test('giữ giá trị', () => { pm.expect(d.language).to.eql('en'); pm.expect(d.theme).to.eql('dark'); pm.expect(d.dailyGoalMinutes).to.eql(45); pm.expect(d.reminderTime).to.eql('07:30'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/settings",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "settings"
+              ]
+            }
+          }
+        },
+        {
+          "name": "22 PATCH /settings khôi phục mặc định",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/settings",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "settings"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"language\": \"vi\",\n  \"theme\": \"light\",\n  \"dailyGoalMinutes\": 30,\n  \"reminderTime\": \"20:00\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "23 PATCH /settings language sai -> 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 400', () => pm.response.to.have.status(400));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/settings",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "settings"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"language\": \"fr\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "24 POST /profile/password sai mật khẩu hiện tại -> 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 400', () => pm.response.to.have.status(400));",
+                  "pm.test('WRONG_PASSWORD', () => pm.expect(pm.response.json().code).to.eql('WRONG_PASSWORD'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/profile/password",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "profile",
+                "password"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"currentPassword\": \"sai-sai-sai\",\n  \"newPassword\": \"123456a\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "25 POST /profile/password mật khẩu mới ngắn -> 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 400', () => pm.response.to.have.status(400));",
+                  "pm.test('VALIDATION', () => pm.expect(pm.response.json().code).to.eql('VALIDATION'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/profile/password",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "profile",
+                "password"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"currentPassword\": \"123456\",\n  \"newPassword\": \"123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "26 POST /profile/password đổi sang 123456a",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "const sc = pm.response.headers.filter(h => h.key.toLowerCase() === 'set-cookie').map(h => h.value).join(';'); pm.test('cấp cookie refresh mới', () => { pm.expect(sc).to.include('refresh_token='); pm.expect(sc).to.include('HttpOnly'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/profile/password",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "profile",
+                "password"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"currentPassword\": \"123456\",\n  \"newPassword\": \"123456a\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "27 POST /auth/refresh bằng cookie mới -> 200",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.environment.set('token', pm.response.json().data.token);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/refresh",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "refresh"
+              ]
+            }
+          }
+        },
+        {
+          "name": "28 POST /profile/password đổi lại 123456",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/profile/password",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "profile",
+                "password"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"currentPassword\": \"123456a\",\n  \"newPassword\": \"123456\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "29 POST /study/heartbeat -> 200",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "const d = pm.response.json().data; pm.test('có sessionId, activeSeconds', () => { pm.expect(d.sessionId).to.be.a('string'); pm.expect(d.activeSeconds).to.be.a('number').and.at.least(0); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/study/heartbeat",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "study",
+                "heartbeat"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"skill\": \"VOCABULARY\",\n  \"refId\": \"{{deckId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "30 POST /study/heartbeat skill sai -> 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 400', () => pm.response.to.have.status(400));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/study/heartbeat",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "study",
+                "heartbeat"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"skill\": \"DANCING\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "31 GET /topics không token -> 401",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 401', () => pm.response.to.have.status(401));",
+                  "pm.test('UNAUTHORIZED', () => pm.expect(pm.response.json().code).to.eql('UNAUTHORIZED'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/topics",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "topics"
+              ]
+            }
+          }
+        },
+        {
+          "name": "32 GET /flashcard/decks không token -> 401",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 401', () => pm.response.to.have.status(401));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/flashcard/decks",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "flashcard",
+                "decks"
+              ]
+            }
+          }
+        },
+        {
+          "name": "33 GET /profile không token -> 401",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 401', () => pm.response.to.have.status(401));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/profile",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "profile"
+              ]
+            }
+          }
+        },
+        {
+          "name": "34 GET /settings không token -> 401",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 401', () => pm.response.to.have.status(401));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/settings",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "settings"
+              ]
+            }
+          }
+        },
+        {
+          "name": "35 POST /study/heartbeat không token -> 401",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 401', () => pm.response.to.have.status(401));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/study/heartbeat",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "study",
+                "heartbeat"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"skill\": \"VOCABULARY\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

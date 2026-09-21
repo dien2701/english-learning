@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useEffectEvent, useState } from 'react';
 import { Drawer, Form, Input, Select, Space, Button, App, Spin, Tabs, Upload } from 'antd';
 import { useTranslation } from 'react-i18next';
-import type { AdminContentPayload } from '../../../types/admin';
+import type { AdminContentChild, AdminContentPayload } from '../../../types/admin';
 import type { Skill, Level } from '../../../types/common';
 import { useLabels } from '../../../hooks/useLabels';
 import { adminService } from '../../../services/adminService';
@@ -22,6 +22,19 @@ interface ContentEditorDrawerProps {
   editingId: string | null;
 }
 
+interface ContentFormValues {
+  skill: Skill;
+  level: string;
+  titleVi: string;
+  titleEn: string;
+  topicNameVi?: string;
+  topicNameEn: string;
+  prompt?: string;
+  mediaUrl?: string;
+  contentBody?: string;
+  items?: AdminContentChild[];
+}
+
 const SKILLS: Skill[] = ['VOCABULARY', 'LISTENING', 'READING', 'WRITING', 'SPEAKING', 'EXAM'];
 const LEVELS: Level[] = ['BEGINNER', 'INTERMEDIATE', 'ADVANCED'];
 
@@ -37,47 +50,47 @@ export const ContentEditorDrawer: React.FC<ContentEditorDrawerProps> = ({
   const { describe } = useApiError();
   const [form] = Form.useForm();
   
-  const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
-  const [selectedSkill, setSelectedSkill] = useState<Skill | undefined>();
+  const [loadedId, setLoadedId] = useState<string | null>(null);
+  const selectedSkill = Form.useWatch<Skill | undefined>('skill', form);
+  const loading = open && !!editingId && loadedId !== editingId;
+
+  const onLoaded = useEffectEvent((id: string, data: Awaited<ReturnType<typeof adminService.getContent>>) => {
+    form.setFieldsValue({
+      skill: data.payload.skill,
+      titleVi: data.payload.title?.vi,
+      titleEn: data.payload.title?.en,
+      level: data.payload.level,
+      topicNameVi: data.payload.topicName?.vi,
+      topicNameEn: data.payload.topicName?.en,
+      prompt: data.payload.prompt,
+      mediaUrl: data.payload.mediaUrl,
+      contentBody: data.payload.contentBody,
+      items: data.payload.items,
+    });
+    setLoadedId(id);
+  });
+
+  const onLoadError = useEffectEvent((err: unknown) => {
+    message.error(describe(err, 'admin.loadError'));
+    onClose();
+  });
 
   useEffect(() => {
-    if (open) {
-      if (editingId) {
-        loadData(editingId);
-      } else {
-        form.resetFields();
-        setSelectedSkill(undefined);
-      }
+    if (!open) return;
+    if (!editingId) {
+      form.resetFields();
+      return;
     }
-  }, [open, editingId]);
+    let cancelled = false;
+    adminService.getContent(editingId).then(
+      (data) => { if (!cancelled) onLoaded(editingId, data); },
+      (err) => { if (!cancelled) onLoadError(err); },
+    );
+    return () => { cancelled = true; };
+  }, [open, editingId, form]);
 
-  const loadData = async (id: string) => {
-    try {
-      setLoading(true);
-      const data = await adminService.getContent(id);
-      form.setFieldsValue({
-        skill: data.payload.skill,
-        titleVi: data.payload.title?.vi,
-        titleEn: data.payload.title?.en,
-        level: data.payload.level,
-        topicNameVi: data.payload.topicName?.vi,
-        topicNameEn: data.payload.topicName?.en,
-        prompt: data.payload.prompt,
-        mediaUrl: data.payload.mediaUrl,
-        contentBody: data.payload.contentBody,
-        items: data.payload.items,
-      });
-      setSelectedSkill(data.payload.skill);
-    } catch (err) {
-      message.error(describe(err, 'admin.loadError'));
-      onClose();
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleFinish = async (values: any) => {
+  const handleFinish = async (values: ContentFormValues) => {
     try {
       setSaving(true);
       const payload: AdminContentPayload = {
@@ -176,7 +189,7 @@ export const ContentEditorDrawer: React.FC<ContentEditorDrawerProps> = ({
                 return result;
               };
               
-              const importedItems: any[] = [];
+              const importedItems: AdminContentChild[] = [];
               let commonPrompt = form.getFieldValue('prompt') || '';
               
               for (let i = 1; i < lines.length; i++) {
@@ -253,11 +266,6 @@ export const ContentEditorDrawer: React.FC<ContentEditorDrawerProps> = ({
           form={form}
           layout="vertical"
           onFinish={handleFinish}
-          onValuesChange={(changedValues) => {
-            if (changedValues.skill) {
-              setSelectedSkill(changedValues.skill);
-            }
-          }}
         >
           <div className="grid grid-cols-2 gap-4">
             <Form.Item

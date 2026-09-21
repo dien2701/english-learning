@@ -1,12 +1,13 @@
 import React from 'react';
 import { Form, Input, Select, Button, Card, Radio } from 'antd';
+import type { FormListFieldData } from 'antd';
 
 interface SharedQuestionListProps {
   name: string | (string | number)[];
   label?: string;
 }
 
-const QuestionItem: React.FC<{ fieldName: number; restField: any; remove: (name: number) => void; index: number; listName: string | (string | number)[] }> = ({ fieldName, restField, remove, index, listName }) => {
+const QuestionItem: React.FC<{ fieldName: number; restField: Omit<FormListFieldData, 'key' | 'name'>; remove: (name: number) => void; index: number; listName: string | (string | number)[] }> = ({ fieldName, restField, remove, index, listName }) => {
   const typePath = Array.isArray(listName) ? [...listName, fieldName, 'type'] : [listName, fieldName, 'type'];
   const type = Form.useWatch(typePath) || 'MULTIPLE_CHOICE';
 
@@ -15,7 +16,7 @@ const QuestionItem: React.FC<{ fieldName: number; restField: any; remove: (name:
   
   // Lọc các option hợp lệ (là chuỗi và không rỗng) để đưa vào dropdown chọn đáp án
   const validOptions = (Array.isArray(currentOptions) ? currentOptions : [])
-    .filter((opt: any) => typeof opt === 'string' && opt.trim() !== '')
+    .filter((opt: unknown): opt is string => typeof opt === 'string' && opt.trim() !== '')
     .map((opt: string) => ({ value: opt, label: opt }));
 
   return (

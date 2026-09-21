@@ -7,6 +7,7 @@ import { ErrorState, Skeleton } from '../../components/ui/StateBlocks';
 import { useApi } from '../../hooks/useApi';
 import { useApiError } from '../../hooks/useApiError';
 import { useSpeech } from '../../hooks/useSpeech';
+import { useStudyHeartbeat } from '../../hooks/useStudyHeartbeat';
 import { flashcardService } from '../../services/contentService';
 import type { Flashcard, RecallLevel } from '../../types/flashcard';
 import { useLanguage } from '../../hooks/useLanguage';
@@ -40,6 +41,7 @@ const FlashcardStudyPage: React.FC = () => {
   const { L } = useLanguage();
   const { describe } = useApiError();
   const { id = '' } = useParams();
+  useStudyHeartbeat('VOCABULARY', id);
   const navigate = useNavigate();
   const { message } = App.useApp();
   const { speak, stop, isSupported } = useSpeech();

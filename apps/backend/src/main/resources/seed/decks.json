@@ -1,0 +1,500 @@
+[
+  {
+    "topic": "toeic",
+    "titleVi": "TOEIC 600 — Chủ đề Văn phòng",
+    "titleEn": "TOEIC 600 — Office Topics",
+    "descriptionVi": "Từ vựng thường gặp trong email, hợp đồng và họp hành.",
+    "descriptionEn": "Words that keep coming up in emails, contracts and meetings.",
+    "coverImageUrl": "https://images.unsplash.com/photo-1497032628192-86f99bcd76bc?w=600&q=70&auto=format&fit=crop",
+    "level": "INTERMEDIATE",
+    "cards": [
+      {
+        "word": "invoice",
+        "phonetic": "/ˈɪn.vɔɪs/",
+        "meaningVi": "hoá đơn",
+        "meaningEn": "a document listing goods sold and the price owed",
+        "partOfSpeechVi": "danh từ",
+        "partOfSpeechEn": "noun",
+        "example": "Please send the invoice before Friday.",
+        "exampleMeaning": "Vui lòng gửi hoá đơn trước thứ Sáu.",
+        "imageUrl": "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=480&q=70&auto=format&fit=crop",
+        "audioUrl": null
+      },
+      {
+        "word": "deadline",
+        "phonetic": "/ˈded.laɪn/",
+        "meaningVi": "hạn chót",
+        "meaningEn": "the latest time by which something must be finished",
+        "partOfSpeechVi": "danh từ",
+        "partOfSpeechEn": "noun",
+        "example": "We missed the deadline by two days.",
+        "exampleMeaning": "Chúng tôi trễ hạn chót hai ngày.",
+        "imageUrl": "https://images.unsplash.com/photo-1501139083538-0139583c060f?w=480&q=70&auto=format&fit=crop",
+        "audioUrl": null
+      },
+      {
+        "word": "schedule",
+        "phonetic": "/ˈskedʒ.uːl/",
+        "meaningVi": "lịch trình; lên lịch",
+        "meaningEn": "a plan of when things will happen",
+        "partOfSpeechVi": "danh từ, động từ",
+        "partOfSpeechEn": "noun, verb",
+        "example": "Let me schedule a meeting for next Monday.",
+        "exampleMeaning": "Để tôi sắp lịch họp vào thứ Hai tới.",
+        "imageUrl": "https://images.unsplash.com/photo-1506784983877-45594efa4cbe?w=480&q=70&auto=format&fit=crop",
+        "audioUrl": null
+      },
+      {
+        "word": "negotiate",
+        "phonetic": "/nəˈɡoʊ.ʃi.eɪt/",
+        "meaningVi": "đàm phán, thương lượng",
+        "meaningEn": "to discuss in order to reach an agreement",
+        "partOfSpeechVi": "động từ",
+        "partOfSpeechEn": "verb",
+        "example": "They negotiated a better price with the supplier.",
+        "exampleMeaning": "Họ đã thương lượng được giá tốt hơn với nhà cung cấp.",
+        "imageUrl": "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=480&q=70&auto=format&fit=crop",
+        "audioUrl": null
+      },
+      {
+        "word": "reimbursement",
+        "phonetic": "/ˌriː.ɪmˈbɜːs.mənt/",
+        "meaningVi": "sự hoàn tiền",
+        "meaningEn": "money paid back for what you spent",
+        "partOfSpeechVi": "danh từ",
+        "partOfSpeechEn": "noun",
+        "example": "Submit your receipts to claim reimbursement.",
+        "exampleMeaning": "Nộp hoá đơn để yêu cầu hoàn tiền.",
+        "imageUrl": "https://images.unsplash.com/photo-1554224154-26032ffc0d07?w=480&q=70&auto=format&fit=crop",
+        "audioUrl": null
+      },
+      {
+        "word": "agenda",
+        "phonetic": "/əˈdʒen.də/",
+        "meaningVi": "chương trình nghị sự",
+        "meaningEn": "the list of items to discuss in a meeting",
+        "partOfSpeechVi": "danh từ",
+        "partOfSpeechEn": "noun",
+        "example": "The agenda for the meeting has three items.",
+        "exampleMeaning": "Chương trình cuộc họp có ba mục.",
+        "imageUrl": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=480&q=70&auto=format&fit=crop",
+        "audioUrl": null
+      },
+      {
+        "word": "colleague",
+        "phonetic": "/ˈkɒl.iːɡ/",
+        "meaningVi": "đồng nghiệp",
+        "meaningEn": "a person you work with",
+        "partOfSpeechVi": "danh từ",
+        "partOfSpeechEn": "noun",
+        "example": "My colleague will cover for me tomorrow.",
+        "exampleMeaning": "Đồng nghiệp của tôi sẽ làm thay tôi ngày mai.",
+        "imageUrl": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=480&q=70&auto=format&fit=crop",
+        "audioUrl": null
+      },
+      {
+        "word": "shipment",
+        "phonetic": "/ˈʃɪp.mənt/",
+        "meaningVi": "lô hàng, chuyến hàng",
+        "meaningEn": "a load of goods sent somewhere",
+        "partOfSpeechVi": "danh từ",
+        "partOfSpeechEn": "noun",
+        "example": "The shipment arrives at the warehouse on Tuesday.",
+        "exampleMeaning": "Lô hàng sẽ tới kho vào thứ Ba.",
+        "imageUrl": "https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?w=480&q=70&auto=format&fit=crop",
+        "audioUrl": null
+      }
+    ]
+  },
+  {
+    "topic": "ielts",
+    "titleVi": "IELTS — Chủ đề Ẩm thực",
+    "titleEn": "IELTS — Food and Cooking",
+    "descriptionVi": "Từ vựng mô tả món ăn và thói quen ăn uống cho phần Speaking.",
+    "descriptionEn": "Vocabulary for describing dishes and eating habits in the Speaking test.",
+    "coverImageUrl": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&q=70&auto=format&fit=crop",
+    "level": "INTERMEDIATE",
+    "cards": [
+      {
+        "word": "cuisine",
+        "phonetic": "/kwɪˈziːn/",
+        "meaningVi": "ẩm thực, phong cách nấu ăn",
+        "meaningEn": "a style of cooking from a place",
+        "partOfSpeechVi": "danh từ",
+        "partOfSpeechEn": "noun",
+        "example": "Vietnamese cuisine is famous for its fresh herbs.",
+        "exampleMeaning": "Ẩm thực Việt Nam nổi tiếng với rau thơm tươi.",
+        "imageUrl": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=480&q=70&auto=format&fit=crop",
+        "audioUrl": null
+      },
+      {
+        "word": "savoury",
+        "phonetic": "/ˈseɪ.vər.i/",
+        "meaningVi": "mặn, đậm đà",
+        "meaningEn": "salty or spicy rather than sweet",
+        "partOfSpeechVi": "tính từ",
+        "partOfSpeechEn": "adjective",
+        "example": "I prefer savoury dishes to sweet ones.",
+        "exampleMeaning": "Tôi thích món mặn hơn món ngọt.",
+        "imageUrl": "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=480&q=70&auto=format&fit=crop",
+        "audioUrl": null
+      },
+      {
+        "word": "nutritious",
+        "phonetic": "/njuːˈtrɪʃ.əs/",
+        "meaningVi": "bổ dưỡng",
+        "meaningEn": "containing substances the body needs to stay healthy",
+        "partOfSpeechVi": "tính từ",
+        "partOfSpeechEn": "adjective",
+        "example": "Beans are cheap and highly nutritious.",
+        "exampleMeaning": "Các loại đậu vừa rẻ vừa rất bổ dưỡng.",
+        "imageUrl": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=480&q=70&auto=format&fit=crop",
+        "audioUrl": null
+      },
+      {
+        "word": "marinate",
+        "phonetic": "/ˈmær.ɪ.neɪt/",
+        "meaningVi": "ướp (thịt, cá)",
+        "meaningEn": "to soak food in a sauce before cooking",
+        "partOfSpeechVi": "động từ",
+        "partOfSpeechEn": "verb",
+        "example": "Marinate the chicken for at least an hour.",
+        "exampleMeaning": "Ướp thịt gà ít nhất một tiếng.",
+        "imageUrl": "https://images.unsplash.com/photo-1432139555190-58524dae6a55?w=480&q=70&auto=format&fit=crop",
+        "audioUrl": null
+      },
+      {
+        "word": "leftovers",
+        "phonetic": "/ˈleft.oʊ.vərz/",
+        "meaningVi": "đồ ăn thừa",
+        "meaningEn": "food remaining after a meal",
+        "partOfSpeechVi": "danh từ",
+        "partOfSpeechEn": "noun",
+        "example": "We had leftovers for lunch the next day.",
+        "exampleMeaning": "Hôm sau chúng tôi ăn trưa bằng đồ ăn thừa.",
+        "imageUrl": "https://images.unsplash.com/photo-1526470608268-f674ce90ebd4?w=480&q=70&auto=format&fit=crop",
+        "audioUrl": null
+      },
+      {
+        "word": "appetite",
+        "phonetic": "/ˈæp.ɪ.taɪt/",
+        "meaningVi": "sự thèm ăn, khẩu vị",
+        "meaningEn": "the feeling of wanting to eat",
+        "partOfSpeechVi": "danh từ",
+        "partOfSpeechEn": "noun",
+        "example": "Walking in the cold gave me a huge appetite.",
+        "exampleMeaning": "Đi bộ trong trời lạnh làm tôi đói cồn cào.",
+        "imageUrl": "https://images.unsplash.com/photo-1466637574441-749b8f19452f?w=480&q=70&auto=format&fit=crop",
+        "audioUrl": null
+      }
+    ]
+  },
+  {
+    "topic": "foundation",
+    "titleVi": "Nền tảng — 500 từ đầu tiên",
+    "titleEn": "Foundation — Your First 500 Words",
+    "descriptionVi": "Những từ cơ bản nhất dùng hằng ngày, hợp cho người mới bắt đầu.",
+    "descriptionEn": "The most common everyday words, made for complete beginners.",
+    "coverImageUrl": "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600&q=70&auto=format&fit=crop",
+    "level": "BEGINNER",
+    "cards": [
+      {
+        "word": "borrow",
+        "phonetic": "/ˈbɒr.oʊ/",
+        "meaningVi": "mượn",
+        "meaningEn": "to take something and give it back later",
+        "partOfSpeechVi": "động từ",
+        "partOfSpeechEn": "verb",
+        "example": "Can I borrow your pen for a minute?",
+        "exampleMeaning": "Tôi mượn bút của bạn một lát được không?",
+        "imageUrl": "https://images.unsplash.com/photo-1455390582262-044cdead277a?w=480&q=70&auto=format&fit=crop",
+        "audioUrl": null
+      },
+      {
+        "word": "neighbour",
+        "phonetic": "/ˈneɪ.bər/",
+        "meaningVi": "hàng xóm",
+        "meaningEn": "a person living next to or near you",
+        "partOfSpeechVi": "danh từ",
+        "partOfSpeechEn": "noun",
+        "example": "Our neighbour looks after the cat when we travel.",
+        "exampleMeaning": "Hàng xóm trông mèo giúp khi chúng tôi đi xa.",
+        "imageUrl": "https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=480&q=70&auto=format&fit=crop",
+        "audioUrl": null
+      },
+      {
+        "word": "weather",
+        "phonetic": "/ˈweð.ər/",
+        "meaningVi": "thời tiết",
+        "meaningEn": "the state of the air: sun, rain, wind and so on",
+        "partOfSpeechVi": "danh từ",
+        "partOfSpeechEn": "noun",
+        "example": "The weather is getting colder this week.",
+        "exampleMeaning": "Thời tiết tuần này đang lạnh dần.",
+        "imageUrl": "https://images.unsplash.com/photo-1504608524841-42fe6f032b4b?w=480&q=70&auto=format&fit=crop",
+        "audioUrl": null
+      },
+      {
+        "word": "arrive",
+        "phonetic": "/əˈraɪv/",
+        "meaningVi": "đến, tới nơi",
+        "meaningEn": "to reach a place",
+        "partOfSpeechVi": "động từ",
+        "partOfSpeechEn": "verb",
+        "example": "The train arrives at half past six.",
+        "exampleMeaning": "Tàu đến lúc sáu giờ rưỡi.",
+        "imageUrl": "https://images.unsplash.com/photo-1474487548417-781cb71495f3?w=480&q=70&auto=format&fit=crop",
+        "audioUrl": null
+      },
+      {
+        "word": "busy",
+        "phonetic": "/ˈbɪz.i/",
+        "meaningVi": "bận rộn",
+        "meaningEn": "having a lot to do",
+        "partOfSpeechVi": "tính từ",
+        "partOfSpeechEn": "adjective",
+        "example": "She is busy preparing for the exam.",
+        "exampleMeaning": "Cô ấy đang bận ôn thi.",
+        "imageUrl": "https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=480&q=70&auto=format&fit=crop",
+        "audioUrl": null
+      }
+    ]
+  },
+  {
+    "topic": "ielts",
+    "titleVi": "IELTS — Từ vựng học thuật",
+    "titleEn": "IELTS — Academic Vocabulary",
+    "descriptionVi": "Từ mô tả xu hướng và số liệu, dùng nhiều trong Writing Task 1.",
+    "descriptionEn": "Words for describing trends and figures, heavily used in Writing Task 1.",
+    "coverImageUrl": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&q=70&auto=format&fit=crop",
+    "level": "ADVANCED",
+    "cards": [
+      {
+        "word": "significant",
+        "phonetic": "/sɪɡˈnɪf.ɪ.kənt/",
+        "meaningVi": "đáng kể, quan trọng",
+        "meaningEn": "large or important enough to matter",
+        "partOfSpeechVi": "tính từ",
+        "partOfSpeechEn": "adjective",
+        "example": "There was a significant rise in car ownership.",
+        "exampleMeaning": "Số lượng người sở hữu ô tô tăng đáng kể.",
+        "imageUrl": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=480&q=70&auto=format&fit=crop",
+        "audioUrl": null
+      },
+      {
+        "word": "fluctuate",
+        "phonetic": "/ˈflʌk.tʃu.eɪt/",
+        "meaningVi": "dao động, lên xuống thất thường",
+        "meaningEn": "to rise and fall irregularly",
+        "partOfSpeechVi": "động từ",
+        "partOfSpeechEn": "verb",
+        "example": "Prices fluctuated sharply during the period.",
+        "exampleMeaning": "Giá dao động mạnh trong giai đoạn đó.",
+        "imageUrl": "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=480&q=70&auto=format&fit=crop",
+        "audioUrl": null
+      },
+      {
+        "word": "substantial",
+        "phonetic": "/səbˈstæn.ʃəl/",
+        "meaningVi": "lớn, đáng kể",
+        "meaningEn": "large in amount or degree",
+        "partOfSpeechVi": "tính từ",
+        "partOfSpeechEn": "adjective",
+        "example": "A substantial number of students chose science.",
+        "exampleMeaning": "Một số lượng lớn sinh viên chọn ngành khoa học.",
+        "imageUrl": "https://images.unsplash.com/photo-1454165833767-1a3b8a1a1a1a?w=480&q=70&auto=format&fit=crop",
+        "audioUrl": null
+      },
+      {
+        "word": "proportion",
+        "phonetic": "/prəˈpɔːr.ʃən/",
+        "meaningVi": "tỉ lệ",
+        "meaningEn": "a part of a whole, seen against the total",
+        "partOfSpeechVi": "danh từ",
+        "partOfSpeechEn": "noun",
+        "example": "The proportion of remote workers doubled.",
+        "exampleMeaning": "Tỉ lệ người làm việc từ xa tăng gấp đôi.",
+        "imageUrl": "https://images.unsplash.com/photo-1543286386-713bdd548da4?w=480&q=70&auto=format&fit=crop",
+        "audioUrl": null
+      },
+      {
+        "word": "consequently",
+        "phonetic": "/ˈkɒn.sɪ.kwənt.li/",
+        "meaningVi": "do đó, kết quả là",
+        "meaningEn": "as a result of what came before",
+        "partOfSpeechVi": "trạng từ",
+        "partOfSpeechEn": "adverb",
+        "example": "Fuel costs rose; consequently, ticket prices went up.",
+        "exampleMeaning": "Giá nhiên liệu tăng, do đó giá vé cũng tăng theo.",
+        "imageUrl": "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=480&q=70&auto=format&fit=crop",
+        "audioUrl": null
+      },
+      {
+        "word": "hypothesis",
+        "phonetic": "/haɪˈpɒθ.ə.sɪs/",
+        "meaningVi": "giả thuyết",
+        "meaningEn": "an idea put forward to be tested",
+        "partOfSpeechVi": "danh từ",
+        "partOfSpeechEn": "noun",
+        "example": "The data supports our original hypothesis.",
+        "exampleMeaning": "Dữ liệu ủng hộ giả thuyết ban đầu của chúng tôi.",
+        "imageUrl": "https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=480&q=70&auto=format&fit=crop",
+        "audioUrl": null
+      },
+      {
+        "word": "evaluate",
+        "phonetic": "/ɪˈvæl.ju.eɪt/",
+        "meaningVi": "đánh giá",
+        "meaningEn": "to judge how good or useful something is",
+        "partOfSpeechVi": "động từ",
+        "partOfSpeechEn": "verb",
+        "example": "Researchers evaluate the results carefully.",
+        "exampleMeaning": "Các nhà nghiên cứu đánh giá kết quả một cách cẩn thận.",
+        "imageUrl": "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=480&q=70&auto=format&fit=crop",
+        "audioUrl": null
+      }
+    ]
+  },
+  {
+    "topic": "work",
+    "titleVi": "Công việc — Phỏng vấn xin việc",
+    "titleEn": "Work — Job Interviews",
+    "descriptionVi": "Từ và cụm từ cần thiết để trả lời phỏng vấn tự tin.",
+    "descriptionEn": "The words and phrases you need to answer interview questions with confidence.",
+    "coverImageUrl": "https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=600&q=70&auto=format&fit=crop",
+    "level": "INTERMEDIATE",
+    "cards": [
+      {
+        "word": "strength",
+        "phonetic": "/streŋθ/",
+        "meaningVi": "điểm mạnh",
+        "meaningEn": "something you are good at",
+        "partOfSpeechVi": "danh từ",
+        "partOfSpeechEn": "noun",
+        "example": "My greatest strength is attention to detail.",
+        "exampleMeaning": "Điểm mạnh nhất của tôi là sự tỉ mỉ.",
+        "imageUrl": "https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=480&q=70&auto=format&fit=crop",
+        "audioUrl": null
+      },
+      {
+        "word": "qualification",
+        "phonetic": "/ˌkwɒl.ɪ.fɪˈkeɪ.ʃən/",
+        "meaningVi": "bằng cấp, trình độ chuyên môn",
+        "meaningEn": "training or a degree that fits you for a job",
+        "partOfSpeechVi": "danh từ",
+        "partOfSpeechEn": "noun",
+        "example": "The role requires a relevant qualification.",
+        "exampleMeaning": "Vị trí này đòi hỏi bằng cấp liên quan.",
+        "imageUrl": "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=480&q=70&auto=format&fit=crop",
+        "audioUrl": null
+      },
+      {
+        "word": "responsibility",
+        "phonetic": "/rɪˌspɒn.sɪˈbɪl.ə.ti/",
+        "meaningVi": "trách nhiệm",
+        "meaningEn": "a duty you are expected to carry out",
+        "partOfSpeechVi": "danh từ",
+        "partOfSpeechEn": "noun",
+        "example": "My main responsibility was managing the budget.",
+        "exampleMeaning": "Trách nhiệm chính của tôi là quản lý ngân sách.",
+        "imageUrl": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=480&q=70&auto=format&fit=crop",
+        "audioUrl": null
+      },
+      {
+        "word": "achievement",
+        "phonetic": "/əˈtʃiːv.mənt/",
+        "meaningVi": "thành tựu",
+        "meaningEn": "something done successfully after effort",
+        "partOfSpeechVi": "danh từ",
+        "partOfSpeechEn": "noun",
+        "example": "Launching the product was my proudest achievement.",
+        "exampleMeaning": "Ra mắt sản phẩm là thành tựu tôi tự hào nhất.",
+        "imageUrl": "https://images.unsplash.com/photo-1552664730-d307ca884978?w=480&q=70&auto=format&fit=crop",
+        "audioUrl": null
+      },
+      {
+        "word": "adaptable",
+        "phonetic": "/əˈdæp.tə.bəl/",
+        "meaningVi": "dễ thích nghi",
+        "meaningEn": "able to change to suit new conditions",
+        "partOfSpeechVi": "tính từ",
+        "partOfSpeechEn": "adjective",
+        "example": "You need to be adaptable in a start-up.",
+        "exampleMeaning": "Bạn cần dễ thích nghi khi làm ở công ty khởi nghiệp.",
+        "imageUrl": "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=480&q=70&auto=format&fit=crop",
+        "audioUrl": null
+      }
+    ]
+  },
+  {
+    "topic": "travel",
+    "titleVi": "Du lịch — Sân bay và khách sạn",
+    "titleEn": "Travel — Airports and Hotels",
+    "descriptionVi": "Từ vựng cần khi đặt phòng, làm thủ tục bay và hỏi đường.",
+    "descriptionEn": "Vocabulary for booking a room, checking in for a flight and asking directions.",
+    "coverImageUrl": "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600&q=70&auto=format&fit=crop",
+    "level": "BEGINNER",
+    "cards": [
+      {
+        "word": "itinerary",
+        "phonetic": "/aɪˈtɪn.ər.er.i/",
+        "meaningVi": "lịch trình chuyến đi",
+        "meaningEn": "a plan of a journey, stop by stop",
+        "partOfSpeechVi": "danh từ",
+        "partOfSpeechEn": "noun",
+        "example": "Our itinerary includes three cities in five days.",
+        "exampleMeaning": "Lịch trình của chúng tôi gồm ba thành phố trong năm ngày.",
+        "imageUrl": "https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=480&q=70&auto=format&fit=crop",
+        "audioUrl": null
+      },
+      {
+        "word": "boarding pass",
+        "phonetic": "/ˈbɔːr.dɪŋ pæs/",
+        "meaningVi": "thẻ lên máy bay",
+        "meaningEn": "the card that lets you board a plane",
+        "partOfSpeechVi": "danh từ",
+        "partOfSpeechEn": "noun",
+        "example": "Please have your boarding pass ready.",
+        "exampleMeaning": "Vui lòng chuẩn bị sẵn thẻ lên máy bay.",
+        "imageUrl": "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=480&q=70&auto=format&fit=crop",
+        "audioUrl": null
+      },
+      {
+        "word": "accommodation",
+        "phonetic": "/əˌkɒm.əˈdeɪ.ʃən/",
+        "meaningVi": "chỗ ở",
+        "meaningEn": "a place to stay, such as a hotel room",
+        "partOfSpeechVi": "danh từ",
+        "partOfSpeechEn": "noun",
+        "example": "Accommodation near the beach is expensive.",
+        "exampleMeaning": "Chỗ ở gần biển khá đắt.",
+        "imageUrl": "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=480&q=70&auto=format&fit=crop",
+        "audioUrl": null
+      },
+      {
+        "word": "delay",
+        "phonetic": "/dɪˈleɪ/",
+        "meaningVi": "sự trì hoãn; trì hoãn",
+        "meaningEn": "a period of waiting beyond the planned time",
+        "partOfSpeechVi": "danh từ, động từ",
+        "partOfSpeechEn": "noun, verb",
+        "example": "The flight was delayed by two hours.",
+        "exampleMeaning": "Chuyến bay bị hoãn hai tiếng.",
+        "imageUrl": "https://images.unsplash.com/photo-1542296332-2e4473faf563?w=480&q=70&auto=format&fit=crop",
+        "audioUrl": null
+      },
+      {
+        "word": "landmark",
+        "phonetic": "/ˈlænd.mɑːrk/",
+        "meaningVi": "địa danh nổi tiếng",
+        "meaningEn": "a well-known building or feature you navigate by",
+        "partOfSpeechVi": "danh từ",
+        "partOfSpeechEn": "noun",
+        "example": "The bridge is the city’s best-known landmark.",
+        "exampleMeaning": "Cây cầu là địa danh nổi tiếng nhất thành phố.",
+        "imageUrl": "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=480&q=70&auto=format&fit=crop",
+        "audioUrl": null
+      }
+    ]
+  }
+]

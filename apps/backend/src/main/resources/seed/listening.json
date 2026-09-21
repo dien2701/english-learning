@@ -1,0 +1,334 @@
+[
+  {
+    "topic": "work",
+    "titleVi": "Hội thoại nơi công sở — Part 3",
+    "titleEn": "Workplace Conversation — Part 3",
+    "descriptionVi": "Hai đồng nghiệp trao đổi về lịch họp và tài liệu cần chuẩn bị.",
+    "descriptionEn": "Two colleagues rearrange a meeting and agree who prepares what.",
+    "level": "INTERMEDIATE",
+    "audioUrl": null,
+    "durationSeconds": 95,
+    "transcript": "A: Hi Mark, are we still meeting on Monday? B: Actually, something came up. Let us move it to Wednesday morning, around nine thirty. A: That works for me. Should I bring anything? B: Yes, please prepare the quarterly sales report. A: Sure. I will send you the agenda before noon.",
+    "questions": [
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "What day is the meeting moved to?",
+        "explanation": "The woman says \"let us move it to Wednesday morning\".",
+        "options": [
+          {
+            "content": "Monday",
+            "correct": false
+          },
+          {
+            "content": "Wednesday",
+            "correct": true
+          },
+          {
+            "content": "Thursday",
+            "correct": false
+          },
+          {
+            "content": "Friday",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "Which document does the man need to prepare?",
+        "explanation": "He mentions \"the quarterly sales report\".",
+        "options": [
+          {
+            "content": "The client contract",
+            "correct": false
+          },
+          {
+            "content": "The quarterly sales report",
+            "correct": true
+          },
+          {
+            "content": "The timesheet",
+            "correct": false
+          },
+          {
+            "content": "The hiring plan",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "What time does the meeting start?",
+        "explanation": null,
+        "options": [
+          {
+            "content": "Eight o’clock",
+            "correct": false
+          },
+          {
+            "content": "Half past nine",
+            "correct": true
+          },
+          {
+            "content": "Ten o’clock",
+            "correct": false
+          },
+          {
+            "content": "Eleven o’clock",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "LISTENING",
+        "content": "Fill in the blank: \"I will send you the ______ before noon.\"",
+        "explanation": "She promises to send the meeting agenda before lunch.",
+        "options": [],
+        "acceptedAnswers": [
+          "agenda"
+        ]
+      }
+    ]
+  },
+  {
+    "topic": "toeic",
+    "titleVi": "Nghe hiểu số liệu và lịch hẹn",
+    "titleEn": "Understanding Numbers and Appointments",
+    "descriptionVi": "Luyện nghe con số, ngày giờ và cách xác nhận lại thông tin.",
+    "descriptionEn": "Practise catching figures, dates and the phrases used to confirm them.",
+    "level": "INTERMEDIATE",
+    "audioUrl": null,
+    "durationSeconds": 78,
+    "transcript": "A: Good morning, I would like to confirm our order. B: Of course. How many units do you need? A: Five zero, fifty units. B: Fifty units, noted. Delivery is scheduled for March twelfth. A: Perfect. You can reach me at zero nine, five five five, zero one eight.",
+    "questions": [
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "How many units does the customer order?",
+        "explanation": "The caller spells it out: \"five zero, fifty units\".",
+        "options": [
+          {
+            "content": "15",
+            "correct": false
+          },
+          {
+            "content": "50",
+            "correct": true
+          },
+          {
+            "content": "55",
+            "correct": false
+          },
+          {
+            "content": "150",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "When will the goods be delivered?",
+        "explanation": null,
+        "options": [
+          {
+            "content": "12 March",
+            "correct": true
+          },
+          {
+            "content": "2 March",
+            "correct": false
+          },
+          {
+            "content": "20 March",
+            "correct": false
+          },
+          {
+            "content": "12 May",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "LISTENING",
+        "content": "Fill in the missing digit of the phone number: \"0___ 555 018\".",
+        "explanation": null,
+        "options": [],
+        "acceptedAnswers": [
+          "9"
+        ]
+      }
+    ]
+  },
+  {
+    "topic": "life",
+    "titleVi": "Gọi món tại nhà hàng",
+    "titleEn": "Ordering at a Restaurant",
+    "descriptionVi": "Hội thoại ngắn giữa khách và nhân viên phục vụ.",
+    "descriptionEn": "A short exchange between a diner and a waiter.",
+    "level": "BEGINNER",
+    "audioUrl": null,
+    "durationSeconds": 62,
+    "transcript": "A: Good evening. Are you ready to order? B: Yes. I will have the grilled salmon, please. No onions. A: Certainly. And to drink? B: Just still water, thank you.",
+    "questions": [
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "What does the customer order as a main course?",
+        "explanation": null,
+        "options": [
+          {
+            "content": "Pasta",
+            "correct": false
+          },
+          {
+            "content": "Grilled salmon",
+            "correct": true
+          },
+          {
+            "content": "Steak",
+            "correct": false
+          },
+          {
+            "content": "Salad",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "What special request does the customer make?",
+        "explanation": null,
+        "options": [
+          {
+            "content": "No onions",
+            "correct": true
+          },
+          {
+            "content": "Extra cheese",
+            "correct": false
+          },
+          {
+            "content": "Less salt",
+            "correct": false
+          },
+          {
+            "content": "To take away",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "What does the customer drink?",
+        "explanation": null,
+        "options": [
+          {
+            "content": "Coffee",
+            "correct": false
+          },
+          {
+            "content": "Beer",
+            "correct": false
+          },
+          {
+            "content": "Still water",
+            "correct": true
+          },
+          {
+            "content": "Orange juice",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      }
+    ]
+  },
+  {
+    "topic": "ielts",
+    "titleVi": "Bài giảng ngắn về biến đổi khí hậu",
+    "titleEn": "Short Lecture on Climate Change",
+    "descriptionVi": "Bài nói học thuật, tốc độ nhanh, nhiều thuật ngữ chuyên ngành.",
+    "descriptionEn": "An academic talk delivered at speed, with subject-specific terms.",
+    "level": "ADVANCED",
+    "audioUrl": null,
+    "durationSeconds": 140,
+    "transcript": "Today we examine the main driver of global warming. Emissions from fossil fuels account for the largest share of greenhouse gases. The first and most urgent step is shifting to renewable energy. Scientists agree we need to cut emissions by forty percent within the decade.",
+    "questions": [
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "What does the speaker name as the main cause?",
+        "explanation": null,
+        "options": [
+          {
+            "content": "Deforestation",
+            "correct": false
+          },
+          {
+            "content": "Emissions from fossil fuels",
+            "correct": true
+          },
+          {
+            "content": "Plastic waste",
+            "correct": false
+          },
+          {
+            "content": "Livestock farming",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "Which solution does the speaker put first?",
+        "explanation": null,
+        "options": [
+          {
+            "content": "Shifting to renewable energy",
+            "correct": true
+          },
+          {
+            "content": "Taxing carbon",
+            "correct": false
+          },
+          {
+            "content": "Planting more trees",
+            "correct": false
+          },
+          {
+            "content": "Eating less meat",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "LISTENING",
+        "content": "Fill in the blank: \"We need to cut emissions by ______ percent.\"",
+        "explanation": null,
+        "options": [],
+        "acceptedAnswers": [
+          "forty"
+        ]
+      }
+    ]
+  }
+]

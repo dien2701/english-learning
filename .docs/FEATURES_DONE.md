@@ -1,16 +1,36 @@
 # TIẾN ĐỘ: EN-LEARNING
 
-Giai đoạn hiện tại: **Frontend xong với dữ liệu mock; Database đã thiết kế**.
-Chưa triển khai API Backend. Frontend vẫn lấy dữ liệu từ mock trong `src/mocks`.
+Giai đoạn hiện tại: **Frontend xong với dữ liệu mock; Database đã thiết kế; Backend đã có module Auth và dữ liệu mẫu**.
+Backend mới có API Auth; các module còn lại chưa có API. Frontend vẫn lấy toàn bộ dữ liệu từ mock trong `src/mocks`.
 
-Cập nhật: 20/09/2026 (vòng 2: sáng/tối, đa ngôn ngữ, ảnh thẻ, bộ lọc; thiết kế Database)
+Cập nhật: 20/09/2026 (vòng 2: sáng/tối, đa ngôn ngữ, ảnh thẻ, bộ lọc; thiết kế Database; Backend Auth và dữ liệu mẫu)
 
 ---
 
-## Database (thiết kế xong, chưa có API)
+## Backend: Auth và dữ liệu mẫu (xong, chưa nối Frontend)
+
+- Đăng ký, đăng nhập, refresh token (cookie HttpOnly, xoay vòng, phát hiện dùng lại), đăng xuất, kiểm tra email,
+  quên và đặt lại mật khẩu bằng OTP 6 số qua Gmail SMTP. Hợp đồng API và quy tắc bảo mật: mục 3 của `ARCHITECTURE.md`.
+- Dữ liệu mẫu: `SPRING_PROFILES_ACTIVE=dev ./mvnw spring-boot:run` trong `apps/backend` nạp 3 tài khoản (mật khẩu `123456`),
+  6 chủ đề, 6 bộ thẻ (36 từ), 4 nghe, 4 đọc, 3 nói, 5 đề viết, 3 đề kiểm tra, 45 câu hỏi. Chưa seed lịch sử học.
+- 61 test: 33 test đơn vị (Mockito) và 28 test tích hợp chạy trên MySQL thật, tự rollback nên không để lại dữ liệu.
+  Test tích hợp đặt tên `*Tests` vì Surefire không nhận đuôi `*IT` (chưa cấu hình Failsafe).
+  Đã chạy thật với profile `dev` và kiểm bằng `curl` mọi luồng.
+- **Chỗ lệch giữa Frontend và Backend, xử lý khi nối** (chưa sửa vì lần này không đụng Frontend):
+  1. Backend không còn trả `refreshToken` trong thân phản hồi (nó nằm trong cookie), nhưng `authService.ts` vẫn lưu nó ở localStorage
+     và kiểu `AuthSession.refreshToken` còn là bắt buộc.
+  2. `client.ts` chưa bật `withCredentials` và chưa tự gọi `POST /auth/refresh` khi gặp 401, nên phiên chỉ sống 15 phút.
+  3. Mock Dashboard, Hồ sơ đọc tài khoản theo token dạng `mock.<id>.…` nên không đọc được JWT thật; nối module nào thì bỏ mock của module đó.
+  4. `GET /auth/check-email` chưa giới hạn tần suất (chưa có Redis).
+  5. Cookie refresh dùng `SameSite=Lax`, chạy được khi Frontend và Backend cùng site (localhost khác cổng); khác tên miền gốc thì phải đổi
+     sang `SameSite=None; Secure`.
+
+---
+
+## Database (thiết kế xong)
 
 - `apps/backend/src/main/resources/db/migration/V1__init_schema.sql`: 26 bảng,
-  40 khoá ngoại, 85 index, 19 ràng buộc CHECK. Đã chạy thử Flyway và
+  40 khoá ngoại, 85 index, 20 ràng buộc CHECK. Đã chạy thử Flyway và
   Hibernate `validate` trên MySQL 9.0 thành công, kèm ghi/đọc thử các cột JSON
   và ràng buộc CHECK của 5 bảng mới qua JPA.
 - 26 entity JPA ở `apps/backend/.../entity`, 19 enum ở `entity/enums`.
@@ -23,7 +43,7 @@ Cập nhật: 20/09/2026 (vòng 2: sáng/tối, đa ngôn ngữ, ảnh thẻ, b�
   ngày theo `user_settings.time_zone`, mặc định Asia/Ho_Chi_Minh). Cách tính chi tiết:
   mục 2 của `ARCHITECTURE.md`.
 - Chi tiết bảng và quy ước: mục 1 của `ARCHITECTURE.md`.
-- Chưa làm: Repository, Service, Controller, JWT; dữ liệu mẫu (seed).
+- Repository, Service, Controller, JWT và dữ liệu mẫu đã có cho module Auth và seed (mục trên). Chưa làm cho các module còn lại.
 
 ---
 
@@ -31,7 +51,7 @@ Cập nhật: 20/09/2026 (vòng 2: sáng/tối, đa ngôn ngữ, ảnh thẻ, b�
 
 | # | Chức năng | Trạng thái |
 |---|---|---|
-| 1 | Đăng ký và Đăng nhập | Xong |
+| 1 | Đăng ký và Đăng nhập | Xong (Frontend dùng mock; Backend đã có API) |
 | 2 | Dashboard | Xong |
 | 3 | Flashcard | Xong |
 | 4 | Luyện viết (AI chấm) | Xong |
@@ -158,3 +178,36 @@ chỉ được chuyển sang ngừng hoạt động.
 - Thư mục lồng `english-learning/english-learning`.
 - Ảnh bìa bộ thẻ lấy từ Unsplash qua đường dẫn ngoài; khi có backend nên
   chuyển sang Cloudinary.
+
+## Đợt 0 (FE): nối Auth với backend, mock theo module
+
+- `client.ts`: `withCredentials`, 401 thì `POST /auth/refresh` một lần (dùng chung một promise) rồi gửi lại; bỏ `refreshToken` khỏi `AuthSession`/localStorage.
+- `VITE_MOCK_MODULES` thay `VITE_USE_MOCK`: adapter chọn mock/BE theo tiền tố từng request; `/auth/*` không bao giờ mock, đã xoá `mocks/handlers/auth.ts`.
+- Mock Dashboard/Hồ sơ đọc claim `role` của JWT thật (ADMIN dùng admin mock, còn lại dùng học viên mock).
+- Vite proxy `/api` sang `localhost:8080`, `VITE_API_BASE_URL=/api`; `.env` và `.env.example` đã cập nhật.
+- Phiên 0a: lint sạch. `ContentEditorDrawer` dùng `Form.useWatch` + `useEffectEvent` (hết setState trong effect, hết tải lại do `onClose` inline); `ProfilePage` suy ra avatar từ dữ liệu; bỏ `any` (kiểu `AdminContentChild`).
+
+## Đợt 1 (BE): Topic + Flashcard (phiên 1a)
+
+- `GET /topics` (kèm `itemCount` = số bộ thẻ ACTIVE); module `topic/` và `flashcard/` cạnh `auth/`. Thêm `common/L10n`, `common/PageResponse` (trang từ 1, tối đa 100/trang).
+- `GET /flashcard/decks` (lọc `search/topicId/level/status`), `GET /flashcard/decks/:id`, `POST .../progress`, `POST .../finish`. Người học chỉ thấy bộ ACTIVE; bộ ẩn/không có/thẻ bộ khác trả 404, mức nhớ sai 400.
+- Trạng thái suy ra từ `user_flashcard_progress`: `learnedCards` = số thẻ REMEMBERED; NOT_STARTED khi chưa đánh giá thẻ nào, COMPLETED khi mọi thẻ REMEMBERED.
+- `ReviewScheduler`: NOT_REMEMBERED → 0 ngày (ôn lại sau 10 phút); ALMOST → 1 ngày rồi giữ khoảng cũ; REMEMBERED → bậc kế của 3/7/14/30/60/120/180 ngày.
+- Test: `FlashcardApiTests` (MockMvc) + `ReviewSchedulerTest`, xanh. Chưa làm Caffeine (để 6a).
+
+## Đợt 1 (BE): Hồ sơ, Cài đặt, đổi mật khẩu, heartbeat (phiên 1b)
+
+- `GET|PATCH /profile` (đổi tên/email/SĐT/avatar; email trùng 409, avatar quá 500 ký tự 400), `GET|PATCH /settings` (language/theme viết thường, `reminderTime` HH:mm, `dailyGoalMinutes` 5..600, `timeZone` IANA; tự tạo dòng cài đặt nếu thiếu).
+- `POST /profile/password`: sai mật khẩu hiện tại 400 `WRONG_PASSWORD`; thu hồi MỌI refresh token rồi cấp cookie mới cho thiết bị đang gọi (cookie chỉ gửi kèm `/auth/*` nên không nhận ra phiên hiện tại).
+- `POST /study/heartbeat`: cộng tối đa 60 giây/lần, im lặng quá 2 phút hoặc đổi kỹ năng/`refId` thì mở phiên mới (bắt đầu 0 giây). Số liệu Profile: `totalMinutes` từ `study_sessions`, `masteredWords` = thẻ REMEMBERED.
+- Test: `ProfileApiTests`, `StudySessionServiceTest`, xanh.
+
+## Đợt 1 (FE): nối Topic, Flashcard, Hồ sơ, Cài đặt (phiên 1c)
+
+- `.env.example`: bỏ `topics,flashcard,profile,settings` khỏi `VITE_MOCK_MODULES` (người dùng tự sửa `.env` cục bộ). Kiểu FE đã khớp DTO; thêm `UserSettings.timeZone?`.
+- `useStudyHeartbeat(skill, refId)` gửi `POST /study/heartbeat` mỗi 30 giây khi tab hiện và có tương tác; gắn vào `FlashcardStudyPage` (kỹ năng khác gắn ở đợt sau).
+- Hồ sơ: bỏ tải ảnh (data URL vượt cột 500 ký tự của BE), thay bằng ô nhập `avatarUrl`. Lint và build sạch.
+
+## Đợt 1 (đóng đợt, phiên 1z)
+
+- Folder Postman "Dot 1 - Flashcard, Profile" (35 request) đã thêm vào collection; bảng "Kiểm tra hoàn thành" chốt theo DTO thật.

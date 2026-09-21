@@ -1,0 +1,23 @@
+[
+  {
+    "email": "hocvien@enlearning.vn",
+    "fullName": "Trịnh Xuân Diện",
+    "role": "USER",
+    "status": "ACTIVE",
+    "password": "123456"
+  },
+  {
+    "email": "admin@enlearning.vn",
+    "fullName": "Quản trị viên",
+    "role": "ADMIN",
+    "status": "ACTIVE",
+    "password": "123456"
+  },
+  {
+    "email": "khoa@enlearning.vn",
+    "fullName": "Nguyễn Đăng Khoa",
+    "role": "USER",
+    "status": "LOCKED",
+    "password": "123456"
+  }
+]

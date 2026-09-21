@@ -3,7 +3,8 @@ KIẾN TRÚC HỆ THỐNG: EN-LEARNING
 Nguồn sự thật: apps/backend/src/main/resources/db/migration/V1__init_schema.sql (Flyway).
 Entity JPA nằm ở apps/backend/src/main/java/vn/enlearning/backend/entity và phải khớp SQL
 vì Hibernate chạy ddl-auto=validate. Khi có môi trường thật, đổi schema thì thêm file V2, V3... , không sửa V1.
-Trước đó V1 vẫn được viết lại: lần gần nhất 20/09/2026, khi khôi phục Chat AI và Luyện nói và thêm thời gian học.
+Trước đó V1 vẫn được viết lại: lần gần nhất 20/09/2026, khi thêm cột attempts cho password_reset_tokens (mã OTP đặt lại mật khẩu);
+trước đó cùng ngày là khi khôi phục Chat AI và Luyện nói và thêm thời gian học. Chạy Flyway trên một DB nào đó là ghi checksum V1 vào DB ấy.
 
 Quy ước: khoá chính UUID v7 (BINARY(16)); nội dung song ngữ dùng cặp cột xxxVi/xxxEn;
 điểm DECIMAL(3,1) thang 10; xoá mềm bằng deletedAt cho User, nội dung, Question, Notification, ChatConversation.
@@ -14,7 +15,8 @@ Nội dung đã có trong lịch sử học bị FK RESTRICT chặn xoá, chỉ 
 Xác thực & người dùng
 User: Lưu tài khoản, mật khẩu BCrypt và vai trò USER, ADMIN.
 UserSetting: Ngôn ngữ, giao diện, mục tiêu học mỗi ngày, múi giờ IANA (mặc định Asia/Ho_Chi_Minh), bật/tắt và giờ email nhắc học (1-1 với User).
-RefreshToken & PasswordResetToken: Lưu bản băm SHA-256 của token, không lưu token thô.
+RefreshToken: Lưu SHA-256 của token ngẫu nhiên 256 bit, không lưu token thô.
+PasswordResetToken: Lưu HMAC-SHA256 (khoá RESET_CODE_SECRET, băm kèm id người dùng) của mã OTP 6 số, kèm attempts là số lần nhập sai; không lưu mã thô.
 
 Nội dung học
 Topic: Chủ đề dùng chung cho mọi kỹ năng.
@@ -88,6 +90,34 @@ Phân quyền cơ bản: USER, ADMIN.
 USER chỉ xem và sửa dữ liệu của chính mình.
 ADMIN quản lý người dùng, nội dung học và thông báo.
 JWT secret, OpenAI API key, Cloudinary secret và mật khẩu email đặt trong .env; không commit lên GitHub.
+
+Đã triển khai (backend, 20/09/2026): auth (controller, service, repository, dto, validation), security (JwtService, 401/403 dạng JSON),
+mail (EmailSender), seed. Các quy tắc:
+- Access token: JWT HS256 (Spring Security OAuth2 Resource Server, Nimbus), sống 15 phút. Claim sub = id người dùng, role, iss = en-learning; không mang email hay tên.
+- Refresh token: chuỗi ngẫu nhiên 256 bit trong cookie refresh_token (HttpOnly, SameSite=Lax, Path=/api/auth, Secure theo COOKIE_SECURE), sống 7 ngày. Thân phản hồi không có refreshToken.
+  Mỗi lần refresh là xoay vòng. Dùng lại token đã thu hồi quá 10 giây thì thu hồi mọi phiên của tài khoản; trong 10 giây coi là hai tab refresh cùng lúc.
+- Đăng nhập: sai mật khẩu và không có tài khoản trả cùng một lỗi (kể cả thời gian phản hồi, nhờ băm BCrypt giả); chỉ báo tài khoản bị khoá khi đã đúng mật khẩu.
+- Quên mật khẩu: mã OTP 6 số, hạn 10 phút, dùng một lần, sai 5 lần thì huỷ, xin mã mới cách nhau 60 giây (xin sớm hơn thì bỏ qua lặng lẽ) và mã mới vô hiệu mã cũ.
+  forgot-password luôn trả cùng một thông điệp và xử lý nền để không lộ email nào có tài khoản. Đặt lại thành công thì thu hồi mọi refresh token.
+- Email: Gmail SMTP khi có MAIL_USERNAME và MAIL_PASSWORD (App Password); không thì ghi mã ra log, và profile prod từ chối khởi động. Mỗi email ghi một dòng email_logs.
+- Chưa có: giới hạn tần suất đăng nhập và check-email (chưa có Redis). Khoá tài khoản chặn được đăng nhập, refresh và /auth/me; access token đang sống còn hiệu lực tối đa 15 phút.
+
+Hợp đồng API auth (context-path /api, vỏ thành công {success,data}, vỏ lỗi {message,code,messageKey,fieldErrorKeys}; messageKey là khoá dịch của Frontend):
+POST /auth/register {fullName,email,password,confirmPassword} → 201 {token,user} + Set-Cookie
+POST /auth/login {email,password} → 200 {token,user} + Set-Cookie
+POST /auth/refresh (cookie) → 200 {token,user} + cookie mới; lỗi 401 UNAUTHORIZED
+DELETE /auth/session (cookie) → 200 {loggedOut:true} + xoá cookie
+GET /auth/me (Bearer) → user; GET /auth/check-email?email= → {available}
+POST /auth/forgot-password {email} → 200 {message} cố định
+POST /auth/reset-password {email,code,password,confirmPassword} → 200 {message}
+Mã lỗi: VALIDATION 400, INVALID_CREDENTIALS 401, ACCOUNT_LOCKED 403, EMAIL_TAKEN 409, INVALID_CODE 400, UNAUTHORIZED 401, FORBIDDEN 403, INTERNAL 500.
+/admin/** cần ROLE_ADMIN; mọi đường dẫn khác cần đăng nhập, trừ các endpoint auth ở trên.
+
+Dữ liệu mẫu: trong apps/backend chạy SPRING_PROFILES_ACTIVE=dev ./mvnw spring-boot:run (cần .env theo .env.example). DevSeedRunner (chỉ profile dev) gọi
+SeedService.seedIfEmpty(), nạp resources/seed/*.json khi bảng users trống nên chạy lại không nhân đôi. Gồm 3 tài khoản mật khẩu 123456
+(hocvien@enlearning.vn USER, admin@enlearning.vn ADMIN, khoa@enlearning.vn USER bị khoá), 6 chủ đề, 6 bộ thẻ (36 từ), 4 bài nghe, 4 bài đọc,
+3 bài nói (13 câu), 5 đề viết, 3 đề kiểm tra, 45 câu hỏi (144 phương án). JSON được chuyển một lần từ src/mocks/data; từ nay JSON là nguồn sự thật.
+createdAt của user seed là lúc seed. Chưa seed lịch sử học (tiến độ thẻ, lượt làm bài, study_sessions, thông báo).
 
 4. Kiến trúc triển khai (Application Architecture)
 Backend dùng modular monolith: một Spring Boot, chia module auth, flashcard, writing, exam, learning, notification, admin.

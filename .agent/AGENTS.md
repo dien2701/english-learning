@@ -7,7 +7,7 @@ Monorepo, hai ứng dụng nằm trong `apps/`. Nguồn sự thật về phiên 
 - **Backend (`apps/backend`):** Java 21, Spring Boot 4.1, Spring Data JPA (Hibernate), Spring Security, Bean Validation. Kiến trúc modular monolith.
 - **Database:** MySQL 9.0. Schema do Flyway quản lý (`apps/backend/src/main/resources/db/migration`), Hibernate chạy `ddl-auto: validate` nên entity phải khớp SQL.
 - **Dự kiến, chưa có trong `pom.xml`:** Redis (chỉ cache), RabbitMQ (gửi email nhắc học), Cloudinary (lưu MP3), OpenAI (chấm bài viết, Chat AI, Luyện nói).
-- **Giai đoạn hiện tại:** frontend chạy bằng mock (`VITE_USE_MOCK=true`); backend mới có schema và entity, chưa có API. Xem `.docs/FEATURES_DONE.md`.
+- **Giai đoạn hiện tại:** frontend chạy bằng mock (`VITE_USE_MOCK=true`); backend đã có schema, entity, module Auth (đăng ký, đăng nhập, refresh, quên mật khẩu) và dữ liệu mẫu, các module khác chưa có API. Xem `.docs/FEATURES_DONE.md`.
 
 # QUY TẮC VẬN HÀNH BỘ NHỚ (CRITICAL MEMORY RULES)
 1. **Khởi động phiên:** Ở mỗi đầu phiên chat, BẮT BUỘC đọc ngầm 2 file: `.docs/ARCHITECTURE.md` (để hiểu database/logic) và `.docs/FEATURES_DONE.md` (để biết tiến độ hiện tại).
@@ -26,11 +26,11 @@ Monorepo, hai ứng dụng nằm trong `apps/`. Nguồn sự thật về phiên 
 
 # QUY CHUẨN BẢO MẬT
 - Hashing mật khẩu: Sử dụng `BCrypt` (Spring Security) với cost là `12`. BẠN BỊ CẤM lưu mật khẩu dạng Plain Text.
-- Quản lý token: Dùng JWT cho access token. Thư viện JWT của Java chưa được thêm vào `pom.xml`; chọn khi làm module Auth. KHÔNG dùng `jsonwebtoken` (thư viện của Node.js).
-- Refresh Token và Password Reset Token: chỉ lưu bản băm SHA-256 trong MySQL (bảng `refresh_tokens`, `password_reset_tokens`), không lưu token thô. Redis chỉ dùng để cache, không là nơi duy nhất giữ trạng thái đăng nhập.
+- Quản lý token: Dùng JWT cho access token, ký và kiểm bằng Spring Security OAuth2 Resource Server (Nimbus JOSE, HS256, khoá `JWT_SECRET`). KHÔNG dùng `jsonwebtoken` (thư viện của Node.js).
+- Refresh Token: chỉ lưu SHA-256 trong bảng `refresh_tokens`. Mã OTP đặt lại mật khẩu (6 số): chỉ lưu HMAC-SHA256 có khoá `RESET_CODE_SECRET`, băm kèm id người dùng, cùng bộ đếm `attempts`, trong bảng `password_reset_tokens`. Không lưu token hay mã thô. Redis chỉ dùng để cache, không là nơi duy nhất giữ trạng thái đăng nhập.
 - Quy tắc payload: BẠN BỊ CẤM trả về trường `passwordHash` hoặc các thông tin nhạy cảm trong API Response.
 - Quy tắc Cookie: `Refresh Token` BẮT BUỘC phải được set vào cookie thông qua Header `Set-Cookie` với cấu hình `HTTP Only`.
-- Bí mật (JWT secret, OpenAI API key, Cloudinary secret, mật khẩu DB và email) đặt trong `.env`, KHÔNG commit và KHÔNG để trong code React.
+- Bí mật (`JWT_SECRET`, `RESET_CODE_SECRET`, OpenAI API key, Cloudinary secret, mật khẩu DB và `MAIL_PASSWORD`) đặt trong `.env`, KHÔNG commit và KHÔNG để trong code React. Mẫu các khoá nằm ở `apps/backend/.env.example`.
 
 # QUY TẮC GIAO TIẾP (NO YAPPING - TOKEN OPTIMIZATION)
 - **CẤM NÓI NHẢM:** Không chào hỏi, không nói "Chắc chắn rồi", "Tôi sẽ giúp bạn". Hãy đi thẳng vào vấn đề.

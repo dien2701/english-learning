@@ -1,0 +1,447 @@
+[
+  {
+    "titleVi": "Kiểm tra tổng hợp giữa khoá",
+    "titleEn": "Mid-course Mixed Test",
+    "descriptionVi": "Bài thi thử bao phủ từ vựng, ngữ pháp, đọc hiểu và nghe hiểu.",
+    "descriptionEn": "A mock test covering vocabulary, grammar, reading and listening.",
+    "level": "INTERMEDIATE",
+    "timeLimitMinutes": 20,
+    "questions": [
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "VOCABULARY",
+        "content": "Choose the correct word: The company will ______ the invoice next week.",
+        "explanation": "Sau \"will\" dùng động từ nguyên thể không \"to\".",
+        "options": [
+          {
+            "content": "issue",
+            "correct": true
+          },
+          {
+            "content": "issued",
+            "correct": false
+          },
+          {
+            "content": "issuing",
+            "correct": false
+          },
+          {
+            "content": "issues",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "VOCABULARY",
+        "content": "Choose the word closest in meaning to \"substantial\".",
+        "explanation": null,
+        "options": [
+          {
+            "content": "small",
+            "correct": false
+          },
+          {
+            "content": "considerable",
+            "correct": true
+          },
+          {
+            "content": "unclear",
+            "correct": false
+          },
+          {
+            "content": "temporary",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Which sentence is grammatically correct?",
+        "explanation": null,
+        "options": [
+          {
+            "content": "He have finished the report.",
+            "correct": false
+          },
+          {
+            "content": "He has finished the report.",
+            "correct": true
+          },
+          {
+            "content": "He finished have the report.",
+            "correct": false
+          },
+          {
+            "content": "He has finish the report.",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "VOCABULARY",
+        "content": "Fill in the blank: She is responsible ______ managing the budget.",
+        "explanation": "Cụm cố định: be responsible for something.",
+        "options": [],
+        "acceptedAnswers": [
+          "for"
+        ]
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Read: \"The shipment arrives Tuesday.\" When does it arrive?",
+        "explanation": null,
+        "options": [
+          {
+            "content": "Monday",
+            "correct": false
+          },
+          {
+            "content": "Tuesday",
+            "correct": true
+          },
+          {
+            "content": "Wednesday",
+            "correct": false
+          },
+          {
+            "content": "Thursday",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "LISTENING",
+        "content": "Choose the best reply: \"Could you send me the agenda?\"",
+        "explanation": null,
+        "options": [
+          {
+            "content": "Yes, I am.",
+            "correct": false
+          },
+          {
+            "content": "Sure, I will send it right away.",
+            "correct": true
+          },
+          {
+            "content": "No, thanks.",
+            "correct": false
+          },
+          {
+            "content": "It is on Monday.",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Choose the correct preposition: The meeting was moved ______ Wednesday.",
+        "explanation": null,
+        "options": [
+          {
+            "content": "at",
+            "correct": false
+          },
+          {
+            "content": "in",
+            "correct": false
+          },
+          {
+            "content": "to",
+            "correct": true
+          },
+          {
+            "content": "on",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "VOCABULARY",
+        "content": "Fill in the blank: Prices ______ sharply during the period.",
+        "explanation": null,
+        "options": [],
+        "acceptedAnswers": [
+          "fluctuated"
+        ]
+      }
+    ]
+  },
+  {
+    "titleVi": "Kiểm tra đầu vào — Xác định trình độ",
+    "titleEn": "Placement Test — Find Your Level",
+    "descriptionVi": "Bài ngắn giúp hệ thống ước lượng trình độ hiện tại của bạn.",
+    "descriptionEn": "A short test so the system can estimate your current level.",
+    "level": "BEGINNER",
+    "timeLimitMinutes": 10,
+    "questions": [
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "VOCABULARY",
+        "content": "Choose the correct form: She ______ to work by bus every day.",
+        "explanation": null,
+        "options": [
+          {
+            "content": "go",
+            "correct": false
+          },
+          {
+            "content": "goes",
+            "correct": true
+          },
+          {
+            "content": "going",
+            "correct": false
+          },
+          {
+            "content": "gone",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "VOCABULARY",
+        "content": "What is the opposite of \"expensive\"?",
+        "explanation": null,
+        "options": [
+          {
+            "content": "costly",
+            "correct": false
+          },
+          {
+            "content": "cheap",
+            "correct": true
+          },
+          {
+            "content": "rich",
+            "correct": false
+          },
+          {
+            "content": "valuable",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "VOCABULARY",
+        "content": "Choose the correct article: I bought ______ umbrella yesterday.",
+        "explanation": null,
+        "options": [
+          {
+            "content": "a",
+            "correct": false
+          },
+          {
+            "content": "an",
+            "correct": true
+          },
+          {
+            "content": "the",
+            "correct": false
+          },
+          {
+            "content": "no article",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "VOCABULARY",
+        "content": "Fill in the blank: My brother ______ playing football.",
+        "explanation": null,
+        "options": [],
+        "acceptedAnswers": [
+          "likes"
+        ]
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Read: \"The library closes at 8 p.m.\" What time does it close?",
+        "explanation": null,
+        "options": [
+          {
+            "content": "6 p.m.",
+            "correct": false
+          },
+          {
+            "content": "7 p.m.",
+            "correct": false
+          },
+          {
+            "content": "8 p.m.",
+            "correct": true
+          },
+          {
+            "content": "9 p.m.",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      }
+    ]
+  },
+  {
+    "titleVi": "TOEIC mô phỏng — Phần Reading rút gọn",
+    "titleEn": "TOEIC Simulation — Short Reading Section",
+    "descriptionVi": "Tập trung vào ngữ pháp và đọc hiểu theo định dạng TOEIC.",
+    "descriptionEn": "Focused on grammar and reading in the TOEIC format.",
+    "level": "ADVANCED",
+    "timeLimitMinutes": 15,
+    "questions": [
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "The proposal was rejected ______ its high cost.",
+        "explanation": null,
+        "options": [
+          {
+            "content": "despite",
+            "correct": false
+          },
+          {
+            "content": "because of",
+            "correct": true
+          },
+          {
+            "content": "although",
+            "correct": false
+          },
+          {
+            "content": "however",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "All employees ______ attend the safety briefing.",
+        "explanation": null,
+        "options": [
+          {
+            "content": "must",
+            "correct": true
+          },
+          {
+            "content": "musts",
+            "correct": false
+          },
+          {
+            "content": "to must",
+            "correct": false
+          },
+          {
+            "content": "musting",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "VOCABULARY",
+        "content": "Choose the word closest in meaning to \"postpone\".",
+        "explanation": null,
+        "options": [
+          {
+            "content": "cancel",
+            "correct": false
+          },
+          {
+            "content": "delay",
+            "correct": true
+          },
+          {
+            "content": "attend",
+            "correct": false
+          },
+          {
+            "content": "confirm",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "FILL_BLANK",
+        "skill": "READING",
+        "content": "Fill in the blank: The report must be submitted ______ Friday.",
+        "explanation": null,
+        "options": [],
+        "acceptedAnswers": [
+          "by"
+        ]
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "READING",
+        "content": "Neither the manager nor the assistants ______ available today.",
+        "explanation": "Với \"neither… nor\", động từ chia theo chủ ngữ gần nhất.",
+        "options": [
+          {
+            "content": "is",
+            "correct": false
+          },
+          {
+            "content": "are",
+            "correct": true
+          },
+          {
+            "content": "was",
+            "correct": false
+          },
+          {
+            "content": "has been",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      },
+      {
+        "kind": "SINGLE_CHOICE",
+        "skill": "VOCABULARY",
+        "content": "Choose the correct sentence.",
+        "explanation": null,
+        "options": [
+          {
+            "content": "We look forward to hear from you.",
+            "correct": false
+          },
+          {
+            "content": "We look forward to hearing from you.",
+            "correct": true
+          },
+          {
+            "content": "We look forward hear from you.",
+            "correct": false
+          },
+          {
+            "content": "We look forward for hearing from you.",
+            "correct": false
+          }
+        ],
+        "acceptedAnswers": []
+      }
+    ]
+  }
+]

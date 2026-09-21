@@ -46,6 +46,8 @@ export interface UserSettings {
   emailReminders: boolean;
   reminderTime: string;
   dailyGoalMinutes: number;
+  /** Mã múi giờ IANA, BE mặc định Asia/Ho_Chi_Minh. */
+  timeZone?: string;
 }
 
 export const statisticsService = {
@@ -83,4 +85,10 @@ export const profileService = {
 
   updateSettings: (payload: Partial<UserSettings>): Promise<UserSettings> =>
     http.patch<UserSettings>('/settings', payload),
+};
+
+export const studyService = {
+  /** Báo đang học để BE cộng thời gian; `skill` là một trong các nhóm nội dung. */
+  heartbeat: (skill: Skill, refId: string): Promise<{ sessionId: string; activeSeconds: number }> =>
+    http.post<{ sessionId: string; activeSeconds: number }>('/study/heartbeat', { skill, refId }),
 };

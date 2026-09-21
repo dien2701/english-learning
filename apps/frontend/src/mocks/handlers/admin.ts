@@ -10,7 +10,9 @@ import { speakingLessons } from '../data/speaking';
 import { exams } from '../data/exam';
 import { topics } from '../data/topics';
 import type {
+  AdminContentChild,
   AdminContentItem,
+  AdminContentPayload,
   AdminDashboardData,
   AdminNotification,
   AdminUser,
@@ -279,20 +281,22 @@ get('/admin/content/:id', ({ params }) => {
   if (!item) fail(404, 'errors.contentNotFound', 'CONTENT_NOT_FOUND');
   
   // Fake payload structure cho edit form
+  const loose = item as unknown as Record<string, unknown>;
+  const children = (key: string) => (loose[key] as AdminContentChild[] | undefined) || [];
   const payload = {
     skill: item.skill,
     title: item.title,
-    topicName: (item as any).topicName,
+    topicName: loose.topicName as L10n | undefined,
     level: item.level,
-    items: [] as any[], // Trong thực tế lấy từ db
+    items: [] as AdminContentChild[], // Trong thực tế lấy từ db
   };
 
-  if (item.skill === 'VOCABULARY') payload.items = (item as any).cards || [];
-  if (item.skill === 'LISTENING') payload.items = (item as any).parts || [];
-  if (item.skill === 'READING') payload.items = (item as any).questions || [];
-  if (item.skill === 'WRITING') payload.items = [(item as any).prompt]; // Ví dụ
-  if (item.skill === 'SPEAKING') payload.items = (item as any).prompts || [];
-  if (item.skill === 'EXAM') payload.items = (item as any).questions || [];
+  if (item.skill === 'VOCABULARY') payload.items = children('cards');
+  if (item.skill === 'LISTENING') payload.items = children('parts');
+  if (item.skill === 'READING') payload.items = children('questions');
+  if (item.skill === 'WRITING') payload.items = [loose.prompt as AdminContentChild]; // Ví dụ
+  if (item.skill === 'SPEAKING') payload.items = children('prompts');
+  if (item.skill === 'EXAM') payload.items = children('questions');
 
   return {
     id: item.id,
@@ -305,7 +309,7 @@ get('/admin/content/:id', ({ params }) => {
 });
 
 post('/admin/content', ({ body }) => {
-  const { skill, title, topicName, level, items } = (body ?? {}) as any;
+  const { skill, title, topicName, level, items } = (body ?? {}) as Partial<AdminContentPayload>;
   if (!title?.vi || !skill) fail(400, 'errors.invalidPayload', 'VALIDATION');
   
   const newId = `new-${skill.toLowerCase()}-${Date.now().toString(36)}`;
@@ -321,12 +325,12 @@ post('/admin/content', ({ body }) => {
     promptCount: items?.length || 0,
   };
 
-  if (skill === 'VOCABULARY') (decks as any[]).unshift(newContent);
-  if (skill === 'LISTENING') (listeningLessons as any[]).unshift(newContent);
-  if (skill === 'READING') (readingLessons as any[]).unshift(newContent);
-  if (skill === 'WRITING') (writingPrompts as any[]).unshift(newContent);
-  if (skill === 'SPEAKING') (speakingLessons as any[]).unshift(newContent);
-  if (skill === 'EXAM') (exams as any[]).unshift(newContent);
+  if (skill === 'VOCABULARY') (decks as unknown[]).unshift(newContent);
+  if (skill === 'LISTENING') (listeningLessons as unknown[]).unshift(newContent);
+  if (skill === 'READING') (readingLessons as unknown[]).unshift(newContent);
+  if (skill === 'WRITING') (writingPrompts as unknown[]).unshift(newContent);
+  if (skill === 'SPEAKING') (speakingLessons as unknown[]).unshift(newContent);
+  if (skill === 'EXAM') (exams as unknown[]).unshift(newContent);
 
   contentStatus.set(newId, 'ACTIVE');
 
@@ -342,7 +346,7 @@ post('/admin/content', ({ body }) => {
 });
 
 put('/admin/content/:id', ({ params, body }) => {
-  const { skill, title, level, items } = (body ?? {}) as any;
+  const { skill, title, level, items } = (body ?? {}) as Partial<AdminContentPayload>;
   
   return {
     id: params.id,
@@ -447,8 +451,8 @@ del('/admin/topics/:id', ({ params }) => {
   
   // Xóa liên kết (cập nhật các nội dung đang dùng topic này về 'Khác')
   // Do mock dùng các array tách rời nên ta cần loop qua để gán lại. 
-  const reassignTopic = (items: any[]) => {
-    items.forEach(item => {
+  const reassignTopic = (items: unknown[]) => {
+    (items as { topicId?: string; topicName?: L10n }[]).forEach(item => {
       if (item.topicId === params.id || (item.topicName && item.topicName.vi === topic.name.vi)) {
         item.topicId = undefined; // Hoặc 'tp-other' nếu có
         item.topicName = { vi: 'Khác', en: 'Other' };

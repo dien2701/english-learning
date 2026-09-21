@@ -405,6 +405,7 @@
     "phoneNumber": "Số điện thoại",
     "role": "Vai trò",
     "uploadAvatar": "Tải ảnh lên",
+    "avatarUrl": "Đường dẫn ảnh đại diện",
     "uploadSuccess": "Đã tải ảnh lên thành công",
     "changePassword": "Đổi mật khẩu",
     "currentPassword": "Mật khẩu hiện tại",

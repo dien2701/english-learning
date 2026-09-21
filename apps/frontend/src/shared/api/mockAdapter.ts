@@ -7,10 +7,10 @@ import { ApiError } from './types';
 /**
  * Adapter giả lập cho axios.
  *
- * Khi VITE_USE_MOCK=true, adapter này chặn request ngay trước lúc gửi đi
- * và trả kết quả từ các handler trong src/mocks. Tầng service vẫn viết
- * đúng cú pháp axios như gọi server thật, nên lúc nối backend chỉ cần
- * đổi biến môi trường thành false.
+ * Request có tiền tố nằm trong VITE_MOCK_MODULES bị chặn ngay trước lúc gửi
+ * đi và trả kết quả từ các handler trong src/mocks (xem `isMockedRequest`).
+ * Tầng service vẫn viết đúng cú pháp axios như gọi server thật, nên lúc nối
+ * backend cho một module chỉ cần bỏ module đó khỏi danh sách.
  */
 
 /** Độ trễ giả lập, tính bằng mili giây, để thấy được trạng thái loading. */
@@ -70,6 +70,20 @@ function parseBody(data: unknown): unknown {
   } catch {
     return data;
   }
+}
+
+/**
+ * Request có thuộc module đang mock không: đường dẫn (bỏ baseURL) trùng hoặc
+ * bắt đầu bằng một tiền tố trong danh sách, ví dụ `flashcard` khớp
+ * `/flashcard/decks` nhưng không khớp `/flashcards`.
+ */
+export function isMockedRequest(
+  config: InternalAxiosRequestConfig,
+  modules: readonly string[],
+): boolean {
+  if (modules.length === 0) return false;
+  const path = splitUrl(config).pathname.replace(/^\/+|\/+$/g, '');
+  return modules.some((m) => path === m || path.startsWith(`${m}/`));
 }
 
 function readToken(config: InternalAxiosRequestConfig): string | undefined {

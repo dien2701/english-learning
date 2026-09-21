@@ -1,0 +1,97 @@
+[
+  {
+    "topic": "foundation",
+    "titleVi": "Giới thiệu bản thân",
+    "titleEn": "Introducing Yourself",
+    "descriptionVi": "Đọc to năm câu giới thiệu cơ bản, luyện trọng âm và ngữ điệu.",
+    "descriptionEn": "Read five simple lines aloud to practise stress and intonation.",
+    "level": "BEGINNER",
+    "prompts": [
+      {
+        "text": "Hello, my name is Linh and I work as a software engineer.",
+        "phonetic": "/həˈloʊ maɪ neɪm ɪz lɪŋ/",
+        "meaningVi": "Xin chào, tôi tên Linh và tôi làm kỹ sư phần mềm."
+      },
+      {
+        "text": "I have been learning English for about three years.",
+        "phonetic": null,
+        "meaningVi": "Tôi đã học tiếng Anh được khoảng ba năm."
+      },
+      {
+        "text": "In my free time, I enjoy reading and cycling around the lake.",
+        "phonetic": null,
+        "meaningVi": "Lúc rảnh tôi thích đọc sách và đạp xe quanh hồ."
+      },
+      {
+        "text": "My goal is to communicate confidently with international colleagues.",
+        "phonetic": null,
+        "meaningVi": "Mục tiêu của tôi là giao tiếp tự tin với đồng nghiệp nước ngoài."
+      },
+      {
+        "text": "Thank you for listening, and I look forward to working with you.",
+        "phonetic": null,
+        "meaningVi": "Cảm ơn đã lắng nghe, tôi mong được làm việc cùng bạn."
+      }
+    ]
+  },
+  {
+    "topic": "ielts",
+    "titleVi": "Mô tả một địa điểm bạn yêu thích",
+    "titleEn": "Describe a Place You Love",
+    "descriptionVi": "Luyện nói theo chủ đề Speaking Part 2 với các câu dài hơn.",
+    "descriptionEn": "Longer sentences in the style of Speaking Part 2.",
+    "level": "INTERMEDIATE",
+    "prompts": [
+      {
+        "text": "The place I would like to talk about is a small bookshop near my house.",
+        "phonetic": null,
+        "meaningVi": "Nơi tôi muốn nói tới là một hiệu sách nhỏ gần nhà tôi."
+      },
+      {
+        "text": "It occupies the ground floor of an old building with wooden shutters.",
+        "phonetic": null,
+        "meaningVi": "Nó nằm ở tầng trệt một toà nhà cũ có cửa chớp gỗ."
+      },
+      {
+        "text": "What makes it special is the quiet atmosphere and the smell of paper.",
+        "phonetic": null,
+        "meaningVi": "Điều đặc biệt là bầu không khí yên tĩnh và mùi giấy."
+      },
+      {
+        "text": "I usually spend an entire Sunday morning browsing the shelves there.",
+        "phonetic": null,
+        "meaningVi": "Tôi thường dành trọn sáng Chủ nhật để lục lọi các kệ sách ở đó."
+      }
+    ]
+  },
+  {
+    "topic": "work",
+    "titleVi": "Trình bày ý kiến trong cuộc họp",
+    "titleEn": "Giving an Opinion in a Meeting",
+    "descriptionVi": "Câu dài, nhiều cụm từ trang trọng dùng nơi công sở.",
+    "descriptionEn": "Long sentences with the formal phrases used at work.",
+    "level": "ADVANCED",
+    "prompts": [
+      {
+        "text": "If I may, I would like to raise a concern about the current timeline.",
+        "phonetic": null,
+        "meaningVi": "Nếu được, tôi muốn nêu một lo ngại về tiến độ hiện tại."
+      },
+      {
+        "text": "Based on the figures we reviewed, the deadline seems unrealistic.",
+        "phonetic": null,
+        "meaningVi": "Dựa trên số liệu vừa xem, hạn chót có vẻ không khả thi."
+      },
+      {
+        "text": "I would suggest postponing the launch by two weeks.",
+        "phonetic": null,
+        "meaningVi": "Tôi đề xuất lùi ngày ra mắt thêm hai tuần."
+      },
+      {
+        "text": "That said, I am happy to be persuaded if the team disagrees.",
+        "phonetic": null,
+        "meaningVi": "Dù vậy, tôi sẵn sàng nghe nếu cả nhóm không đồng tình."
+      }
+    ]
+  }
+]

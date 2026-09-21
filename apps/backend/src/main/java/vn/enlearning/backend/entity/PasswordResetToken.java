@@ -16,7 +16,10 @@ import jakarta.persistence.UniqueConstraint;
 import lombok.Getter;
 import lombok.Setter;
 
-/** Token đặt lại mật khẩu dùng một lần; chỉ lưu bản băm SHA-256. */
+/**
+ * Mã OTP 6 số đặt lại mật khẩu, dùng một lần. Chỉ lưu bản băm HMAC-SHA256 (khoá
+ * {@code RESET_CODE_SECRET}, băm kèm id người dùng) vì mã chỉ có 10^6 khả năng.
+ */
 @Getter
 @Setter
 @Entity
@@ -40,4 +43,8 @@ public class PasswordResetToken extends BaseEntity {
 	private Instant expiresAt;
 
 	private Instant usedAt;
+
+	/** Số lần nhập sai; Service huỷ mã khi chạm ngưỡng. Tăng bằng câu UPDATE nguyên tử, không sửa qua setter. */
+	@Column(nullable = false)
+	private int attempts;
 }

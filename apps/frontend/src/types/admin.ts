@@ -104,6 +104,9 @@ export interface AdminQuestion {
   correctAnswers: string[];
 }
 
+/** Phần tử con của nội dung (thẻ từ, câu hỏi...), hình dạng tuỳ kỹ năng. */
+export type AdminContentChild = Record<string, unknown>;
+
 /** Payload dùng chung khi thêm/sửa nội dung. */
 export interface AdminContentPayload {
   skill: Skill;
@@ -113,6 +116,6 @@ export interface AdminContentPayload {
   prompt?: string; // Đề bài chung cho bài tập (nếu có)
   mediaUrl?: string; // Audio/Video URL
   contentBody?: string; // Đoạn văn / Transcript
-  items: any[]; // Dữ liệu con tuỳ thuộc vào kỹ năng (từ vựng, câu hỏi nghe/đọc...)
+  items: AdminContentChild[]; // Dữ liệu con tuỳ thuộc vào kỹ năng (từ vựng, câu hỏi nghe/đọc...)
 }
 

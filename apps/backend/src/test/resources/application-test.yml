@@ -1,0 +1,16 @@
+# Profile của các test tích hợp. DB vẫn là en_learning (mật khẩu đọc từ .env); mọi test ghi dữ liệu
+# đều chạy trong giao dịch tự rollback.
+spring:
+  mail:
+    # Không bao giờ gửi email thật từ test, dù .env có điền MAIL_USERNAME.
+    username: ""
+    password: ""
+
+app:
+  async:
+    # @Async chạy ngay trong luồng test để thấy dữ liệu chưa commit của giao dịch test.
+    synchronous: true
+  security:
+    jwt-secret: khoa-jwt-chi-dung-cho-test-0123456789abcdef0123456789abcdef
+    reset-code-secret: khoa-otp-chi-dung-cho-test-0123456789abcdef0123456789abcdef
+    cookie-secure: false
