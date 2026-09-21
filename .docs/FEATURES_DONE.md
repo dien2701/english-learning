@@ -228,3 +228,18 @@ chỉ được chuyển sang ngừng hoạt động.
 
 - `.env.example`: bỏ `listening,reading,exams,attempts` khỏi `VITE_MOCK_MODULES` (người dùng tự sửa `.env` cục bộ). Kiểu FE: `ListeningDetail.audioUrl` nhận null, `PracticeResult.timedOut?`; các kiểu còn lại đã khớp DTO.
 - `useStudyHeartbeat` gắn vào trang làm bài Nghe, Đọc, Kiểm tra. Lint và build sạch.
+
+## Đợt 3 (phiên 3a: BE Dashboard/Thống kê)
+
+- `GET /dashboard/summary[?status]` (bộ thẻ học dở là "Tiếp tục học"; Nghe/Đọc/Kiểm tra theo lượt nộp mới nhất của từng bài; tối đa 20 bài), `GET /dashboard/study-time?period=WEEK|MONTH` (tuần T2-CN, tháng 4 nhóm; gom ngày theo `UserSetting.timeZone`, kèm kỳ trước và `changePercent`, chia 0 an toàn), `GET /statistics/overview` (điểm TB, số lượt, chênh 30 ngày cho Nghe/Đọc/Kiểm tra; Viết/Nói thêm ở đợt 4). `period`/`status` sai: 400.
+- Truy vấn tổng hợp là phương thức repository riêng (`findSlices`, `deckActivity`, `listeningAverage`/`readingAverage`/`examAverage`); service ở package `dashboard`.
+- `HistorySeedService` (profile dev/test) nạp 60 ngày phiên học (có phiên 23:30 và 00:10 giờ VN), tiến độ thẻ, lượt làm bài cho `hocvien@enlearning.vn`; `DevSeedRunner` gọi cả khi DB đã có người dùng.
+- Test: `StudyTimeServiceTests` (6, biên tuần/tháng, lệch múi giờ, kỳ trước rỗng) và `DashboardApiTests` (8, 401/400, rỗng, lọc trạng thái, cách ly người dùng, seed) xanh.
+
+## Đợt 3 (phiên 3b: nối FE)
+
+- `.env.example`: bỏ `dashboard,statistics` khỏi `VITE_MOCK_MODULES` (người dùng tự sửa `.env` cục bộ). Kiểu FE đã khớp DTO; trang Thống kê ẩn điểm/chênh lệch (hiện "–") với kỹ năng chưa có lượt nào. Lint và build sạch.
+
+## Đợt 3 (phiên 3z: đóng đợt)
+
+- Folder Postman "Dot 3 - Dashboard, Thống kê" (13 request: thành công, lọc trạng thái, 400, 401, cách ly bằng `adminToken`); bảng kiểm tra trong `dot-3-dashboard.md` khớp DTO thật. "Tiêu chí xong" chờ bạn tự kiểm.

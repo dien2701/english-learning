@@ -1,5 +1,6 @@
 package vn.enlearning.backend.flashcard.repository;
 
+import java.time.Instant;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -21,6 +22,26 @@ public interface UserFlashcardProgressRepository extends JpaRepository<UserFlash
 
 		long getRemembered();
 	}
+
+	/** Hoạt động học một bộ thẻ: số thẻ đã đánh giá, đã thuộc và lần ôn gần nhất. */
+	interface DeckActivity {
+		UUID getDeckId();
+
+		long getRated();
+
+		long getRemembered();
+
+		Instant getLastReviewedAt();
+	}
+
+	@Query("""
+			select p.flashcard.deck.id as deckId, count(p) as rated,
+			       count(case when p.recallLevel = :remembered then 1 end) as remembered,
+			       max(p.lastReviewedAt) as lastReviewedAt
+			from UserFlashcardProgress p
+			where p.user.id = :userId
+			group by p.flashcard.deck.id""")
+	List<DeckActivity> deckActivity(UUID userId, RecallLevel remembered);
 
 	long countByUserIdAndRecallLevel(UUID userId, RecallLevel recallLevel);
 
