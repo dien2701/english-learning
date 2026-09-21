@@ -32,4 +32,8 @@ public interface PasswordResetTokenRepository extends JpaRepository<PasswordRese
 	@Modifying(flushAutomatically = true, clearAutomatically = true)
 	@Query("update PasswordResetToken t set t.attempts = t.attempts + 1 where t.id = :id")
 	int incrementAttempts(@Param("id") UUID id);
+
+	@Modifying
+	@Query("delete from PasswordResetToken t where t.expiresAt < :cutoff")
+	int deleteExpiredBefore(@Param("cutoff") Instant cutoff);
 }

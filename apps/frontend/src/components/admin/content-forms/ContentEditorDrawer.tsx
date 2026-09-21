@@ -1,6 +1,6 @@
 import React, { useEffect, useEffectEvent, useState } from 'react';
 import { Drawer, Form, Input, Select, Space, Button, App, Spin, Tabs, Upload } from 'antd';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { toFormValues, toPayload, type ContentFormValues, type QuestionFormValue } from './contentMapping';
 import type { Skill, Level } from '../../../types/common';
 import { useLabels } from '../../../hooks/useLabels';
@@ -24,6 +24,9 @@ interface ContentEditorDrawerProps {
 
 const SKILLS: Skill[] = ['VOCABULARY', 'LISTENING', 'READING', 'WRITING', 'SPEAKING', 'EXAM'];
 const LEVELS: Level[] = ['BEGINNER', 'INTERMEDIATE', 'ADVANCED'];
+
+/** Thẻ dùng trong chuỗi dịch của hướng dẫn CSV. */
+const csvTags = { strong: <strong />, code: <code /> };
 
 export const ContentEditorDrawer: React.FC<ContentEditorDrawerProps> = ({
   open,
@@ -107,16 +110,16 @@ export const ContentEditorDrawer: React.FC<ContentEditorDrawerProps> = ({
   const renderCsvImport = () => {
     return (
       <div className="mt-4">
-        <h3 className="mb-4 text-card-title">Nhập dữ liệu từ CSV</h3>
+        <h3 className="mb-4 text-card-title">{t('contentForm.csvTitle')}</h3>
         
         <div className="mb-6 rounded-md bg-brand-50 p-4 text-[13.5px] text-ink">
-          <p className="mb-2 font-semibold">Cấu trúc file CSV yêu cầu (có hàng tiêu đề):</p>
+          <p className="mb-2 font-semibold">{t('contentForm.csvStructure')}</p>
           <ul className="ml-5 list-disc space-y-1 text-ink-subtle">
-            <li><strong>Cột 1 (Đề bài):</strong> Nội dung đề bài chung (nếu có). Tất cả các câu hỏi sẽ được nhóm lại dưới đề bài này.</li>
-            <li><strong>Cột 2 (Loại câu hỏi):</strong> Nhập <code>MULTIPLE_CHOICE</code> hoặc <code>FILL_BLANK</code>.</li>
-            <li><strong>Cột 3 (Nội dung):</strong> Nội dung câu hỏi phụ. Với điền từ, dùng <code>[blank]</code> cho ô trống.</li>
-            <li><strong>Cột 4, 5, 6, 7 (Lựa chọn):</strong> Các lựa chọn cho câu hỏi trắc nghiệm. Bỏ trống nếu là câu điền từ.</li>
-            <li><strong>Cột 8 (Đáp án đúng):</strong> Nhập chính xác lựa chọn đúng. Nếu có nhiều đáp án, phân cách bằng dấu chấm phẩy (<code>;</code>).</li>
+            <li><Trans i18nKey="contentForm.csvCol1" components={csvTags} /></li>
+            <li><Trans i18nKey="contentForm.csvCol2" components={csvTags} /></li>
+            <li><Trans i18nKey="contentForm.csvCol3" components={csvTags} /></li>
+            <li><Trans i18nKey="contentForm.csvCol4" components={csvTags} /></li>
+            <li><Trans i18nKey="contentForm.csvCol8" components={csvTags} /></li>
           </ul>
         </div>
 
@@ -130,7 +133,7 @@ export const ContentEditorDrawer: React.FC<ContentEditorDrawerProps> = ({
               
               const lines = text.split('\n').filter(line => line.trim().length > 0);
               if (lines.length < 2) {
-                message.error('File CSV trống hoặc không đúng định dạng');
+                message.error(t('contentForm.csvEmpty'));
                 return;
               }
               
@@ -194,7 +197,7 @@ export const ContentEditorDrawer: React.FC<ContentEditorDrawerProps> = ({
                 items: [...currentItems, ...importedItems] 
               });
               
-              message.success(`Đã nhập thành công ${importedItems.length} câu hỏi. Hãy quay lại tab "Nhập thủ công" để kiểm tra.`);
+              message.success(t('contentForm.csvImported', { count: importedItems.length }));
             };
             reader.readAsText(file);
             return false;
@@ -203,7 +206,7 @@ export const ContentEditorDrawer: React.FC<ContentEditorDrawerProps> = ({
         >
           <Button type="primary" className="bg-action">
             <span className="material-symbols-outlined mr-2 text-[20px]">upload_file</span>
-            Chọn file CSV
+            {t('contentForm.chooseCsv')}
           </Button>
         </Upload>
       </div>
@@ -212,7 +215,7 @@ export const ContentEditorDrawer: React.FC<ContentEditorDrawerProps> = ({
 
   return (
     <Drawer
-      title={editingId ? t('admin.editContent', 'Chỉnh sửa Nội dung') : t('admin.addContent', 'Thêm mới Nội dung')}
+      title={editingId ? t('admin.editContent') : t('admin.addContent')}
       width={800}
       onClose={onClose}
       open={open}
@@ -263,7 +266,7 @@ export const ContentEditorDrawer: React.FC<ContentEditorDrawerProps> = ({
           <div className="grid grid-cols-2 gap-4">
             <Form.Item
               name="titleVi"
-              label={t('admin.titleVi', 'Tiêu đề (Tiếng Việt)')}
+              label={t('admin.titleVi')}
               rules={[{ required: true }]}
               className="col-span-1"
             >
@@ -271,7 +274,7 @@ export const ContentEditorDrawer: React.FC<ContentEditorDrawerProps> = ({
             </Form.Item>
             <Form.Item
               name="titleEn"
-              label={t('admin.titleEn', 'Tiêu đề (Tiếng Anh)')}
+              label={t('admin.titleEn')}
               rules={[{ required: true }]}
               className="col-span-1"
             >
@@ -286,12 +289,12 @@ export const ContentEditorDrawer: React.FC<ContentEditorDrawerProps> = ({
                 items={[
                   {
                     key: 'manual',
-                    label: 'Nhập thủ công',
+                    label: t('contentForm.tabManual'),
                     children: renderSkillSpecificFields(),
                   },
                   {
                     key: 'csv',
-                    label: 'Nhập từ CSV',
+                    label: t('contentForm.tabCsv'),
                     children: renderCsvImport(),
                   }
                 ]}

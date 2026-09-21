@@ -57,7 +57,7 @@ export function useApi<T>(
           error:
             error instanceof ApiError
               ? error
-              : new ApiError(0, 'Đã xảy ra lỗi không xác định'),
+              : new ApiError(0, 'Unknown error', 'UNKNOWN', undefined, { messageKey: 'errors.unknown' }),
         });
       });
 

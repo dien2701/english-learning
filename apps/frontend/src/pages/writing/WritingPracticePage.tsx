@@ -62,7 +62,7 @@ const WritingPracticePage: React.FC = () => {
     return (
       <div className="mx-auto w-full max-w-content px-4 py-6 sm:px-6 lg:px-8">
         <Card flush>
-          <ErrorState message={error.message} onRetry={reload} />
+          <ErrorState message={describe(error)} onRetry={reload} />
         </Card>
       </div>
     );

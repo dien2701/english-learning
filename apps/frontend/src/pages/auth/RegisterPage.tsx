@@ -151,7 +151,7 @@ const RegisterPage: React.FC = () => {
           }
         >
           <Input
-            placeholder="ban@example.com"
+            placeholder="name@example.com"
             autoComplete="email"
             inputMode="email"
             onBlur={handleEmailBlur}

@@ -74,7 +74,7 @@ const LoginPage: React.FC = () => {
             { type: 'email', message: t('auth.validation.emailFormat') },
           ]}
         >
-          <Input placeholder="ban@example.com" autoComplete="email" inputMode="email" />
+          <Input placeholder="name@example.com" autoComplete="email" inputMode="email" />
         </Form.Item>
 
         <Form.Item

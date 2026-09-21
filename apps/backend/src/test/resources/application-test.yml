@@ -1,6 +1,9 @@
 # Profile của các test tích hợp. DB vẫn là en_learning (mật khẩu đọc từ .env); mọi test ghi dữ liệu
 # đều chạy trong giao dịch tự rollback.
 spring:
+  # Không đệm trong test: dữ liệu test tự rollback nên bản đệm sẽ giữ dữ liệu đã bị huỷ.
+  cache:
+    type: none
   mail:
     # Không bao giờ gửi email thật từ test, dù .env có điền MAIL_USERNAME.
     username: ""
@@ -18,3 +21,9 @@ app:
     jwt-secret: khoa-jwt-chi-dung-cho-test-0123456789abcdef0123456789abcdef
     reset-code-secret: khoa-otp-chi-dung-cho-test-0123456789abcdef0123456789abcdef
     cookie-secure: false
+  scheduling:
+    # Job nền không tự chạy trong test (sẽ ghi vào DB thật ngoài giao dịch test).
+    enabled: false
+  rate-limit:
+    # Các test tích hợp dùng chung một IP; test giới hạn tần suất tự bật lại với ngưỡng nhỏ.
+    enabled: false

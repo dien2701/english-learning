@@ -22,6 +22,7 @@ public enum ErrorCode {
 	AUDIO_TOO_LARGE(HttpStatus.CONTENT_TOO_LARGE, "errors.audioTooLarge"),
 	AUDIO_UNSUPPORTED(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "errors.audioUnsupported"),
 	AI_UNAVAILABLE(HttpStatus.SERVICE_UNAVAILABLE, "errors.aiUnavailable"),
+	RATE_LIMITED(HttpStatus.TOO_MANY_REQUESTS, "errors.tooManyRequests"),
 	INTERNAL(HttpStatus.INTERNAL_SERVER_ERROR, "errors.server");
 
 	private final HttpStatus status;

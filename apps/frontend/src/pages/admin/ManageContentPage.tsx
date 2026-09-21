@@ -146,7 +146,7 @@ const ManageContentPage: React.FC = () => {
             setEditingId(item.id);
             setDrawerOpen(true);
           }}>
-            {t('common.edit', 'Sửa')}
+            {t('common.edit')}
           </Button>
           {item.inUse ? (
           <Tooltip title={t('admin.inUseTooltip')}>
@@ -183,7 +183,7 @@ const ManageContentPage: React.FC = () => {
           }}
         >
           <span className="material-symbols-outlined mr-1 text-[20px]">add</span>
-          {t('admin.addContent', 'Thêm mới')}
+          {t('admin.addContent')}
         </Button>
       </div>
 

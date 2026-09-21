@@ -123,4 +123,8 @@ createdAt của user seed là lúc seed. Chưa seed lịch sử học (tiến đ
 Backend dùng modular monolith: một Spring Boot, chia module auth, flashcard, writing, exam, learning, notification, admin.
 Luồng Backend: Controller → Service → Repository → MySQL.
 Frontend: React + TypeScript + Ant Design.
-Redis cache Flashcard; Cloudinary lưu MP3; RabbitMQ gửi email.
+Hạ tầng đơn giản, chạy trong một tiến trình, thay cho Redis, RabbitMQ, Cloudinary:
+- Caffeine (`spring.cache.*`, `@Cacheable`/`@CacheEvict`): đệm danh sách chủ đề (TTL 5 phút, xoá khi admin ghi); cũng giữ bucket của rate limit.
+- `@Scheduled`: email nhắc học mỗi phút (`reminder/`, chống trùng bằng UNIQUE `email_logs` (user_id, reminder_date)); dọn refresh token, OTP hết hạn và phiên học rỗng mỗi giờ (`cleanup/`).
+- bucket4j trong bộ nhớ (`ratelimit/`, theo IP): `login` 10/phút, `check-email` 30/phút, `forgot-password` 5/phút, trả 429 `RATE_LIMITED`.
+- Email qua `EmailSender` (Gmail SMTP, hoặc ghi log khi chưa cấu hình); audio/ảnh giữ đường dẫn ngoài, không dùng Cloudinary..

@@ -7,6 +7,7 @@ import { ErrorState, Skeleton } from '../components/ui/StateBlocks';
 import { useApi } from '../hooks/useApi';
 import { dashboardService } from '../services/dashboardService';
 import { useTranslation } from 'react-i18next';
+import { useApiError } from '../hooks/useApiError';
 
 /**
  * Dashboard cố ý giữ gọn ba khối: một bài cần học tiếp, một biểu đồ thời
@@ -15,6 +16,7 @@ import { useTranslation } from 'react-i18next';
  */
 export const DashboardPage: React.FC = () => {
   const { t } = useTranslation();
+  const { describe } = useApiError();
   const { data, isLoading, error, reload } = useApi(
     () => dashboardService.getSummary(),
     [],
@@ -31,7 +33,7 @@ export const DashboardPage: React.FC = () => {
 
       {error ? (
         <div className="rounded-lg border border-hairline bg-surface shadow-sm">
-          <ErrorState message={error.message} onRetry={reload} />
+          <ErrorState message={describe(error)} onRetry={reload} />
         </div>
       ) : (
         <div className="flex flex-col gap-5">

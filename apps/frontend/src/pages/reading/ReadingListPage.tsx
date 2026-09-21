@@ -12,9 +12,11 @@ import { readingService, topicService } from '../../services/contentService';
 import { formatScore } from '../../utils/format';
 import { useLanguage } from '../../hooks/useLanguage';
 import { useTranslation } from 'react-i18next';
+import { useApiError } from '../../hooks/useApiError';
 
 const ReadingListPage: React.FC = () => {
   const { t } = useTranslation();
+  const { describe } = useApiError();
   const { L } = useLanguage();
   const [filter, setFilter] = useState<FilterState>(EMPTY_FILTER);
   const search = useDebounced(filter.search, 350);
@@ -49,7 +51,7 @@ const ReadingListPage: React.FC = () => {
 
       {lessons.error ? (
         <Card flush>
-          <ErrorState message={lessons.error.message} onRetry={lessons.reload} />
+          <ErrorState message={describe(lessons.error)} onRetry={lessons.reload} />
         </Card>
       ) : lessons.isLoading || !lessons.data ? (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">

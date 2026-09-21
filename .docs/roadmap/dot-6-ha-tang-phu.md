@@ -4,28 +4,28 @@ Phụ thuộc: đợt 1 và 5. Chia phiên: 6.1 email nhắc học; 6.2 rate lim
 KHÔNG thêm Redis, RabbitMQ, Cloudinary. Code đặt sau interface để nâng cấp sau.
 
 ## Việc làm
-- [ ] Email nhắc học: `@Scheduled` chạy mỗi phút, chọn người dùng đã bật nhắc và đến giờ theo múi giờ riêng (`UserSetting`). Bỏ qua người đã đủ mục tiêu trong ngày. Ghi `email_logs`; UNIQUE (user, reminderDate) chặn gửi trùng. Dùng lại `EmailSender` (Gmail SMTP hoặc ghi log khi chưa cấu hình).
-- [ ] Giới hạn tần suất bằng bucket4j trong bộ nhớ cho `login`, `check-email`, `forgot-password`; trả 429 kèm `messageKey`.
-- [ ] Rà lại Caffeine (đã đặt ở đợt 1): TTL và xoá cache.
-- [ ] Job định kỳ dọn refresh token, mã OTP hết hạn và `study_sessions` treo.
+- [x] Email nhắc học: `@Scheduled` chạy mỗi phút, chọn người dùng đã bật nhắc và đến giờ theo múi giờ riêng (`UserSetting`). Bỏ qua người đã đủ mục tiêu trong ngày. Ghi `email_logs`; UNIQUE (user, reminderDate) chặn gửi trùng. Dùng lại `EmailSender` (Gmail SMTP hoặc ghi log khi chưa cấu hình).
+- [x] Giới hạn tần suất bằng bucket4j trong bộ nhớ cho `login`, `check-email`, `forgot-password`; trả 429 kèm `messageKey`.
+- [x] Rà lại Caffeine (đã đặt ở đợt 1): TTL và xoá cache.
+- [x] Job định kỳ dọn refresh token, mã OTP hết hạn và `study_sessions` treo.
 
 ## Tiêu chí xong
 - [ ] Đặt giờ nhắc gần hiện tại, nhận đúng một email (hoặc một dòng log), chạy lại không gửi trùng.
 - [ ] Vượt ngưỡng đăng nhập nhận 429.
-- [ ] Ghi vào `ARCHITECTURE.md` (mục 4) rằng hạ tầng là Caffeine, `@Scheduled`, bucket4j thay cho Redis, RabbitMQ, Cloudinary.
-- [ ] Test xanh.
+- [x] Ghi vào `ARCHITECTURE.md` (mục 4) rằng hạ tầng là Caffeine, `@Scheduled`, bucket4j thay cho Redis, RabbitMQ, Cloudinary.
+- [x] Test xanh.
 
 ## Kiểm tra hoàn thành
 
-Folder "Dot 6 - Gioi han tan suat" sẽ được thêm khi đợt xong (chỉ phần rate limit dùng Postman). Bảng dưới là DỰ KIẾN. Cách chạy chung: mục "Kiểm tra bằng Postman" trong `ROADMAP.md`.
+Folder Postman "Dot 6 - Gioi han tan suat" (3 request, mỗi request tự gọi lặp bằng script; chạy CUỐI CÙNG, từng request một, đợi 1 phút giữa các request). Bảng dưới đã chốt theo BE thật. Cách chạy chung: mục "Kiểm tra bằng Postman" trong `ROADMAP.md`.
 
 ### A. Postman: giới hạn tần suất
 | # | Request | Kỳ vọng |
 |---|---|---|
-| 1 | Login sai mật khẩu, chạy lặp bằng Runner (Iterations = ngưỡng + 2) | các lần đầu 401, sau ngưỡng thì 429 kèm `messageKey` (mã lỗi và ngưỡng chốt khi làm) |
-| 2 | `GET /auth/check-email` lặp | như trên |
-| 3 | `POST /auth/forgot-password` lặp | 429 hoặc luôn cùng một thông điệp (giữ chống dò email); chốt khi làm |
-| 4 | Đợi hết cửa sổ thời gian, Login đúng | 200 trở lại |
+| 1 | `01 Login sai lặp 12 lần` | 10 lần đầu 401, sau đó 429; `code` RATE_LIMITED, `messageKey` `errors.tooManyRequests`, header `Retry-After` |
+| 2 | `02 check-email lặp 32 lần` | 30 lần đầu 200, sau đó 429 |
+| 3 | `03 forgot-password lặp 7 lần` | 5 lần đầu 200 (luôn cùng thông điệp, chống dò email), sau đó 429 |
+| 4 | Đợi hết 1 phút, Login đúng (folder Dot 0) | 200 trở lại |
 
 Lưu ý: khi đã có rate limit, chạy lại folder "Dot 0 - Auth" nhiều lần liên tiếp có thể chạm ngưỡng; nếu gặp 429 thì đợi hết cửa sổ rồi chạy lại.
 

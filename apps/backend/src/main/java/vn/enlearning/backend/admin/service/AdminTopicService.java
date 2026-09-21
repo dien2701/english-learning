@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +16,7 @@ import vn.enlearning.backend.admin.dto.TopicRequest;
 import vn.enlearning.backend.common.ApiException;
 import vn.enlearning.backend.common.ErrorCode;
 import vn.enlearning.backend.common.L10n;
+import vn.enlearning.backend.config.CacheConfig;
 import vn.enlearning.backend.content.repository.FlashcardDeckRepository;
 import vn.enlearning.backend.content.repository.ListeningLessonRepository;
 import vn.enlearning.backend.content.repository.ReadingLessonRepository;
@@ -46,6 +48,7 @@ public class AdminTopicService {
 	}
 
 	@Transactional
+	@CacheEvict(cacheNames = CacheConfig.TOPICS, allEntries = true)
 	public AdminTopicResponse create(TopicRequest request) {
 		Topic topic = new Topic();
 		topic.setSlug(uniqueSlug(request.nameEn() != null && !request.nameEn().isBlank() ? request.nameEn() : request.nameVi()));
@@ -54,6 +57,7 @@ public class AdminTopicService {
 	}
 
 	@Transactional
+	@CacheEvict(cacheNames = CacheConfig.TOPICS, allEntries = true)
 	public AdminTopicResponse update(UUID id, TopicRequest request) {
 		Topic topic = find(id);
 		apply(topic, request);
@@ -61,6 +65,7 @@ public class AdminTopicService {
 	}
 
 	@Transactional
+	@CacheEvict(cacheNames = CacheConfig.TOPICS, allEntries = true)
 	public void delete(UUID id) {
 		Topic topic = find(id);
 		if (itemCount(id) > 0) {
