@@ -16,4 +16,6 @@ public interface WritingPromptRepository
 
 	/** Nội dung ACTIVE đầu tiên, dùng làm gợi ý bài học trong Chat. */
 	Optional<WritingPrompt> findFirstByStatusOrderByCreatedAtAscIdAsc(ContentStatus status);
+
+	long countByTopicId(UUID topicId);
 }

@@ -30,4 +30,6 @@ public interface StudySessionRepository extends JpaRepository<StudySession, UUID
 
 	@Query("select coalesce(sum(s.activeSeconds), 0) from StudySession s where s.user.id = :userId")
 	long totalActiveSeconds(UUID userId);
+
+	long countByStartedAtGreaterThanEqual(Instant since);
 }

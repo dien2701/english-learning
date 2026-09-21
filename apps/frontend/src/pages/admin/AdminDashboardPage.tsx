@@ -221,6 +221,9 @@ const AdminDashboardPage: React.FC = () => {
           <Card>
             <CardHeader title={t('admin.recentActivity')} />
 
+            {data.activities.length === 0 && (
+              <p className="mt-3 text-[13.5px] text-ink-muted">{t('admin.noActivity')}</p>
+            )}
             <ul className="mt-3 divide-y divide-hairline">
               {data.activities.map((activity) => (
                 <li key={activity.id} className="flex items-center gap-3 py-3">

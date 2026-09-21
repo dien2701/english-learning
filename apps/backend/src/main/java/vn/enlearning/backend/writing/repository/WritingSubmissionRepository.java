@@ -45,4 +45,12 @@ public interface WritingSubmissionRepository extends JpaRepository<WritingSubmis
 	@Query("update WritingSubmission s set s.status = :to, s.updatedAt = :now where s.id = :id and s.status = :from")
 	int transition(@Param("id") UUID id, @Param("from") SubmissionStatus from, @Param("to") SubmissionStatus to,
 			@Param("now") Instant now);
+
+	@Query("select distinct s.prompt.id from WritingSubmission s where s.prompt.id in :ids")
+	List<UUID> usedPromptIds(@Param("ids") Collection<UUID> ids);
+
+	@Query("select s.user.id as id, count(s) as total from WritingSubmission s "
+			+ "where s.status = vn.enlearning.backend.entity.enums.SubmissionStatus.GRADED and s.user.id in :ids "
+			+ "group by s.user.id")
+	List<vn.enlearning.backend.common.IdCount> gradedByUsers(@Param("ids") Collection<UUID> ids);
 }

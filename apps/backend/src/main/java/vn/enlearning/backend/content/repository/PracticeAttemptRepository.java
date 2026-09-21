@@ -84,4 +84,18 @@ public interface PracticeAttemptRepository extends JpaRepository<PracticeAttempt
 	@EntityGraph(attributePaths = { "listeningLesson", "readingLesson", "exam" })
 	Page<PracticeAttempt> findByUserIdAndStatusAndExamIsNotNull(UUID userId, AttemptStatus status,
 			Pageable pageable);
+
+	/** Nội dung đã có lượt làm: Admin không được xoá hay bớt câu hỏi. */
+	@Query("select distinct a.listeningLesson.id from PracticeAttempt a where a.listeningLesson.id in :ids")
+	List<UUID> usedListeningIds(@Param("ids") Collection<UUID> ids);
+
+	@Query("select distinct a.readingLesson.id from PracticeAttempt a where a.readingLesson.id in :ids")
+	List<UUID> usedReadingIds(@Param("ids") Collection<UUID> ids);
+
+	@Query("select distinct a.exam.id from PracticeAttempt a where a.exam.id in :ids")
+	List<UUID> usedExamIds(@Param("ids") Collection<UUID> ids);
+
+	@Query("select a.user.id as id, count(a) as total from PracticeAttempt a "
+			+ "where a.status = " + COMPLETED + " and a.user.id in :ids group by a.user.id")
+	List<vn.enlearning.backend.common.IdCount> completedByUsers(@Param("ids") Collection<UUID> ids);
 }

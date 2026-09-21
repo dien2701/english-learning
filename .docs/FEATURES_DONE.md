@@ -270,3 +270,26 @@ chỉ được chuyển sang ngừng hoạt động.
 ## Đợt 4 (phiên 4z: đóng đợt)
 
 - Ba luồng Viết (4a), Chat (4b), Nói (4c) chạy trọn với bản giả: trạng thái `GRADING`/lỗi/chấm lại/ghi âm lại đều hoạt động. BE: `./mvnw test` (35 test AI xanh); FE: `npm run lint` và `npm run build` sạch. FE bỏ `writing,chat,speaking` khỏi mock (`.env.example` đã sửa). Tiêu chí "Người dùng chỉ xem được dữ liệu của mình" được xác thực qua `*ApiTests` (cách ly bằng `userId` ở repository/service).
+
+## Đợt 5 (phiên 5a: BE quản trị nội dung)
+
+- `admin/`: `/admin/content` (GET danh sách lọc `search,skill,status,level` + trang, GET/PUT/PATCH/DELETE `/{id}`, POST 201) và `/admin/topics` (GET, POST, PUT, DELETE). Body POST/PUT đa hình theo `skill` (`VOCABULARY|LISTENING|READING|WRITING|SPEAKING|EXAM`, chủ đề theo `topicId`); GET chi tiết trả `payload` cùng dạng body kèm id thẻ/câu hỏi/câu nói.
+- PUT khớp phần tử con theo `id` (có id sửa tại chỗ, không id tạo mới, vắng mặt xoá mềm). Nội dung đã có trong lịch sử học (`inUse`): DELETE hoặc bớt phần tử con trả 409 `CONTENT_IN_USE`; chủ đề còn nội dung không xoá được. PATCH `{status}` chuyển ACTIVE/INACTIVE, người học thấy ngay. `DataIntegrityViolationException` cũng thành 409, không còn 500.
+- Slug chủ đề sinh từ tên (bỏ dấu, thêm `-2`, `-3` nếu trùng, kể cả slug đã xoá mềm). Chưa có Caffeine nên chưa xoá cache (làm ở đợt 6).
+- `AdminContentApiTests` (8 test): 401/403 mọi endpoint, tạo/đọc lại 6 loại, 400 `fieldErrorKeys`, INACTIVE ẩn với người học, PUT theo id, 409 khi đã có lượt làm, xoá mềm, vòng đời chủ đề. `./mvnw test`: 152 test xanh.
+
+## Đợt 5 (phiên 5b: BE người dùng, thông báo, dashboard admin)
+
+- `/admin/users` (GET lọc `search,role,status` + trang, GET `/{id}`, PATCH `{status?,role?}`): khoá thu hồi mọi refresh token (access token cũ sống tối đa 15 phút, đã chốt giữ nguyên); không tự đổi mình (409), `PENDING` không nhận (400). `completedLessons` = lượt Nghe/Đọc/Thi đã nộp + Viết đã chấm + Nói đã chấm. `/admin/dashboard`: tổng quan, 6 tháng đăng ký (giờ VN), số nội dung 6 loại, `activities` rỗng.
+- `/admin/notifications` (GET, POST 201 với `send:true` gửi ngay, POST `/{id}/send`, 409 nếu đã gửi). Nhóm nhận chỉ tính tài khoản ACTIVE: ALL, ACTIVE (`lastActiveAt` trong 30 ngày), INACTIVE (còn lại), ADMIN; tạo `UserNotification` cho từng người, `recipientCount` khớp số dòng.
+- Người học: `/notifications` (trang), `/unread-count`, `PATCH /{id}/read` (id là id bản nhận; của người khác 404), `POST /read-all`. Tiêu đề/nội dung lặp lại cho VI và EN, `icon=campaign`, `path=/notifications`.
+- `AdminUserNotificationApiTests` (6 test); `./mvnw test`: 158 test xanh.
+
+## Đợt 5 (phiên 5c: nối FE)
+
+- `.env.example`: `VITE_MOCK_MODULES=` (rỗng); đã xoá `mocks/handlers/admin.ts` và phần thông báo trong `misc.ts`. Kiểu `AdminContentPayload` đổi thành union theo `skill` khớp BE; `contentMapping.ts` đổi qua lại giữa giá trị form và payload (trắc nghiệm `MULTIPLE_CHOICE` ↔ `SINGLE_CHOICE`, đúng một đáp án; đoạn Đọc cách nhau dòng trống).
+- Form nội dung: chọn chủ đề bằng `TopicField` (`topicId`), thêm thời lượng/giới hạn thời gian, giải thích câu hỏi, kỹ năng từng câu cho đề kiểm tra; Viết có đề bài + số từ + gợi ý; Nói có nghĩa tiếng Việt. Chủ đề nhập tên VI/EN. `topicName` và `lastActiveAt` tuỳ chọn; Dashboard hiện trạng thái rỗng cho hoạt động. Thêm khoá i18n `errors.field.*` và `admin.*` VI/EN. Lint và build sạch.
+
+## Đợt 5 (phiên 5z: đóng đợt)
+
+- Đợt 5 xong: BE quản trị nội dung/chủ đề/người dùng/thông báo/dashboard + hộp thư người học, FE đã nối (không còn module mock). BE `./mvnw test` 158 test xanh; FE lint và build sạch. Folder Postman "Dot 5 - Admin, Thong bao" (63 request) và bảng "Kiểm tra hoàn thành" đã chốt theo DTO thật. Các ô "Tiêu chí xong" chờ bạn tự kiểm rồi tick.

@@ -5,9 +5,11 @@ import type { FormListFieldData } from 'antd';
 interface SharedQuestionListProps {
   name: string | (string | number)[];
   label?: string;
+  /** Đề kiểm tra: mỗi câu chọn kỹ năng. */
+  withSkill?: boolean;
 }
 
-const QuestionItem: React.FC<{ fieldName: number; restField: Omit<FormListFieldData, 'key' | 'name'>; remove: (name: number) => void; index: number; listName: string | (string | number)[] }> = ({ fieldName, restField, remove, index, listName }) => {
+const QuestionItem: React.FC<{ fieldName: number; restField: Omit<FormListFieldData, 'key' | 'name'>; remove: (name: number) => void; index: number; listName: string | (string | number)[]; withSkill?: boolean }> = ({ fieldName, restField, remove, index, listName, withSkill }) => {
   const typePath = Array.isArray(listName) ? [...listName, fieldName, 'type'] : [listName, fieldName, 'type'];
   const type = Form.useWatch(typePath) || 'MULTIPLE_CHOICE';
 
@@ -34,6 +36,28 @@ const QuestionItem: React.FC<{ fieldName: number; restField: Omit<FormListFieldD
         />
       }
     >
+      <Form.Item {...restField} name={[fieldName, 'id']} hidden>
+        <Input />
+      </Form.Item>
+
+      {withSkill && (
+        <Form.Item
+          {...restField}
+          name={[fieldName, 'skill']}
+          label="Kỹ năng"
+          rules={[{ required: true, message: 'Chọn kỹ năng cho câu hỏi' }]}
+        >
+          <Select
+            options={[
+              { value: 'LISTENING', label: 'Nghe' },
+              { value: 'READING', label: 'Đọc' },
+              { value: 'VOCABULARY', label: 'Từ vựng' },
+              { value: 'WRITING', label: 'Viết' },
+            ]}
+          />
+        </Form.Item>
+      )}
+
       <Form.Item
         {...restField}
         name={[fieldName, 'type']}
@@ -99,10 +123,11 @@ const QuestionItem: React.FC<{ fieldName: number; restField: Omit<FormListFieldD
           name={[fieldName, 'correctAnswers']}
           label="Đáp án đúng"
           rules={[{ required: true, message: 'Cần có đáp án đúng', type: 'array', min: 1 }]}
+          getValueProps={(value: string[] | undefined) => ({ value: value?.[0] })}
+          getValueFromEvent={(value: string | undefined) => (value === undefined ? [] : [value])}
         >
-          <Select 
-            mode="multiple" 
-            placeholder="Chọn đáp án đúng từ danh sách lựa chọn" 
+          <Select
+            placeholder="Chọn đáp án đúng từ danh sách lựa chọn"
             style={{ width: '100%' }}
             options={validOptions}
             notFoundContent="Vui lòng nhập các lựa chọn trước"
@@ -118,11 +143,14 @@ const QuestionItem: React.FC<{ fieldName: number; restField: Omit<FormListFieldD
           <Select mode="tags" placeholder="Nhập đáp án đúng và nhấn Enter" style={{ width: '100%' }} />
         </Form.Item>
       )}
+      <Form.Item {...restField} name={[fieldName, 'explanation']} label="Giải thích (tuỳ chọn, hiện sau khi nộp bài)">
+        <Input.TextArea rows={2} />
+      </Form.Item>
     </Card>
   );
 };
 
-export const SharedQuestionList: React.FC<SharedQuestionListProps> = ({ name, label }) => {
+export const SharedQuestionList: React.FC<SharedQuestionListProps> = ({ name, label, withSkill }) => {
   return (
     <div className="mt-4">
       {label && <h4 className="mb-3 text-[15px] font-semibold text-ink">{label}</h4>}
@@ -135,8 +163,9 @@ export const SharedQuestionList: React.FC<SharedQuestionListProps> = ({ name, la
                 fieldName={fieldName} 
                 restField={restField} 
                 remove={remove} 
-                index={index} 
-                listName={name} 
+                index={index}
+                listName={name}
+                withSkill={withSkill}
               />
             ))}
             <Button

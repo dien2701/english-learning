@@ -29,6 +29,12 @@ function clean(query: AdminListQuery): Record<string, string | number> {
   return result;
 }
 
+/** Tên chủ đề song ngữ; `nameEn` trống thì BE dùng lại tên tiếng Việt. */
+export interface TopicNameInput {
+  nameVi: string;
+  nameEn?: string;
+}
+
 export const adminService = {
   dashboard: (): Promise<AdminDashboardData> =>
     http.get<AdminDashboardData>('/admin/dashboard'),
@@ -70,11 +76,11 @@ export const adminService = {
 
   listTopics: (): Promise<Topic[]> => http.get<Topic[]>('/admin/topics'),
 
-  createTopic: (name: string): Promise<Topic> =>
-    http.post<Topic>('/admin/topics', { name }),
+  createTopic: (name: TopicNameInput): Promise<Topic> =>
+    http.post<Topic>('/admin/topics', name),
 
-  updateTopic: (id: string, name: string): Promise<Topic> =>
-    http.put<Topic>(`/admin/topics/${id}`, { name }),
+  updateTopic: (id: string, name: TopicNameInput): Promise<Topic> =>
+    http.put<Topic>(`/admin/topics/${id}`, name),
 
   deleteTopic: (id: string): Promise<{ deleted: boolean }> =>
     http.delete<{ deleted: boolean }>(`/admin/topics/${id}`),

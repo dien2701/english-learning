@@ -17,4 +17,6 @@ public interface FlashcardDeckRepository extends JpaRepository<FlashcardDeck, UU
 	Optional<FlashcardDeck> findFirstByStatusOrderByCreatedAtAscIdAsc(ContentStatus status);
 
 	long countByTopicIdAndStatus(UUID topicId, ContentStatus status);
+
+	long countByTopicId(UUID topicId);
 }

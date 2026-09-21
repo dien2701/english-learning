@@ -2902,6 +2902,2383 @@
           }
         }
       ]
+    },
+    {
+      "name": "Dot 5 - Admin, Thong bao",
+      "item": [
+        {
+          "name": "01 POST /admin/topics",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 201', () => pm.response.to.have.status(201));",
+                  "const d = pm.response.json().data;",
+                  "pm.test('có slug, name.vi/en, itemCount 0', () => { pm.expect(d.slug).to.be.a('string'); pm.expect(d.name).to.have.all.keys('vi','en'); pm.expect(d.itemCount).to.eql(0); });",
+                  "pm.collectionVariables.set('topicId5', d.id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/topics",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "topics"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nameVi\": \"Postman5 chủ đề\",\n  \"nameEn\": \"Postman5 topic\"\n}"
+            }
+          }
+        },
+        {
+          "name": "02 GET /admin/topics",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('là mảng và có chủ đề vừa tạo', () => { const l = pm.response.json().data; pm.expect(l).to.be.an('array'); pm.expect(l.some(t => t.id === pm.collectionVariables.get('topicId5'))).to.eql(true); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/topics",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "topics"
+              ]
+            }
+          }
+        },
+        {
+          "name": "03 PUT /admin/topics/{{topicId5}}",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('tên đã đổi', () => pm.expect(pm.response.json().data.name.en).to.include('renamed'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/topics/{{topicId5}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "topics",
+                "{{topicId5}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nameVi\": \"Postman5 chủ đề đổi\",\n  \"nameEn\": \"Postman5 topic renamed\"\n}"
+            }
+          }
+        },
+        {
+          "name": "04 POST /admin/topics thiếu nameVi (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 400', () => pm.response.to.have.status(400));",
+                  "pm.test('fieldErrorKeys.nameVi', () => pm.expect(pm.response.json().fieldErrorKeys).to.have.property('nameVi'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/topics",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "topics"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nameVi\": \"\"\n}"
+            }
+          }
+        },
+        {
+          "name": "05 POST /admin/content READING",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 201', () => pm.response.to.have.status(201));",
+                  "const d = pm.response.json().data;",
+                  "pm.test('skill READING, ACTIVE, inUse false', () => { pm.expect(d.skill).to.eql('READING'); pm.expect(d.status).to.eql('ACTIVE'); pm.expect(d.inUse).to.eql(false); });",
+                  "pm.collectionVariables.set('readingId5', d.id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/content",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "content"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"skill\": \"READING\",\n  \"titleVi\": \"Postman5 READING\",\n  \"titleEn\": \"Postman5 READING\",\n  \"level\": \"BEGINNER\",\n  \"topicId\": \"{{topicId5}}\",\n  \"timeLimitMinutes\": 5,\n  \"paragraphs\": [\n    \"One two three.\",\n    \"Four five.\"\n  ],\n  \"questions\": [\n    {\n      \"kind\": \"SINGLE_CHOICE\",\n      \"content\": \"Q?\",\n      \"explanation\": \"Because\",\n      \"options\": [\n        {\n          \"content\": \"Yes\",\n          \"correct\": true\n        },\n        {\n          \"content\": \"No\",\n          \"correct\": false\n        }\n      ]\n    }\n  ]\n}"
+            }
+          }
+        },
+        {
+          "name": "06 POST /admin/content VOCABULARY",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 201', () => pm.response.to.have.status(201));",
+                  "const d = pm.response.json().data;",
+                  "pm.test('skill VOCABULARY, ACTIVE, inUse false', () => { pm.expect(d.skill).to.eql('VOCABULARY'); pm.expect(d.status).to.eql('ACTIVE'); pm.expect(d.inUse).to.eql(false); });",
+                  "pm.collectionVariables.set('deckId5', d.id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/content",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "content"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"skill\": \"VOCABULARY\",\n  \"titleVi\": \"Postman5 VOCABULARY\",\n  \"titleEn\": \"Postman5 VOCABULARY\",\n  \"level\": \"BEGINNER\",\n  \"topicId\": \"{{topicId5}}\",\n  \"cards\": [\n    {\n      \"word\": \"apple\",\n      \"meaningVi\": \"quả táo\"\n    },\n    {\n      \"word\": \"pear\",\n      \"meaningVi\": \"quả lê\"\n    }\n  ]\n}"
+            }
+          }
+        },
+        {
+          "name": "07 POST /admin/content LISTENING",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 201', () => pm.response.to.have.status(201));",
+                  "const d = pm.response.json().data;",
+                  "pm.test('skill LISTENING, ACTIVE, inUse false', () => { pm.expect(d.skill).to.eql('LISTENING'); pm.expect(d.status).to.eql('ACTIVE'); pm.expect(d.inUse).to.eql(false); });",
+                  "pm.collectionVariables.set('listeningId5', d.id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/content",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "content"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"skill\": \"LISTENING\",\n  \"titleVi\": \"Postman5 LISTENING\",\n  \"titleEn\": \"Postman5 LISTENING\",\n  \"level\": \"BEGINNER\",\n  \"topicId\": \"{{topicId5}}\",\n  \"durationSeconds\": 30,\n  \"transcript\": \"Hello there\",\n  \"questions\": [\n    {\n      \"kind\": \"SINGLE_CHOICE\",\n      \"content\": \"Q?\",\n      \"explanation\": \"Because\",\n      \"options\": [\n        {\n          \"content\": \"Yes\",\n          \"correct\": true\n        },\n        {\n          \"content\": \"No\",\n          \"correct\": false\n        }\n      ]\n    },\n    {\n      \"kind\": \"FILL_BLANK\",\n      \"content\": \"Fill ___\",\n      \"acceptedAnswers\": [\n        \"apple\"\n      ]\n    }\n  ]\n}"
+            }
+          }
+        },
+        {
+          "name": "08 POST /admin/content WRITING",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 201', () => pm.response.to.have.status(201));",
+                  "const d = pm.response.json().data;",
+                  "pm.test('skill WRITING, ACTIVE, inUse false', () => { pm.expect(d.skill).to.eql('WRITING'); pm.expect(d.status).to.eql('ACTIVE'); pm.expect(d.inUse).to.eql(false); });",
+                  "pm.collectionVariables.set('writingId5', d.id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/content",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "content"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"skill\": \"WRITING\",\n  \"titleVi\": \"Postman5 WRITING\",\n  \"titleEn\": \"Postman5 WRITING\",\n  \"level\": \"BEGINNER\",\n  \"topicId\": \"{{topicId5}}\",\n  \"instructions\": \"Write about your day.\",\n  \"suggestedMinutes\": 20,\n  \"minWords\": 50,\n  \"hints\": [\n    \"Use past tense\"\n  ]\n}"
+            }
+          }
+        },
+        {
+          "name": "09 POST /admin/content SPEAKING",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 201', () => pm.response.to.have.status(201));",
+                  "const d = pm.response.json().data;",
+                  "pm.test('skill SPEAKING, ACTIVE, inUse false', () => { pm.expect(d.skill).to.eql('SPEAKING'); pm.expect(d.status).to.eql('ACTIVE'); pm.expect(d.inUse).to.eql(false); });",
+                  "pm.collectionVariables.set('speakingId5', d.id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/content",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "content"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"skill\": \"SPEAKING\",\n  \"titleVi\": \"Postman5 SPEAKING\",\n  \"titleEn\": \"Postman5 SPEAKING\",\n  \"level\": \"BEGINNER\",\n  \"topicId\": \"{{topicId5}}\",\n  \"prompts\": [\n    {\n      \"text\": \"Good morning\",\n      \"meaningVi\": \"Chào buổi sáng\"\n    },\n    {\n      \"text\": \"Thank you\"\n    }\n  ]\n}"
+            }
+          }
+        },
+        {
+          "name": "10 POST /admin/content EXAM",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 201', () => pm.response.to.have.status(201));",
+                  "const d = pm.response.json().data;",
+                  "pm.test('EXAM không có chủ đề, 2 câu', () => { pm.expect(d.topicName).to.be.undefined; pm.expect(d.itemCount).to.eql(2); });",
+                  "pm.collectionVariables.set('examId5', d.id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/content",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "content"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"skill\": \"EXAM\",\n  \"titleVi\": \"Postman5 EXAM\",\n  \"titleEn\": \"Postman5 EXAM\",\n  \"level\": \"BEGINNER\",\n  \"timeLimitMinutes\": 10,\n  \"questions\": [\n    {\n      \"skill\": \"LISTENING\",\n      \"kind\": \"SINGLE_CHOICE\",\n      \"content\": \"Q?\",\n      \"explanation\": \"Because\",\n      \"options\": [\n        {\n          \"content\": \"Yes\",\n          \"correct\": true\n        },\n        {\n          \"content\": \"No\",\n          \"correct\": false\n        }\n      ]\n    },\n    {\n      \"skill\": \"READING\",\n      \"kind\": \"FILL_BLANK\",\n      \"content\": \"Fill ___\",\n      \"acceptedAnswers\": [\n        \"apple\"\n      ]\n    }\n  ]\n}"
+            }
+          }
+        },
+        {
+          "name": "11 GET /admin/content?search=Postman5 (6 mục)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('total 6', () => pm.expect(pm.response.json().data.total).to.eql(6));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/content?search=Postman5",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "content"
+              ],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "Postman5"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "12 GET /admin/content?search=Postman5&skill=EXAM",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('total 1', () => pm.expect(pm.response.json().data.total).to.eql(1));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/content?search=Postman5&skill=EXAM",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "content"
+              ],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "Postman5"
+                },
+                {
+                  "key": "skill",
+                  "value": "EXAM"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "13 GET /admin/content/{{readingId5}} (payload có id câu hỏi)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "const d = pm.response.json().data;",
+                  "pm.test('payload.skill READING, câu hỏi có id', () => { pm.expect(d.payload.skill).to.eql('READING'); pm.expect(d.payload.questions[0].id).to.be.a('string'); });",
+                  "pm.collectionVariables.set('questionId5', d.payload.questions[0].id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/content/{{readingId5}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "content",
+                "{{readingId5}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "14 PUT /admin/content/{{readingId5}} giữ id câu hỏi, thêm câu mới",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "const d = pm.response.json().data;",
+                  "pm.test('2 câu, câu cũ giữ id và đổi sang FILL_BLANK', () => { pm.expect(d.itemCount).to.eql(2); pm.expect(d.payload.questions[0].id).to.eql(pm.collectionVariables.get('questionId5')); pm.expect(d.payload.questions[0].kind).to.eql('FILL_BLANK'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/content/{{readingId5}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "content",
+                "{{readingId5}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"skill\": \"READING\",\n  \"titleVi\": \"Postman5 READING sửa\",\n  \"titleEn\": \"Postman5 READING\",\n  \"level\": \"BEGINNER\",\n  \"topicId\": \"{{topicId5}}\",\n  \"timeLimitMinutes\": 5,\n  \"paragraphs\": [\n    \"One two three.\",\n    \"Four five.\"\n  ],\n  \"questions\": [\n    {\n      \"id\": \"{{questionId5}}\",\n      \"kind\": \"FILL_BLANK\",\n      \"content\": \"Fill ___\",\n      \"acceptedAnswers\": [\n        \"apple\"\n      ]\n    },\n    {\n      \"kind\": \"SINGLE_CHOICE\",\n      \"content\": \"Q?\",\n      \"explanation\": \"Because\",\n      \"options\": [\n        {\n          \"content\": \"Yes\",\n          \"correct\": true\n        },\n        {\n          \"content\": \"No\",\n          \"correct\": false\n        }\n      ]\n    }\n  ]\n}"
+            }
+          }
+        },
+        {
+          "name": "15 PUT với skill khác loại hiện có (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 400', () => pm.response.to.have.status(400));",
+                  "pm.test('skillMismatch', () => pm.expect(pm.response.json().fieldErrorKeys.skill).to.eql('errors.field.skillMismatch'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/content/{{readingId5}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "content",
+                "{{readingId5}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"skill\": \"WRITING\",\n  \"titleVi\": \"Postman5 WRITING\",\n  \"titleEn\": \"Postman5 WRITING\",\n  \"level\": \"BEGINNER\",\n  \"topicId\": \"{{topicId5}}\",\n  \"instructions\": \"x\",\n  \"suggestedMinutes\": 10,\n  \"minWords\": 0\n}"
+            }
+          }
+        },
+        {
+          "name": "16 POST /admin/content thiếu trường (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 400', () => pm.response.to.have.status(400));",
+                  "pm.test('fieldErrorKeys có titleVi, topicId', () => { const f = pm.response.json().fieldErrorKeys; pm.expect(f).to.have.property('titleVi'); pm.expect(f).to.have.property('topicId'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/content",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "content"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"skill\": \"READING\",\n  \"level\": \"BEGINNER\"\n}"
+            }
+          }
+        },
+        {
+          "name": "17 POST /admin/content 2 đáp án đúng (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 400', () => pm.response.to.have.status(400));",
+                  "pm.test('oneCorrectOption', () => pm.expect(pm.response.json().fieldErrorKeys['questions[0].options']).to.eql('errors.field.oneCorrectOption'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/content",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "content"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"skill\": \"READING\",\n  \"titleVi\": \"Postman5 READING\",\n  \"titleEn\": \"Postman5 READING\",\n  \"level\": \"BEGINNER\",\n  \"topicId\": \"{{topicId5}}\",\n  \"paragraphs\": [\n    \"A.\"\n  ],\n  \"questions\": [\n    {\n      \"kind\": \"SINGLE_CHOICE\",\n      \"content\": \"Q?\",\n      \"options\": [\n        {\n          \"content\": \"A\",\n          \"correct\": true\n        },\n        {\n          \"content\": \"B\",\n          \"correct\": true\n        }\n      ]\n    }\n  ]\n}"
+            }
+          }
+        },
+        {
+          "name": "18 GET /reading/lessons?search=Postman5 (người học thấy)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('thấy 1 bài', () => pm.expect(pm.response.json().data.items.length).to.eql(1));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/reading/lessons?search=Postman5",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reading",
+                "lessons"
+              ],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "Postman5"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "19 PATCH /admin/content/{{readingId5}} INACTIVE",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('INACTIVE', () => pm.expect(pm.response.json().data.status).to.eql('INACTIVE'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/content/{{readingId5}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "content",
+                "{{readingId5}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"INACTIVE\"\n}"
+            }
+          }
+        },
+        {
+          "name": "20 GET /reading/lessons?search=Postman5 (người học không thấy)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('không còn bài', () => pm.expect(pm.response.json().data.items.length).to.eql(0));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/reading/lessons?search=Postman5",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reading",
+                "lessons"
+              ],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "Postman5"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "21 PATCH /admin/content/{{readingId5}} ACTIVE lại",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/content/{{readingId5}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "content",
+                "{{readingId5}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"ACTIVE\"\n}"
+            }
+          }
+        },
+        {
+          "name": "22 GET /admin/content?skill=VOCABULARY (tìm bộ thẻ đã học)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "const used = pm.response.json().data.items.find(i => i.inUse);",
+                  "pm.collectionVariables.set('usedContentId5', used ? used.id : '');"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/content?skill=VOCABULARY&pageSize=100",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "content"
+              ],
+              "query": [
+                {
+                  "key": "skill",
+                  "value": "VOCABULARY"
+                },
+                {
+                  "key": "pageSize",
+                  "value": "100"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "23 DELETE nội dung đã có lịch sử học (409, không phải 500)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (!pm.collectionVariables.get('usedContentId5')) { pm.test('bỏ qua: chưa có bộ thẻ nào có lịch sử học', () => pm.expect(true).to.eql(true)); } else {",
+                  "  pm.test('status 409', () => pm.response.to.have.status(409));",
+                  "  pm.test('code CONTENT_IN_USE', () => pm.expect(pm.response.json().code).to.eql('CONTENT_IN_USE'));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/content/{{usedContentId5}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "content",
+                "{{usedContentId5}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "24 DELETE /admin/topics/{{topicId5}} còn nội dung (409)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 409', () => pm.response.to.have.status(409));",
+                  "pm.test('CONTENT_IN_USE', () => pm.expect(pm.response.json().code).to.eql('CONTENT_IN_USE'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/topics/{{topicId5}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "topics",
+                "{{topicId5}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "25 DELETE /admin/content READING vừa tạo (dọn dẹp)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('deleted', () => pm.expect(pm.response.json().data.deleted).to.eql(true));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/content/{{readingId5}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "content",
+                "{{readingId5}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "26 DELETE /admin/content VOCABULARY vừa tạo (dọn dẹp)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('deleted', () => pm.expect(pm.response.json().data.deleted).to.eql(true));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/content/{{deckId5}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "content",
+                "{{deckId5}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "27 DELETE /admin/content LISTENING vừa tạo (dọn dẹp)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('deleted', () => pm.expect(pm.response.json().data.deleted).to.eql(true));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/content/{{listeningId5}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "content",
+                "{{listeningId5}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "28 DELETE /admin/content WRITING vừa tạo (dọn dẹp)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('deleted', () => pm.expect(pm.response.json().data.deleted).to.eql(true));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/content/{{writingId5}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "content",
+                "{{writingId5}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "29 DELETE /admin/content SPEAKING vừa tạo (dọn dẹp)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('deleted', () => pm.expect(pm.response.json().data.deleted).to.eql(true));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/content/{{speakingId5}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "content",
+                "{{speakingId5}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "30 DELETE /admin/content EXAM vừa tạo (dọn dẹp)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('deleted', () => pm.expect(pm.response.json().data.deleted).to.eql(true));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/content/{{examId5}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "content",
+                "{{examId5}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "31 GET /admin/content/{{readingId5}} sau khi xoá (404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 404', () => pm.response.to.have.status(404));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/content/{{readingId5}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "content",
+                "{{readingId5}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "32 DELETE /admin/topics/{{topicId5}} hết nội dung",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/topics/{{topicId5}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "topics",
+                "{{topicId5}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "33 GET /admin/users?search=hocvien",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "const items = pm.response.json().data.items;",
+                  "pm.test('có người dùng, không có passwordHash', () => { pm.expect(items.length).to.be.above(0); pm.expect(JSON.stringify(items)).to.not.include('passwordHash'); });",
+                  "pm.collectionVariables.set('userId5', items[0].id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/users?search=hocvien",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "users"
+              ],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "hocvien"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "34 GET /admin/users/{{userId5}}",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('có completedLessons', () => pm.expect(pm.response.json().data.completedLessons).to.be.a('number'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/users/{{userId5}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "users",
+                "{{userId5}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "35 GET /admin/users?search=admin@enlearning.vn (lấy id admin)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.collectionVariables.set('adminId5', pm.response.json().data.items[0].id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/users?search=admin@enlearning.vn",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "users"
+              ],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "admin@enlearning.vn"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "36 PATCH /admin/users/{{userId5}} khoá",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('LOCKED', () => pm.expect(pm.response.json().data.status).to.eql('LOCKED'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/users/{{userId5}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "users",
+                "{{userId5}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"LOCKED\"\n}"
+            }
+          }
+        },
+        {
+          "name": "37 PATCH /admin/users/{{userId5}} mở khoá",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('ACTIVE', () => pm.expect(pm.response.json().data.status).to.eql('ACTIVE'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/users/{{userId5}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "users",
+                "{{userId5}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"ACTIVE\"\n}"
+            }
+          }
+        },
+        {
+          "name": "38 PATCH /admin/users/{{adminId5}} tự khoá mình (409)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 409', () => pm.response.to.have.status(409));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/users/{{adminId5}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "users",
+                "{{adminId5}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"LOCKED\"\n}"
+            }
+          }
+        },
+        {
+          "name": "39 PATCH /admin/users/{{userId5}} body rỗng (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 400', () => pm.response.to.have.status(400));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/users/{{userId5}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "users",
+                "{{userId5}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            }
+          }
+        },
+        {
+          "name": "40 PATCH /admin/users/{{userId5}} status PENDING (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 400', () => pm.response.to.have.status(400));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/users/{{userId5}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "users",
+                "{{userId5}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"PENDING\"\n}"
+            }
+          }
+        },
+        {
+          "name": "41 GET /admin/dashboard",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "const d = pm.response.json().data;",
+                  "pm.test('overview, 6 tháng đăng ký, 6 loại nội dung', () => { pm.expect(d.overview.totalUsers).to.be.a('number'); pm.expect(d.signups.length).to.eql(6); pm.expect(d.contentCounts.length).to.eql(6); pm.expect(d.activities).to.be.an('array'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/dashboard",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "dashboard"
+              ]
+            }
+          }
+        },
+        {
+          "name": "42 POST /admin/notifications (nháp)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 201', () => pm.response.to.have.status(201));",
+                  "const d = pm.response.json().data;",
+                  "pm.test('DRAFT, chưa có recipientCount', () => { pm.expect(d.status).to.eql('DRAFT'); pm.expect(d).to.not.have.property('recipientCount'); });",
+                  "pm.collectionVariables.set('notificationId5', d.id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/notifications",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "notifications"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Postman5 thông báo\",\n  \"content\": \"Nội dung thử\",\n  \"audience\": \"ALL\"\n}"
+            }
+          }
+        },
+        {
+          "name": "43 POST /admin/notifications thiếu title (400)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 400', () => pm.response.to.have.status(400));",
+                  "pm.test('fieldErrorKeys.title', () => pm.expect(pm.response.json().fieldErrorKeys).to.have.property('title'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/notifications",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "notifications"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"\",\n  \"content\": \"c\",\n  \"audience\": \"ALL\"\n}"
+            }
+          }
+        },
+        {
+          "name": "44 POST /admin/notifications/{{notificationId5}}/send",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "const d = pm.response.json().data;",
+                  "pm.test('SENT, recipientCount > 0, sentAt', () => { pm.expect(d.status).to.eql('SENT'); pm.expect(d.recipientCount).to.be.above(0); pm.expect(d.sentAt).to.be.a('string'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/notifications/{{notificationId5}}/send",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "notifications",
+                "{{notificationId5}}",
+                "send"
+              ]
+            }
+          }
+        },
+        {
+          "name": "45 POST /admin/notifications/{{notificationId5}}/send lần hai (409)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 409', () => pm.response.to.have.status(409));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/notifications/{{notificationId5}}/send",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "notifications",
+                "{{notificationId5}}",
+                "send"
+              ]
+            }
+          }
+        },
+        {
+          "name": "46 GET /admin/notifications",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('có trang', () => pm.expect(pm.response.json().data.items).to.be.an('array'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/notifications",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "notifications"
+              ]
+            }
+          }
+        },
+        {
+          "name": "47 GET /notifications (người học thấy thông báo)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "const items = pm.response.json().data.items;",
+                  "pm.test('có thông báo mới nhất chưa đọc', () => { pm.expect(items[0].title.vi).to.include('Postman5'); pm.expect(items[0].isRead).to.eql(false); });",
+                  "pm.collectionVariables.set('inboxId5', items[0].id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/notifications",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "notifications"
+              ]
+            }
+          }
+        },
+        {
+          "name": "48 GET /notifications/unread-count",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('count >= 1', () => pm.expect(pm.response.json().data.count).to.be.at.least(1));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/notifications/unread-count",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "notifications",
+                "unread-count"
+              ]
+            }
+          }
+        },
+        {
+          "name": "49 PATCH /notifications/{{inboxId5}}/read",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('isRead true', () => pm.expect(pm.response.json().data.isRead).to.eql(true));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/notifications/{{inboxId5}}/read",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "notifications",
+                "{{inboxId5}}",
+                "read"
+              ]
+            }
+          }
+        },
+        {
+          "name": "50 PATCH /notifications/{{inboxId5}}/read bằng adminToken (của người khác, 404)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 404', () => pm.response.to.have.status(404));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/notifications/{{inboxId5}}/read",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "notifications",
+                "{{inboxId5}}",
+                "read"
+              ]
+            }
+          }
+        },
+        {
+          "name": "51 POST /notifications/read-all",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/notifications/read-all",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "notifications",
+                "read-all"
+              ]
+            }
+          }
+        },
+        {
+          "name": "52 GET /notifications/unread-count (về 0)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('count 0', () => pm.expect(pm.response.json().data.count).to.eql(0));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/notifications/unread-count",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "notifications",
+                "unread-count"
+              ]
+            }
+          }
+        },
+        {
+          "name": "53 GET /admin/dashboard không token (401)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 401', () => pm.response.to.have.status(401));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/dashboard",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "dashboard"
+              ]
+            }
+          }
+        },
+        {
+          "name": "54 GET /admin/dashboard bằng token USER (403)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 403', () => pm.response.to.have.status(403));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/dashboard",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "dashboard"
+              ]
+            }
+          }
+        },
+        {
+          "name": "55 GET /admin/users không token (401)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 401', () => pm.response.to.have.status(401));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "users"
+              ]
+            }
+          }
+        },
+        {
+          "name": "56 GET /admin/users bằng token USER (403)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 403', () => pm.response.to.have.status(403));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "users"
+              ]
+            }
+          }
+        },
+        {
+          "name": "57 GET /admin/content không token (401)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 401', () => pm.response.to.have.status(401));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/content",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "content"
+              ]
+            }
+          }
+        },
+        {
+          "name": "58 GET /admin/content bằng token USER (403)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 403', () => pm.response.to.have.status(403));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/content",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "content"
+              ]
+            }
+          }
+        },
+        {
+          "name": "59 GET /admin/topics không token (401)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 401', () => pm.response.to.have.status(401));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/topics",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "topics"
+              ]
+            }
+          }
+        },
+        {
+          "name": "60 GET /admin/topics bằng token USER (403)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 403', () => pm.response.to.have.status(403));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/topics",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "topics"
+              ]
+            }
+          }
+        },
+        {
+          "name": "61 GET /admin/notifications không token (401)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 401', () => pm.response.to.have.status(401));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/notifications",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "notifications"
+              ]
+            }
+          }
+        },
+        {
+          "name": "62 GET /admin/notifications bằng token USER (403)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 403', () => pm.response.to.have.status(403));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/notifications",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "notifications"
+              ]
+            }
+          }
+        },
+        {
+          "name": "63 GET /notifications không token (401)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 401', () => pm.response.to.have.status(401));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/notifications",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "notifications"
+              ]
+            }
+          }
+        }
+      ]
     }
   ]
 }
