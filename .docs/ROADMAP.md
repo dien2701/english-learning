@@ -19,7 +19,7 @@ Quyết định nền (nối FE theo module, AI bản giả, hạ tầng đơn g
 | 8 | Dữ liệu demo cho từng trang (`dot-8-du-lieu-demo.md`) | Cuối | [x] |
 | 10 | Sửa lỗi giao diện: thời gian làm bài, màu sidebar, xác nhận rời bài (`dot-10-sua-loi-giao-dien.md`) | không | [x] |
 | 11 | AI thật Gemini: Viết, Chat (30 tin/ngày), Nói chấm phát âm từng câu (`dot-11-ai-that-gemini.md`) | 4 | [x] |
-| 12 | Audio bài nghe: OpenAI TTS đa giọng, Cloudinary, sinh cho bài seed (`dot-12-audio-bai-nghe.md`) | 5 | [ ] |
+| 12 | Audio bài nghe: OpenAI TTS đa giọng, Cloudinary, sinh cho bài seed (`dot-12-audio-bai-nghe.md`) | 5 | [x] |
 
 Chi tiết: `.docs/roadmap/dot-0-noi-auth-fe.md`, `dot-1-flashcard-ho-so.md`, `dot-2-bo-may-lam-bai.md`,
 `dot-3-dashboard.md`, `dot-4-ai.md`, `dot-5-quan-tri.md`, `dot-6-ha-tang-phu.md`, `dot-7-song-ngu.md`,
@@ -75,10 +75,10 @@ Opus chỉ dùng khi Sonnet sai hai lần liên tiếp ở cùng một việc (g
 | 11d | 11 | BE Nói: migration, lượt `IN_PROGRESS`, `assess` từng câu (Gemini audio), submit tổng hợp, test (11.3) | Sonnet | high | [x] |
 | 11e | 11 | FE Nói: thẻ nhận xét phát âm sau mỗi câu, thu lại, nộp; xoá submit multipart cũ (11.3) | Sonnet | medium | [x] |
 | 11z | 11 | Đóng đợt | Haiku | low | [x] |
-| 12a | 12 | BE `AudioStorage` (Cloudinary/cục bộ), `SpeechSynthesizer` (OpenAI/giả), migration, sinh MP3 đa giọng, API admin, test (12.1) | Sonnet | high | [ ] |
-| 12b | 12 | FE: phát `audioUrl`, fallback đọc transcript; form quản trị audio (12.2) | Sonnet | low | [ ] |
-| 12c | 12 | Lệnh sinh audio 12 bài seed, ghi URL vào seed JSON, cập nhật CLAUDE.md/ARCHITECTURE (12.3) | Sonnet | medium | [ ] |
-| 12z | 12 | Đóng đợt | Haiku | low | [ ] |
+| 12a | 12 | BE `AudioStorage` (Cloudinary/cục bộ), `SpeechSynthesizer` (OpenAI/giả), migration, sinh MP3 đa giọng, API admin, test (12.1) | Sonnet | high | [x] |
+| 12b | 12 | FE: phát `audioUrl`, fallback đọc transcript; form quản trị audio (12.2) | Sonnet | low | [x] |
+| 12c | 12 | Lệnh sinh audio 12 bài seed, ghi URL vào seed JSON, cập nhật CLAUDE.md/ARCHITECTURE (12.3) | Sonnet | medium | [x] |
+| 12z | 12 | Đóng đợt | Haiku | low | [x] |
 
 Mẹo tiết kiệm hạn mức Pro: mỗi phiên một dòng; hết phiên thì `/clear`, không nối tiếp phiên cũ.
 Nếu phiên dài quá (context > ~60%), dừng lại, tick phần đã xong và tách phần còn lại thành dòng mới (vd `2b-2`).

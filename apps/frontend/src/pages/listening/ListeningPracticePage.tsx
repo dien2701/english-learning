@@ -121,7 +121,7 @@ const ListeningPracticePage: React.FC = () => {
       <div className="mb-5">
         <AudioPlayer
           src={lesson.audioUrl || undefined}
-          speakText={L(lesson.description)}
+          speakText={lesson.speechText || undefined}
           estimatedSeconds={lesson.durationSeconds}
         />
       </div>

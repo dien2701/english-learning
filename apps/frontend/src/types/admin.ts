@@ -115,6 +115,16 @@ export interface AdminQuestionInput {
   acceptedAnswers?: string[];
 }
 
+export type AudioSource = 'TTS' | 'UPLOAD';
+
+/** Trạng thái audio của bài nghe (`/admin/listening/:id/audio`); `audioUrl`/`audioSource` null khi chưa có. */
+export interface ListeningAudio {
+  id: string;
+  audioUrl: string | null;
+  audioSource: AudioSource | null;
+  durationSeconds: number;
+}
+
 export interface AdminCardInput {
   id?: string;
   word: string;

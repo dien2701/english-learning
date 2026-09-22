@@ -329,13 +329,16 @@ chỉ được chuyển sang ngừng hoạt động.
 
 ## Đợt 8 (phiên 8a: người dùng demo + cờ seed)
 
-- Cờ pp.seed.mode (SEED_MODE; if-empty mặc định | eset-demo) qua SeedProperties; DevSeedRunner ở eset-demo xoá user demo rồi nạp lại.
+- Cờ pp.seed.mode (SEED_MODE; if-empty mặc định | 
+eset-demo) qua SeedProperties; DevSeedRunner ở 
+eset-demo xoá user demo rồi nạp lại.
 - DemoUserSeedService: 47 user giả (Random seed cố định, email @demo.enlearning.vn, avatar i.pravatar.cc, createdAt rải 6 tháng, 3 LOCKED, 5 im lặng >30 ngày) + user_settings đa dạng; cùng 3 tài khoản cố định thành 50.
 - UserRepository: countByEmailSuffixIncludingDeleted, deleteByEmailSuffix, ackdate (SQL native vì created_at không sửa được qua entity). Test: DemoUserSeedServiceTests. Compile sạch.
 
 ## Đợt 8 (phiên 8b: chủ đề + bộ thẻ demo)
 
-- esources/seed-demo/topics.json (10 chủ đề) và decks.json (15 bộ × 20 thẻ, 4 mảng: giao tiếp, IELTS/TOEIC, công sở/IT, học thuật; 2 bộ INACTIVE). Sinh từ nguồn văn bản tự soạn bằng script tạm, không chép đề bản quyền.
+- 
+esources/seed-demo/topics.json (10 chủ đề) và decks.json (15 bộ × 20 thẻ, 4 mảng: giao tiếp, IELTS/TOEIC, công sở/IT, học thuật; 2 bộ INACTIVE). Sinh từ nguồn văn bản tự soạn bằng script tạm, không chép đề bản quyền.
 - SeedService đọc topics/decks từ seed-demo/, giữ chủ đề cũ ở seed/topics.json cho lesson cũ tới 8c/8d; SeedDeck thêm status tuỳ chọn. SeedServiceTests cập nhật (15 deck, 300 thẻ). Compile sạch.
 
 ## Đợt 8 (phiên 8c: bài nghe + bài đọc demo)
@@ -403,3 +406,13 @@ chỉ được chuyển sang ngừng hoạt động.
 
 - Đợt 11 hoàn tất: Viết, Chat (30 tin/ngày) và Nói (chấm phát âm từng câu) dùng Gemini khi có `GEMINI_API_KEY`, thiếu key thì bản giả.
 - Folder Postman "Dot 11 - AI Gemini (Viet, Chat, Noi)" (8 request) và bảng "Kiểm tra hoàn thành" chốt theo DTO thật.
+
+## Đợt 12 - phiên 12a (BE audio bài nghe)
+
+- Module `audio/`: cổng `AudioStorage` (Cloudinary REST có ký, hoặc `uploads/audio` phát ở `/api/media/audio/**`) và `SpeechSynthesizer` (OpenAI TTS, thiếu key thì MP3 im lặng); migration V3 (`audio_source`, `audio_public_id`).
+- `TranscriptVoicePlanner` tách `Tên: câu` thành đoạn theo giọng cố định mỗi người nói; `Mp3` bỏ ID3/Xing và nối khung, đo thời lượng, không cần ffmpeg.
+- Admin: `POST /admin/listening/{id}/audio/generate`, `POST .../audio` (multipart mp3/m4a/wav ≤ 20MB), `DELETE .../audio`; PUT nội dung không đè audio do TTS/tải lên quản lý; chi tiết admin có `audioSource`.
+- Test: `Mp3Test`, `TranscriptVoicePlannerTest`, `AudioServicesHttpTest` (chạy xanh), `ListeningAudioApiTests` (chưa chạy, cần DB).
+- 12b: trang nghe phát `audioUrl`, fallback đọc `speechText` (transcript, chỉ trả khi chưa có audio); admin có panel sinh AI/tải lên/xoá audio bài nghe.
+- 12c: `SeedAudioRunner` (cờ `AUDIO_GENERATE_SEED=true`) sinh audio 12 bài nghe seed chưa có, ghi URL Cloudinary ngược vào `seed-demo/listening.json`; cập nhật CLAUDE.md, ARCHITECTURE, `.env.example`.
+- Đóng đợt 12: thêm folder Postman "Dot 12 - Audio bai nghe" (10 request), chốt bảng kiểm tra theo DTO thật.

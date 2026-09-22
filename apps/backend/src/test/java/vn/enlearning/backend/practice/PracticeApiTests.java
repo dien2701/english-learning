@@ -242,7 +242,13 @@ class PracticeApiTests {
 			String body = json(fetch(url, tokenA).andExpect(status().isOk())
 					.andExpect(jsonPath("$.data.questions").isNotEmpty()).andReturn());
 			assertThat(body).doesNotContain("isCorrect", "\"correct\"", "correctOptionId", "correctText",
-					"acceptedAnswers", "transcript", "explanation", TRANSCRIPT, EXPLANATION, "correctAnswer");
+					"acceptedAnswers", "transcript", "explanation", EXPLANATION, "correctAnswer");
+			// Bài nghe chưa có audio mang transcript ở speechText để trình duyệt đọc thay; mọi trường hợp khác thì không.
+			if (url.startsWith("/listening/")) {
+				assertThat(body).contains("\"speechText\":\"" + TRANSCRIPT + "\"");
+			} else {
+				assertThat(body).doesNotContain(TRANSCRIPT);
+			}
 		}
 		fetch("/listening/lessons/" + listening.getId(), tokenA)
 				.andExpect(jsonPath("$.data.questions", hasSize(2)))

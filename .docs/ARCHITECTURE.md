@@ -127,4 +127,5 @@ Hạ tầng đơn giản, chạy trong một tiến trình, không cần dịch 
 - Caffeine (`spring.cache.*`, `@Cacheable`/`@CacheEvict`): đệm danh sách chủ đề (TTL 5 phút, xoá khi admin ghi); cũng giữ bucket của rate limit.
 - `@Scheduled`: email nhắc học mỗi phút (`reminder/`, chống trùng bằng UNIQUE `email_logs` (user_id, reminder_date)); dọn refresh token, OTP hết hạn và phiên học rỗng mỗi giờ (`cleanup/`).
 - bucket4j trong bộ nhớ (`ratelimit/`, theo IP): `login` 10/phút, `check-email` 30/phút, `forgot-password` 5/phút, trả 429 `RATE_LIMITED`.
-- Email qua `EmailSender` (Gmail SMTP, hoặc ghi log khi chưa cấu hình); audio/ảnh chỉ giữ đường dẫn ngoài.
+- Email qua `EmailSender` (Gmail SMTP, hoặc ghi log khi chưa cấu hình); ảnh chỉ giữ đường dẫn ngoài.
+- Audio bài nghe (`audio/`): cổng `AudioStorage` (Cloudinary khi có `CLOUDINARY_URL`, thiếu thì `uploads/audio` phục vụ qua `/api/media/audio/**`) và `SpeechSynthesizer` (OpenAI TTS đa giọng khi có `OPENAI_API_KEY`, thiếu thì MP3 im lặng). `ListeningAudioService` sinh/tải lên/xoá; admin gọi `/admin/listening/{id}/audio[/generate]`. `SeedAudioRunner` (cờ `AUDIO_GENERATE_SEED=true`) sinh audio cho bài chưa có và ghi URL Cloudinary vào `seed-demo/listening.json`.

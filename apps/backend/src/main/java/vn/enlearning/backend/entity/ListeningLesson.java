@@ -5,6 +5,8 @@ import org.hibernate.annotations.SQLRestriction;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
@@ -12,6 +14,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
+import vn.enlearning.backend.entity.enums.AudioSource;
 
 /** Bài Luyện nghe. Câu hỏi nằm ở {@link Question#getListeningLesson()}. */
 @Getter
@@ -41,6 +44,14 @@ public class ListeningLesson extends ContentEntity {
 	/** Tệp MP3 trên Cloudinary; trống thì đọc transcript bằng TTS. */
 	@Column(length = 500)
 	private String audioUrl;
+
+	/** NULL khi chưa có audio hoặc {@code audioUrl} là link ngoài do Admin nhập. */
+	@Enumerated(EnumType.STRING)
+	private AudioSource audioSource;
+
+	/** Định danh file ở {@code AudioStorage}, để xoá file cũ khi thay hoặc xoá audio. */
+	@Column(length = 300)
+	private String audioPublicId;
 
 	@Column(nullable = false)
 	private int durationSeconds;

@@ -32,6 +32,7 @@ import vn.enlearning.backend.entity.ReadingLesson;
 import vn.enlearning.backend.entity.SpeakingLesson;
 import vn.enlearning.backend.entity.Topic;
 import vn.enlearning.backend.entity.WritingPrompt;
+import vn.enlearning.backend.entity.enums.AudioSource;
 
 /** Đổi entity nội dung sang dòng danh sách và sang body PUT (kèm id phần tử con) để Admin sửa. */
 @Component
@@ -77,7 +78,8 @@ class AdminContentReader {
 	}
 
 	AdminContentDetailResponse detail(ContentEntity entity) {
-		return AdminContentDetailResponse.of(summaries(List.of(entity)).get(0), payload(entity));
+		AudioSource audioSource = entity instanceof ListeningLesson l ? l.getAudioSource() : null;
+		return AdminContentDetailResponse.of(summaries(List.of(entity)).get(0), payload(entity), audioSource);
 	}
 
 	private static void put(Map<UUID, Integer> counts, ParentCount c) {

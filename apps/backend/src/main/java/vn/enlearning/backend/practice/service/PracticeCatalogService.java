@@ -91,6 +91,7 @@ public class PracticeCatalogService {
 		ListeningSummaryResponse s = summarizeListening(userId, List.of(lesson)).get(0);
 		return new ListeningDetailResponse(s.id(), s.title(), s.description(), s.topicId(), s.topicName(), s.level(),
 				s.durationSeconds(), s.questionCount(), s.isCompleted(), s.lastScore(), lesson.getAudioUrl(),
+				lesson.getAudioUrl() == null || lesson.getAudioUrl().isBlank() ? lesson.getTranscript() : null,
 				toQuestions(questions.findByListeningLessonIdOrderBySortOrder(id)));
 	}
 

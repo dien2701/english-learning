@@ -16,11 +16,11 @@ spring:
     properties:
       # Cùng serverTimezone=UTC ở JDBC URL để Instant không bị lệch giờ.
       hibernate.jdbc.time_zone: UTC
-  # Bài nói: mỗi tệp âm thanh tối đa 5MB, cả lần nộp 15MB (khớp SpeakingSubmissionService). Âm thanh không được lưu.
+  # Nói: mỗi câu thu tối đa 5MB, không lưu âm thanh (SpeakingAttemptService kiểm lại). Audio bài nghe do Admin tải lên tối đa 20MB (AudioFiles).
   servlet:
     multipart:
-      max-file-size: 5MB
-      max-request-size: 16MB
+      max-file-size: 20MB
+      max-request-size: 21MB
   flyway:
     enabled: true
     locations: classpath:db/migration
@@ -77,6 +77,13 @@ app:
     gemini-timeout: ${GEMINI_TIMEOUT:45s}
     grading-timeout: ${AI_GRADING_TIMEOUT:60s}
     fake-latency: ${AI_FAKE_LATENCY:1500ms}
+  # OPENAI_API_KEY trống thì sinh audio bằng bản giả (MP3 im lặng); CLOUDINARY_URL trống thì lưu vào local-dir (xem audio/).
+  audio:
+    openai-api-key: ${OPENAI_API_KEY:}
+    openai-tts-model: ${OPENAI_TTS_MODEL:gpt-4o-mini-tts}
+    cloudinary-url: ${CLOUDINARY_URL:}
+    local-dir: ${AUDIO_LOCAL_DIR:uploads/audio}
+    generate-seed: ${AUDIO_GENERATE_SEED:false}
   # Hạn mức chat: tối đa daily-limit câu trợ lý trả lời mỗi người mỗi ngày (giờ Asia/Ho_Chi_Minh).
   chat:
     daily-limit: ${CHAT_DAILY_LIMIT:30}

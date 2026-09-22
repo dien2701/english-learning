@@ -34,3 +34,6 @@ build/
 
 ### Secrets ###
 .env
+
+### Audio bài nghe lưu cục bộ (AudioStorage khi chưa có Cloudinary) ###
+uploads/

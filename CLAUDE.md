@@ -38,5 +38,5 @@ Tên file, tên hàm, tiêu chí xong viết tiếng Anh nếu được.
 ## Quyết định đã chốt (21/09/2026)
 - FE gọi BE thật cho mọi module; cơ chế mock (`src/mocks`, `VITE_MOCK_MODULES`) đã xoá ở phiên 9a.
 - AI: interface + bản giả; chấm Viết/Nói và Chat dùng Gemini 2.5 Flash khi `GEMINI_API_KEY` có giá trị (đợt 11). OpenAI chỉ cho TTS bài nghe khi `OPENAI_API_KEY` có giá trị (đợt 12). Luyện nói vẫn nhận file âm thanh ở BE, chỉ lưu transcript/điểm.
-- Hạ tầng đơn giản: `@Scheduled` + `email_logs`, Caffeine, bucket4j trong bộ nhớ, audio/ảnh giữ đường dẫn ngoài. Audio bài nghe lưu Cloudinary khi có `CLOUDINARY_URL`, thiếu thì lưu cục bộ (đợt 12). KHÔNG thêm Redis, RabbitMQ, Docker, CI hay test tự động FE trừ khi người dùng đổi ý.
+- Hạ tầng đơn giản: `@Scheduled` + `email_logs`, Caffeine, bucket4j trong bộ nhớ, audio/ảnh giữ đường dẫn ngoài. Audio bài nghe lưu Cloudinary khi có `CLOUDINARY_URL`, thiếu thì lưu cục bộ (đợt 12); cờ `AUDIO_GENERATE_SEED=true` sinh audio cho bài seed chưa có (chạy một lần). KHÔNG thêm Redis, RabbitMQ, Docker, CI hay test tự động FE trừ khi người dùng đổi ý.
 - Phạm vi ngoài 10 chức năng: chỉ thêm hoàn tất song ngữ VI/EN.
