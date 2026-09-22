@@ -68,6 +68,8 @@ public class SecurityConfig {
 								"/auth/forgot-password", "/auth/reset-password").permitAll()
 						.requestMatchers(HttpMethod.DELETE, "/auth/session").permitAll()
 						.requestMatchers(HttpMethod.GET, "/auth/check-email").permitAll()
+						// Audio bài nghe lưu cục bộ: thẻ <audio> không gắn được Bearer token (chỉ đọc).
+						.requestMatchers(HttpMethod.GET, "/media/audio/**").permitAll()
 						.requestMatchers("/admin/**").hasRole("ADMIN")
 						.anyRequest().authenticated());
 		return http.build();

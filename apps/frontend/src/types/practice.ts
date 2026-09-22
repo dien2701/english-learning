@@ -97,8 +97,10 @@ export interface ListeningSummary {
 }
 
 export interface ListeningDetail extends ListeningSummary {
-  /** Trống khi bài chưa có tệp mp3; trình phát đọc bằng giọng trình duyệt. */
+  /** Trống khi bài chưa có tệp mp3; trình phát đọc `speechText` bằng giọng trình duyệt. */
   audioUrl?: string | null;
+  /** Transcript, chỉ có khi `audioUrl` trống. */
+  speechText?: string | null;
   questions: Question[];
 }
 

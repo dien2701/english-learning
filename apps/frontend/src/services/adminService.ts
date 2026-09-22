@@ -8,6 +8,8 @@ import type {
   AudienceKey,
   ContentStatus,
   AdminContentPayload,
+  ListeningAudio,
+  AudioSource,
 } from '../types/admin';
 import type { AccountStatus, Role } from '../types/common';
 import type { Topic } from '../types/practice';
@@ -34,6 +36,12 @@ export interface TopicNameInput {
   nameVi: string;
   nameEn?: string;
 }
+
+/** `audioSource` chỉ có ở bài nghe đã có audio do TTS hoặc tải lên. */
+export type AdminContentDetail = AdminContentItem & {
+  payload: AdminContentPayload;
+  audioSource?: AudioSource | null;
+};
 
 export const adminService = {
   dashboard: (): Promise<AdminDashboardData> =>
@@ -63,14 +71,31 @@ export const adminService = {
   deleteContent: (id: string) =>
     http.delete<{ deleted: boolean }>(`/admin/content/${id}`),
 
-  getContent: (id: string): Promise<AdminContentItem & { payload: AdminContentPayload }> =>
-    http.get<AdminContentItem & { payload: AdminContentPayload }>(`/admin/content/${id}`),
+  getContent: (id: string): Promise<AdminContentDetail> =>
+    http.get<AdminContentDetail>(`/admin/content/${id}`),
 
   createContent: (payload: AdminContentPayload): Promise<AdminContentItem> =>
     http.post<AdminContentItem>('/admin/content', payload),
 
   updateContent: (id: string, payload: AdminContentPayload): Promise<AdminContentItem> =>
     http.put<AdminContentItem>(`/admin/content/${id}`, payload),
+
+  /* --- Audio bài nghe --- */
+
+  generateListeningAudio: (id: string): Promise<ListeningAudio> =>
+    http.post<ListeningAudio>(`/admin/listening/${id}/audio/generate`, undefined, { timeout: 180_000 }),
+
+  uploadListeningAudio: (id: string, file: File): Promise<ListeningAudio> => {
+    const body = new FormData();
+    body.append('file', file);
+    return http.post<ListeningAudio>(`/admin/listening/${id}/audio`, body, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+      timeout: 60_000,
+    });
+  },
+
+  removeListeningAudio: (id: string): Promise<ListeningAudio> =>
+    http.delete<ListeningAudio>(`/admin/listening/${id}/audio`),
 
   /* --- Chủ đề --- */
 

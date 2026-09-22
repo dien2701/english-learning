@@ -5833,6 +5833,411 @@
           }
         }
       ]
+    },
+    {
+      "name": "Dot 12 - Audio bai nghe",
+      "item": [
+        {
+          "name": "01 GET /admin/content?skill=LISTENING (lấy id)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "const it = pm.response.json().data.items[0]; pm.expect(it).to.exist; pm.collectionVariables.set('listeningId12', it.id);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/content?skill=LISTENING&pageSize=1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "content"
+              ],
+              "query": [
+                {
+                  "key": "skill",
+                  "value": "LISTENING"
+                },
+                {
+                  "key": "pageSize",
+                  "value": "1"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "02 POST /admin/listening/:id/audio/generate",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "const d = pm.response.json().data;",
+                  "pm.test('TTS, có audioUrl, durationSeconds > 0', () => { pm.expect(d.audioSource).to.eql('TTS'); pm.expect(d.audioUrl).to.be.a('string'); pm.expect(d.durationSeconds).to.be.above(0); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/listening/{{listeningId12}}/audio/generate",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "listening",
+                "{{listeningId12}}",
+                "audio",
+                "generate"
+              ]
+            }
+          }
+        },
+        {
+          "name": "03 GET /admin/content/:id (audioSource)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "const d = pm.response.json().data;",
+                  "pm.test('audioSource TTS, payload.audioUrl khớp', () => { pm.expect(d.audioSource).to.eql('TTS'); pm.expect(d.payload.audioUrl).to.be.a('string'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/content/{{listeningId12}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "content",
+                "{{listeningId12}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "04 POST /admin/listening/:id/audio (chọn file mp3)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "const d = pm.response.json().data;",
+                  "pm.test('UPLOAD', () => pm.expect(d.audioSource).to.eql('UPLOAD'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/listening/{{listeningId12}}/audio",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "listening",
+                "{{listeningId12}}",
+                "audio"
+              ]
+            },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "05 POST audio (chọn file .txt) -> 415",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 415', () => pm.response.to.have.status(415));",
+                  "pm.test('AUDIO_UNSUPPORTED', () => pm.expect(pm.response.json().code).to.eql('AUDIO_UNSUPPORTED'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/listening/{{listeningId12}}/audio",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "listening",
+                "{{listeningId12}}",
+                "audio"
+              ]
+            },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "06 POST audio (chọn file 30MB) -> 413",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 413', () => pm.response.to.have.status(413));",
+                  "pm.test('AUDIO_TOO_LARGE', () => pm.expect(pm.response.json().code).to.eql('AUDIO_TOO_LARGE'));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/listening/{{listeningId12}}/audio",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "listening",
+                "{{listeningId12}}",
+                "audio"
+              ]
+            },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "07 POST audio/generate bằng token USER -> 403",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 403', () => pm.response.to.have.status(403));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/listening/{{listeningId12}}/audio/generate",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "listening",
+                "{{listeningId12}}",
+                "audio",
+                "generate"
+              ]
+            }
+          }
+        },
+        {
+          "name": "08 GET /listening/:id (đang có audio)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "const d = pm.response.json().data;",
+                  "pm.test('có audioUrl, không có speechText', () => { pm.expect(d.audioUrl).to.be.a('string'); pm.expect(d).to.not.have.property('speechText'); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/listening/{{listeningId12}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "listening",
+                "{{listeningId12}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "09 DELETE /admin/listening/:id/audio",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "const d = pm.response.json().data;",
+                  "pm.test('audioUrl và audioSource null', () => { pm.expect(d.audioUrl).to.eql(null); pm.expect(d.audioSource).to.eql(null); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/listening/{{listeningId12}}/audio",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "listening",
+                "{{listeningId12}}",
+                "audio"
+              ]
+            }
+          }
+        },
+        {
+          "name": "10 GET /listening/:id (đã xoá audio)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status 200', () => pm.response.to.have.status(200));",
+                  "const d = pm.response.json().data;",
+                  "pm.test('không audioUrl, speechText là transcript', () => { pm.expect(d.audioUrl).to.not.be.ok; pm.expect(d.speechText).to.be.a('string').and.not.empty; });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/listening/{{listeningId12}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "listening",
+                "{{listeningId12}}"
+              ]
+            }
+          }
+        }
+      ]
     }
   ]
 }

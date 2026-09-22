@@ -170,7 +170,10 @@ class AdminContentWriter {
 		lesson.setTopic(topic(l.topicId()));
 		lesson.setDescriptionVi(blankToNull(l.descriptionVi()));
 		lesson.setDescriptionEn(blankToNull(l.descriptionEn()));
-		lesson.setAudioUrl(blankToNull(l.audioUrl()));
+		// Audio do TTS/tải lên được quản lý bằng /admin/listening/{id}/audio; PUT không được đè hay xoá nó.
+		if (lesson.getAudioSource() == null) {
+			lesson.setAudioUrl(blankToNull(l.audioUrl()));
+		}
 		lesson.setDurationSeconds(orElse(l.durationSeconds(), 0));
 		lesson.setTranscript(l.transcript().trim());
 	}

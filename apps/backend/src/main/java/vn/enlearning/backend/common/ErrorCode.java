@@ -21,6 +21,7 @@ public enum ErrorCode {
 	CONTENT_IN_USE(HttpStatus.CONFLICT, "errors.contentInUse"),
 	AUDIO_TOO_LARGE(HttpStatus.CONTENT_TOO_LARGE, "errors.audioTooLarge"),
 	AUDIO_UNSUPPORTED(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "errors.audioUnsupported"),
+	STORAGE_UNAVAILABLE(HttpStatus.SERVICE_UNAVAILABLE, "errors.storageUnavailable"),
 	AI_UNAVAILABLE(HttpStatus.SERVICE_UNAVAILABLE, "errors.aiUnavailable"),
 	RATE_LIMITED(HttpStatus.TOO_MANY_REQUESTS, "errors.tooManyRequests"),
 	CHAT_DAILY_LIMIT(HttpStatus.TOO_MANY_REQUESTS, "errors.chatDailyLimit"),

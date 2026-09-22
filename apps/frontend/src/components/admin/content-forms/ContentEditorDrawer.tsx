@@ -6,6 +6,7 @@ import type { Skill, Level } from '../../../types/common';
 import { useLabels } from '../../../hooks/useLabels';
 import { adminService } from '../../../services/adminService';
 import { useApiError } from '../../../hooks/useApiError';
+import type { ListeningAudio } from '../../../types/admin';
 
 import { VocabularyForm } from './VocabularyForm';
 import { ListeningForm } from './ListeningForm';
@@ -43,10 +44,21 @@ export const ContentEditorDrawer: React.FC<ContentEditorDrawerProps> = ({
   const [saving, setSaving] = useState(false);
   const [loadedId, setLoadedId] = useState<string | null>(null);
   const selectedSkill = Form.useWatch<Skill | undefined>('skill', form);
+  const transcript = Form.useWatch<string | undefined>('contentBody', form);
+  const [loadedAudio, setAudio] = useState<Pick<ListeningAudio, 'audioUrl' | 'audioSource'>>({
+    audioUrl: null,
+    audioSource: null,
+  });
+  const [loadedTranscript, setLoadedTranscript] = useState('');
   const loading = open && !!editingId && loadedId !== editingId;
+  // Đang tạo mới thì bỏ qua audio/transcript còn sót từ lần sửa trước.
+  const audio = editingId ? loadedAudio : { audioUrl: null, audioSource: null };
 
   const onLoaded = useEffectEvent((id: string, data: Awaited<ReturnType<typeof adminService.getContent>>) => {
-    form.setFieldsValue(toFormValues(data.payload));
+    const values = toFormValues(data.payload);
+    form.setFieldsValue(values);
+    setAudio({ audioUrl: values.mediaUrl ?? null, audioSource: data.audioSource ?? null });
+    setLoadedTranscript(values.contentBody ?? '');
     setLoadedId(id);
   });
 
@@ -98,7 +110,17 @@ export const ContentEditorDrawer: React.FC<ContentEditorDrawerProps> = ({
         <h3 className="mb-4 text-card-title">{t('admin.detailsForSkill', { skill: skillLabel(selectedSkill) })}</h3>
         
         {selectedSkill === 'VOCABULARY' && <VocabularyForm />}
-        {selectedSkill === 'LISTENING' && <ListeningForm />}
+        {selectedSkill === 'LISTENING' && (
+          <ListeningForm
+            lessonId={editingId}
+            audio={audio}
+            transcriptChanged={!!editingId && (transcript ?? '') !== loadedTranscript}
+            onAudioChange={(next) => {
+              setAudio(next);
+              form.setFieldValue('mediaUrl', next.audioUrl ?? undefined);
+            }}
+          />
+        )}
         {selectedSkill === 'READING' && <ReadingForm />}
         {selectedSkill === 'WRITING' && <WritingForm />}
         {selectedSkill === 'SPEAKING' && <SpeakingForm />}
