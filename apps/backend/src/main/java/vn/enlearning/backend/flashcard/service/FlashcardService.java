@@ -13,7 +13,6 @@ import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +22,7 @@ import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
 import vn.enlearning.backend.auth.repository.UserRepository;
 import vn.enlearning.backend.common.ApiException;
+import vn.enlearning.backend.common.ContentSort;
 import vn.enlearning.backend.common.ErrorCode;
 import vn.enlearning.backend.common.L10n;
 import vn.enlearning.backend.common.PageResponse;
@@ -67,11 +67,11 @@ public class FlashcardService {
 
 	@Transactional(readOnly = true)
 	public PageResponse<DeckSummaryResponse> listDecks(UUID userId, String search, UUID topicId, String level,
-			String status, int page, int pageSize) {
+			String status, String sort, int page, int pageSize) {
 		Level levelFilter = parseLevel(level);
 		String statusFilter = parseStatus(status);
 
-		List<FlashcardDeck> found = decks.findAll(filter(search, topicId, levelFilter), Sort.by("createdAt", "id"));
+		List<FlashcardDeck> found = decks.findAll(filter(search, topicId, levelFilter), ContentSort.resolve(sort));
 		List<DeckSummaryResponse> all = summarize(userId, found).stream()
 				.filter(d -> statusFilter == null || statusFilter.equals(d.status()))
 				.toList();
@@ -204,7 +204,7 @@ public class FlashcardService {
 			String status = rated == 0 ? NOT_STARTED : total > 0 && learned >= total ? COMPLETED : IN_PROGRESS;
 			return new DeckSummaryResponse(d.getId(), L10n.of(d.getTitleVi(), d.getTitleEn()),
 					L10n.of(d.getDescriptionVi() == null ? "" : d.getDescriptionVi(), d.getDescriptionEn()),
-					d.getCoverImageUrl(), d.getTopic().getId(),
+					d.getCoverImageUrl(), d.getCoverImageAuthor(), d.getCoverImageAuthorUrl(), d.getTopic().getId(),
 					L10n.of(d.getTopic().getNameVi(), d.getTopic().getNameEn()), d.getLevel(), total, learned,
 					percent(learned, total), status);
 		}).toList();
@@ -214,7 +214,8 @@ public class FlashcardService {
 		L10n partOfSpeech = c.getPartOfSpeechVi() == null ? null
 				: L10n.of(c.getPartOfSpeechVi(), c.getPartOfSpeechEn());
 		return new CardResponse(c.getId(), c.getWord(), c.getPhonetic(), L10n.of(c.getMeaningVi(), c.getMeaningEn()),
-				partOfSpeech, c.getExample(), c.getExampleMeaning(), c.getImageUrl(), c.getAudioUrl(), level);
+				partOfSpeech, c.getExample(), c.getExampleMeaning(), c.getImageUrl(), c.getImageAuthor(),
+				c.getImageAuthorUrl(), c.getAudioUrl(), level);
 	}
 
 	private static int count(List<Flashcard> studied, Map<UUID, RecallLevel> levels, RecallLevel level) {

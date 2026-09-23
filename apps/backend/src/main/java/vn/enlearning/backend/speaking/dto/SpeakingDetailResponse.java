@@ -11,5 +11,6 @@ import vn.enlearning.backend.entity.enums.Level;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record SpeakingDetailResponse(UUID id, L10n title, L10n description, UUID topicId, L10n topicName,
-		Level level, int promptCount, boolean isCompleted, BigDecimal lastScore, List<SpeakingPromptResponse> prompts) {
+		Level level, int promptCount, boolean isCompleted, BigDecimal lastScore, String imageUrl, String imageAuthor,
+		String imageAuthorUrl, List<SpeakingPromptResponse> prompts) {
 }

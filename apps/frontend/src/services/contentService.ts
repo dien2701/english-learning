@@ -38,6 +38,7 @@ export interface ListQuery {
   topicId?: string;
   level?: string;
   status?: string;
+  sort?: string;
   page?: number;
   pageSize?: number;
 }

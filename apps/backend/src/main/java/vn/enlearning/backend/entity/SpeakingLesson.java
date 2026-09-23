@@ -43,6 +43,15 @@ public class SpeakingLesson extends ContentEntity {
 	@Column(length = 1000)
 	private String descriptionEn;
 
+	@Column(length = 500)
+	private String imageUrl;
+
+	@Column(length = 500)
+	private String imageAuthor;
+
+	@Column(length = 500)
+	private String imageAuthorUrl;
+
 	/** Các câu cần đọc, lưu dạng JSON; thứ tự mảng là thứ tự hiển thị. */
 	@JdbcTypeCode(SqlTypes.JSON)
 	@Column(nullable = false, columnDefinition = "JSON")

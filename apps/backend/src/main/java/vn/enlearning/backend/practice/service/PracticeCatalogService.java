@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import vn.enlearning.backend.common.ApiException;
+import vn.enlearning.backend.common.ContentSort;
 import vn.enlearning.backend.common.ErrorCode;
 import vn.enlearning.backend.common.L10n;
 import vn.enlearning.backend.common.PageResponse;
@@ -73,11 +74,12 @@ public class PracticeCatalogService {
 
 	@Transactional(readOnly = true)
 	public PageResponse<ListeningSummaryResponse> listListening(UUID userId, String search, UUID topicId,
-			String level, String status, int page, int pageSize) {
+			String level, String status, String sort, int page, int pageSize) {
 		Level levelFilter = parseLevel(level);
 		String statusFilter = parseStatus(status, LESSON_STATUSES);
 		List<ListeningLesson> found = listening.findAll(
-				ContentSpecs.<ListeningLesson>learnerFilter(search, topicId, levelFilter, true), ORDER);
+				ContentSpecs.<ListeningLesson>learnerFilter(search, topicId, levelFilter, true),
+				ContentSort.resolve(sort));
 		List<ListeningSummaryResponse> all = summarizeListening(userId, found).stream()
 				.filter(s -> matchesLesson(statusFilter, s.isCompleted()))
 				.toList();
@@ -90,7 +92,8 @@ public class PracticeCatalogService {
 				.orElseThrow(PracticeCatalogService::notFound);
 		ListeningSummaryResponse s = summarizeListening(userId, List.of(lesson)).get(0);
 		return new ListeningDetailResponse(s.id(), s.title(), s.description(), s.topicId(), s.topicName(), s.level(),
-				s.durationSeconds(), s.questionCount(), s.isCompleted(), s.lastScore(), lesson.getAudioUrl(),
+				s.durationSeconds(), s.questionCount(), s.isCompleted(), s.lastScore(), s.imageUrl(), s.imageAuthor(),
+				s.imageAuthorUrl(), lesson.getAudioUrl(),
 				lesson.getAudioUrl() == null || lesson.getAudioUrl().isBlank() ? lesson.getTranscript() : null,
 				toQuestions(questions.findByListeningLessonIdOrderBySortOrder(id)));
 	}
@@ -105,18 +108,20 @@ public class PracticeCatalogService {
 		return found.stream().map(l -> new ListeningSummaryResponse(l.getId(), L10n.of(l.getTitleVi(), l.getTitleEn()),
 				description(l.getDescriptionVi(), l.getDescriptionEn()), l.getTopic().getId(),
 				L10n.of(l.getTopic().getNameVi(), l.getTopic().getNameEn()), l.getLevel(), l.getDurationSeconds(),
-				counts.getOrDefault(l.getId(), 0L), scores.containsKey(l.getId()), scores.get(l.getId()))).toList();
+				counts.getOrDefault(l.getId(), 0L), scores.containsKey(l.getId()), scores.get(l.getId()),
+				l.getImageUrl(), l.getImageAuthor(), l.getImageAuthorUrl())).toList();
 	}
 
 	// --- Đọc ------------------------------------------------------------------------------------
 
 	@Transactional(readOnly = true)
 	public PageResponse<ReadingSummaryResponse> listReading(UUID userId, String search, UUID topicId, String level,
-			String status, int page, int pageSize) {
+			String status, String sort, int page, int pageSize) {
 		Level levelFilter = parseLevel(level);
 		String statusFilter = parseStatus(status, LESSON_STATUSES);
 		List<ReadingLesson> found = reading.findAll(
-				ContentSpecs.<ReadingLesson>learnerFilter(search, topicId, levelFilter, true), ORDER);
+				ContentSpecs.<ReadingLesson>learnerFilter(search, topicId, levelFilter, true),
+				ContentSort.resolve(sort));
 		List<ReadingSummaryResponse> all = summarizeReading(userId, found).stream()
 				.filter(s -> matchesLesson(statusFilter, s.isCompleted()))
 				.toList();
@@ -129,8 +134,9 @@ public class PracticeCatalogService {
 				.orElseThrow(PracticeCatalogService::notFound);
 		ReadingSummaryResponse s = summarizeReading(userId, List.of(lesson)).get(0);
 		return new ReadingDetailResponse(s.id(), s.title(), s.description(), s.topicId(), s.topicName(), s.level(),
-				s.wordCount(), s.questionCount(), s.timeLimitMinutes(), s.isCompleted(), s.lastScore(),
-				List.copyOf(lesson.getParagraphs()), toQuestions(questions.findByReadingLessonIdOrderBySortOrder(id)));
+				s.wordCount(), s.questionCount(), s.timeLimitMinutes(), s.isCompleted(), s.lastScore(), s.imageUrl(),
+				s.imageAuthor(), s.imageAuthorUrl(), List.copyOf(lesson.getParagraphs()),
+				toQuestions(questions.findByReadingLessonIdOrderBySortOrder(id)));
 	}
 
 	private List<ReadingSummaryResponse> summarizeReading(UUID userId, List<ReadingLesson> found) {
@@ -144,7 +150,7 @@ public class PracticeCatalogService {
 				description(l.getDescriptionVi(), l.getDescriptionEn()), l.getTopic().getId(),
 				L10n.of(l.getTopic().getNameVi(), l.getTopic().getNameEn()), l.getLevel(), l.getWordCount(),
 				counts.getOrDefault(l.getId(), 0L), l.getTimeLimitMinutes(), scores.containsKey(l.getId()),
-				scores.get(l.getId()))).toList();
+				scores.get(l.getId()), l.getImageUrl(), l.getImageAuthor(), l.getImageAuthorUrl())).toList();
 	}
 
 	// --- Kiểm tra -------------------------------------------------------------------------------

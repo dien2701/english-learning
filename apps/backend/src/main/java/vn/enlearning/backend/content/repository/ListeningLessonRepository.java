@@ -21,6 +21,9 @@ public interface ListeningLessonRepository
 
 	long countByTopicId(UUID topicId);
 
+	/** Khoá idempotent của seeder dữ liệu thật (đợt 13.5): bỏ qua bài đã có cùng tiêu đề trong chủ đề. */
+	boolean existsByTopicIdAndTitleVi(UUID topicId, String titleVi);
+
 	/** Bài chưa có audio, theo thứ tự tạo (dùng cho lệnh sinh audio seed, đợt 12c). */
 	@Query("select l from ListeningLesson l where l.audioUrl is null or l.audioUrl = '' order by l.createdAt, l.id")
 	List<ListeningLesson> findAllWithoutAudio();

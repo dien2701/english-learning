@@ -11,5 +11,5 @@ import vn.enlearning.backend.entity.enums.Level;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record ReadingSummaryResponse(UUID id, L10n title, L10n description, UUID topicId, L10n topicName,
 		Level level, int wordCount, long questionCount, int timeLimitMinutes, boolean isCompleted,
-		BigDecimal lastScore) {
+		BigDecimal lastScore, String imageUrl, String imageAuthor, String imageAuthorUrl) {
 }

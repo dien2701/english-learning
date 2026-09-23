@@ -8,7 +8,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +16,7 @@ import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
 import vn.enlearning.backend.common.ApiException;
+import vn.enlearning.backend.common.ContentSort;
 import vn.enlearning.backend.common.ErrorCode;
 import vn.enlearning.backend.common.L10n;
 import vn.enlearning.backend.common.PageResponse;
@@ -40,7 +40,6 @@ import vn.enlearning.backend.writing.repository.WritingSubmissionRepository.Prom
 public class WritingCatalogService {
 
 	static final String NOT_STARTED = "NOT_STARTED";
-	private static final Sort ORDER = Sort.by("createdAt", "id");
 
 	private final WritingPromptRepository prompts;
 	private final WritingSubmissionRepository submissions;
@@ -48,8 +47,9 @@ public class WritingCatalogService {
 
 	@Transactional(readOnly = true)
 	public PageResponse<WritingPromptSummaryResponse> list(UUID userId, String search, UUID topicId, String level,
-			int page, int pageSize) {
-		List<WritingPrompt> found = prompts.findAll(learnerFilter(search, topicId, parseLevel(level)), ORDER);
+			String sort, int page, int pageSize) {
+		List<WritingPrompt> found = prompts.findAll(learnerFilter(search, topicId, parseLevel(level)),
+				ContentSort.resolve(sort));
 		return PageResponse.of(summarize(userId, found), page, pageSize);
 	}
 
@@ -59,8 +59,8 @@ public class WritingCatalogService {
 				.orElseThrow(() -> new ApiException(ErrorCode.NOT_FOUND));
 		WritingPromptSummaryResponse s = summarize(userId, List.of(prompt)).get(0);
 		return new WritingPromptDetailResponse(s.id(), s.title(), s.topicId(), s.topicName(), s.level(),
-				s.suggestedMinutes(), s.minWords(), s.status(), s.lastScore(), prompt.getInstructions(),
-				List.copyOf(prompt.getHints()));
+				s.suggestedMinutes(), s.minWords(), s.status(), s.lastScore(), s.imageUrl(), s.imageAuthor(),
+				s.imageAuthorUrl(), prompt.getInstructions(), List.copyOf(prompt.getHints()));
 	}
 
 	private List<WritingPromptSummaryResponse> summarize(UUID userId, List<WritingPrompt> found) {
@@ -79,7 +79,8 @@ public class WritingCatalogService {
 		return found.stream().map(p -> new WritingPromptSummaryResponse(p.getId(),
 				L10n.of(p.getTitleVi(), p.getTitleEn()), p.getTopic().getId(),
 				L10n.of(p.getTopic().getNameVi(), p.getTopic().getNameEn()), p.getLevel(), p.getSuggestedMinutes(),
-				p.getMinWords(), status.getOrDefault(p.getId(), NOT_STARTED), scores.get(p.getId()))).toList();
+				p.getMinWords(), status.getOrDefault(p.getId(), NOT_STARTED), scores.get(p.getId()), p.getImageUrl(),
+				p.getImageAuthor(), p.getImageAuthorUrl())).toList();
 	}
 
 	private static Specification<WritingPrompt> learnerFilter(String search, UUID topicId, Level level) {

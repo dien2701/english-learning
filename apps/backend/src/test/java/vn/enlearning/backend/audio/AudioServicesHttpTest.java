@@ -118,16 +118,16 @@ class AudioServicesHttpTest {
 	@Test
 	@DisplayName("Cloudinary: tải lên gửi multipart tới /v1_1/<cloud>/video/upload với public_id trong thư mục, api_key và chữ ký; trả secure_url")
 	void cloudinaryUploads() {
-		responseBody = "{\"secure_url\":\"https://res.cloudinary.com/demo_cloud/video/upload/v1/en-learning/listening/abc.mp3\",\"public_id\":\"en-learning/listening/abc\"}"
+		responseBody = "{\"secure_url\":\"https://res.cloudinary.com/demo_cloud/video/upload/v1/En-Learning/abc.mp3\",\"public_id\":\"En-Learning/abc\"}"
 				.getBytes(StandardCharsets.UTF_8);
 
 		StoredAudio stored = cloudinary().store(new byte[] { 9, 8, 7 }, "abc", "mp3");
 
-		assertThat(stored.url()).isEqualTo("https://res.cloudinary.com/demo_cloud/video/upload/v1/en-learning/listening/abc.mp3");
-		assertThat(stored.publicId()).isEqualTo("en-learning/listening/abc");
+		assertThat(stored.url()).isEqualTo("https://res.cloudinary.com/demo_cloud/video/upload/v1/En-Learning/abc.mp3");
+		assertThat(stored.publicId()).isEqualTo("En-Learning/abc");
 		assertThat(path.get()).isEqualTo("/v1_1/demo_cloud/video/upload");
 		assertThat(contentType.get()).startsWith("multipart/form-data");
-		assertThat(body.get()).contains("name=\"public_id\"", "en-learning/listening/abc", "name=\"api_key\"", "key123",
+		assertThat(body.get()).contains("name=\"public_id\"", "En-Learning/abc", "name=\"asset_folder\"", "name=\"api_key\"", "key123",
 				"name=\"timestamp\"", "name=\"signature\"", "name=\"file\"", "filename=\"abc.mp3\"");
 		assertThat(body.get()).doesNotContain("abcd"); // API secret không bao giờ được gửi đi
 	}

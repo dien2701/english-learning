@@ -36,9 +36,10 @@ public class WritingController {
 			@RequestParam(required = false) String search,
 			@RequestParam(required = false) UUID topicId,
 			@RequestParam(required = false) String level,
+			@RequestParam(defaultValue = "az") String sort,
 			@RequestParam(defaultValue = "1") int page,
 			@RequestParam(defaultValue = "12") int pageSize) {
-		return ApiResponse.ok(catalog.list(userId(jwt), search, topicId, level, page, pageSize));
+		return ApiResponse.ok(catalog.list(userId(jwt), search, topicId, level, sort, page, pageSize));
 	}
 
 	@GetMapping("/prompts/{id}")

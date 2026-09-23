@@ -35,7 +35,8 @@
     "noContentHint": "Content will appear once an administrator adds it.",
     "minutesShort": "m",
     "saved": "Changes saved.",
-    "created": "Created successfully."
+    "created": "Created successfully.",
+    "photoBy": "Photo: {{author}}"
   },
   "filter": {
     "searchLabel": "Search",
@@ -53,7 +54,11 @@
     "resultCount_one": "{{count}} result",
     "resultCount_other": "{{count}} results",
     "noResultTitle": "No matching results",
-    "noResultHint": "Try removing a filter or searching for something else."
+    "noResultHint": "Try removing a filter or searching for something else.",
+    "sort": "Sort",
+    "sortAz": "Name A-Z",
+    "sortZa": "Name Z-A",
+    "sortNewest": "Newest"
   },
   "level": {
     "BEGINNER": "Beginner",

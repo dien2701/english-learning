@@ -11,5 +11,6 @@ import vn.enlearning.backend.entity.enums.Level;
 /** {@code isCompleted}/{@code lastScore} chỉ tính lượt đã chấm xong (GRADED) của chính người dùng. */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record SpeakingSummaryResponse(UUID id, L10n title, L10n description, UUID topicId, L10n topicName,
-		Level level, int promptCount, boolean isCompleted, BigDecimal lastScore) {
+		Level level, int promptCount, boolean isCompleted, BigDecimal lastScore, String imageUrl, String imageAuthor,
+		String imageAuthorUrl) {
 }

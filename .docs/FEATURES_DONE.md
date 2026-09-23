@@ -416,3 +416,93 @@ esources/seed-demo/topics.json (10 chủ đề) và decks.json (15 bộ × 20 th
 - 12b: trang nghe phát `audioUrl`, fallback đọc `speechText` (transcript, chỉ trả khi chưa có audio); admin có panel sinh AI/tải lên/xoá audio bài nghe.
 - 12c: `SeedAudioRunner` (cờ `AUDIO_GENERATE_SEED=true`) sinh audio 12 bài nghe seed chưa có, ghi URL Cloudinary ngược vào `seed-demo/listening.json`; cập nhật CLAUDE.md, ARCHITECTURE, `.env.example`.
 - Đóng đợt 12: thêm folder Postman "Dot 12 - Audio bai nghe" (10 request), chốt bảng kiểm tra theo DTO thật.
+
+## Đợt 13 - phiên 13a (Schema ảnh)
+
+- Migration V4: `image_url/image_author/image_author_url` cho topics, listening_lessons, writing_prompts, speaking_lessons; chỉ thêm `*_author`/`*_author_url` cho flashcard_decks (`cover_image_*`) và flashcards (đã có `image_url`).
+- Entity + DTO (TopicResponse, DeckSummary/Detail, CardResponse, ListeningSummary/Detail, WritingPromptSummary/Detail, SpeakingSummary/Detail) trả kèm ảnh và ghi công.
+- FE: type mới ở flashcard/practice/writing/speaking.ts; component dùng chung `PhotoCredit` (khoá dịch `common.photoBy`) hiện "Ảnh: X" đè lên ảnh bìa của DeckCard và danh sách Nghe/Đọc/Viết/Nói, `WordImage` hiện ghi công ở mặt trước thẻ từ; fallback ảnh dùng `SafeImage`/`WordImage` có sẵn.
+- Bổ sung V5: `reading_lessons` bị bỏ sót ở V4 (không có ảnh minh hoạ), đã thêm entity/DTO/FE giống các mục Nghe/Viết/Nói.
+
+## Đợt 13 - phiên 13b (Crawl từ vựng thật)
+
+- `tools/crawler/` (Node 20+, không phụ thuộc package ngoài): tải Oxford 3000 (`data/oxford-3000.json`, vendor sẵn), lọc còn ~3.069 từ đơn, lấy mẫu đều tới `targetWordCount` (mặc định 1.500, đổi bằng `--limit`).
+- `dictionaryClient.js` gọi Free Dictionary API lấy phiên âm/từ loại/định nghĩa/ví dụ EN, cache theo từng từ (`.cache/dictionary/<word>.json`), retry + timeout 15s, từ không có trong từ điển ghi vào `.cache/skipped-words.json`.
+- `geminiClient.js` gom 50 từ/lần gọi Gemini dịch nghĩa/từ loại/ví dụ sang VI và gán 1 trong 20 chủ đề cố định (`src/topics.js`) + mức độ; cache theo lô (hash danh sách từ) để resume khi chạy lại.
+- `index.js` ghi `topics.json` (20 chủ đề) và `words.json` vào `apps/backend/src/main/resources/seed/real/`.
+- Đã kiểm tra syntax (`node --check`) và chạy thử bước tải Oxford 3000 + Dictionary API (cache/resume hoạt động đúng); môi trường sandbox không gọi được `api.dictionaryapi.dev` (timeout mạng) nên chưa chạy hết 1.500 từ và chưa gọi Gemini — người dùng cần tự chạy `node tools/crawler/src/index.js` trên máy có mạng ổn định.
+
+## Đợt 13 - phiên 13c (Sinh đề)
+
+- `generateExercises.js`: sinh bài tập trắc nghiệm từ vựng trực tiếp từ `words.json`/`topics.json` (13.2), **không gọi AI** — mỗi chủ đề đủ từ tạo 1 đề 15 câu, đáp án đúng là `meaningVi` thật, 3 nhiễu lấy nghĩa từ khác cùng chủ đề (đã kiểm tra bằng dữ liệu giả: luôn đúng 1 đáp án/4 lựa chọn). Ghi `exercises.json`.
+- `generateLessons.js`: với mỗi chủ đề trong 20 chủ đề, gọi Gemini (dùng chung `callGeminiJson`/`callGeminiCached` tách ra từ `geminiClient.js`) sinh 2 đề Viết, 1 bài Nói (5 câu), 2 bài Nghe (transcript + 5 câu hỏi) → tổng đúng 40 bài nghe. Ghi `writing.json`, `speaking.json`, `listening.json`, cache/resume theo `topicSlug`.
+- `generate.js` là entrypoint gộp cả hai bước (`node tools/crawler/src/generate.js`), chạy sau khi đã có `words.json`/`topics.json` từ phiên 13b.
+- Sửa lỗi tương thích Windows trong guard "chạy trực tiếp" (`import.meta.url === file://${process.argv[1]}` sai trên Windows do dấu `\`) bằng `pathToFileURL`.
+- Đã kiểm tra syntax sạch và chạy thật `generateExercises.js` với dữ liệu giả (28 từ/2 chủ đề); chưa chạy được `generateLessons.js` (cần `GEMINI_API_KEY` thật + mạng gọi được `generativelanguage.googleapis.com`, sandbox không đảm bảo) — người dùng cần tự chạy `node tools/crawler/src/generate.js` sau khi có `words.json`/`topics.json` thật.
+
+## Đợt 13 - phiên 13d (Ảnh Unsplash)
+
+- `unsplashClient.js`: gọi Unsplash Search Photos (Client-ID), cache theo `kind/key` (`.cache/unsplash/`), trả `null` khi không có kết quả; gọi `download_location` sau mỗi ảnh theo điều khoản Unsplash; gặp 403/429 (hết hạn mức) tự chờ 1 giờ rồi thử lại.
+- `generateImages.js`: ghi `imageUrl/imageAuthor/imageAuthorUrl` trực tiếp vào `topics.json`, `words.json`, `listening.json`, `writing.json`, `speaking.json` (13.2/13.3 đã có sẵn); gian cách mỗi request ~72s để giữ dưới 50 req/giờ, ghi JSON định kỳ nên dừng giữa chừng rồi chạy lại resume đúng phần còn thiếu (mục đã có `imageUrl`, kể cả `null`, được bỏ qua).
+
+## Đợt 13 - phiên 13e (BE seeder dữ liệu thật)
+
+- `RealDataSeedService` (`app.seed.real-data=true`, env `REAL_DATA_SEED`) đọc `seed/real/{topics,words,listening,writing,speaking,exercises}.json`, gom `words.json` theo `topicSlug` vào đúng một bộ thẻ "Từ vựng thật" mỗi chủ đề, ảnh Unsplash ghi thẳng vào chủ đề/thẻ/bài học.
+- Idempotent: chủ đề khoá theo `slug`, từ khoá theo `word` trong đúng bộ thẻ, bài Nghe/Viết/Nói khoá theo `titleVi` trong đúng chủ đề, đề kiểm tra khoá theo `titleVi`; chạy lại bỏ qua bản ghi đã có, log số lượng tạo mới/bỏ qua qua `RealDataSeedService.Report`.
+- `RealDataSeedRunner` chạy sau `DevSeedRunner` (`@Order(90)`, profile `dev`), audio bài nghe (`audioUrl`/`durationSeconds`) để trống cho lệnh sinh audio (13.6) điền sau.
+- Thêm khoá tra cứu idempotent vào các repository liên quan (`findByTopicIdAndTitleVi`, `existsByDeckIdAndWordIgnoreCase`, `existsByTitleVi`...) và `UserRepository.findFirstByRoleOrderByCreatedAtAsc` để gán `createdBy`.
+- Test `RealDataSeedServiceTests` nạp thật rồi chạy lại trong cùng giao dịch, kiểm không nhân đôi bản ghi và câu trắc nghiệm luôn có đúng một đáp án đúng.
+- Thêm `UNSPLASH_ACCESS_KEY` vào `.env.example`. Đã kiểm tra syntax (`node --check`) sạch; script gọi mạng thật (~1.600 lượt tìm, chạy nhiều giờ) nên người dùng cần tự chạy `node tools/crawler/src/generateImages.js` sau khi có key.
+
+## Đợt 13 - phiên 13f (Audio người đọc thật, đổi khỏi OpenAI TTS)
+
+- Đổi quyết định: audio 40 bài nghe seed lấy từ Tatoeba.org (câu tiếng Anh có audio người đọc thật, miễn phí, CC BY) thay vì OpenAI TTS; đã kiểm tra thật `Mp3.parse`/`Mp3.join` (`tools/crawler/src/mp3.js`) và tìm/tải câu qua `tatoebaClient.js` bằng file mp3 tải trực tiếp từ `tatoeba.org/en/audio/download/{id}`.
+- `generateAudio.js`: với mỗi bài nghe, tìm ≤8 câu có audio (khớp từ khoá tiêu đề, rơi về chủ đề rồi câu bất kỳ), ghép mp3, **viết lại `transcript` bằng chính câu thật vừa chọn** rồi gọi lại Gemini sinh 5 câu hỏi mới khớp transcript đó (transcript/câu hỏi cũ ở 13.3 không còn dùng cho 40 bài này), tự tải file ghép lên Cloudinary (`cloudinaryClient.js`, ký SHA-1 giống `CloudinaryAudioStorage.java`), ghi `audioUrl/audioPublicId/durationSeconds/audioCredit` thẳng vào `listening.json`.
+- BE: thêm `AudioSource.REAL` (`V6__listening_audio_source_real.sql`), `RealDataSeedService.seedListening` đọc `audioUrl` có sẵn trong JSON để lưu `audio_source=REAL` luôn, không cần chạy `AUDIO_GENERATE_SEED` (TTS) cho seed thật nữa; tính năng Admin "Sinh lại audio" (TTS) không đổi.
+- `audioCredit` (tên tác giả Tatoeba, để ghi công CC BY) có trong JSON/record nhưng seeder không lưu vào DB — app chưa có chỗ hiển thị ghi công cho audio (khác `imageAuthor` của ảnh).
+- Đã biên dịch BE sạch (`./mvnw -q compile`) và kiểm tra thật (không phải giả lập) luồng tìm câu Tatoeba + tải + ghép mp3 bằng file thật; **chưa** gọi Gemini/Cloudinary thật (cần `GEMINI_API_KEY`/`CLOUDINARY_URL`) — người dùng cần tự chạy `cd tools/crawler && npm run generate-audio` rồi seeder.
+
+## Đợt 13 - phiên 13z (Đóng đợt)
+
+- `./mvnw -q test`: 217/219 xanh; 2 test `RealDataSeedServiceTests` đỏ vì `apps/backend/src/main/resources/seed/real/*.json` chưa tồn tại — người dùng cần tự chạy `tools/crawler` (crawl từ vựng, sinh đề, ảnh Unsplash, audio) để tạo các JSON thật trước khi test này xanh và trước khi bật `REAL_DATA_SEED=true`.
+- FE `npm run lint` và `npm run build` sạch, không đổi mã nguồn.
+- Thêm folder `Dot 13 - Du lieu that` vào `.docs/postman/en-learning.postman_collection.json` (GET `/topics` kiểm 20 chủ đề + `imageUrl`, GET `/listening/lessons` kiểm `imageUrl`/`audioUrl`, GET `/reading/lessons`).
+
+## Đợt 13 - phiên 13g (Crawl thu gọn: 500 từ từ cache, ảnh Đọc/Viết/Nói seed)
+
+- `tools/crawler/src/selectWords.js` (mới): chọn lại 500 từ trải đều A-Z từ 1.000 bản dịch Gemini đã cache sẵn (`.cache/gemini/`) + tra cứu từ điển từ cache (`.cache/dictionary/`), **không gọi Gemini/Dictionary API qua mạng** — ghi `apps/backend/src/main/resources/seed/real/words.json` (500 từ, đủ cả 20 chủ đề).
+- `tools/crawler/src/annotateDemoImages.js` (mới): tìm ảnh minh hoạ (chuỗi Pexels → Openverse → Wikimedia → Unsplash, `imageClient.js`) cho đúng 3 file bài seed demo đang dùng ở app — `apps/backend/src/main/resources/seed/{reading,writing,speaking}.json` — ghi `imageUrl/imageAuthor/imageAuthorUrl`, không sinh bài mới. Kết quả: Đọc 4/4, Nói 3/3, Viết 3/5 có ảnh (2 đề trừu tượng để trống theo quy ước).
+- Cả hai script đã chạy thật (không phải người dùng tự chạy): word selection không đụng mạng, ảnh dùng nguồn miễn phí Openverse/Wikimedia (chưa có `UNSPLASH_ACCESS_KEY`/`PEXELS_API_KEY` trong `.env`).
+- `real/words.json` (500 từ) khác cấu trúc "seed đang dùng"; seeder BE đọc file này (`RealDataSeedService`) không đổi ở phiên này — chờ 13i nạp cùng bộ JSON mới.
+- Bảng "Kiểm tra hoàn thành" trong `dot-13-du-lieu-that.md` giữ nguyên (đã đúng theo DTO thật, không cần sửa).
+
+## Đợt 13 - phiên 13h (Nghe: 20 bài thật từ VOA Learning English, thay Tatoeba)
+
+- Bản đầu cào mirror tĩnh `manythings.org/voa/...` — người dùng chạy thử thì **toàn bộ** mp3 gốc trên `www.voanews.com/MediaAssets2/...` báo "fetch failed" (lỗi mạng cả loạt, không phải 404 rải rác): hạ tầng audio đó đã bị VOA gỡ hẳn. Đổi sang cào CHÍNH trang hiện tại `learningenglish.voanews.com` (CDN `voa-audio.voanews.eu` còn sống); danh sách bài theo "zone" (`/z/<zoneId>?p=<trang>`, `config.voaZones`, 9 zone) thay cho category cũ.
+- `tools/crawler/src/voaClient.js`: `listZoneArticles` (phân trang zone), `parseArticle` (transcript cắt từ `div.wsw`, mốc "Direct link" bỏ khung phát nhạc, dừng ở "Words in This Story"/gạch dưới; mp3 lấy từ link `.c-mmp__fallback-link`), `checkAudioAlive` (HEAD rồi GET Range nếu CDN chặn HEAD).
+- `tools/crawler/src/generateListening.js`: duyệt zone, nhận bài có transcript + mp3 còn sống, gọi Gemini 1 lần/bài sinh `titleVi/descriptionVi/descriptionEn` + 5 câu hỏi, tải mp3 lên Cloudinary `Home/En-Learning`, tìm ảnh qua `imageClient.js`, ghi `listening.json` (đúng khuôn `RealSeedFiles.RealListening`), dừng khi đủ 20 bài; resume qua cache `.cache/voa/` (đã xoá cache cũ của mirror hỏng).
+- Đã chạy thật xong: **8/8 bài** (giảm từ 20 do free tier Gemini hết quota nhanh) trong `seed/real/listening.json`, đều có 5 câu hỏi + audio, 2/8 có ảnh. Gặp 2 lỗi môi trường không phải do mã: domain `voanews.com` bị chặn mạng ở VN (cần VPN) và model `gemini-3.5-flash-lite` không hỗ trợ `responseSchema` (400 chung, không rõ nghĩa) — đổi mặc định sang `gemini-3.1-flash-lite` (đã kiểm hỗ trợ schema, quota ~500/ngày so với ~20/ngày của dòng Flash đầy đủ).
+- `RealDataSeedService`/seeder **chưa đổi** (đợt 13i nạp `listening.json` mới, thay bộ 40 bài Tatoeba cũ, số lượng 8 thay vì 20).
+
+## Đợt 13 - phiên 13i (Seeder nạp bộ JSON mới, đóng đợt 13)
+
+- `RealDataSeedService` thêm `seedReading`, sửa `seedWriting`/`seedSpeaking` đọc đúng `resources/seed/{reading,writing,speaking}.json` (bài seed cũ gắn ảnh ở 13g, cộng dồn `seed-demo/` theo `topicId+titleVi`); bỏ `seedExams` (file nguồn không tồn tại). Thêm `LEGACY_TOPIC_ALIASES`/`legacyTopic()` (slug cũ `life`→`daily-life`, slug lạ khác thì bỏ qua bản ghi thay vì crash server); `seedWords` sửa để cập nhật ảnh cho flashcard đã tồn tại thay vì chỉ tạo mới.
+- `V7__widen_image_author.sql` + entity: nới `image_author` 200→500 ký tự cho cả 7 bảng có ảnh — Wikimedia/Openverse (nguồn ảnh 500 từ, không cần API key) trả tên tác giả dài hơn Unsplash, vượt cột cũ (`Data too long for column 'image_author'`).
+- Người dùng đã tự chạy thật và xác nhận đến bước cuối: 20 chủ đề/500 từ (đều có ảnh)/8 bài nghe/4 đọc/5 viết/3 nói nạp đúng, không còn lỗi slug.
+- `./mvnw -q compile` sạch. Đóng đợt 13 trong `ROADMAP.md` (bảng "Trạng thái" và "Phiên làm việc" đều `[x]`).
+- Còn lại: chạy `REAL_DATA_SEED=true` một lần nữa (Flyway tự áp V7 trước) để xác nhận đẩy ảnh 500 từ vào DB thành công, rồi test DB thật/Postman/giao diện.
+
+## Đợt 13 - sửa lỗi tự kiểm (phiên âm ARPAbet, ảnh bìa chưa lên dù đã seed)
+
+- Phiên âm sai (`/AE1 K T IH0 V/` thay vì `/ˈæktɪv/`): `dictionaryClient.js` dùng Datamuse trả ARPAbet (đổi từ `dictionaryapi.dev` ở 13z) chứ không phải IPA. Thêm `arpabetToIpa.js` (bảng ánh xạ + gộp âm tiết), áp dụng ngay khi crawl và chạy một lần qua `npm run fix-phonetics` (script mới) để sửa lại `.cache/dictionary/` + `words.json` đã có sẵn — không gọi lại API.
+- Ảnh bìa topic/deck/reading/writing/speaking không lên dù `REAL_DATA_SEED=true` đã chạy: `RealDataSeedService` chỉ gán ảnh khi TẠO MỚI bản ghi; bản ghi đã tồn tại (topic có sẵn, hoặc bài Đọc/Viết/Nói trùng `titleVi` với seed demo cũ đợt 8) bị `skip` hoàn toàn, không backfill ảnh. Thêm backfill ảnh (và phiên âm cho flashcard) cho topic, deck, reading, writing, speaking khi bản ghi đã có nhưng thiếu ảnh — đổi `ReadingLessonRepository`/`WritingPromptRepository`/`SpeakingLessonRepository` từ `existsBy...` sang `findBy...TitleVi`.
+- `./mvnw -q compile`/`test-compile` và `npm run lint` (FE) sạch.
+- Việc cần tự kiểm: chạy lại `REAL_DATA_SEED=true`, kiểm ảnh bìa lên trong flashcards/writing/listening/reading/speaking và phiên âm flashcard hiển thị dạng IPA (`/ˈæktɪv/`) trên giao diện + SQL.
+
+## Ảnh minh hoạ đầy đủ + trang danh sách 4 cột/12 thẻ mỗi trang, sắp xếp A-Z
+
+- Crawler: `imageClient.js` hỗ trợ nhiều từ khoá dự phòng (tiêu đề cụ thể → tên chủ đề → từ khoá chung theo loại nội dung) thay vì 1 từ khoá duy nhất; `generateImages.js`/`annotateDemoImages.js` dùng chuỗi này và thử lại các mục trước đó bị null. Kết quả chạy thật: chủ đề 20/20, từ 500/500, nghe 8/8 (từ 2/8), Đọc/Viết/Nói demo đều đủ 4/4, 5/5, 3/3 (từ 3/5) có ảnh.
+- BE: thêm `ContentSort` (dùng chung `titleVi`/`createdAt`) và tham số `sort` (`az`/`za`/`newest`, mặc định `az`) cho `FlashcardController`, `Listening`/`ReadingController` (`PracticeCatalogService`), `WritingController`, `SpeakingController`; `pageSize` mặc định vẫn là 12.
+- FE: `FilterBar` thêm ô chọn sắp xếp (`sortable` prop, chỉ bật ở 5 trang Flashcards/Nghe/Đọc/Viết/Nói, không đụng trang Đề kiểm tra); thêm `components/ui/Pagination.tsx` (bọc `antd Pagination`); cả 5 trang danh sách đổi lưới thành `sm:2 → lg:3 → xl:4` cột, `pageSize=12`, có phân trang, về trang 1 khi đổi bộ lọc/sắp xếp (gộp vào `handleFilterChange` thay vì `useEffect` để không vi phạm eslint `react-hooks/set-state-in-effect`).
+- `./mvnw -q compile`/`test-compile`, `npm run lint`, `npm run build` (FE) đều sạch.
+- Việc cần tự kiểm: chạy lại `REAL_DATA_SEED=true` rồi mở giao diện — kiểm 5 trang hiện 4 thẻ/dòng, phân trang 12 thẻ/trang, đổi được sắp xếp A-Z/Z-A/Mới nhất; trang Đề kiểm tra không đổi.

@@ -43,6 +43,15 @@ public class ReadingLesson extends ContentEntity {
 	@Column(length = 1000)
 	private String descriptionEn;
 
+	@Column(length = 500)
+	private String imageUrl;
+
+	@Column(length = 500)
+	private String imageAuthor;
+
+	@Column(length = 500)
+	private String imageAuthorUrl;
+
 	/** Backend tính lại mỗi lần lưu đoạn văn. */
 	@Column(nullable = false)
 	private int wordCount;

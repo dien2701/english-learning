@@ -18,4 +18,7 @@ public interface ReadingLessonRepository
 	Optional<ReadingLesson> findFirstByStatusOrderByCreatedAtAscIdAsc(ContentStatus status);
 
 	long countByTopicId(UUID topicId);
+
+	/** Khoá idempotent của seeder dữ liệu thật (đợt 13.7): bỏ qua bài đã có cùng tiêu đề trong chủ đề. */
+	Optional<ReadingLesson> findByTopicIdAndTitleVi(UUID topicId, String titleVi);
 }

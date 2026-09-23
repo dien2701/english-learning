@@ -10,5 +10,6 @@ import vn.enlearning.backend.entity.enums.Level;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record ListeningSummaryResponse(UUID id, L10n title, L10n description, UUID topicId, L10n topicName,
-		Level level, int durationSeconds, long questionCount, boolean isCompleted, BigDecimal lastScore) {
+		Level level, int durationSeconds, long questionCount, boolean isCompleted, BigDecimal lastScore,
+		String imageUrl, String imageAuthor, String imageAuthorUrl) {
 }

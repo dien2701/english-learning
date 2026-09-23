@@ -37,9 +37,11 @@ public class FlashcardController {
 			@RequestParam(required = false) UUID topicId,
 			@RequestParam(required = false) String level,
 			@RequestParam(required = false) String status,
+			@RequestParam(defaultValue = "az") String sort,
 			@RequestParam(defaultValue = "1") int page,
 			@RequestParam(defaultValue = "12") int pageSize) {
-		return ApiResponse.ok(flashcardService.listDecks(userId(jwt), search, topicId, level, status, page, pageSize));
+		return ApiResponse
+				.ok(flashcardService.listDecks(userId(jwt), search, topicId, level, status, sort, page, pageSize));
 	}
 
 	@GetMapping("/{id}")
