@@ -32,7 +32,10 @@
         "phonetic": null,
         "meaningVi": "Cảm ơn đã lắng nghe, tôi mong được làm việc cùng bạn."
       }
-    ]
+    ],
+    "imageUrl": "https://live.staticflickr.com/8340/8258013973_9ed43ce0d5.jpg",
+    "imageAuthor": "Jason Lander",
+    "imageAuthorUrl": "https://www.flickr.com/photos/8566600@N07"
   },
   {
     "topic": "ielts",
@@ -62,7 +65,10 @@
         "phonetic": null,
         "meaningVi": "Tôi thường dành trọn sáng Chủ nhật để lục lọi các kệ sách ở đó."
       }
-    ]
+    ],
+    "imageUrl": "https://live.staticflickr.com/7402/11528726816_67a59bd7d6_b.jpg",
+    "imageAuthor": "Jocey K",
+    "imageAuthorUrl": "https://www.flickr.com/photos/48627921@N05"
   },
   {
     "topic": "work",
@@ -92,6 +98,9 @@
         "phonetic": null,
         "meaningVi": "Dù vậy, tôi sẵn sàng nghe nếu cả nhóm không đồng tình."
       }
-    ]
+    ],
+    "imageUrl": "https://live.staticflickr.com/7149/6479256587_d14ef3e23d_b.jpg",
+    "imageAuthor": "jurvetson",
+    "imageAuthorUrl": "https://www.flickr.com/photos/44124348109@N01"
   }
 ]

@@ -40,4 +40,10 @@ public class FlashcardDeck extends ContentEntity {
 
 	@Column(length = 500)
 	private String coverImageUrl;
+
+	@Column(length = 500)
+	private String coverImageAuthor;
+
+	@Column(length = 500)
+	private String coverImageAuthorUrl;
 }

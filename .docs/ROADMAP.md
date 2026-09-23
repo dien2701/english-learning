@@ -20,10 +20,12 @@ Quyết định nền (nối FE theo module, AI bản giả, hạ tầng đơn g
 | 10 | Sửa lỗi giao diện: thời gian làm bài, màu sidebar, xác nhận rời bài (`dot-10-sua-loi-giao-dien.md`) | không | [x] |
 | 11 | AI thật Gemini: Viết, Chat (30 tin/ngày), Nói chấm phát âm từng câu (`dot-11-ai-that-gemini.md`) | 4 | [x] |
 | 12 | Audio bài nghe: OpenAI TTS đa giọng, Cloudinary, sinh cho bài seed (`dot-12-audio-bai-nghe.md`) | 5 | [x] |
+| 13 | Dữ liệu thật: crawl từ vựng (Oxford + Free Dictionary), ảnh Unsplash, audio Cloudinary `En-Learning` (`dot-13-du-lieu-that.md`) | 8, 12 | [x] |
 
 Chi tiết: `.docs/roadmap/dot-0-noi-auth-fe.md`, `dot-1-flashcard-ho-so.md`, `dot-2-bo-may-lam-bai.md`,
 `dot-3-dashboard.md`, `dot-4-ai.md`, `dot-5-quan-tri.md`, `dot-6-ha-tang-phu.md`, `dot-7-song-ngu.md`,
-`dot-10-sua-loi-giao-dien.md`, `dot-11-ai-that-gemini.md`, `dot-12-audio-bai-nghe.md`. Đợt 10, 11, 12 độc lập nhau.
+`dot-10-sua-loi-giao-dien.md`, `dot-11-ai-that-gemini.md`, `dot-12-audio-bai-nghe.md`, `dot-13-du-lieu-that.md`.
+Đợt 10, 11, 12 độc lập nhau.
 Đợt 1 và 2 có thể song song. Đợt 4 chỉ cần Auth nên làm sớm được.
 
 ## Phiên làm việc (gói Pro)
@@ -79,6 +81,16 @@ Opus chỉ dùng khi Sonnet sai hai lần liên tiếp ở cùng một việc (g
 | 12b | 12 | FE: phát `audioUrl`, fallback đọc transcript; form quản trị audio (12.2) | Sonnet | low | [x] |
 | 12c | 12 | Lệnh sinh audio 12 bài seed, ghi URL vào seed JSON, cập nhật CLAUDE.md/ARCHITECTURE (12.3) | Sonnet | medium | [x] |
 | 12z | 12 | Đóng đợt | Haiku | low | [x] |
+| 13a | 13 | Migration ảnh (`image_url`, `image_author`, `image_author_url`) cho topic, bộ từ, từ, bài nghe, đề viết/nói, bài tập; entity, DTO, FE hiển thị ảnh + ghi công (13.1) | Sonnet | medium | [x] |
+| 13b | 13 | Script Node `tools/crawler`: Oxford 3000 → Free Dictionary API → Gemini dịch VI → ~1.500 từ, 20 chủ đề (`words.json`, `topics.json`), cache/resume (13.2) | Sonnet | high | [x] |
+| 13c | 13 | Script sinh đề: bài tập, đề Viết/Nói, 40 kịch bản bài nghe + câu hỏi (Gemini) (13.3) | Sonnet | medium | [x] |
+| 13d | 13 | Script ảnh Unsplash theo từ khoá, lưu URL + tác giả, chạy theo lô 50 req/giờ, resume (13.4) | Sonnet | medium | [x] |
+| 13e | 13 | BE seeder `REAL_DATA_SEED=true` nạp JSON idempotent (khoá slug/từ) (13.5) | Sonnet | medium | [x] |
+| 13f | 13 | Audio: script tải audio người đọc thật (Tatoeba) + viết lại transcript/câu hỏi, tự tải Cloudinary `Home/En-Learning` (13.6) | Sonnet | low | [x] |
+| 13z | 13 | Đóng đợt | Haiku | low | [x] |
+| 13g | 13 | Crawl thu gọn: 500 từ từ cache dịch sẵn (không gọi Gemini), ảnh cho bài Đọc/Viết/Nói seed có sẵn (13.7) | Sonnet | medium | [x] |
+| 13h | 13 | 8 bài nghe VOA Learning English: mp3 thật → Cloudinary, transcript, câu hỏi Gemini từ transcript, ảnh (13.7) | Sonnet | high | [x] |
+| 13i | 13 | Seeder nạp bộ JSON mới + đóng lại đợt 13 (13.7) | Sonnet | medium | [x] |
 
 Mẹo tiết kiệm hạn mức Pro: mỗi phiên một dòng; hết phiên thì `/clear`, không nối tiếp phiên cũ.
 Nếu phiên dài quá (context > ~60%), dừng lại, tick phần đã xong và tách phần còn lại thành dòng mới (vd `2b-2`).

@@ -7,6 +7,10 @@ export interface Topic {
   name: L10n;
   /** Số nội dung đang thuộc chủ đề này. */
   itemCount?: number;
+  imageUrl?: string | null;
+  /** Ảnh từ Unsplash: tên và link tác giả để ghi công. */
+  imageAuthor?: string | null;
+  imageAuthorUrl?: string | null;
 }
 
 export type QuestionKind = 'SINGLE_CHOICE' | 'FILL_BLANK';
@@ -94,6 +98,9 @@ export interface ListeningSummary {
   isCompleted: boolean;
   /** Điểm lần làm gần nhất, nếu đã từng làm. */
   lastScore?: number;
+  imageUrl?: string | null;
+  imageAuthor?: string | null;
+  imageAuthorUrl?: string | null;
 }
 
 export interface ListeningDetail extends ListeningSummary {
@@ -121,6 +128,9 @@ export interface ReadingSummary {
   timeLimitMinutes: number;
   isCompleted: boolean;
   lastScore?: number;
+  imageUrl?: string | null;
+  imageAuthor?: string | null;
+  imageAuthorUrl?: string | null;
 }
 
 export interface ReadingDetail extends ReadingSummary {

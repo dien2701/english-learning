@@ -35,7 +35,8 @@
     "noContentHint": "Nội dung sẽ xuất hiện khi quản trị viên thêm mới.",
     "minutesShort": "p",
     "saved": "Đã lưu thay đổi.",
-    "created": "Đã tạo mới."
+    "created": "Đã tạo mới.",
+    "photoBy": "Ảnh: {{author}}"
   },
   "filter": {
     "searchLabel": "Tìm kiếm",
@@ -53,7 +54,11 @@
     "resultCount_one": "{{count}} kết quả",
     "resultCount_other": "{{count}} kết quả",
     "noResultTitle": "Không tìm thấy kết quả phù hợp",
-    "noResultHint": "Thử bỏ bớt bộ lọc hoặc dùng từ khoá khác."
+    "noResultHint": "Thử bỏ bớt bộ lọc hoặc dùng từ khoá khác.",
+    "sort": "Sắp xếp",
+    "sortAz": "Tên A-Z",
+    "sortZa": "Tên Z-A",
+    "sortNewest": "Mới nhất"
   },
   "level": {
     "BEGINNER": "Cơ bản",

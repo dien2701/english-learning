@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import PhotoCredit from '../ui/PhotoCredit';
+
 interface WordImageProps {
   word: string;
   src: string | null;
@@ -8,6 +10,9 @@ interface WordImageProps {
   className?: string;
   /** Kích thước chữ của khối dự phòng. */
   size?: 'sm' | 'lg';
+  /** Ghi công Unsplash; chỉ hiện ở kích thước lớn, đủ chỗ để đọc. */
+  imageAuthor?: string | null;
+  imageAuthorUrl?: string | null;
 }
 
 /** Quá thời gian này mà ảnh chưa xong thì chuyển sang khối dự phòng. */
@@ -26,6 +31,8 @@ const WordImage: React.FC<WordImageProps> = ({
   src,
   className = '',
   size = 'lg',
+  imageAuthor,
+  imageAuthorUrl,
 }) => {
   const { t } = useTranslation();
 
@@ -92,6 +99,14 @@ const WordImage: React.FC<WordImageProps> = ({
           className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ${
             isLoaded ? 'opacity-100' : 'opacity-0'
           }`}
+        />
+      )}
+
+      {size === 'lg' && isLoaded && (
+        <PhotoCredit
+          author={imageAuthor}
+          authorUrl={imageAuthorUrl}
+          className="absolute bottom-1.5 right-2 text-white/85 drop-shadow"
         />
       )}
     </div>

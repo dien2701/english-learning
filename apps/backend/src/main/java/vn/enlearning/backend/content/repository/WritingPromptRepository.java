@@ -18,4 +18,7 @@ public interface WritingPromptRepository
 	Optional<WritingPrompt> findFirstByStatusOrderByCreatedAtAscIdAsc(ContentStatus status);
 
 	long countByTopicId(UUID topicId);
+
+	/** Khoá idempotent của seeder dữ liệu thật (đợt 13.5): bỏ qua đề đã có cùng tiêu đề trong chủ đề. */
+	Optional<WritingPrompt> findByTopicIdAndTitleVi(UUID topicId, String titleVi);
 }

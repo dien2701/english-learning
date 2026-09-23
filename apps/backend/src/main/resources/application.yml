@@ -90,6 +90,8 @@ app:
   # Chỉ có tác dụng ở profile dev. if-empty: chỉ nạp phần còn thiếu; reset-demo: xoá dữ liệu demo (email @demo.enlearning.vn) rồi nạp lại.
   seed:
     mode: ${SEED_MODE:if-empty}
+    # Nạp dữ liệu thật đợt 13 (seed/real/*.json) một lần; idempotent nên bật lại vẫn an toàn.
+    real-data: ${REAL_DATA_SEED:false}
   scheduling:
     enabled: true
   # Nhắc học: quét mỗi phút; người dùng đến giờ nhắc (theo múi giờ riêng) mà trễ tối đa catch-up thì vẫn được nhắc.

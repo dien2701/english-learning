@@ -19,4 +19,7 @@ public interface FlashcardDeckRepository extends JpaRepository<FlashcardDeck, UU
 	long countByTopicIdAndStatus(UUID topicId, ContentStatus status);
 
 	long countByTopicId(UUID topicId);
+
+	/** Khoá idempotent của seeder dữ liệu thật (đợt 13.5): một bộ thẻ thật cho mỗi chủ đề. */
+	Optional<FlashcardDeck> findByTopicIdAndTitleVi(UUID topicId, String titleVi);
 }

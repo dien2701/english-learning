@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 import { Chip, LevelChip } from '../ui/Chip';
+import PhotoCredit from '../ui/PhotoCredit';
 import SafeImage from '../ui/SafeImage';
 import type { DeckSummary } from '../../types/flashcard';
 import { useLanguage } from '../../hooks/useLanguage';
@@ -33,6 +34,11 @@ const DeckCard: React.FC<{ deck: DeckSummary }> = ({ deck }) => {
       <span className="absolute left-3 top-3">
         <LevelChip level={deck.level} />
       </span>
+      <PhotoCredit
+        author={deck.coverImageAuthor}
+        authorUrl={deck.coverImageAuthorUrl}
+        className="absolute bottom-2 right-3 text-white/85 drop-shadow"
+      />
     </div>
 
     <div className="flex flex-1 flex-col p-4">

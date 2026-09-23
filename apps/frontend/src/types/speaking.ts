@@ -12,6 +12,9 @@ export interface SpeakingSummary {
   promptCount: number;
   isCompleted: boolean;
   lastScore?: number;
+  imageUrl?: string | null;
+  imageAuthor?: string | null;
+  imageAuthorUrl?: string | null;
 }
 
 /** Một câu hoặc đoạn người học phải đọc to. */

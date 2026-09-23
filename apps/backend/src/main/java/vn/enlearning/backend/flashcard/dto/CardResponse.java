@@ -14,6 +14,8 @@ public record CardResponse(
 		String example,
 		String exampleMeaning,
 		String imageUrl,
+		String imageAuthor,
+		String imageAuthorUrl,
 		String audioUrl,
 		RecallLevel recallLevel) {
 }

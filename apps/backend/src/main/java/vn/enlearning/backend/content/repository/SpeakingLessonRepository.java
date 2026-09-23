@@ -18,4 +18,7 @@ public interface SpeakingLessonRepository
 	Optional<SpeakingLesson> findFirstByStatusOrderByCreatedAtAscIdAsc(ContentStatus status);
 
 	long countByTopicId(UUID topicId);
+
+	/** Khoá idempotent của seeder dữ liệu thật (đợt 13.5): bỏ qua bài đã có cùng tiêu đề trong chủ đề. */
+	Optional<SpeakingLesson> findByTopicIdAndTitleVi(UUID topicId, String titleVi);
 }

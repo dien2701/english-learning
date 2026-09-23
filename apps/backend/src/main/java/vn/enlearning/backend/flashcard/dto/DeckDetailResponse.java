@@ -11,6 +11,8 @@ public record DeckDetailResponse(
 		L10n title,
 		L10n description,
 		String coverImageUrl,
+		String coverImageAuthor,
+		String coverImageAuthorUrl,
 		UUID topicId,
 		L10n topicName,
 		Level level,
@@ -21,7 +23,8 @@ public record DeckDetailResponse(
 		List<CardResponse> cards) {
 
 	public static DeckDetailResponse of(DeckSummaryResponse s, List<CardResponse> cards) {
-		return new DeckDetailResponse(s.id(), s.title(), s.description(), s.coverImageUrl(), s.topicId(),
-				s.topicName(), s.level(), s.totalCards(), s.learnedCards(), s.progressPercent(), s.status(), cards);
+		return new DeckDetailResponse(s.id(), s.title(), s.description(), s.coverImageUrl(), s.coverImageAuthor(),
+				s.coverImageAuthorUrl(), s.topicId(), s.topicName(), s.level(), s.totalCards(), s.learnedCards(),
+				s.progressPercent(), s.status(), cards);
 	}
 }

@@ -26,7 +26,7 @@ import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.json.JsonMapper;
 
 /**
- * Lưu audio lên Cloudinary (resource_type {@code video}, thư mục {@value #FOLDER}) bằng REST có ký SHA-1,
+ * Lưu audio lên Cloudinary (resource_type {@code video}, thư mục Media Library {@value #FOLDER}) bằng REST có ký SHA-1,
  * không kéo thêm SDK. Chỉ nạp khi có {@code app.audio.cloudinary-url}. Log không in key, secret hay thân phản hồi.
  */
 @Slf4j
@@ -34,7 +34,10 @@ import tools.jackson.databind.json.JsonMapper;
 @ConditionalOnExpression("!'${app.audio.cloudinary-url:}'.isBlank()")
 class CloudinaryAudioStorage implements AudioStorage {
 
-	static final String FOLDER = "en-learning/listening";
+	/** Thư mục Home/En-Learning trong Media Library (chế độ thư mục động cần {@code asset_folder}). */
+	static final String FOLDER = "En-Learning";
+	/** Tiền tố public_id của audio tải lên trước khi đổi thư mục; vẫn được phép xoá. */
+	private static final String LEGACY_PREFIX = "en-learning/listening/";
 	private static final Pattern CLOUDINARY_URL = Pattern.compile("^cloudinary://([^:@/\\s]+):([^@/\\s]+)@([^/?#\\s]+)");
 
 	private final String apiKey;
@@ -60,7 +63,8 @@ class CloudinaryAudioStorage implements AudioStorage {
 	public StoredAudio store(byte[] data, String name, String extension) {
 		String publicId = FOLDER + "/" + name;
 		String fileName = name + "." + extension;
-		Map<String, String> signed = new TreeMap<>(Map.of("public_id", publicId, "timestamp", timestamp()));
+		Map<String, String> signed = new TreeMap<>(
+				Map.of("public_id", publicId, "asset_folder", FOLDER, "timestamp", timestamp()));
 
 		MultiValueMap<String, Object> form = new LinkedMultiValueMap<>();
 		form.add("file", new ByteArrayResource(data) {
@@ -98,7 +102,7 @@ class CloudinaryAudioStorage implements AudioStorage {
 	@Override
 	public void delete(String publicId) {
 		// Chỉ xoá file do ứng dụng tạo; audio cục bộ cũ (khi chưa có Cloudinary) không có tiền tố này.
-		if (publicId == null || !publicId.startsWith(FOLDER + "/")) {
+		if (publicId == null || !(publicId.startsWith(FOLDER + "/") || publicId.startsWith(LEGACY_PREFIX))) {
 			return;
 		}
 		Map<String, String> signed = new TreeMap<>(Map.of("public_id", publicId, "timestamp", timestamp()));

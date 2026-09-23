@@ -1,0 +1,162 @@
+[
+  {
+    "slug": "travel",
+    "nameVi": "Du lịch",
+    "nameEn": "Travel",
+    "imageUrl": "https://live.staticflickr.com/7016/6482842275_31c419d4e4_b.jpg",
+    "imageAuthor": "Sung,Di-Yen",
+    "imageAuthorUrl": "https://www.flickr.com/photos/63651387@N08"
+  },
+  {
+    "slug": "food-drink",
+    "nameVi": "Ăn uống",
+    "nameEn": "Food & Drink",
+    "imageUrl": "https://live.staticflickr.com/1687/26632106421_9f9225027f_b.jpg",
+    "imageAuthor": "Boris Thaser",
+    "imageAuthorUrl": "https://www.flickr.com/photos/123982963@N04"
+  },
+  {
+    "slug": "shopping",
+    "nameVi": "Mua sắm",
+    "nameEn": "Shopping",
+    "imageUrl": "https://live.staticflickr.com/2499/3797903995_f4552c1be9_b.jpg",
+    "imageAuthor": "Ex-Smith",
+    "imageAuthorUrl": "https://www.flickr.com/photos/52887415@N00"
+  },
+  {
+    "slug": "family",
+    "nameVi": "Gia đình",
+    "nameEn": "Family",
+    "imageUrl": "https://live.staticflickr.com/3943/15715482121_d7120a6e0b_b.jpg",
+    "imageAuthor": "be creator",
+    "imageAuthorUrl": "https://www.flickr.com/photos/119678691@N02"
+  },
+  {
+    "slug": "health",
+    "nameVi": "Sức khoẻ",
+    "nameEn": "Health",
+    "imageUrl": "https://live.staticflickr.com/8203/8221346542_4dcc60856f_b.jpg",
+    "imageAuthor": "MDGovpics",
+    "imageAuthorUrl": "https://www.flickr.com/photos/64018555@N03"
+  },
+  {
+    "slug": "workplace",
+    "nameVi": "Công sở",
+    "nameEn": "Workplace",
+    "imageUrl": "https://live.staticflickr.com/3315/3477601702_765d0c9504_b.jpg",
+    "imageAuthor": "hugochisholm",
+    "imageAuthorUrl": "https://www.flickr.com/photos/91162368@N00"
+  },
+  {
+    "slug": "it-tech",
+    "nameVi": "Công nghệ thông tin",
+    "nameEn": "IT & Technology",
+    "imageUrl": "https://live.staticflickr.com/7201/7084740991_f1d384bafb_b.jpg",
+    "imageAuthor": "MDGovpics",
+    "imageAuthorUrl": "https://www.flickr.com/photos/64018555@N03"
+  },
+  {
+    "slug": "exam-prep",
+    "nameVi": "Luyện thi IELTS/TOEIC",
+    "nameEn": "IELTS/TOEIC Preparation",
+    "imageUrl": "https://live.staticflickr.com/8198/8152474022_f71b7901df_b.jpg",
+    "imageAuthor": "quinn.anya",
+    "imageAuthorUrl": "https://www.flickr.com/photos/53326337@N00"
+  },
+  {
+    "slug": "academic",
+    "nameVi": "Học thuật",
+    "nameEn": "Academic English",
+    "imageUrl": "https://live.staticflickr.com/3179/3008490406_7e65a1b010_b.jpg",
+    "imageAuthor": "Medialab Prado",
+    "imageAuthorUrl": "https://www.flickr.com/photos/19185522@N06"
+  },
+  {
+    "slug": "daily-life",
+    "nameVi": "Đời sống hằng ngày",
+    "nameEn": "Daily Life",
+    "imageUrl": "https://live.staticflickr.com/8431/7731059058_858168b246_b.jpg",
+    "imageAuthor": "AMISOM Public Information",
+    "imageAuthorUrl": "https://www.flickr.com/photos/61765479@N08"
+  },
+  {
+    "slug": "nature-environment",
+    "nameVi": "Thiên nhiên & môi trường",
+    "nameEn": "Nature & Environment",
+    "imageUrl": "https://live.staticflickr.com/65535/48690688591_2dec0d93c0_b.jpg",
+    "imageAuthor": "denisbin",
+    "imageAuthorUrl": "https://www.flickr.com/photos/82134796@N03"
+  },
+  {
+    "slug": "sports-fitness",
+    "nameVi": "Thể thao & rèn luyện",
+    "nameEn": "Sports & Fitness",
+    "imageUrl": "https://live.staticflickr.com/4187/33671576213_446be01fff_b.jpg",
+    "imageAuthor": "YAYASISTAR",
+    "imageAuthorUrl": "https://www.flickr.com/photos/8347166@N07"
+  },
+  {
+    "slug": "entertainment",
+    "nameVi": "Giải trí",
+    "nameEn": "Entertainment",
+    "imageUrl": "https://live.staticflickr.com/6229/6220197354_797d816ec3.jpg",
+    "imageAuthor": "Eva Rinaldi Celebrity Photographer",
+    "imageAuthorUrl": "https://www.flickr.com/photos/58820009@N05"
+  },
+  {
+    "slug": "emotions-relationships",
+    "nameVi": "Cảm xúc & các mối quan hệ",
+    "nameEn": "Emotions & Relationships",
+    "imageUrl": "https://live.staticflickr.com/7924/45660744145_049eb82943_b.jpg",
+    "imageAuthor": "Center for the Study of Europe",
+    "imageAuthorUrl": "https://www.flickr.com/photos/11054951@N04"
+  },
+  {
+    "slug": "money-finance",
+    "nameVi": "Tiền bạc & tài chính",
+    "nameEn": "Money & Finance",
+    "imageUrl": "https://live.staticflickr.com/543/18293552513_de7ab652c7_b.jpg",
+    "imageAuthor": "Tech in Asia",
+    "imageAuthorUrl": "https://www.flickr.com/photos/133821913@N06"
+  },
+  {
+    "slug": "weather-seasons",
+    "nameVi": "Thời tiết & mùa",
+    "nameEn": "Weather & Seasons",
+    "imageUrl": "https://live.staticflickr.com/65535/50514191093_cfbf88d55d_b.jpg",
+    "imageAuthor": "daveynin",
+    "imageAuthorUrl": "https://www.flickr.com/photos/44124370018@N01"
+  },
+  {
+    "slug": "transportation",
+    "nameVi": "Giao thông",
+    "nameEn": "Transportation",
+    "imageUrl": "https://live.staticflickr.com/3909/14860155225_e28973b39f_b.jpg",
+    "imageAuthor": "pasukaru76",
+    "imageAuthorUrl": "https://www.flickr.com/photos/38451115@N04"
+  },
+  {
+    "slug": "housing-home",
+    "nameVi": "Nhà cửa",
+    "nameEn": "Home & Housing",
+    "imageUrl": "https://live.staticflickr.com/3019/2992129195_00e42d7ae3.jpg",
+    "imageAuthor": "Susanlenox",
+    "imageAuthorUrl": "https://www.flickr.com/photos/29710534@N05"
+  },
+  {
+    "slug": "education",
+    "nameVi": "Giáo dục",
+    "nameEn": "Education",
+    "imageUrl": "https://live.staticflickr.com/5168/5371486016_26147fb9ff.jpg",
+    "imageAuthor": "Sean MacEntee",
+    "imageAuthorUrl": "https://www.flickr.com/photos/18090920@N07"
+  },
+  {
+    "slug": "society-law",
+    "nameVi": "Xã hội & pháp luật",
+    "nameEn": "Society & Law",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/b/b8/Upendra_at_KLE_Society%27s_Law-College%2C_Bangalore_2.jpg",
+    "imageAuthor": "Upendra at Youtube",
+    "imageAuthorUrl": "https://en.wikipedia.org/wiki/Upendra_(actor)"
+  }
+]

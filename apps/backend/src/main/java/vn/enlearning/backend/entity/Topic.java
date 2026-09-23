@@ -33,4 +33,13 @@ public class Topic extends SoftDeletableEntity {
 
 	@Column(length = 100)
 	private String nameEn;
+
+	@Column(length = 500)
+	private String imageUrl;
+
+	@Column(length = 500)
+	private String imageAuthor;
+
+	@Column(length = 500)
+	private String imageAuthorUrl;
 }

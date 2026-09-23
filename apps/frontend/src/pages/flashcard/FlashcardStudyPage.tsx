@@ -208,6 +208,8 @@ const FlashcardStudyPage: React.FC = () => {
             <WordImage
               word={card.word}
               src={card.imageUrl}
+              imageAuthor={card.imageAuthor}
+              imageAuthorUrl={card.imageAuthorUrl}
               className="h-40 w-full max-w-sm rounded-lg"
             />
             <p className="text-[34px] font-extrabold tracking-tight text-ink sm:text-[42px]">

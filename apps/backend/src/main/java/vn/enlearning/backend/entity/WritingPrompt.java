@@ -37,6 +37,15 @@ public class WritingPrompt extends ContentEntity {
 	@JoinColumn(name = "topic_id", nullable = false)
 	private Topic topic;
 
+	@Column(length = 500)
+	private String imageUrl;
+
+	@Column(length = 500)
+	private String imageAuthor;
+
+	@Column(length = 500)
+	private String imageAuthorUrl;
+
 	/** Yêu cầu đầy đủ của đề bài, bằng tiếng Anh. */
 	@Column(nullable = false, columnDefinition = "TEXT")
 	private String instructions;

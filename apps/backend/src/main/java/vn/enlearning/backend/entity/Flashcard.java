@@ -60,6 +60,12 @@ public class Flashcard extends SoftDeletableEntity {
 	@Column(length = 500)
 	private String imageUrl;
 
+	@Column(length = 500)
+	private String imageAuthor;
+
+	@Column(length = 500)
+	private String imageAuthorUrl;
+
 	/** Trống thì giao diện dùng giọng đọc của trình duyệt. */
 	@Column(length = 500)
 	private String audioUrl;

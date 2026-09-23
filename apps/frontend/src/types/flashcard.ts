@@ -12,6 +12,8 @@ export interface DeckSummary {
   title: L10n;
   description: L10n;
   coverImageUrl: string | null;
+  coverImageAuthor: string | null;
+  coverImageAuthorUrl: string | null;
   topicId: string;
   topicName: L10n;
   level: Level;
@@ -39,6 +41,8 @@ export interface Flashcard {
   exampleMeaning: string | null;
   /** Ảnh minh hoạ cho từ. Hỏng hoặc thiếu thì giao diện hiện khối dự phòng. */
   imageUrl: string | null;
+  imageAuthor: string | null;
+  imageAuthorUrl: string | null;
   /** Tệp phát âm; để trống thì dùng giọng đọc của trình duyệt. */
   audioUrl: string | null;
   recallLevel: RecallLevel | null;

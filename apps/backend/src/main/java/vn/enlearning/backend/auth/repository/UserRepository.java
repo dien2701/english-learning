@@ -13,11 +13,15 @@ import org.springframework.data.repository.query.Param;
 
 import vn.enlearning.backend.entity.User;
 import vn.enlearning.backend.entity.enums.AccountStatus;
+import vn.enlearning.backend.entity.enums.Role;
 
 public interface UserRepository extends JpaRepository<User, UUID>, JpaSpecificationExecutor<User> {
 
 	/** Chỉ thấy tài khoản chưa xoá mềm ({@code @SQLRestriction} của {@link User}). */
 	Optional<User> findByEmail(String email);
+
+	/** Admin cũ nhất, dùng làm {@code createdBy} khi seed nội dung không gắn với một Admin cụ thể. */
+	Optional<User> findFirstByRoleOrderByCreatedAtAsc(Role role);
 
 	/**
 	 * Query native để bỏ qua {@code @SQLRestriction}: email của tài khoản đã xoá mềm vẫn nằm trong

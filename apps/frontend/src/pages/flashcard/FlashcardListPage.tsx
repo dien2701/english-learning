@@ -4,6 +4,7 @@ import DeckCard from '../../components/flashcard/DeckCard';
 import { Button } from '../../components/ui/Button';
 import FilterBar, { EMPTY_FILTER, type FilterState } from '../../components/ui/FilterBar';
 import PageHeader from '../../components/ui/PageHeader';
+import Pagination from '../../components/ui/Pagination';
 import { EmptyBlock, ErrorState, Skeleton } from '../../components/ui/StateBlocks';
 import { useApi } from '../../hooks/useApi';
 import { useApiError } from '../../hooks/useApiError';
@@ -22,6 +23,13 @@ const FlashcardListPage: React.FC = () => {
   const { t } = useTranslation();
   const { describe } = useApiError();
   const [filter, setFilter] = useState<FilterState>(EMPTY_FILTER);
+  const [page, setPage] = useState(1);
+  // Đổi bộ lọc/sắp xếp thì về trang 1; gộp vào cùng sự kiện thay đổi thay vì dùng
+  // useEffect (bị eslint react-hooks/set-state-in-effect chặn setState trong effect).
+  const handleFilterChange = (next: FilterState) => {
+    setFilter(next);
+    setPage(1);
+  };
 
   // Chờ người dùng gõ xong mới gọi API, tránh bắn request mỗi ký tự.
   const search = useDebounced(filter.search, 350);
@@ -35,9 +43,11 @@ const FlashcardListPage: React.FC = () => {
         topicId: filter.topicId,
         level: filter.level,
         status: filter.status,
-        pageSize: 24,
+        sort: filter.sort,
+        page,
+        pageSize: 12,
       }),
-    [search, filter.topicId, filter.level, filter.status],
+    [search, filter.topicId, filter.level, filter.status, filter.sort, page],
   );
 
   const isFiltering = useMemo(
@@ -54,11 +64,12 @@ const FlashcardListPage: React.FC = () => {
 
       <FilterBar
         value={filter}
-        onChange={setFilter}
+        onChange={handleFilterChange}
         resultCount={decks.data?.total}
         topics={topics.data ?? []}
         statusOptions={STATUS_OPTIONS}
         searchPlaceholderKey="flashcard.searchPlaceholder"
+        sortable
       />
 
       {decks.error ? (
@@ -83,7 +94,7 @@ const FlashcardListPage: React.FC = () => {
             }
             action={
               isFiltering ? (
-                <Button size="sm" onClick={() => setFilter(EMPTY_FILTER)}>
+                <Button size="sm" onClick={() => handleFilterChange(EMPTY_FILTER)}>
                   {t('filter.clear')}
                 </Button>
               ) : undefined
@@ -92,12 +103,17 @@ const FlashcardListPage: React.FC = () => {
         </div>
       ) : (
         <>
-
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {decks.data.items.map((deck) => (
               <DeckCard key={deck.id} deck={deck} />
             ))}
           </div>
+          <Pagination
+            page={decks.data.page}
+            pageSize={decks.data.pageSize}
+            total={decks.data.total}
+            onChange={setPage}
+          />
         </>
       )}
     </div>

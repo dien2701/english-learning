@@ -1,0 +1,16 @@
+{
+  "name": "en-learning-crawler",
+  "private": true,
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Crawl Oxford 3000 -> Free Dictionary API -> dich VI + gan chu de bang Gemini -> words.json, topics.json cho seeder BE.",
+  "scripts": {
+    "start": "node src/index.js",
+    "generate": "node src/generate.js",
+    "generate-audio": "node src/generateAudio.js",
+    "generate-listening": "node src/generateListening.js",
+    "select-words": "node src/selectWords.js",
+    "fix-phonetics": "node src/fixPhonetics.js",
+    "annotate-demo-images": "node src/annotateDemoImages.js"
+  }
+}

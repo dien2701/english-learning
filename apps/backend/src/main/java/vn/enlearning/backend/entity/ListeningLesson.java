@@ -41,6 +41,15 @@ public class ListeningLesson extends ContentEntity {
 	@Column(length = 1000)
 	private String descriptionEn;
 
+	@Column(length = 500)
+	private String imageUrl;
+
+	@Column(length = 500)
+	private String imageAuthor;
+
+	@Column(length = 500)
+	private String imageAuthorUrl;
+
 	/** Tệp MP3 trên Cloudinary; trống thì đọc transcript bằng TTS. */
 	@Column(length = 500)
 	private String audioUrl;

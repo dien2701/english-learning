@@ -21,6 +21,9 @@ export interface WritingPromptSummary {
   minWords: number;
   status: WritingStatus;
   lastScore?: number;
+  imageUrl?: string | null;
+  imageAuthor?: string | null;
+  imageAuthorUrl?: string | null;
 }
 
 export interface WritingPromptDetail extends WritingPromptSummary {

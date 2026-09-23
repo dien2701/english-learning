@@ -19,6 +19,9 @@ public interface FlashcardRepository extends JpaRepository<Flashcard, UUID> {
 
 	List<Flashcard> findByDeckIdOrderBySortOrderAscIdAsc(UUID deckId);
 
+	/** Khoá idempotent của seeder dữ liệu thật (đợt 13.5): bỏ qua từ đã có trong bộ thẻ. */
+	boolean existsByDeckIdAndWordIgnoreCase(UUID deckId, String word);
+
 	@Query("select f.deck.id as deckId, count(f) as total from Flashcard f where f.deck.id in :deckIds group by f.deck.id")
 	List<DeckCount> countByDeckIds(Collection<UUID> deckIds);
 }

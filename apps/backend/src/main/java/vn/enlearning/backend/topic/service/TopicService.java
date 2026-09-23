@@ -28,7 +28,8 @@ public class TopicService {
 		return topics.findAll().stream()
 				.sorted(Comparator.comparing(t -> t.getNameVi().toLowerCase()))
 				.map(t -> new TopicResponse(t.getId(), L10n.of(t.getNameVi(), t.getNameEn()),
-						decks.countByTopicIdAndStatus(t.getId(), ContentStatus.ACTIVE)))
+						decks.countByTopicIdAndStatus(t.getId(), ContentStatus.ACTIVE), t.getImageUrl(),
+						t.getImageAuthor(), t.getImageAuthorUrl()))
 				.toList();
 	}
 }

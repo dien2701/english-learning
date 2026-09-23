@@ -11,6 +11,8 @@ public record DeckSummaryResponse(
 		L10n title,
 		L10n description,
 		String coverImageUrl,
+		String coverImageAuthor,
+		String coverImageAuthorUrl,
 		UUID topicId,
 		L10n topicName,
 		Level level,

@@ -12,6 +12,7 @@ export interface FilterState {
   topicId: string;
   level: string;
   status: string;
+  sort: string;
 }
 
 export const EMPTY_FILTER: FilterState = {
@@ -19,6 +20,7 @@ export const EMPTY_FILTER: FilterState = {
   topicId: '',
   level: '',
   status: '',
+  sort: 'az',
 };
 
 export interface StatusOption {
@@ -37,6 +39,8 @@ interface FilterBarProps {
   searchPlaceholderKey: string;
   /** Số kết quả đang hiển thị; bỏ trống thì không hiện dòng đếm. */
   resultCount?: number;
+  /** Hiện ô chọn sắp xếp A-Z/Z-A/mới nhất; chỉ bật ở trang backend đã hỗ trợ tham số `sort`. */
+  sortable?: boolean;
 }
 
 /** Nhãn nhỏ in hoa đặt trên mỗi ô lọc. */
@@ -66,6 +70,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
   statusOptions,
   searchPlaceholderKey,
   resultCount,
+  sortable,
 }) => {
   const { t } = useTranslation();
   const { L } = useLanguage();
@@ -153,6 +158,24 @@ const FilterBar: React.FC<FilterBarProps> = ({
                 value: option.value,
                 label: t(option.labelKey),
               }))}
+            />
+          </div>
+        )}
+
+        {sortable && (
+          <div className="min-w-[170px] flex-1 sm:flex-none">
+            <FieldLabel htmlFor="filter-sort">{t('filter.sort')}</FieldLabel>
+            <Select
+              id="filter-sort"
+              size="large"
+              value={value.sort}
+              onChange={(v) => set({ sort: v })}
+              className="w-full sm:w-[170px]"
+              options={[
+                { value: 'az', label: t('filter.sortAz') },
+                { value: 'za', label: t('filter.sortZa') },
+                { value: 'newest', label: t('filter.sortNewest') },
+              ]}
             />
           </div>
         )}

@@ -9,12 +9,12 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.IntStream;
 
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import vn.enlearning.backend.common.ApiException;
+import vn.enlearning.backend.common.ContentSort;
 import vn.enlearning.backend.common.ErrorCode;
 import vn.enlearning.backend.common.L10n;
 import vn.enlearning.backend.common.PageResponse;
@@ -38,18 +38,18 @@ public class SpeakingCatalogService {
 	private static final String COMPLETED = "COMPLETED";
 	private static final String NOT_COMPLETED = "NOT_COMPLETED";
 	private static final Set<String> STATUSES = Set.of(COMPLETED, NOT_COMPLETED);
-	private static final Sort ORDER = Sort.by("createdAt", "id");
 
 	private final SpeakingLessonRepository lessons;
 	private final SpeakingAttemptRepository attempts;
 
 	@Transactional(readOnly = true)
 	public PageResponse<SpeakingSummaryResponse> list(UUID userId, String search, UUID topicId, String level,
-			String status, int page, int pageSize) {
+			String status, String sort, int page, int pageSize) {
 		Level levelFilter = parseLevel(level);
 		String statusFilter = parseStatus(status);
 		List<SpeakingLesson> found = lessons.findAll(
-				ContentSpecs.<SpeakingLesson>learnerFilter(search, topicId, levelFilter, true), ORDER);
+				ContentSpecs.<SpeakingLesson>learnerFilter(search, topicId, levelFilter, true),
+				ContentSort.resolve(sort));
 		List<SpeakingSummaryResponse> all = summarize(userId, found).stream()
 				.filter(s -> statusFilter == null || COMPLETED.equals(statusFilter) == s.isCompleted())
 				.toList();
@@ -67,7 +67,8 @@ public class SpeakingCatalogService {
 			return new SpeakingPromptResponse(p.id(), i + 1, p.text(), p.phonetic(), p.meaningVi());
 		}).toList();
 		return new SpeakingDetailResponse(s.id(), s.title(), s.description(), s.topicId(), s.topicName(), s.level(),
-				s.promptCount(), s.isCompleted(), s.lastScore(), items);
+				s.promptCount(), s.isCompleted(), s.lastScore(), s.imageUrl(), s.imageAuthor(), s.imageAuthorUrl(),
+				items);
 	}
 
 	private List<SpeakingSummaryResponse> summarize(UUID userId, List<SpeakingLesson> found) {
@@ -82,7 +83,8 @@ public class SpeakingCatalogService {
 		return found.stream().map(l -> new SpeakingSummaryResponse(l.getId(), L10n.of(l.getTitleVi(), l.getTitleEn()),
 				L10n.of(l.getDescriptionVi() == null ? "" : l.getDescriptionVi(), l.getDescriptionEn()),
 				l.getTopic().getId(), L10n.of(l.getTopic().getNameVi(), l.getTopic().getNameEn()), l.getLevel(),
-				l.getPrompts().size(), scores.containsKey(l.getId()), scores.get(l.getId()))).toList();
+				l.getPrompts().size(), scores.containsKey(l.getId()), scores.get(l.getId()), l.getImageUrl(),
+				l.getImageAuthor(), l.getImageAuthorUrl())).toList();
 	}
 
 	private static Level parseLevel(String level) {
