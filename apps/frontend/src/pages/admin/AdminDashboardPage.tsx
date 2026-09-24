@@ -84,12 +84,17 @@ const AdminDashboardPage: React.FC = () => {
       ) : (
         <div className="flex flex-col gap-5">
           {/* Bốn số liệu tổng quan */}
-          <div className="grid grid-cols-2 gap-4 xl:grid-cols-4">
+          <div className="grid grid-cols-2 gap-4 xl:grid-cols-5">
             {[
               {
                 icon: 'group',
                 label: t('admin.totalUsers'),
                 value: data.overview.totalUsers,
+              },
+              {
+                icon: 'person_add',
+                label: t('admin.newUsers'),
+                value: data.overview.newUsers,
               },
               {
                 icon: 'bolt',
@@ -216,6 +221,30 @@ const AdminDashboardPage: React.FC = () => {
               </Card>
             </div>
           </div>
+
+          {/* Hệ thống */}
+          <Card>
+            <CardHeader
+              title={t('admin.systemTitle')}
+              description={t('admin.systemHint')}
+            />
+            <dl className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-5">
+              {[
+                [t('admin.adminAccounts'), data.system.admins],
+                [t('admin.lockedUsers'), data.system.lockedUsers],
+                [t('admin.pendingUsers'), data.system.pendingUsers],
+                [t('admin.emailsSent'), data.system.emailsSent],
+                [t('admin.emailsFailed'), data.system.emailsFailed],
+              ].map(([label, value]) => (
+                <div key={label}>
+                  <dd className="text-[22px] font-extrabold text-ink">
+                    {Number(value).toLocaleString('vi-VN')}
+                  </dd>
+                  <dt className="mt-0.5 text-caption text-ink-muted">{label}</dt>
+                </div>
+              ))}
+            </dl>
+          </Card>
 
           {/* Hoạt động gần đây */}
           <Card>

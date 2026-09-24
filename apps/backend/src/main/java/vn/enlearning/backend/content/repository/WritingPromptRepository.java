@@ -21,4 +21,6 @@ public interface WritingPromptRepository
 
 	/** Khoá idempotent của seeder dữ liệu thật (đợt 13.5): bỏ qua đề đã có cùng tiêu đề trong chủ đề. */
 	Optional<WritingPrompt> findByTopicIdAndTitleVi(UUID topicId, String titleVi);
+
+	long countByStatus(vn.enlearning.backend.entity.enums.ContentStatus status);
 }

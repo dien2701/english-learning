@@ -61,6 +61,7 @@ public sealed interface AdminContentRequest {
 			@Size(max = 1000, message = TEXT_TOO_LONG) String descriptionVi,
 			@Size(max = 1000, message = TEXT_TOO_LONG) String descriptionEn,
 			@Size(max = 500, message = TEXT_TOO_LONG) String coverImageUrl,
+			@Size(max = 200, message = TEXT_TOO_LONG) String coverImageAuthor,
 			@NotEmpty(message = ITEMS_REQUIRED) List<@Valid @NotNull(message = ITEMS_REQUIRED) CardInput> cards)
 			implements AdminContentRequest {
 	}
@@ -72,6 +73,8 @@ public sealed interface AdminContentRequest {
 			@NotNull(message = TOPIC_REQUIRED) UUID topicId,
 			@Size(max = 1000, message = TEXT_TOO_LONG) String descriptionVi,
 			@Size(max = 1000, message = TEXT_TOO_LONG) String descriptionEn,
+			@Size(max = 500, message = TEXT_TOO_LONG) String imageUrl,
+			@Size(max = 200, message = TEXT_TOO_LONG) String imageAuthor,
 			@Size(max = 500, message = TEXT_TOO_LONG) String audioUrl,
 			@Min(value = 0, message = NUMBER_INVALID) Integer durationSeconds,
 			@NotBlank(message = "errors.field.transcriptRequired") String transcript,
@@ -86,6 +89,8 @@ public sealed interface AdminContentRequest {
 			@NotNull(message = TOPIC_REQUIRED) UUID topicId,
 			@Size(max = 1000, message = TEXT_TOO_LONG) String descriptionVi,
 			@Size(max = 1000, message = TEXT_TOO_LONG) String descriptionEn,
+			@Size(max = 500, message = TEXT_TOO_LONG) String imageUrl,
+			@Size(max = 200, message = TEXT_TOO_LONG) String imageAuthor,
 			@Min(value = 0, message = NUMBER_INVALID) Integer timeLimitMinutes,
 			@NotEmpty(message = ITEMS_REQUIRED) List<@NotBlank(message = ITEMS_REQUIRED) String> paragraphs,
 			@NotEmpty(message = ITEMS_REQUIRED) List<@Valid @NotNull(message = ITEMS_REQUIRED) QuestionInput> questions)
@@ -97,6 +102,8 @@ public sealed interface AdminContentRequest {
 			@Size(max = 200, message = TITLE_TOO_LONG) String titleEn,
 			@NotNull(message = LEVEL_REQUIRED) Level level,
 			@NotNull(message = TOPIC_REQUIRED) UUID topicId,
+			@Size(max = 500, message = TEXT_TOO_LONG) String imageUrl,
+			@Size(max = 200, message = TEXT_TOO_LONG) String imageAuthor,
 			@NotBlank(message = "errors.field.instructionsRequired") String instructions,
 			@Min(value = 1, message = NUMBER_INVALID) Integer suggestedMinutes,
 			@Min(value = 0, message = NUMBER_INVALID) Integer minWords,
@@ -110,6 +117,8 @@ public sealed interface AdminContentRequest {
 			@NotNull(message = TOPIC_REQUIRED) UUID topicId,
 			@Size(max = 1000, message = TEXT_TOO_LONG) String descriptionVi,
 			@Size(max = 1000, message = TEXT_TOO_LONG) String descriptionEn,
+			@Size(max = 500, message = TEXT_TOO_LONG) String imageUrl,
+			@Size(max = 200, message = TEXT_TOO_LONG) String imageAuthor,
 			@NotEmpty(message = ITEMS_REQUIRED) List<@Valid @NotNull(message = ITEMS_REQUIRED) PromptInput> prompts)
 			implements AdminContentRequest {
 	}

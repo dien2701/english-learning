@@ -6,7 +6,7 @@ import type { Skill, Level } from '../../../types/common';
 import { useLabels } from '../../../hooks/useLabels';
 import { adminService } from '../../../services/adminService';
 import { useApiError } from '../../../hooks/useApiError';
-import type { ListeningAudio } from '../../../types/admin';
+import type { AdminContentPayload, ListeningAudio } from '../../../types/admin';
 
 import { VocabularyForm } from './VocabularyForm';
 import { ListeningForm } from './ListeningForm';
@@ -50,6 +50,7 @@ export const ContentEditorDrawer: React.FC<ContentEditorDrawerProps> = ({
     audioSource: null,
   });
   const [loadedTranscript, setLoadedTranscript] = useState('');
+  const [loadedPayload, setLoadedPayload] = useState<AdminContentPayload | undefined>(undefined);
   const loading = open && !!editingId && loadedId !== editingId;
   // Đang tạo mới thì bỏ qua audio/transcript còn sót từ lần sửa trước.
   const audio = editingId ? loadedAudio : { audioUrl: null, audioSource: null };
@@ -59,6 +60,7 @@ export const ContentEditorDrawer: React.FC<ContentEditorDrawerProps> = ({
     form.setFieldsValue(values);
     setAudio({ audioUrl: values.mediaUrl ?? null, audioSource: data.audioSource ?? null });
     setLoadedTranscript(values.contentBody ?? '');
+    setLoadedPayload(data.payload);
     setLoadedId(id);
   });
 
@@ -84,7 +86,7 @@ export const ContentEditorDrawer: React.FC<ContentEditorDrawerProps> = ({
   const handleFinish = async (values: ContentFormValues) => {
     try {
       setSaving(true);
-      const payload = toPayload(values);
+      const payload = toPayload(values, editingId ? loadedPayload : undefined);
 
       if (editingId) {
         await adminService.updateContent(editingId, payload);

@@ -27,6 +27,7 @@ export interface CardFormValue {
   meaningVi: string;
   phonetic?: string;
   example?: string;
+  imageUrl?: string;
 }
 
 export interface PromptFormValue {
@@ -43,6 +44,9 @@ export interface ContentFormValues {
   topicId?: string;
   /** Mô tả ngắn, lưu vào `descriptionVi`. */
   prompt?: string;
+  /** Ảnh minh hoạ (bộ từ: ảnh bìa) và ghi công. */
+  imageUrl?: string;
+  imageAuthor?: string;
   /** Đường dẫn audio (Nghe). */
   mediaUrl?: string;
   durationSeconds?: number | null;
@@ -100,20 +104,50 @@ function fromQuestion(q: AdminQuestionInput): QuestionFormValue {
   };
 }
 
-/** Đổi giá trị form sang body gửi BE (`AdminContentPayload`). */
-export function toPayload(values: ContentFormValues): AdminContentPayload {
+/**
+ * Đổi giá trị form sang body gửi BE (`AdminContentPayload`). PUT thay toàn bộ nên trộn với `original`
+ * (payload lúc tải) để giữ các trường form không hiển thị (mô tả EN, nghĩa EN, audio thẻ...).
+ */
+export function toPayload(values: ContentFormValues, original?: AdminContentPayload): AdminContentPayload {
+  const mapped = mapPayload(values);
+  if (!original || original.skill !== mapped.skill) return mapped;
+  if (mapped.skill === 'VOCABULARY' && original.skill === 'VOCABULARY') {
+    return { ...original, ...mapped, cards: mergeById(original.cards, mapped.cards) };
+  }
+  if (mapped.skill === 'SPEAKING' && original.skill === 'SPEAKING') {
+    return { ...original, ...mapped, prompts: mergeById(original.prompts, mapped.prompts) };
+  }
+  return { ...original, ...mapped } as AdminContentPayload;
+}
+
+/** Phần tử con có `id` giữ lại các trường cũ mà form không sửa. */
+function mergeById<T extends { id?: string }>(original: T[], edited: T[]): T[] {
+  const byId = new Map(original.filter((item) => item.id).map((item) => [item.id, item]));
+  return edited.map((item) => ({ ...(item.id ? byId.get(item.id) : undefined), ...item }));
+}
+
+function mapPayload(values: ContentFormValues): AdminContentPayload {
   const base = { titleVi: values.titleVi, titleEn: values.titleEn, level: values.level };
   const topic = { ...base, topicId: values.topicId ?? '' };
   const description = { descriptionVi: values.prompt };
+  const image = { imageUrl: values.imageUrl?.trim() || undefined, imageAuthor: values.imageAuthor?.trim() || undefined };
   const items = values.items ?? [];
 
   switch (values.skill) {
     case 'VOCABULARY':
-      return { ...topic, ...description, skill: 'VOCABULARY', cards: items as AdminCardInput[] };
+      return {
+        ...topic,
+        ...description,
+        skill: 'VOCABULARY',
+        coverImageUrl: image.imageUrl,
+        coverImageAuthor: image.imageAuthor,
+        cards: items as AdminCardInput[],
+      };
     case 'LISTENING':
       return {
         ...topic,
         ...description,
+        ...image,
         skill: 'LISTENING',
         audioUrl: values.mediaUrl,
         durationSeconds: num(values.durationSeconds),
@@ -124,6 +158,7 @@ export function toPayload(values: ContentFormValues): AdminContentPayload {
       return {
         ...topic,
         ...description,
+        ...image,
         skill: 'READING',
         timeLimitMinutes: num(values.timeLimitMinutes),
         paragraphs: splitParagraphs(values.contentBody),
@@ -132,6 +167,7 @@ export function toPayload(values: ContentFormValues): AdminContentPayload {
     case 'WRITING':
       return {
         ...topic,
+        ...image,
         skill: 'WRITING',
         instructions: values.instructions ?? '',
         suggestedMinutes: num(values.suggestedMinutes),
@@ -139,7 +175,7 @@ export function toPayload(values: ContentFormValues): AdminContentPayload {
         hints: (values.hints ?? []).filter((hint) => hint?.trim()),
       };
     case 'SPEAKING':
-      return { ...topic, ...description, skill: 'SPEAKING', prompts: items as AdminPromptInput[] };
+      return { ...topic, ...description, ...image, skill: 'SPEAKING', prompts: items as AdminPromptInput[] };
     case 'EXAM':
       return {
         ...base,
@@ -156,11 +192,20 @@ export function toFormValues(payload: AdminContentPayload): ContentFormValues {
   const common = { skill: payload.skill, level: payload.level, titleVi: payload.titleVi, titleEn: payload.titleEn };
   switch (payload.skill) {
     case 'VOCABULARY':
-      return { ...common, topicId: payload.topicId, prompt: payload.descriptionVi, items: payload.cards };
+      return {
+        ...common,
+        topicId: payload.topicId,
+        prompt: payload.descriptionVi,
+        imageUrl: payload.coverImageUrl,
+        imageAuthor: payload.coverImageAuthor,
+        items: payload.cards,
+      };
     case 'LISTENING':
       return {
         ...common,
         topicId: payload.topicId,
+        imageUrl: payload.imageUrl,
+        imageAuthor: payload.imageAuthor,
         prompt: payload.descriptionVi,
         mediaUrl: payload.audioUrl,
         durationSeconds: payload.durationSeconds,
@@ -171,6 +216,8 @@ export function toFormValues(payload: AdminContentPayload): ContentFormValues {
       return {
         ...common,
         topicId: payload.topicId,
+        imageUrl: payload.imageUrl,
+        imageAuthor: payload.imageAuthor,
         prompt: payload.descriptionVi,
         timeLimitMinutes: payload.timeLimitMinutes,
         contentBody: payload.paragraphs.join('\n\n'),
@@ -180,13 +227,22 @@ export function toFormValues(payload: AdminContentPayload): ContentFormValues {
       return {
         ...common,
         topicId: payload.topicId,
+        imageUrl: payload.imageUrl,
+        imageAuthor: payload.imageAuthor,
         instructions: payload.instructions,
         suggestedMinutes: payload.suggestedMinutes,
         minWords: payload.minWords,
         hints: payload.hints ?? [],
       };
     case 'SPEAKING':
-      return { ...common, topicId: payload.topicId, prompt: payload.descriptionVi, items: payload.prompts };
+      return {
+        ...common,
+        topicId: payload.topicId,
+        prompt: payload.descriptionVi,
+        imageUrl: payload.imageUrl,
+        imageAuthor: payload.imageAuthor,
+        items: payload.prompts,
+      };
     case 'EXAM':
       return {
         ...common,

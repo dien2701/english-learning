@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,6 +39,13 @@ public class AdminUserController {
 	@GetMapping("/{id}")
 	ApiResponse<AdminUserResponse> detail(@PathVariable UUID id) {
 		return ApiResponse.ok(users.get(id));
+	}
+
+	/** Xoá cứng học viên; từ chối xoá chính mình và mọi admin (409). */
+	@DeleteMapping("/{id}")
+	ApiResponse<Void> delete(@AuthenticationPrincipal Jwt jwt, @PathVariable UUID id) {
+		users.delete(UUID.fromString(jwt.getSubject()), id);
+		return ApiResponse.ok(null);
 	}
 
 	/** Khoá/mở khoá ({@code status}) và đổi vai trò ({@code role}); không áp dụng cho chính mình. */

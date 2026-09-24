@@ -15,4 +15,6 @@ public interface ExamRepository extends JpaRepository<Exam, UUID>, JpaSpecificat
 
 	/** Khoá idempotent của seeder dữ liệu thật (đợt 13.5): bỏ qua đề đã có cùng tiêu đề. */
 	boolean existsByTitleVi(String titleVi);
+
+	long countByStatus(vn.enlearning.backend.entity.enums.ContentStatus status);
 }

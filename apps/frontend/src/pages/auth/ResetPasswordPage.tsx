@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { App, Form, Input } from 'antd';
 import { useTranslation } from 'react-i18next';
+import { passwordRule } from '../../shared/validation/password';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 
 import AuthLayout from '../../components/auth/AuthLayout';
@@ -102,7 +103,7 @@ const ResetPasswordPage: React.FC = () => {
           name="password"
           rules={[
             { required: true, message: t('auth.validation.newPasswordRequired') },
-            { min: 6, message: t('auth.validation.passwordMin') },
+            passwordRule(t),
           ]}
         >
           <Input.Password placeholder="••••••••" autoComplete="new-password" />

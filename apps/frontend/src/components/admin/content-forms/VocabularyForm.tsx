@@ -2,6 +2,7 @@ import React from 'react';
 import { Form, Input, Button } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { TopicField } from './TopicField';
+import { ImageUrlField } from './ImageUrlField';
 
 export const VocabularyForm: React.FC = () => {
   const { t } = useTranslation();
@@ -10,6 +11,7 @@ export const VocabularyForm: React.FC = () => {
     <>
       <div className="mt-4">
         <TopicField />
+        <ImageUrlField name="imageUrl" withAuthor label={t('contentForm.coverImageUrl')} />
       </div>
       <Form.Item name="prompt" label={t('contentForm.vocabDesc')}>
         <Input.TextArea rows={2} />
@@ -37,6 +39,7 @@ export const VocabularyForm: React.FC = () => {
                 <Form.Item {...restField} name={[name, 'example']} label={t('contentForm.example')}>
                   <Input />
                 </Form.Item>
+                <ImageUrlField name={[name, 'imageUrl']} watchPath={['items', name, 'imageUrl']} label={t('contentForm.wordImageUrl')} compact />
                 <Button type="text" danger onClick={() => remove(name)} className="absolute right-2 top-2" icon={<span className="material-symbols-outlined text-[18px]">delete</span>} />
               </div>
             ))}

@@ -19,6 +19,7 @@ export interface RegisterPayload {
   email: string;
   password: string;
   confirmPassword: string;
+  code: string;
 }
 
 export interface ResetPasswordPayload {
@@ -64,6 +65,9 @@ export const authService = {
       tokenStore.clear();
     }
   },
+
+  sendRegisterCode: (email: string, language: string): Promise<{ message: string }> =>
+    http.post<{ message: string }>('/auth/register/send-code', { email, language }),
 
   forgotPassword: (email: string): Promise<{ message: string }> =>
     http.post<{ message: string }>('/auth/forgot-password', { email }),

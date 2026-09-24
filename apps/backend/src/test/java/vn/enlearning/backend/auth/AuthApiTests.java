@@ -36,6 +36,10 @@ import org.springframework.transaction.annotation.Transactional;
 import jakarta.servlet.http.Cookie;
 import vn.enlearning.backend.auth.repository.UserRepository;
 import vn.enlearning.backend.auth.repository.UserSettingRepository;
+import vn.enlearning.backend.auth.repository.EmailVerificationCodeRepository;
+import vn.enlearning.backend.auth.service.TokenHasher;
+import vn.enlearning.backend.config.SecurityProperties;
+import vn.enlearning.backend.entity.EmailVerificationCode;
 import vn.enlearning.backend.entity.User;
 import vn.enlearning.backend.entity.enums.AccountStatus;
 import vn.enlearning.backend.entity.enums.Role;
@@ -64,6 +68,10 @@ class AuthApiTests {
 	private UserSettingRepository settings;
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	@Autowired
+	private EmailVerificationCodeRepository verificationCodes;
+	@Autowired
+	private SecurityProperties securityProperties;
 
 	/** Thay bean thật để bắt nội dung email; không bao giờ có email nào rời khỏi máy. */
 	@MockitoBean
@@ -90,10 +98,20 @@ class AuthApiTests {
 		return "{\"email\":\"%s\",\"password\":\"%s\"}".formatted(email, password);
 	}
 
-	private static String registerJson(String email, String password) {
+	private static final String VERIFY_CODE = "246810";
+
+	/** Tạo sẵn mã xác minh cho email (không qua SMTP) rồi dựng thân request đăng ký kèm mã đó. */
+	private String registerJson(String email, String password) {
+		String normalized = vn.enlearning.backend.auth.dto.Emails.normalize(email);
+		EmailVerificationCode code = new EmailVerificationCode();
+		code.setEmail(normalized);
+		code.setCodeHash(TokenHasher.hmacSha256Hex(securityProperties.resetCodeSecret(),
+				"verify:" + normalized + ":" + VERIFY_CODE));
+		code.setExpiresAt(java.time.Instant.now().plusSeconds(600));
+		verificationCodes.saveAndFlush(code);
 		// acceptTerms là ô của form đăng ký mà backend không dùng: phải bị bỏ qua chứ không gây lỗi.
-		return "{\"fullName\":\"Người Thử\",\"email\":\"%s\",\"password\":\"%s\",\"confirmPassword\":\"%s\",\"acceptTerms\":true}"
-				.formatted(email, password, password);
+		return "{\"fullName\":\"Người Thử\",\"email\":\"%s\",\"password\":\"%s\",\"confirmPassword\":\"%s\",\"code\":\"%s\",\"acceptTerms\":true}"
+				.formatted(email, password, password, VERIFY_CODE);
 	}
 
 	private static String resetJson(String email, String code, String password) {

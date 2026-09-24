@@ -54,6 +54,8 @@ export const adminService = {
 
   getUser: (id: string): Promise<AdminUser> => http.get<AdminUser>(`/admin/users/${id}`),
 
+  deleteUser: (id: string): Promise<void> => http.delete<void>(`/admin/users/${id}`),
+
   updateUser: (
     id: string,
     payload: { status?: AccountStatus; role?: Role },

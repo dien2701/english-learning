@@ -114,23 +114,24 @@ class AdminContentReader {
 		return switch (entity) {
 			case FlashcardDeck d -> new AdminContentRequest.Vocabulary(d.getTitleVi(), d.getTitleEn(), d.getLevel(),
 					d.getTopic().getId(), d.getDescriptionVi(), d.getDescriptionEn(), d.getCoverImageUrl(),
+					d.getCoverImageAuthor(),
 					cards.findByDeckIdOrderBySortOrderAscIdAsc(d.getId()).stream()
 							.map(c -> new CardInput(c.getId(), c.getWord(), c.getPhonetic(), c.getMeaningVi(),
 									c.getMeaningEn(), c.getPartOfSpeechVi(), c.getPartOfSpeechEn(), c.getExample(),
 									c.getExampleMeaning(), c.getImageUrl(), c.getAudioUrl()))
 							.toList());
 			case ListeningLesson l -> new AdminContentRequest.Listening(l.getTitleVi(), l.getTitleEn(), l.getLevel(),
-					l.getTopic().getId(), l.getDescriptionVi(), l.getDescriptionEn(), l.getAudioUrl(),
+					l.getTopic().getId(), l.getDescriptionVi(), l.getDescriptionEn(), l.getImageUrl(), l.getImageAuthor(), l.getAudioUrl(),
 					l.getDurationSeconds(), l.getTranscript(),
 					questionInputs(questions.findByListeningLessonIdOrderBySortOrder(l.getId())));
 			case ReadingLesson r -> new AdminContentRequest.Reading(r.getTitleVi(), r.getTitleEn(), r.getLevel(),
-					r.getTopic().getId(), r.getDescriptionVi(), r.getDescriptionEn(), r.getTimeLimitMinutes(),
+					r.getTopic().getId(), r.getDescriptionVi(), r.getDescriptionEn(), r.getImageUrl(), r.getImageAuthor(), r.getTimeLimitMinutes(),
 					List.copyOf(r.getParagraphs()), questionInputs(questions.findByReadingLessonIdOrderBySortOrder(r.getId())));
 			case WritingPrompt w -> new AdminContentRequest.Writing(w.getTitleVi(), w.getTitleEn(), w.getLevel(),
-					w.getTopic().getId(), w.getInstructions(), w.getSuggestedMinutes(), w.getMinWords(),
+					w.getTopic().getId(), w.getImageUrl(), w.getImageAuthor(), w.getInstructions(), w.getSuggestedMinutes(), w.getMinWords(),
 					List.copyOf(w.getHints()));
 			case SpeakingLesson s -> new AdminContentRequest.Speaking(s.getTitleVi(), s.getTitleEn(), s.getLevel(),
-					s.getTopic().getId(), s.getDescriptionVi(), s.getDescriptionEn(),
+					s.getTopic().getId(), s.getDescriptionVi(), s.getDescriptionEn(), s.getImageUrl(), s.getImageAuthor(),
 					s.getPrompts().stream().map(p -> new PromptInput(p.id(), p.text(), p.phonetic(), p.meaningVi())).toList());
 			case Exam x -> new AdminContentRequest.Exam(x.getTitleVi(), x.getTitleEn(), x.getLevel(), x.getDescriptionVi(),
 					x.getDescriptionEn(), x.getTimeLimitMinutes(),

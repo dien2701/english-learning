@@ -11,4 +11,6 @@ public interface EmailLogRepository extends JpaRepository<EmailLog, UUID> {
 
 	/** Đã có dòng nhắc học của người dùng cho ngày (theo múi giờ người dùng) chưa. */
 	boolean existsByUserIdAndReminderDate(UUID userId, LocalDate reminderDate);
+
+	long countByStatusAndCreatedAtGreaterThanEqual(vn.enlearning.backend.entity.enums.EmailStatus status, java.time.Instant since);
 }

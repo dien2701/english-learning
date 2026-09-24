@@ -56,7 +56,7 @@ final class PasswordResetMailTemplate {
 		return new EmailMessage(to, subject, text, html);
 	}
 
-	private static String layout(String greeting, String lead, String code, String warning, String footer) {
+	static String layout(String greeting, String lead, String code, String warning, String footer) {
 		return """
 				<div style="font-family:Arial,Helvetica,sans-serif;max-width:480px;margin:0 auto;color:#1f2937">
 				  <p>%s</p>
