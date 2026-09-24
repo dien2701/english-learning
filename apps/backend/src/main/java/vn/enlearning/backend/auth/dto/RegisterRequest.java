@@ -26,10 +26,15 @@ public record RegisterRequest(
 		@ValidPassword
 		String password,
 
-		String confirmPassword) implements PasswordConfirmation {
+		String confirmPassword,
+
+		@NotBlank(message = "auth.validation.codeRequired")
+		@Size(max = 32, message = "errors.invalidCode")
+		String code) implements PasswordConfirmation {
 
 	public RegisterRequest {
 		fullName = fullName == null ? null : fullName.trim();
 		email = Emails.normalize(email);
+		code = code == null ? null : code.trim();
 	}
 }

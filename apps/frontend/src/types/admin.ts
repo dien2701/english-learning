@@ -4,10 +4,21 @@ import type { L10n } from './l10n';
 /** Số liệu tổng quan trên bảng điều khiển của quản trị viên. */
 export interface AdminOverview {
   totalUsers: number;
+  /** Đăng ký mới trong 30 ngày gần nhất. */
+  newUsers: number;
   activeUsers: number;
   /** Tổng số lượt học trong 30 ngày gần nhất. */
   studySessions: number;
   totalContent: number;
+}
+
+/** Số liệu hệ thống; email tính theo 30 ngày gần nhất. */
+export interface AdminSystemStats {
+  admins: number;
+  lockedUsers: number;
+  pendingUsers: number;
+  emailsSent: number;
+  emailsFailed: number;
 }
 
 /** Một cột trên biểu đồ người dùng đăng ký mới. */
@@ -38,6 +49,7 @@ export interface AdminDashboardData {
   overview: AdminOverview;
   signups: SignupPoint[];
   contentCounts: ContentCount[];
+  system: AdminSystemStats;
   activities: AdminActivity[];
 }
 
@@ -156,6 +168,12 @@ interface TopicalPayload extends ContentPayloadBase {
   topicId: string;
 }
 
+/** Ảnh minh hoạ (URL ngoài) + ghi công. */
+interface IllustratedPayload {
+  imageUrl?: string;
+  imageAuthor?: string;
+}
+
 interface DescribedPayload {
   descriptionVi?: string;
   descriptionEn?: string;
@@ -166,9 +184,10 @@ interface DescribedPayload {
  * PUT thay toàn bộ; phần tử con có `id` thì sửa tại chỗ, không có thì tạo mới, vắng mặt thì bị xoá.
  */
 export type AdminContentPayload =
-  | (TopicalPayload & DescribedPayload & { skill: 'VOCABULARY'; coverImageUrl?: string; cards: AdminCardInput[] })
+  | (TopicalPayload & DescribedPayload & { skill: 'VOCABULARY'; coverImageUrl?: string; coverImageAuthor?: string; cards: AdminCardInput[] })
   | (TopicalPayload &
-      DescribedPayload & {
+      DescribedPayload &
+      IllustratedPayload & {
         skill: 'LISTENING';
         audioUrl?: string;
         durationSeconds?: number;
@@ -176,19 +195,21 @@ export type AdminContentPayload =
         questions: AdminQuestionInput[];
       })
   | (TopicalPayload &
-      DescribedPayload & {
+      DescribedPayload &
+      IllustratedPayload & {
         skill: 'READING';
         timeLimitMinutes?: number;
         paragraphs: string[];
         questions: AdminQuestionInput[];
       })
-  | (TopicalPayload & {
+  | (TopicalPayload &
+      IllustratedPayload & {
       skill: 'WRITING';
       instructions: string;
       suggestedMinutes?: number;
       minWords?: number;
       hints?: string[];
     })
-  | (TopicalPayload & DescribedPayload & { skill: 'SPEAKING'; prompts: AdminPromptInput[] })
+  | (TopicalPayload & DescribedPayload & IllustratedPayload & { skill: 'SPEAKING'; prompts: AdminPromptInput[] })
   | (ContentPayloadBase &
       DescribedPayload & { skill: 'EXAM'; timeLimitMinutes?: number; questions: AdminQuestionInput[] });

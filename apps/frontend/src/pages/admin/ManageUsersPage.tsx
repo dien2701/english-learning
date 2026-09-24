@@ -1,30 +1,30 @@
-import React, { useState } from 'react';
-import { App, Input, Select, Table, Tag } from 'antd';
-import type { ColumnsType } from 'antd/es/table';
-import { useTranslation } from 'react-i18next';
+import React, { useState } from "react";
+import { App, Input, Select, Table, Tag } from "antd";
+import type { ColumnsType } from "antd/es/table";
+import { useTranslation } from "react-i18next";
 
-import { Button } from '../../components/ui/Button';
-import PageHeader from '../../components/ui/PageHeader';
-import { Card } from '../../components/ui/Card';
-import { ErrorState } from '../../components/ui/StateBlocks';
-import { useApi } from '../../hooks/useApi';
-import { useApiError } from '../../hooks/useApiError';
-import { useDebounced } from '../../hooks/useDebounced';
-import { useFormat } from '../../hooks/useFormat';
-import { adminService } from '../../services/adminService';
-import type { AdminUser } from '../../types/admin';
-import type { AccountStatus } from '../../types/common';
+import { Button } from "../../components/ui/Button";
+import PageHeader from "../../components/ui/PageHeader";
+import { Card } from "../../components/ui/Card";
+import { ErrorState } from "../../components/ui/StateBlocks";
+import { useApi } from "../../hooks/useApi";
+import { useApiError } from "../../hooks/useApiError";
+import { useDebounced } from "../../hooks/useDebounced";
+import { useFormat } from "../../hooks/useFormat";
+import { adminService } from "../../services/adminService";
+import type { AdminUser } from "../../types/admin";
+import type { AccountStatus } from "../../types/common";
 
 const STATUS_KEY: Record<AccountStatus, string> = {
-  ACTIVE: 'admin.statusActive',
-  LOCKED: 'admin.statusLocked',
-  PENDING: 'admin.statusPending',
+  ACTIVE: "admin.statusActive",
+  LOCKED: "admin.statusLocked",
+  PENDING: "admin.statusPending",
 };
 
 const STATUS_COLOR: Record<AccountStatus, string> = {
-  ACTIVE: 'success',
-  LOCKED: 'error',
-  PENDING: 'warning',
+  ACTIVE: "success",
+  LOCKED: "error",
+  PENDING: "warning",
 };
 
 const ManageUsersPage: React.FC = () => {
@@ -33,9 +33,9 @@ const ManageUsersPage: React.FC = () => {
   const { date, relativeTime } = useFormat();
   const { describe } = useApiError();
 
-  const [search, setSearch] = useState('');
-  const [role, setRole] = useState('');
-  const [status, setStatus] = useState('');
+  const [search, setSearch] = useState("");
+  const [role, setRole] = useState("");
+  const [status, setStatus] = useState("");
   const [page, setPage] = useState(1);
 
   const debouncedSearch = useDebounced(search, 350);
@@ -54,53 +54,73 @@ const ManageUsersPage: React.FC = () => {
 
   const changeStatus = (user: AdminUser, next: AccountStatus) => {
     modal.confirm({
-      title:
-        next === 'LOCKED' ? t('admin.lockTitle') : t('admin.unlockTitle'),
+      title: next === "LOCKED" ? t("admin.lockTitle") : t("admin.unlockTitle"),
       content:
-        next === 'LOCKED'
-          ? t('admin.lockBody', { name: user.fullName })
-          : t('admin.unlockBody', { name: user.fullName }),
-      okText: next === 'LOCKED' ? t('admin.lock') : t('admin.unlock'),
-      cancelText: t('common.cancel'),
-      okButtonProps: next === 'LOCKED' ? { danger: true } : undefined,
+        next === "LOCKED"
+          ? t("admin.lockBody", { name: user.fullName })
+          : t("admin.unlockBody", { name: user.fullName }),
+      okText: next === "LOCKED" ? t("admin.lock") : t("admin.unlock"),
+      cancelText: t("common.cancel"),
+      okButtonProps: next === "LOCKED" ? { danger: true } : undefined,
       onOk: async () => {
         try {
           await adminService.updateUser(user.id, { status: next });
           message.success(
-            next === 'LOCKED' ? t('admin.locked') : t('admin.unlocked'),
+            next === "LOCKED" ? t("admin.locked") : t("admin.unlocked"),
           );
           reload();
         } catch (updateError) {
-          message.error(describe(updateError, 'admin.userUpdateError'));
+          message.error(describe(updateError, "admin.userUpdateError"));
         }
       },
     });
   };
 
-  const changeRole = async (user: AdminUser, nextRole: 'USER' | 'ADMIN') => {
+  const removeUser = (user: AdminUser) => {
+    modal.confirm({
+      title: t("admin.deleteTitle"),
+      content: t("admin.deleteBody", { name: user.fullName }),
+      okText: t("admin.delete"),
+      cancelText: t("common.cancel"),
+      okButtonProps: { danger: true },
+      onOk: async () => {
+        try {
+          await adminService.deleteUser(user.id);
+          message.success(t("admin.deleted"));
+          reload();
+        } catch (deleteError) {
+          message.error(describe(deleteError, "admin.deleteError"));
+        }
+      },
+    });
+  };
+
+  const changeRole = async (user: AdminUser, nextRole: "USER" | "ADMIN") => {
     try {
       await adminService.updateUser(user.id, { role: nextRole });
-      message.success(t('admin.roleUpdated'));
+      message.success(t("admin.roleUpdated"));
       reload();
     } catch (updateError) {
-      message.error(describe(updateError, 'admin.roleUpdateError'));
+      message.error(describe(updateError, "admin.roleUpdateError"));
     }
   };
 
   const columns: ColumnsType<AdminUser> = [
     {
-      title: t('admin.users'),
-      dataIndex: 'fullName',
+      title: t("admin.users"),
+      dataIndex: "fullName",
       render: (_, user) => (
         <div className="min-w-0">
-          <p className="truncate text-[13.5px] font-bold text-ink">{user.fullName}</p>
+          <p className="truncate text-[13.5px] font-bold text-ink">
+            {user.fullName}
+          </p>
           <p className="truncate text-[12px] text-ink-muted">{user.email}</p>
         </div>
       ),
     },
     {
-      title: t('filter.role'),
-      dataIndex: 'role',
+      title: t("filter.role"),
+      dataIndex: "role",
       width: 140,
       render: (_, user) => (
         <Select
@@ -108,17 +128,17 @@ const ManageUsersPage: React.FC = () => {
           value={user.role}
           onChange={(value) => changeRole(user, value)}
           className="w-full"
-          aria-label={t('admin.roleOf', { name: user.fullName })}
+          aria-label={t("admin.roleOf", { name: user.fullName })}
           options={[
-            { value: 'USER', label: t('admin.roleUser') },
-            { value: 'ADMIN', label: t('admin.roleAdmin') },
+            { value: "USER", label: t("admin.roleUser") },
+            { value: "ADMIN", label: t("admin.roleAdmin") },
           ]}
         />
       ),
     },
     {
-      title: t('filter.status'),
-      dataIndex: 'status',
+      title: t("filter.status"),
+      dataIndex: "status",
       width: 150,
       render: (_, user) => (
         <Tag color={STATUS_COLOR[user.status]} variant="filled">
@@ -127,43 +147,50 @@ const ManageUsersPage: React.FC = () => {
       ),
     },
     {
-      title: t('admin.completedLessons'),
-      dataIndex: 'completedLessons',
+      title: t("admin.completedLessons"),
+      dataIndex: "completedLessons",
       width: 130,
-      align: 'right',
+      align: "right",
     },
     {
-      title: t('admin.lastActive'),
-      dataIndex: 'lastActiveAt',
+      title: t("admin.lastActive"),
+      dataIndex: "lastActiveAt",
       width: 150,
       render: (value?: string) => (
         <span className="text-[12.5px] text-ink-muted">
-          {value ? relativeTime(value) : t('admin.never')}
+          {value ? relativeTime(value) : t("admin.never")}
         </span>
       ),
     },
     {
-      title: t('admin.createdAt'),
-      dataIndex: 'createdAt',
+      title: t("admin.createdAt"),
+      dataIndex: "createdAt",
       width: 120,
       render: (value: string) => (
         <span className="text-[12.5px] text-ink-muted">{date(value)}</span>
       ),
     },
     {
-      title: '',
-      key: 'actions',
-      width: 110,
+      title: "",
+      key: "actions",
+      width: 190,
       render: (_, user) => (
-        <Button
-          size="sm"
-          variant={user.status === 'LOCKED' ? 'secondary' : 'danger'}
-          onClick={() =>
-            changeStatus(user, user.status === 'LOCKED' ? 'ACTIVE' : 'LOCKED')
-          }
-        >
-          {user.status === 'LOCKED' ? t('admin.unlock') : t('admin.lock')}
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            size="sm"
+            variant={user.status === "LOCKED" ? "secondary" : "danger"}
+            onClick={() =>
+              changeStatus(user, user.status === "LOCKED" ? "ACTIVE" : "LOCKED")
+            }
+          >
+            {user.status === "LOCKED" ? t("admin.unlock") : t("admin.lock")}
+          </Button>
+          {user.role === "USER" && (
+            <Button size="sm" variant="danger" onClick={() => removeUser(user)}>
+              {t("admin.delete")}
+            </Button>
+          )}
+        </div>
       ),
     },
   ];
@@ -171,8 +198,8 @@ const ManageUsersPage: React.FC = () => {
   return (
     <div className="mx-auto w-full max-w-content px-4 py-6 sm:px-6 lg:px-8">
       <PageHeader
-        title={t('admin.usersTitle')}
-        description={t('admin.usersSubtitle')}
+        title={t("admin.usersTitle")}
+        description={t("admin.usersSubtitle")}
       />
 
       <div className="mb-5 flex flex-wrap items-center gap-2.5">
@@ -184,8 +211,8 @@ const ManageUsersPage: React.FC = () => {
             setSearch(e.target.value);
             setPage(1);
           }}
-          placeholder={t('admin.userSearchPlaceholder')}
-          aria-label={t('admin.searchUsers')}
+          placeholder={t("admin.userSearchPlaceholder")}
+          aria-label={t("admin.searchUsers")}
           prefix={
             <span
               aria-hidden="true"
@@ -204,12 +231,12 @@ const ManageUsersPage: React.FC = () => {
             setRole(value);
             setPage(1);
           }}
-          aria-label={t('admin.filterByRole')}
+          aria-label={t("admin.filterByRole")}
           className="min-w-[150px]"
           options={[
-            { value: '', label: t('admin.anyRole') },
-            { value: 'USER', label: t('admin.roleUser') },
-            { value: 'ADMIN', label: t('admin.roleAdmin') },
+            { value: "", label: t("admin.anyRole") },
+            { value: "USER", label: t("admin.roleUser") },
+            { value: "ADMIN", label: t("admin.roleAdmin") },
           ]}
         />
 
@@ -220,12 +247,12 @@ const ManageUsersPage: React.FC = () => {
             setStatus(value);
             setPage(1);
           }}
-          aria-label={t('admin.filterByStatus')}
+          aria-label={t("admin.filterByStatus")}
           className="min-w-[170px]"
           options={[
-            { value: '', label: t('admin.anyStatus') },
-            { value: 'ACTIVE', label: t('admin.statusActive') },
-            { value: 'LOCKED', label: t('admin.statusLocked') },
+            { value: "", label: t("admin.anyStatus") },
+            { value: "ACTIVE", label: t("admin.statusActive") },
+            { value: "LOCKED", label: t("admin.statusLocked") },
           ]}
         />
       </div>
@@ -248,7 +275,7 @@ const ManageUsersPage: React.FC = () => {
               total: data?.total ?? 0,
               onChange: setPage,
               showSizeChanger: false,
-              showTotal: (total) => t('admin.userCount', { count: total }),
+              showTotal: (total) => t("admin.userCount", { count: total }),
             }}
           />
         </div>

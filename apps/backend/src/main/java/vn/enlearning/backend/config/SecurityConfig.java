@@ -39,6 +39,7 @@ public class SecurityConfig {
 	 */
 	private static final Set<String> PUBLIC_AUTH_ENDPOINTS = Set.of(
 			"POST /auth/register",
+			"POST /auth/register/send-code",
 			"POST /auth/login",
 			"POST /auth/refresh",
 			"DELETE /auth/session",
@@ -64,7 +65,7 @@ public class SecurityConfig {
 				.authorizeHttpRequests(auth -> auth
 						.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 						.requestMatchers("/actuator/health/**").permitAll()
-						.requestMatchers(HttpMethod.POST, "/auth/register", "/auth/login", "/auth/refresh",
+						.requestMatchers(HttpMethod.POST, "/auth/register", "/auth/register/send-code", "/auth/login", "/auth/refresh",
 								"/auth/forgot-password", "/auth/reset-password").permitAll()
 						.requestMatchers(HttpMethod.DELETE, "/auth/session").permitAll()
 						.requestMatchers(HttpMethod.GET, "/auth/check-email").permitAll()

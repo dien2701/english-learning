@@ -506,3 +506,5 @@ esources/seed-demo/topics.json (10 chủ đề) và decks.json (15 bộ × 20 th
 - FE: `FilterBar` thêm ô chọn sắp xếp (`sortable` prop, chỉ bật ở 5 trang Flashcards/Nghe/Đọc/Viết/Nói, không đụng trang Đề kiểm tra); thêm `components/ui/Pagination.tsx` (bọc `antd Pagination`); cả 5 trang danh sách đổi lưới thành `sm:2 → lg:3 → xl:4` cột, `pageSize=12`, có phân trang, về trang 1 khi đổi bộ lọc/sắp xếp (gộp vào `handleFilterChange` thay vì `useEffect` để không vi phạm eslint `react-hooks/set-state-in-effect`).
 - `./mvnw -q compile`/`test-compile`, `npm run lint`, `npm run build` (FE) đều sạch.
 - Việc cần tự kiểm: chạy lại `REAL_DATA_SEED=true` rồi mở giao diện — kiểm 5 trang hiện 4 thẻ/dòng, phân trang 12 thẻ/trang, đổi được sắp xếp A-Z/Z-A/Mới nhất; trang Đề kiểm tra không đổi.
+
+- Xác minh email khi đăng ký (24/09/2026): `POST /auth/register/send-code` {email, language} gửi OTP 6 số (10 phút, 5 lần sai, chờ 60s, lưu HMAC ở `email_verification_codes`, V8); `POST /auth/register` bắt buộc `code`. FE đăng ký 2 bước (email → mã + thông tin). Quên mật khẩu giữ luồng OTP sẵn có.

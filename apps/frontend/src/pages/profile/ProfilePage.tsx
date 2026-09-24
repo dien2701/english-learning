@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { App, Form, Input } from 'antd';
 import { useTranslation } from 'react-i18next';
+import { passwordRule } from '../../shared/validation/password';
 
 import { Button } from '../../components/ui/Button';
 import PageHeader from '../../components/ui/PageHeader';
@@ -247,7 +248,7 @@ const ProfilePage: React.FC = () => {
                 name="newPassword"
                 rules={[
                   { required: true, message: t('auth.validation.newPasswordRequired') },
-                  { min: 6, message: t('auth.validation.passwordMin') },
+                  passwordRule(t),
                 ]}
               >
                 <Input.Password size="large" autoComplete="new-password" />

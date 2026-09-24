@@ -30,6 +30,11 @@ public interface UserRepository extends JpaRepository<User, UUID>, JpaSpecificat
 	@Query(value = "SELECT COUNT(*) FROM users WHERE email = :email", nativeQuery = true)
 	long countByEmailIncludingDeleted(@Param("email") String email);
 
+	/** Xoá cứng: {@code @SQLDelete} của entity chỉ xoá mềm, còn ở đây cần xoá hẳn (khoá ngoại tự CASCADE / SET NULL). */
+	@Modifying(flushAutomatically = true, clearAutomatically = true)
+	@Query(value = "DELETE FROM users WHERE id = :id", nativeQuery = true)
+	int hardDeleteById(@Param("id") UUID id);
+
 	default boolean existsByEmailIncludingDeleted(String email) {
 		return countByEmailIncludingDeleted(email) > 0;
 	}
@@ -57,6 +62,12 @@ public interface UserRepository extends JpaRepository<User, UUID>, JpaSpecificat
 			@Param("lastActiveAt") Instant lastActiveAt);
 
 	long countByStatusAndLastActiveAtGreaterThanEqual(AccountStatus status, Instant since);
+
+	long countByCreatedAtGreaterThanEqual(Instant since);
+
+	long countByRole(vn.enlearning.backend.entity.enums.Role role);
+
+	long countByStatus(AccountStatus status);
 
 	/** Thời điểm đăng ký của người dùng từ mốc {@code from}, để gom theo tháng ở Service (múi giờ do Service chọn). */
 	@Query("select u.createdAt from User u where u.createdAt >= :from")

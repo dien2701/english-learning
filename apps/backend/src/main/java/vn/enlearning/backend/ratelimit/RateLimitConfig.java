@@ -21,6 +21,6 @@ public class RateLimitConfig implements WebMvcConfigurer {
 		registry.addInterceptor(new RateLimitInterceptor(limiter, RateLimiter.Rule.CHECK_EMAIL, HttpMethod.GET))
 				.addPathPatterns("/auth/check-email");
 		registry.addInterceptor(new RateLimitInterceptor(limiter, RateLimiter.Rule.FORGOT_PASSWORD, HttpMethod.POST))
-				.addPathPatterns("/auth/forgot-password");
+				.addPathPatterns("/auth/forgot-password", "/auth/register/send-code");
 	}
 }

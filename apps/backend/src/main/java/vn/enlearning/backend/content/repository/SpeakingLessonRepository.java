@@ -21,4 +21,6 @@ public interface SpeakingLessonRepository
 
 	/** Khoá idempotent của seeder dữ liệu thật (đợt 13.5): bỏ qua bài đã có cùng tiêu đề trong chủ đề. */
 	Optional<SpeakingLesson> findByTopicIdAndTitleVi(UUID topicId, String titleVi);
+
+	long countByStatus(vn.enlearning.backend.entity.enums.ContentStatus status);
 }

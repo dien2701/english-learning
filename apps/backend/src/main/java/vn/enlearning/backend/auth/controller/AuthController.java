@@ -24,12 +24,14 @@ import vn.enlearning.backend.auth.dto.ForgotPasswordRequest;
 import vn.enlearning.backend.auth.dto.LoginRequest;
 import vn.enlearning.backend.auth.dto.RegisterRequest;
 import vn.enlearning.backend.auth.dto.ResetPasswordRequest;
+import vn.enlearning.backend.auth.dto.SendVerificationCodeRequest;
 import vn.enlearning.backend.auth.dto.SimpleResponses.EmailAvailability;
 import vn.enlearning.backend.auth.dto.SimpleResponses.LoggedOut;
 import vn.enlearning.backend.auth.dto.SimpleResponses.Message;
 import vn.enlearning.backend.auth.dto.UserResponse;
 import vn.enlearning.backend.auth.service.AuthService;
 import vn.enlearning.backend.auth.service.ClientInfo;
+import vn.enlearning.backend.auth.service.EmailVerificationService;
 import vn.enlearning.backend.auth.service.PasswordResetService;
 import vn.enlearning.backend.auth.service.RefreshCookieFactory;
 import vn.enlearning.backend.common.ApiResponse;
@@ -46,12 +48,21 @@ public class AuthController {
 	/** Thông điệp cố định, cố ý không cho biết email có tài khoản hay không. */
 	private static final String FORGOT_PASSWORD_MESSAGE =
 			"Nếu email tồn tại trong hệ thống, hướng dẫn đặt lại mật khẩu đã được gửi đi.";
+	private static final String VERIFICATION_CODE_SENT_MESSAGE = "Mã xác minh đã được gửi tới email của bạn.";
 	private static final String RESET_PASSWORD_MESSAGE =
 			"Đặt lại mật khẩu thành công. Bạn có thể đăng nhập lại.";
 
 	private final AuthService authService;
 	private final PasswordResetService passwordResetService;
+	private final EmailVerificationService emailVerificationService;
 	private final RefreshCookieFactory cookies;
+
+	/** Gửi mã OTP xác minh email; đăng ký chỉ thành công khi kèm đúng mã này. */
+	@PostMapping("/register/send-code")
+	ApiResponse<Message> sendRegisterCode(@Valid @RequestBody SendVerificationCodeRequest request) {
+		emailVerificationService.sendCode(request.email(), request.language());
+		return ApiResponse.ok(new Message(VERIFICATION_CODE_SENT_MESSAGE));
+	}
 
 	@PostMapping("/register")
 	ResponseEntity<ApiResponse<AuthResponse>> register(@Valid @RequestBody RegisterRequest request,

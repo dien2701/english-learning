@@ -117,6 +117,7 @@ class AdminUserNotificationApiTests {
 				.andExpect(jsonPath("$.data.signups", hasSize(6)))
 				.andExpect(jsonPath("$.data.signups[5].count").isNumber())
 				.andExpect(jsonPath("$.data.signups[5].label.en").isString())
+				.andExpect(jsonPath("$.data.system.emailsSent").isNumber())
 				.andExpect(jsonPath("$.data.contentCounts", hasSize(6)))
 				.andExpect(jsonPath("$.data.activities", hasSize(0)));
 	}

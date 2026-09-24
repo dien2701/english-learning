@@ -21,4 +21,6 @@ public interface ReadingLessonRepository
 
 	/** Khoá idempotent của seeder dữ liệu thật (đợt 13.7): bỏ qua bài đã có cùng tiêu đề trong chủ đề. */
 	Optional<ReadingLesson> findByTopicIdAndTitleVi(UUID topicId, String titleVi);
+
+	long countByStatus(vn.enlearning.backend.entity.enums.ContentStatus status);
 }

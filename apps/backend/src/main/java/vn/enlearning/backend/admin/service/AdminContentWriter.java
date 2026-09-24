@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -162,7 +163,12 @@ class AdminContentWriter {
 		deck.setTopic(topic(v.topicId()));
 		deck.setDescriptionVi(blankToNull(v.descriptionVi()));
 		deck.setDescriptionEn(blankToNull(v.descriptionEn()));
-		deck.setCoverImageUrl(blankToNull(v.coverImageUrl()));
+		String cover = blankToNull(v.coverImageUrl());
+		if (!Objects.equals(cover, deck.getCoverImageUrl())) {
+			deck.setCoverImageAuthorUrl(null);
+		}
+		deck.setCoverImageUrl(cover);
+		deck.setCoverImageAuthor(cover == null ? null : blankToNull(v.coverImageAuthor()));
 	}
 
 	private void applyListening(ListeningLesson lesson, AdminContentRequest.Listening l) {
@@ -170,6 +176,12 @@ class AdminContentWriter {
 		lesson.setTopic(topic(l.topicId()));
 		lesson.setDescriptionVi(blankToNull(l.descriptionVi()));
 		lesson.setDescriptionEn(blankToNull(l.descriptionEn()));
+		String image = blankToNull(l.imageUrl());
+		if (!Objects.equals(image, lesson.getImageUrl())) {
+			lesson.setImageAuthorUrl(null);
+		}
+		lesson.setImageUrl(image);
+		lesson.setImageAuthor(image == null ? null : blankToNull(l.imageAuthor()));
 		// Audio do TTS/tải lên được quản lý bằng /admin/listening/{id}/audio; PUT không được đè hay xoá nó.
 		if (lesson.getAudioSource() == null) {
 			lesson.setAudioUrl(blankToNull(l.audioUrl()));
@@ -183,6 +195,12 @@ class AdminContentWriter {
 		lesson.setTopic(topic(r.topicId()));
 		lesson.setDescriptionVi(blankToNull(r.descriptionVi()));
 		lesson.setDescriptionEn(blankToNull(r.descriptionEn()));
+		String image = blankToNull(r.imageUrl());
+		if (!Objects.equals(image, lesson.getImageUrl())) {
+			lesson.setImageAuthorUrl(null);
+		}
+		lesson.setImageUrl(image);
+		lesson.setImageAuthor(image == null ? null : blankToNull(r.imageAuthor()));
 		lesson.setTimeLimitMinutes(orElse(r.timeLimitMinutes(), 0));
 		List<String> paragraphs = r.paragraphs().stream().map(String::trim).toList();
 		lesson.setParagraphs(new ArrayList<>(paragraphs));
@@ -192,6 +210,12 @@ class AdminContentWriter {
 	private void applyWriting(WritingPrompt prompt, AdminContentRequest.Writing w) {
 		applyBase(prompt, w);
 		prompt.setTopic(topic(w.topicId()));
+		String image = blankToNull(w.imageUrl());
+		if (!Objects.equals(image, prompt.getImageUrl())) {
+			prompt.setImageAuthorUrl(null);
+		}
+		prompt.setImageUrl(image);
+		prompt.setImageAuthor(image == null ? null : blankToNull(w.imageAuthor()));
 		prompt.setInstructions(w.instructions().trim());
 		prompt.setSuggestedMinutes(orElse(w.suggestedMinutes(), 30));
 		prompt.setMinWords(orElse(w.minWords(), 0));
@@ -211,6 +235,12 @@ class AdminContentWriter {
 		lesson.setTopic(topic(s.topicId()));
 		lesson.setDescriptionVi(blankToNull(s.descriptionVi()));
 		lesson.setDescriptionEn(blankToNull(s.descriptionEn()));
+		String image = blankToNull(s.imageUrl());
+		if (!Objects.equals(image, lesson.getImageUrl())) {
+			lesson.setImageAuthorUrl(null);
+		}
+		lesson.setImageUrl(image);
+		lesson.setImageAuthor(image == null ? null : blankToNull(s.imageAuthor()));
 
 		Set<UUID> existing = lesson.getPrompts().stream().map(SpeakingPrompt::id).collect(Collectors.toSet());
 		Set<UUID> kept = new HashSet<>();
@@ -259,7 +289,13 @@ class AdminContentWriter {
 			card.setPartOfSpeechEn(blankToNull(in.partOfSpeechEn()));
 			card.setExample(blankToNull(in.example()));
 			card.setExampleMeaning(blankToNull(in.exampleMeaning()));
-			card.setImageUrl(blankToNull(in.imageUrl()));
+			String image = blankToNull(in.imageUrl());
+			// Đổi ảnh thì bỏ ghi công cũ (thuộc ảnh Unsplash trước đó).
+			if (!Objects.equals(image, card.getImageUrl())) {
+				card.setImageAuthor(null);
+				card.setImageAuthorUrl(null);
+			}
+			card.setImageUrl(image);
 			card.setAudioUrl(blankToNull(in.audioUrl()));
 			card.setSortOrder(i + 1);
 		}

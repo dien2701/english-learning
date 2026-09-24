@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import vn.enlearning.backend.auth.repository.EmailVerificationCodeRepository;
 import vn.enlearning.backend.auth.repository.PasswordResetTokenRepository;
 import vn.enlearning.backend.auth.repository.RefreshTokenRepository;
 import vn.enlearning.backend.speaking.repository.SpeakingAttemptRepository;
@@ -26,6 +27,7 @@ public class CleanupService {
 
 	private final RefreshTokenRepository refreshTokens;
 	private final PasswordResetTokenRepository resetTokens;
+	private final EmailVerificationCodeRepository verificationCodes;
 	private final StudySessionRepository studySessions;
 	private final SpeakingAttemptRepository speakingAttempts;
 	private final CleanupProperties properties;
@@ -39,7 +41,7 @@ public class CleanupService {
 		Instant tokenCutoff = now.minus(properties.tokenRetention());
 		Result result = new Result(
 				refreshTokens.deleteExpiredBefore(tokenCutoff),
-				resetTokens.deleteExpiredBefore(tokenCutoff),
+				resetTokens.deleteExpiredBefore(tokenCutoff) + verificationCodes.deleteExpiredBefore(tokenCutoff),
 				studySessions.deleteEmptyBefore(now.minus(properties.emptySessionRetention())),
 				speakingAttempts.deleteStaleInProgress(now.minus(properties.speakingInProgressRetention())));
 		if (result.refreshTokens() + result.resetTokens() + result.emptySessions()

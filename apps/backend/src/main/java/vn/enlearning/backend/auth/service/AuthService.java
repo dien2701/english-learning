@@ -31,6 +31,7 @@ public class AuthService {
 	private final PasswordEncoder passwordEncoder;
 	private final JwtService jwtService;
 	private final RefreshTokenService refreshTokens;
+	private final EmailVerificationService emailVerification;
 	private final Clock clock;
 
 	/**
@@ -40,12 +41,13 @@ public class AuthService {
 	private final String dummyHash;
 
 	public AuthService(UserRepository users, UserSettingRepository settings, PasswordEncoder passwordEncoder,
-			JwtService jwtService, RefreshTokenService refreshTokens, Clock clock) {
+			JwtService jwtService, RefreshTokenService refreshTokens, EmailVerificationService emailVerification, Clock clock) {
 		this.users = users;
 		this.settings = settings;
 		this.passwordEncoder = passwordEncoder;
 		this.jwtService = jwtService;
 		this.refreshTokens = refreshTokens;
+		this.emailVerification = emailVerification;
 		this.clock = clock;
 		this.dummyHash = passwordEncoder.encode("mat-khau-gia-de-can-bang-thoi-gian");
 	}
@@ -59,6 +61,8 @@ public class AuthService {
 		if (users.existsByEmailIncludingDeleted(request.email())) {
 			throw emailTaken();
 		}
+
+		emailVerification.consume(request.email(), request.code());
 
 		User user = new User();
 		user.setEmail(request.email());

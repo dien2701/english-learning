@@ -5,6 +5,7 @@ import { ListeningAudioPanel } from './ListeningAudioPanel';
 import { useTranslation } from 'react-i18next';
 import { SharedQuestionList } from './SharedQuestionList';
 import { TopicField } from './TopicField';
+import { ImageUrlField } from './ImageUrlField';
 
 interface ListeningFormProps {
   lessonId: string | null;
@@ -24,6 +25,7 @@ export const ListeningForm: React.FC<ListeningFormProps> = ({
   return (
     <div className="mt-4">
       <TopicField />
+      <ImageUrlField name="imageUrl" withAuthor />
       <Form.Item name="prompt" label={t('contentForm.descOptional')}>
         <Input.TextArea rows={2} />
       </Form.Item>

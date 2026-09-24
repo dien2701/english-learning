@@ -23,6 +23,7 @@ public enum ErrorCode {
 	AUDIO_UNSUPPORTED(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "errors.audioUnsupported"),
 	STORAGE_UNAVAILABLE(HttpStatus.SERVICE_UNAVAILABLE, "errors.storageUnavailable"),
 	AI_UNAVAILABLE(HttpStatus.SERVICE_UNAVAILABLE, "errors.aiUnavailable"),
+	EMAIL_SEND_FAILED(HttpStatus.SERVICE_UNAVAILABLE, "errors.emailSendFailed"),
 	RATE_LIMITED(HttpStatus.TOO_MANY_REQUESTS, "errors.tooManyRequests"),
 	CHAT_DAILY_LIMIT(HttpStatus.TOO_MANY_REQUESTS, "errors.chatDailyLimit"),
 	SPEAKING_INCOMPLETE(HttpStatus.BAD_REQUEST, "errors.speakingIncomplete"),

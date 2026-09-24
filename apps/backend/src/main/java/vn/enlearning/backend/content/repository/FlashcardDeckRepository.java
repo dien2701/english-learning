@@ -22,4 +22,6 @@ public interface FlashcardDeckRepository extends JpaRepository<FlashcardDeck, UU
 
 	/** Khoá idempotent của seeder dữ liệu thật (đợt 13.5): một bộ thẻ thật cho mỗi chủ đề. */
 	Optional<FlashcardDeck> findByTopicIdAndTitleVi(UUID topicId, String titleVi);
+
+	long countByStatus(vn.enlearning.backend.entity.enums.ContentStatus status);
 }

@@ -2,6 +2,7 @@ import React from 'react';
 import { Form, Input, InputNumber, Button } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { TopicField } from './TopicField';
+import { ImageUrlField } from './ImageUrlField';
 
 export const WritingForm: React.FC = () => {
   const { t } = useTranslation();
@@ -9,6 +10,7 @@ export const WritingForm: React.FC = () => {
   return (
     <div className="mt-4">
       <TopicField />
+      <ImageUrlField name="imageUrl" withAuthor />
       <Form.Item name="instructions" label={t('contentForm.writingPrompt')} rules={[{ required: true }]}>
         <Input.TextArea rows={4} />
       </Form.Item>

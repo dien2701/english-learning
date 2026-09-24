@@ -27,4 +27,6 @@ public interface ListeningLessonRepository
 	/** Bài chưa có audio, theo thứ tự tạo (dùng cho lệnh sinh audio seed, đợt 12c). */
 	@Query("select l from ListeningLesson l where l.audioUrl is null or l.audioUrl = '' order by l.createdAt, l.id")
 	List<ListeningLesson> findAllWithoutAudio();
+
+	long countByStatus(vn.enlearning.backend.entity.enums.ContentStatus status);
 }

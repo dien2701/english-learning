@@ -46,6 +46,8 @@ class AuthServiceTest {
 	private JwtService jwtService;
 	@Mock
 	private RefreshTokenService refreshTokens;
+	@Mock
+	private EmailVerificationService emailVerification;
 
 	private AuthService service;
 	private User user;
@@ -53,7 +55,7 @@ class AuthServiceTest {
 	@BeforeEach
 	void setUp() {
 		when(passwordEncoder.encode(any())).thenReturn("hash-gia");
-		service = new AuthService(users, settings, passwordEncoder, jwtService, refreshTokens,
+		service = new AuthService(users, settings, passwordEncoder, jwtService, refreshTokens, emailVerification,
 				Clock.fixed(Instant.parse("2026-09-20T10:00:00Z"), ZoneOffset.UTC));
 
 		user = new User();

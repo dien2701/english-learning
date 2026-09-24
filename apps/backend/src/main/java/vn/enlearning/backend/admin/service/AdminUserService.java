@@ -89,6 +89,16 @@ public class AdminUserService {
 		return toResponses(List.of(user)).get(0);
 	}
 
+	/** Xoá cứng học viên cùng dữ liệu học (CASCADE). Không xoá chính mình hay admin nào. */
+	@Transactional
+	public void delete(UUID adminId, UUID id) {
+		User user = find(id);
+		if (user.getId().equals(adminId) || user.getRole() == Role.ADMIN) {
+			throw new ApiException(ErrorCode.INVALID_STATE);
+		}
+		users.hardDeleteById(id);
+	}
+
 	private User find(UUID id) {
 		return users.findById(id).orElseThrow(() -> new ApiException(ErrorCode.NOT_FOUND));
 	}
