@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Consumer;
 
 import org.springframework.context.annotation.Conditional;
 import org.springframework.core.io.ClassPathResource;
@@ -38,7 +39,8 @@ class GeminiChatAssistant implements ChatAssistant {
 					"suggestedSkills", Map.of("type", "ARRAY", "items", Map.of("type", "STRING", "enum",
 							List.of("VOCABULARY", "WRITING", "LISTENING", "READING", "SPEAKING", "EXAM"))),
 					"refusal", Map.of("type", "BOOLEAN")),
-			"required", List.of("content", "suggestedSkills", "refusal"));
+			"propertyOrdering", List.of("content", "suggestedSkills", "refusal"),
+				"required", List.of("content", "suggestedSkills", "refusal"));
 
 	private final GeminiClient client;
 	private final String systemPrompt = loadPrompt("ai/chat-assistant.txt");
@@ -49,9 +51,17 @@ class GeminiChatAssistant implements ChatAssistant {
 
 	@Override
 	public Reply reply(List<Turn> history, String message) {
+		return reply(history, message, null);
+	}
+
+	@Override
+	public Reply reply(List<Turn> history, String message, Consumer<String> onContent) {
 		GeminiClient.Result result;
 		try {
-			result = client.generateJson(systemPrompt, turns(history, message), SCHEMA, TEMPERATURE);
+			result = onContent == null
+					? client.generateJson(systemPrompt, turns(history, message), SCHEMA, TEMPERATURE)
+					: client.streamJson(systemPrompt, turns(history, message), SCHEMA, TEMPERATURE,
+							new ContentStream(onContent));
 		} catch (GeminiException e) {
 			throw new AiUnavailableException(e.getMessage(), e);
 		}
@@ -86,6 +96,65 @@ class GeminiChatAssistant implements ChatAssistant {
 		} else {
 			turns.add(new GeminiClient.Turn(role, text));
 		}
+	}
+
+	/** Rút giá trị chuỗi "content" từ JSON đang đến dở và chỉ báo phần chữ mới. */
+	private static final class ContentStream implements Consumer<String> {
+
+		private final Consumer<String> sink;
+		private int sent;
+
+		ContentStream(Consumer<String> sink) {
+			this.sink = sink;
+		}
+
+		@Override
+		public void accept(String json) {
+			String content = partialContent(json);
+			if (content.length() > sent) {
+				sink.accept(content.substring(sent));
+				sent = content.length();
+			}
+		}
+	}
+
+	/** Giải mã phần đã có của chuỗi "content"; dừng ở escape chưa đủ ký tự. */
+	static String partialContent(String json) {
+		int key = json.indexOf("\"content\"");
+		int colon = key < 0 ? -1 : json.indexOf(':', key + 9);
+		int quote = colon < 0 ? -1 : json.indexOf('"', colon + 1);
+		if (quote < 0) {
+			return "";
+		}
+		StringBuilder out = new StringBuilder();
+		for (int i = quote + 1; i < json.length(); i++) {
+			char c = json.charAt(i);
+			if (c == '"') {
+				break;
+			}
+			if (c != '\\') {
+				out.append(c);
+				continue;
+			}
+			if (i + 1 >= json.length()) {
+				break;
+			}
+			char e = json.charAt(++i);
+			switch (e) {
+				case 'n' -> out.append('\n');
+				case 't' -> out.append('\t');
+				case 'r' -> out.append('\r');
+				case 'u' -> {
+					if (i + 4 >= json.length()) {
+						return out.toString();
+					}
+					out.append((char) Integer.parseInt(json.substring(i + 1, i + 5), 16));
+					i += 4;
+				}
+				default -> out.append(e);
+			}
+		}
+		return out.toString();
 	}
 
 	private static List<StudySkill> skills(JsonNode array) {

@@ -1,6 +1,7 @@
 package vn.enlearning.backend.ai;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 import vn.enlearning.backend.entity.enums.ChatRole;
 import vn.enlearning.backend.entity.enums.StudySkill;
@@ -17,6 +18,13 @@ public interface ChatAssistant {
 	 * @throws AiUnavailableException khi AI không trả được câu trả lời
 	 */
 	Reply reply(List<Turn> history, String message);
+
+	/** Như {@link #reply} nhưng báo dần phần chữ mới của câu trả lời; mặc định báo một lần khi đã xong. */
+	default Reply reply(List<Turn> history, String message, Consumer<String> onContent) {
+		Reply reply = reply(history, message);
+		onContent.accept(reply.content());
+		return reply;
+	}
 
 	record Turn(ChatRole role, String content) {
 	}

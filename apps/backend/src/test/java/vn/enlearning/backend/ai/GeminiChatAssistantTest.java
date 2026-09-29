@@ -47,7 +47,7 @@ class GeminiChatAssistantTest {
 			exchange.close();
 		});
 		server.start();
-		AiProperties properties = new AiProperties("test-key", "gemini-test", "http://127.0.0.1:" + server.getAddress().getPort(),
+		AiProperties properties = new AiProperties("test-key", "gemini-test", "", "http://127.0.0.1:" + server.getAddress().getPort(),
 				Duration.ofSeconds(5), Duration.ofSeconds(60), Duration.ZERO);
 		assistant = new GeminiChatAssistant(new GeminiClient(properties, MAPPER));
 	}
@@ -124,5 +124,14 @@ class GeminiChatAssistantTest {
 
 		responseBody = envelope("không phải json");
 		assertThatThrownBy(() -> assistant.reply(List.of(), "hi")).isInstanceOf(AiUnavailableException.class);
+	}
+
+	@Test
+	@DisplayName("partialContent giải mã dần chuỗi content, dừng ở escape dở")
+	void partialContent() {
+		assertThat(GeminiChatAssistant.partialContent("{\"con")).isEmpty();
+		assertThat(GeminiChatAssistant.partialContent("{\n \"content\": \"Hi \\\"a\\n")).isEqualTo("Hi \"a\n");
+		assertThat(GeminiChatAssistant.partialContent("{\"content\":\"x\\u00e")).isEqualTo("x");
+		assertThat(GeminiChatAssistant.partialContent("{\"content\":\"x\\u00e9\",\"refusal\":false}")).isEqualTo("xé");
 	}
 }

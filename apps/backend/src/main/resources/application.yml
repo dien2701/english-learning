@@ -74,6 +74,7 @@ app:
   ai:
     gemini-api-key: ${GEMINI_API_KEY:}
     gemini-model: ${GEMINI_MODEL:gemini-2.5-flash}
+    gemini-fallback-model: ${GEMINI_FALLBACK_MODEL:}
     gemini-timeout: ${GEMINI_TIMEOUT:45s}
     grading-timeout: ${AI_GRADING_TIMEOUT:60s}
     fake-latency: ${AI_FAKE_LATENCY:1500ms}

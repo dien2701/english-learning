@@ -21,6 +21,8 @@ export interface ChatMessage {
    * Giao diện hiển thị nhẹ nhàng hơn, không coi là lỗi.
    */
   isRefusal?: boolean;
+  /** Chỉ ở giao diện: câu trả lời vừa nhận, hiện dần từng chữ. */
+  typing?: boolean;
 }
 
 /** Hạn mức tin nhắn trong ngày; `resetAt` là 0h ngày mai (giờ Việt Nam). */

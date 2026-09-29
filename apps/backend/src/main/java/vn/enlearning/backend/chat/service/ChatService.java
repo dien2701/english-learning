@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -129,6 +130,12 @@ public class ChatService {
 
 	/** Cố ý KHÔNG mở giao dịch bao ngoài: tin của người học phải commit trước khi gọi AI (có thể chậm). */
 	public SendMessageResponse send(UUID userId, UUID id, String content) {
+		return send(userId, id, content, text -> {
+		});
+	}
+
+	/** {@code onContent} nhận dần phần chữ mới của câu trả lời (khi AI hỗ trợ stream). */
+	public SendMessageResponse send(UUID userId, UUID id, String content, Consumer<String> onContent) {
 		find(userId, id);
 		if (quota(userId).remaining() <= 0) {
 			throw new ApiException(ErrorCode.CHAT_DAILY_LIMIT);
@@ -151,7 +158,7 @@ public class ChatService {
 
 		ChatAssistant.Reply reply;
 		try {
-			reply = assistant.reply(prepared.history(), text);
+			reply = assistant.reply(prepared.history(), text, onContent);
 			if (reply == null || reply.content() == null || reply.content().isBlank()) {
 				throw new IllegalStateException("Câu trả lời rỗng");
 			}

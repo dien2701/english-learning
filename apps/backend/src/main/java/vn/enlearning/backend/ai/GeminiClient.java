@@ -1,11 +1,17 @@
 package vn.enlearning.backend.ai;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.net.http.HttpClient;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 import org.springframework.context.annotation.Conditional;
 import org.springframework.http.MediaType;
@@ -86,6 +92,22 @@ public class GeminiClient {
 	 */
 	public Result generateJson(String systemPrompt, List<Turn> turns, Map<String, Object> responseSchema,
 			double temperature) {
+		Map<String, Object> payload = payload(systemPrompt, turns, responseSchema, temperature);
+		return withFallback(model -> parse(retry(() -> postOnce(payload, model)), model));
+	}
+
+	/**
+	 * Như {@link #generateJson} nhưng nhận theo luồng SSE; {@code onText} nhận TOÀN BỘ văn bản JSON thô tích luỹ
+	 * mỗi khi có thêm đoạn mới. Thử lại/đổi model chỉ xảy ra trước khi có đoạn nào (503/429 trả ngay ở HTTP).
+	 */
+	public Result streamJson(String systemPrompt, List<Turn> turns, Map<String, Object> responseSchema,
+			double temperature, Consumer<String> onText) {
+		Map<String, Object> payload = payload(systemPrompt, turns, responseSchema, temperature);
+		return withFallback(model -> retry(() -> streamOnce(payload, model, onText)));
+	}
+
+	private Map<String, Object> payload(String systemPrompt, List<Turn> turns, Map<String, Object> responseSchema,
+			double temperature) {
 		List<Object> contents = new ArrayList<>();
 		for (Turn turn : turns) {
 			List<Object> parts = new ArrayList<>();
@@ -103,14 +125,56 @@ public class GeminiClient {
 				"responseMimeType", MediaType.APPLICATION_JSON_VALUE,
 				"responseSchema", responseSchema,
 				"temperature", temperature));
-		String response = post(payload);
-		return parse(response);
+		return payload;
 	}
 
-	private String post(Map<String, Object> payload) {
+	private Result withFallback(Function<String, Result> call) {
+		String model = properties.geminiModel();
+		try {
+			return call.apply(model);
+		} catch (TransientGeminiException e) {
+			String fallback = properties.geminiFallbackModel();
+			if (fallback.isBlank()) {
+				throw new GeminiException(e.getMessage());
+			}
+			log.warn("Gemini {} quá tải, chuyển sang {}", model, fallback);
+			try {
+				return call.apply(fallback);
+			} catch (TransientGeminiException e2) {
+				throw new GeminiException(e2.getMessage());
+			}
+		}
+	}
+
+	/** 503/429 là quá tải tạm thời phía Gemini: thử lại tối đa 3 lần, chờ 1s rồi 2s. */
+	private <T> T retry(Supplier<T> call) {
+		for (int attempt = 1;; attempt++) {
+			try {
+				return call.get();
+			} catch (TransientGeminiException e) {
+				if (attempt == 3) {
+					throw e;
+				}
+				try {
+					Thread.sleep(1000L * attempt);
+				} catch (InterruptedException ie) {
+					Thread.currentThread().interrupt();
+					throw new GeminiException(e.getMessage());
+				}
+			}
+		}
+	}
+
+	private static class TransientGeminiException extends RuntimeException {
+		TransientGeminiException(String message) {
+			super(message);
+		}
+	}
+
+	private String postOnce(Map<String, Object> payload, String model) {
 		try {
 			return http.post()
-					.uri("/v1beta/models/{model}:generateContent", properties.geminiModel())
+					.uri("/v1beta/models/{model}:generateContent", model)
 					.header(API_KEY_HEADER, properties.geminiApiKey())
 					.contentType(MediaType.APPLICATION_JSON)
 					.body(jsonMapper.writeValueAsString(payload))
@@ -118,7 +182,11 @@ public class GeminiClient {
 					.body(String.class);
 		} catch (RestClientResponseException e) {
 			// Không nối cause: thông báo của nó chứa thân phản hồi.
-			log.warn("Gemini trả HTTP {}", e.getStatusCode().value());
+			int status = e.getStatusCode().value();
+			log.warn("Gemini trả HTTP {}", status);
+			if (status == 503 || status == 429) {
+				throw new TransientGeminiException("Gemini trả HTTP " + status);
+			}
 			throw new GeminiException("Gemini trả HTTP " + e.getStatusCode().value());
 		} catch (RestClientException | JacksonException e) {
 			log.warn("Không gọi được Gemini: {}", e.getClass().getSimpleName());
@@ -126,29 +194,90 @@ public class GeminiClient {
 		}
 	}
 
-	private Result parse(String response) {
+	private Result streamOnce(Map<String, Object> payload, String model, Consumer<String> onText) {
+		try {
+			return http.post()
+					.uri("/v1beta/models/{model}:streamGenerateContent?alt=sse", model)
+					.header(API_KEY_HEADER, properties.geminiApiKey())
+					.contentType(MediaType.APPLICATION_JSON)
+					.body(jsonMapper.writeValueAsString(payload))
+					.exchange((request, response) -> {
+						int status = response.getStatusCode().value();
+						if (status == 503 || status == 429) {
+							log.warn("Gemini trả HTTP {}", status);
+							throw new TransientGeminiException("Gemini trả HTTP " + status);
+						}
+						if (status >= 400) {
+							log.warn("Gemini trả HTTP {}", status);
+							throw new GeminiException("Gemini trả HTTP " + status);
+						}
+						StringBuilder text = new StringBuilder();
+						String finishReason = "STOP";
+						JsonNode usage = null;
+						try (BufferedReader reader = new BufferedReader(
+								new InputStreamReader(response.getBody(), StandardCharsets.UTF_8))) {
+							for (String line = reader.readLine(); line != null; line = reader.readLine()) {
+								if (!line.startsWith("data:")) {
+									continue;
+								}
+								JsonNode chunk = jsonMapper.readTree(line.substring(5).strip());
+								JsonNode candidate = chunk.path("candidates").path(0);
+								if (candidate.isMissingNode()) {
+									throw new GeminiException("Gemini không trả ứng viên nào (có thể bị chặn nội dung)");
+								}
+								if (candidate.hasNonNull("finishReason")) {
+									finishReason = candidate.path("finishReason").asString("STOP");
+								}
+								if (chunk.has("usageMetadata")) {
+									usage = chunk.path("usageMetadata");
+								}
+								int before = text.length();
+								for (JsonNode part : candidate.path("content").path("parts")) {
+									text.append(part.path("text").asString(""));
+								}
+								if (text.length() > before) {
+									onText.accept(text.toString());
+								}
+							}
+						}
+						return result(text.toString(), finishReason, usage, model);
+					}, true);
+		} catch (RestClientException | JacksonException e) {
+			log.warn("Không gọi được Gemini: {}", e.getClass().getSimpleName());
+			throw new GeminiException("Không gọi được Gemini: " + e.getClass().getSimpleName(), e);
+		}
+	}
+
+	private Result parse(String response, String model) {
 		try {
 			JsonNode root = jsonMapper.readTree(response);
 			JsonNode candidate = root.path("candidates").path(0);
 			if (candidate.isMissingNode()) {
 				throw new GeminiException("Gemini không trả ứng viên nào (có thể bị chặn nội dung)");
 			}
-			String finishReason = candidate.path("finishReason").asString("STOP");
-			if (!"STOP".equals(finishReason)) {
-				throw new GeminiException("Gemini dừng bất thường: " + finishReason);
-			}
 			StringBuilder text = new StringBuilder();
 			for (JsonNode part : candidate.path("content").path("parts")) {
 				text.append(part.path("text").asString(""));
 			}
-			if (text.isEmpty()) {
-				throw new GeminiException("Gemini trả nội dung rỗng");
-			}
-			JsonNode usage = root.path("usageMetadata");
-			int promptTokens = usage.path("promptTokenCount").asInt(0);
-			int completionTokens = usage.path("candidatesTokenCount").asInt(0) + usage.path("thoughtsTokenCount").asInt(0);
-			return new Result(jsonMapper.readTree(text.toString()), promptTokens, completionTokens,
-					properties.geminiModel());
+			return result(text.toString(), candidate.path("finishReason").asString("STOP"), root.path("usageMetadata"),
+					model);
+		} catch (JacksonException e) {
+			throw new GeminiException("Gemini trả JSON sai khuôn", e);
+		}
+	}
+
+	private Result result(String text, String finishReason, JsonNode usage, String model) {
+		if (!"STOP".equals(finishReason)) {
+			throw new GeminiException("Gemini dừng bất thường: " + finishReason);
+		}
+		if (text.isEmpty()) {
+			throw new GeminiException("Gemini trả nội dung rỗng");
+		}
+		int promptTokens = usage == null ? 0 : usage.path("promptTokenCount").asInt(0);
+		int completionTokens = usage == null ? 0
+				: usage.path("candidatesTokenCount").asInt(0) + usage.path("thoughtsTokenCount").asInt(0);
+		try {
+			return new Result(jsonMapper.readTree(text), promptTokens, completionTokens, model);
 		} catch (JacksonException e) {
 			throw new GeminiException("Gemini trả JSON sai khuôn", e);
 		}

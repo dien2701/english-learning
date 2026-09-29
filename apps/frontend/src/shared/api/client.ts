@@ -273,4 +273,79 @@ export const http = {
     client.delete<ApiResponse<T>>(url, config).then(unwrap),
 };
 
+/**
+ * POST nhận luồng SSE bằng fetch (axios không đọc dần được ở trình duyệt). Gọi `onEvent` cho từng sự kiện,
+ * `data` đã parse JSON. Gặp 401 thì refresh token và gửi lại một lần.
+ */
+export async function postSse(
+  url: string,
+  body: unknown,
+  onEvent: (event: string, data: unknown) => void,
+): Promise<void> {
+  const open = () => {
+    const token = tokenStore.get();
+    return fetch(`${BASE_URL}${url}`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'text/event-stream',
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+      body: JSON.stringify(body),
+    });
+  };
+
+  let res: Response;
+  try {
+    res = await open();
+    if (res.status === 401) {
+      await refreshAccessToken();
+      res = await open();
+    }
+  } catch {
+    throw new ApiError(0, 'Không kết nối được tới máy chủ.', 'NETWORK', undefined, {
+      messageKey: 'errors.network',
+    });
+  }
+
+  if (!res.ok || !res.body) {
+    if (res.status === 401) {
+      tokenStore.clear();
+      onUnauthorized?.();
+    }
+    const payload = (await res.json().catch(() => undefined)) as
+      | { message?: string; code?: string; messageKey?: string }
+      | undefined;
+    throw new ApiError(
+      res.status,
+      payload?.message ?? defaultMessage(res.status),
+      payload?.code ?? `HTTP_${res.status}`,
+      undefined,
+      { messageKey: payload?.messageKey ?? defaultMessageKey(res.status) },
+    );
+  }
+
+  const reader = res.body.getReader();
+  const decoder = new TextDecoder();
+  let buffer = '';
+  for (;;) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    buffer += decoder.decode(value, { stream: true });
+    let end: number;
+    while ((end = buffer.indexOf('\n\n')) >= 0) {
+      const block = buffer.slice(0, end);
+      buffer = buffer.slice(end + 2);
+      let event = 'message';
+      const data: string[] = [];
+      for (const line of block.split('\n')) {
+        if (line.startsWith('event:')) event = line.slice(6).trim();
+        else if (line.startsWith('data:')) data.push(line.slice(5).trimStart());
+      }
+      if (data.length > 0) onEvent(event, JSON.parse(data.join('\n')));
+    }
+  }
+}
+
 export default client;

@@ -8,7 +8,7 @@ import ChatThread from './ChatThread';
 import { useApiError } from '../../hooks/useApiError';
 import { useChatQuota } from '../../hooks/useChatQuota';
 import { ApiError } from '../../shared/api/types';
-import { chatService } from '../../services/chatService';
+import { chatService, sendMessageStreaming } from '../../services/chatService';
 import type { ChatMessage } from '../../types/chat';
 
 /**
@@ -89,17 +89,13 @@ const ChatWidget: React.FC<{ isOpen: boolean; onClose: () => void }> = ({
       setIsThinking(true);
 
       try {
-        const { userMessage, reply, remaining } = await chatService.sendMessage(
+        const remaining = await sendMessageStreaming(
           conversationId,
           text,
+          optimistic.id,
+          setMessages,
         );
         setRemaining(remaining);
-        // Thay tin tạm bằng tin thật từ server rồi nối câu trả lời.
-        setMessages((prev) => [
-          ...prev.filter((m) => m.id !== optimistic.id),
-          userMessage,
-          reply,
-        ]);
       } catch (sendError: unknown) {
         if (sendError instanceof ApiError && sendError.code === 'CHAT_DAILY_LIMIT') {
           markExhausted();

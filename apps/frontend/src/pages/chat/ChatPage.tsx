@@ -11,7 +11,7 @@ import { ErrorState, Skeleton } from '../../components/ui/StateBlocks';
 import { useApiError } from '../../hooks/useApiError';
 import { useChatQuota } from '../../hooks/useChatQuota';
 import { useFormat } from '../../hooks/useFormat';
-import { chatService } from '../../services/chatService';
+import { chatService, sendMessageStreaming } from '../../services/chatService';
 import { ApiError } from '../../shared/api/types';
 import type { ChatConversation, ChatMessage } from '../../types/chat';
 
@@ -174,16 +174,13 @@ const ChatPage: React.FC = () => {
     setIsThinking(true);
 
     try {
-      const { userMessage, reply, remaining } = await chatService.sendMessage(
+      const remaining = await sendMessageStreaming(
         targetId,
         text,
+        optimistic.id,
+        updateMessages,
       );
       setRemaining(remaining);
-      updateMessages((prev) => [
-        ...prev.filter((m) => m.id !== optimistic.id),
-        userMessage,
-        reply,
-      ]);
       // Cập nhật lại danh sách để tiêu đề và đoạn xem trước đúng.
       const list = await chatService.listConversations();
       setConversations(list);

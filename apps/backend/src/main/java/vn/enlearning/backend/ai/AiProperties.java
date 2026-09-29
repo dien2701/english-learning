@@ -14,6 +14,7 @@ import jakarta.validation.constraints.NotNull;
  *
  * @param geminiApiKey   để trống thì các cổng AI dùng bản giả ({@link GeminiKeyMissing})
  * @param geminiModel    tên model Gemini gọi qua {@code generateContent}
+ * @param geminiFallbackModel model thử lại khi model chính bị 503/429 kéo dài; để trống thì không dùng
  * @param geminiBaseUrl  gốc REST của Gemini (đổi được để trỏ vào máy chủ giả khi test)
  * @param geminiTimeout  thời gian tối đa chờ một lời gọi Gemini (kết nối và đọc)
  * @param gradingTimeout bài đang GRADING quá thời gian này coi như AI không trả lời, chuyển NEEDS_RETRY
@@ -24,6 +25,7 @@ import jakarta.validation.constraints.NotNull;
 public record AiProperties(
 		@DefaultValue("") String geminiApiKey,
 		@NotBlank @DefaultValue("gemini-2.5-flash") String geminiModel,
+		@DefaultValue("") String geminiFallbackModel,
 		@NotBlank @DefaultValue("https://generativelanguage.googleapis.com") String geminiBaseUrl,
 		@NotNull @DefaultValue("45s") Duration geminiTimeout,
 		@NotNull @DefaultValue("60s") Duration gradingTimeout,

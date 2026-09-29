@@ -45,7 +45,7 @@ class GeminiWritingGraderTest {
 			exchange.close();
 		});
 		server.start();
-		AiProperties properties = new AiProperties("test-key", "gemini-test", "http://127.0.0.1:" + server.getAddress().getPort(),
+		AiProperties properties = new AiProperties("test-key", "gemini-test", "", "http://127.0.0.1:" + server.getAddress().getPort(),
 				Duration.ofSeconds(5), Duration.ofSeconds(60), Duration.ZERO);
 		grader = new GeminiWritingGrader(new GeminiClient(properties, JsonMapper.builder().build()));
 	}

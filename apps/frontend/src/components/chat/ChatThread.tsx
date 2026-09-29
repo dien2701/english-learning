@@ -1,9 +1,9 @@
-import React, { useEffect, useRef } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 
-import { SKILL_ICON } from '../../types/common';
-import type { ChatMessage } from '../../types/chat';
+import { SKILL_ICON } from "../../types/common";
+import type { ChatMessage } from "../../types/chat";
 
 interface ChatThreadProps {
   messages: ChatMessage[];
@@ -15,6 +15,28 @@ interface ChatThreadProps {
   /** Bản rút gọn dùng cho widget ở sidebar. */
   compact?: boolean;
 }
+
+/** Hiện dần `text` từng chữ; văn bản dài thêm ra (đang stream) thì chạy tiếp, tồn đọng nhiều thì nhanh hơn. */
+const TypedText: React.FC<{ text: string; onTick: () => void }> = ({
+  text,
+  onTick,
+}) => {
+  const [shown, setShown] = useState(0);
+
+  useEffect(() => {
+    if (shown >= text.length) return;
+    const timer = setTimeout(() => {
+      const rest = text.slice(shown);
+      const word = /^\s*\S+/.exec(rest)?.[0].length ?? rest.length;
+      setShown(shown + Math.max(word, Math.ceil(rest.length / 12)));
+    }, 30);
+    return () => clearTimeout(timer);
+  }, [text, shown]);
+
+  useEffect(onTick, [shown, onTick]);
+
+  return <>{text.slice(0, shown)}</>;
+};
 
 /** Danh sách tin nhắn của một hội thoại. */
 const ChatThread: React.FC<ChatThreadProps> = ({
@@ -29,23 +51,33 @@ const ChatThread: React.FC<ChatThreadProps> = ({
 
   // Tự cuộn xuống tin mới nhất mỗi khi có thêm tin.
   useEffect(() => {
-    endRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    endRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
   }, [messages.length, isThinking]);
+
+  // Chữ hiện dần làm khung dài ra: cuộn theo, không animation để khỏi giật.
+  const followTyping = useCallback(() => {
+    endRef.current?.scrollIntoView({ block: "end" });
+  }, []);
 
   if (messages.length === 0) {
     return (
       <div className="flex flex-1 flex-col items-center justify-center gap-4 p-6 text-center">
         <span className="grid h-12 w-12 place-items-center rounded-pill bg-accent-soft text-accent">
-          <span aria-hidden="true" className="material-symbols-outlined text-[26px]">
+          <span
+            aria-hidden="true"
+            className="material-symbols-outlined text-[26px]"
+          >
             smart_toy
           </span>
         </span>
 
         <div>
           <p className="text-[15px] font-extrabold text-ink">
-            {t('chat.emptyTitle')}
+            {t("chat.emptyTitle")}
           </p>
-          <p className="mt-1 text-[13px] text-ink-muted">{t('chat.emptyHint')}</p>
+          <p className="mt-1 text-[13px] text-ink-muted">
+            {t("chat.emptyHint")}
+          </p>
         </div>
 
         {starters && starters.length > 0 && (
@@ -69,15 +101,15 @@ const ChatThread: React.FC<ChatThreadProps> = ({
 
   return (
     <div
-      className={`flex flex-1 flex-col gap-4 overflow-y-auto ${compact ? 'p-3' : 'p-5'}`}
+      className={`flex flex-1 flex-col gap-4 overflow-y-auto ${compact ? "p-3" : "p-5"}`}
     >
       {messages.map((msg) => {
-        const isUser = msg.role === 'USER';
+        const isUser = msg.role === "USER";
 
         return (
           <div
             key={msg.id}
-            className={`flex gap-2.5 ${isUser ? 'flex-row-reverse' : ''}`}
+            className={`flex gap-2.5 ${isUser ? "flex-row-reverse" : ""}`}
           >
             {!isUser && (
               <span className="grid h-8 w-8 shrink-0 place-items-center rounded-pill bg-accent-soft text-accent">
@@ -90,17 +122,25 @@ const ChatThread: React.FC<ChatThreadProps> = ({
               </span>
             )}
 
-            <div className={`min-w-0 ${compact ? 'max-w-[85%]' : 'max-w-[75%]'}`}>
+            <div
+              className={`min-w-0 ${compact ? "max-w-[85%]" : "max-w-[75%]"}`}
+            >
               <div
                 className={`rounded-lg px-3.5 py-2.5 text-[14px] leading-relaxed ${
                   isUser
-                    ? 'bg-action text-white'
+                    ? "bg-action text-white"
                     : msg.isRefusal
-                      ? 'bg-surface-muted text-ink-muted'
-                      : 'bg-surface-muted text-ink'
+                      ? "bg-surface-muted text-ink-muted"
+                      : "bg-surface-muted text-ink"
                 }`}
               >
-                <p className="whitespace-pre-wrap">{msg.content}</p>
+                <p className="whitespace-pre-wrap">
+                  {msg.typing ? (
+                    <TypedText text={msg.content} onTick={followTyping} />
+                  ) : (
+                    msg.content
+                  )}
+                </p>
               </div>
 
               {/* Bài học gợi ý đi kèm câu trả lời */}
@@ -118,7 +158,9 @@ const ChatThread: React.FC<ChatThreadProps> = ({
                         >
                           {SKILL_ICON[link.skill]}
                         </span>
-                        <span className="min-w-0 flex-1 truncate">{link.label}</span>
+                        <span className="min-w-0 flex-1 truncate">
+                          {link.label}
+                        </span>
                         <span
                           aria-hidden="true"
                           className="material-symbols-outlined text-[17px] text-ink-subtle"
@@ -135,15 +177,18 @@ const ChatThread: React.FC<ChatThreadProps> = ({
         );
       })}
 
-      {isThinking && (
+      {isThinking && messages[messages.length - 1]?.role !== "ASSISTANT" && (
         <div className="flex gap-2.5" role="status" aria-live="polite">
           <span className="grid h-8 w-8 shrink-0 place-items-center rounded-pill bg-accent-soft text-accent">
-            <span aria-hidden="true" className="material-symbols-outlined text-[17px]">
+            <span
+              aria-hidden="true"
+              className="material-symbols-outlined text-[17px]"
+            >
               smart_toy
             </span>
           </span>
           <div className="flex items-center gap-1 rounded-lg bg-surface-muted px-4 py-3">
-            <span className="sr-only">{t('chat.thinking')}</span>
+            <span className="sr-only">{t("chat.thinking")}</span>
             {[0, 1, 2].map((i) => (
               <span
                 key={i}
