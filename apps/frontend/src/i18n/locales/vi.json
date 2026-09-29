@@ -436,7 +436,6 @@
     "phoneNumber": "Số điện thoại",
     "role": "Vai trò",
     "uploadAvatar": "Tải ảnh lên",
-    "avatarUrl": "Đường dẫn ảnh đại diện",
     "uploadSuccess": "Đã tải ảnh lên thành công",
     "changePassword": "Đổi mật khẩu",
     "currentPassword": "Mật khẩu hiện tại",
@@ -822,6 +821,8 @@
     "tooManyRequests": "Bạn thao tác quá nhanh. Vui lòng đợi một lát rồi thử lại.",
     "audioTooLarge": "Bản ghi quá lớn. Hãy ghi ngắn hơn hoặc ít câu hơn.",
     "audioUnsupported": "Định dạng âm thanh không được hỗ trợ.",
+    "imageTooLarge": "Ảnh quá lớn. Vui lòng chọn ảnh tối đa 5MB.",
+    "imageUnsupported": "Định dạng ảnh không được hỗ trợ. Chỉ nhận JPG, PNG hoặc WEBP.",
     "invalidAnswers": "Câu trả lời không hợp lệ.",
     "emailSendFailed": "Không gửi được email. Vui lòng thử lại sau."
   },

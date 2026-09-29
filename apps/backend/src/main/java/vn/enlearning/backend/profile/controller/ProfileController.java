@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -45,6 +47,13 @@ public class ProfileController {
 	ApiResponse<UserResponse> updateProfile(@AuthenticationPrincipal Jwt jwt,
 			@RequestBody UpdateProfileRequest request) {
 		return ApiResponse.ok(profileService.update(userId(jwt), request));
+	}
+
+	/** multipart/form-data: {@code file} là ảnh jpg/png/webp, tối đa 5MB. */
+	@PostMapping("/profile/avatar")
+	ApiResponse<UserResponse> uploadAvatar(@AuthenticationPrincipal Jwt jwt,
+			@RequestParam(value = "file", required = false) MultipartFile file) {
+		return ApiResponse.ok(profileService.uploadAvatar(userId(jwt), file));
 	}
 
 	/** Thu hồi mọi phiên cũ và đặt cookie refresh mới để thiết bị đang dùng không bị đăng xuất. */

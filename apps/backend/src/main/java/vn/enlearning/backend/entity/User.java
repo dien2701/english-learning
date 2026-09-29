@@ -49,6 +49,10 @@ public class User extends SoftDeletableEntity {
 	@Column(length = 500)
 	private String avatarUrl;
 
+	/** public_id Cloudinary của ảnh đại diện, để xoá ảnh cũ khi thay ảnh mới. */
+	@Column(length = 300)
+	private String avatarPublicId;
+
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
 	private Role role = Role.USER;

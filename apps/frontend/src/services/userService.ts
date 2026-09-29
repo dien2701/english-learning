@@ -72,8 +72,17 @@ export const notificationService = {
 export const profileService = {
   get: (): Promise<ProfileData> => http.get<ProfileData>('/profile'),
 
-  update: (payload: { fullName?: string; email?: string; phoneNumber?: string; avatarUrl?: string }): Promise<User> =>
+  update: (payload: { fullName?: string; email?: string; phoneNumber?: string }): Promise<User> =>
     http.patch<User>('/profile', payload),
+
+  uploadAvatar: (file: File): Promise<User> => {
+    const body = new FormData();
+    body.append('file', file);
+    return http.post<User>('/profile/avatar', body, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+      timeout: 60_000,
+    });
+  },
 
   changePassword: (payload: {
     currentPassword: string;

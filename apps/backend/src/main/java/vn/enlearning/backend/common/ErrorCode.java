@@ -21,6 +21,8 @@ public enum ErrorCode {
 	CONTENT_IN_USE(HttpStatus.CONFLICT, "errors.contentInUse"),
 	AUDIO_TOO_LARGE(HttpStatus.CONTENT_TOO_LARGE, "errors.audioTooLarge"),
 	AUDIO_UNSUPPORTED(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "errors.audioUnsupported"),
+	IMAGE_TOO_LARGE(HttpStatus.CONTENT_TOO_LARGE, "errors.imageTooLarge"),
+	IMAGE_UNSUPPORTED(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "errors.imageUnsupported"),
 	STORAGE_UNAVAILABLE(HttpStatus.SERVICE_UNAVAILABLE, "errors.storageUnavailable"),
 	AI_UNAVAILABLE(HttpStatus.SERVICE_UNAVAILABLE, "errors.aiUnavailable"),
 	EMAIL_SEND_FAILED(HttpStatus.SERVICE_UNAVAILABLE, "errors.emailSendFailed"),

@@ -436,7 +436,6 @@
     "phoneNumber": "Phone number",
     "role": "Role",
     "uploadAvatar": "Upload avatar",
-    "avatarUrl": "Avatar image URL",
     "uploadSuccess": "Avatar uploaded successfully",
     "changePassword": "Change password",
     "currentPassword": "Current password",
@@ -822,6 +821,8 @@
     "tooManyRequests": "Too many attempts. Please wait a moment and try again.",
     "audioTooLarge": "The recording is too large. Record less audio or fewer lines.",
     "audioUnsupported": "This audio format is not supported.",
+    "imageTooLarge": "The image is too large. Please choose an image up to 5MB.",
+    "imageUnsupported": "This image format is not supported. Only JPG, PNG or WEBP.",
     "invalidAnswers": "The answers are not valid.",
     "emailSendFailed": "Could not send the email. Please try again later."
   },

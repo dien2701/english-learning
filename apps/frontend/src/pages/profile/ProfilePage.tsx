@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { App, Form, Input } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { passwordRule } from '../../shared/validation/password';
@@ -18,7 +18,6 @@ interface ProfileForm {
   fullName: string;
   email: string;
   phoneNumber?: string;
-  avatarUrl?: string;
 }
 
 interface PasswordForm {
@@ -38,10 +37,11 @@ const ProfilePage: React.FC = () => {
 
   const [isSavingProfile, setIsSavingProfile] = useState(false);
   const [isSavingPassword, setIsSavingPassword] = useState(false);
+  const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
+  const avatarInputRef = useRef<HTMLInputElement>(null);
 
   const { data, isLoading, error, reload } = useApi(() => profileService.get(), []);
-  const formAvatarUrl = Form.useWatch('avatarUrl', profileForm);
-  const avatarUrl = formAvatarUrl ?? data?.avatarUrl;
+  const avatarUrl = data?.avatarUrl;
 
   // Đổ dữ liệu vào form sau khi tải xong.
   useEffect(() => {
@@ -50,10 +50,25 @@ const ProfilePage: React.FC = () => {
         fullName: data.fullName,
         email: data.email,
         phoneNumber: data.phoneNumber,
-        avatarUrl: data.avatarUrl,
       });
     }
   }, [data, profileForm]);
+
+  const pickAvatar = () => avatarInputRef.current?.click();
+
+  const uploadAvatar = async (file: File) => {
+    setIsUploadingAvatar(true);
+    try {
+      const updatedUser = await profileService.uploadAvatar(file);
+      updateUser(updatedUser);
+      message.success(t('profile.uploadSuccess'));
+      reload();
+    } catch (uploadError) {
+      message.error(describe(uploadError, 'profile.updateError'));
+    } finally {
+      setIsUploadingAvatar(false);
+    }
+  };
 
   const saveProfile = async (values: ProfileForm) => {
     setIsSavingProfile(true);
@@ -120,15 +135,39 @@ const ProfilePage: React.FC = () => {
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-12">
         <div className="lg:col-span-4">
           <Card className="text-center">
-            <div className="mx-auto w-fit">
+            <div className="relative mx-auto w-fit">
               <div className="mx-auto grid h-24 w-24 place-items-center overflow-hidden rounded-pill bg-action text-[28px] font-extrabold text-white">
                 <SafeImage
                   src={avatarUrl}
-                  alt={t('profile.avatarUrl')}
+                  alt={t('profile.uploadAvatar')}
                   className="h-full w-full object-cover"
                   fallback={initials}
                 />
               </div>
+              <button
+                type="button"
+                onClick={pickAvatar}
+                disabled={isUploadingAvatar}
+                title={t('profile.uploadAvatar')}
+                className="absolute bottom-0 right-0 grid h-8 w-8 place-items-center rounded-pill bg-action text-white shadow disabled:opacity-60"
+              >
+                <span className="material-symbols-outlined text-[16px]">
+                  {isUploadingAvatar ? 'progress_activity' : 'photo_camera'}
+                </span>
+              </button>
+              <input
+                ref={avatarInputRef}
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                className="hidden"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  e.target.value = '';
+                  if (file) {
+                    void uploadAvatar(file);
+                  }
+                }}
+              />
             </div>
 
             <h2 className="mt-4 text-[18px] font-extrabold text-ink">
@@ -207,14 +246,6 @@ const ProfilePage: React.FC = () => {
                 name="phoneNumber"
               >
                 <Input size="large" />
-              </Form.Item>
-
-              <Form.Item
-                label={t('profile.avatarUrl')}
-                name="avatarUrl"
-                rules={[{ max: 500, message: t('errors.badRequest') }]}
-              >
-                <Input size="large" placeholder="https://" />
               </Form.Item>
 
               <Button type="submit" size="lg" loading={isSavingProfile}>

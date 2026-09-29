@@ -1,5 +1,6 @@
 package vn.enlearning.backend.profile.service;
 
+import java.io.IOException;
 import java.time.DateTimeException;
 import java.time.LocalTime;
 import java.time.ZoneId;
@@ -11,8 +12,12 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronization;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
+import org.springframework.web.multipart.MultipartFile;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import vn.enlearning.backend.auth.dto.Emails;
 import vn.enlearning.backend.auth.dto.UserResponse;
 import vn.enlearning.backend.auth.repository.UserRepository;
@@ -20,6 +25,10 @@ import vn.enlearning.backend.auth.repository.UserSettingRepository;
 import vn.enlearning.backend.auth.service.ClientInfo;
 import vn.enlearning.backend.auth.service.RefreshTokenService;
 import vn.enlearning.backend.auth.validation.PasswordPolicy;
+import vn.enlearning.backend.avatar.AvatarFiles;
+import vn.enlearning.backend.avatar.AvatarStorage;
+import vn.enlearning.backend.avatar.AvatarStorageException;
+import vn.enlearning.backend.avatar.StoredAvatar;
 import vn.enlearning.backend.common.ApiException;
 import vn.enlearning.backend.common.ErrorCode;
 import vn.enlearning.backend.content.repository.PracticeAttemptRepository;
@@ -38,13 +47,13 @@ import vn.enlearning.backend.profile.dto.UpdateProfileRequest;
 import vn.enlearning.backend.study.repository.StudySessionRepository;
 
 /** Hồ sơ, đổi mật khẩu và cài đặt cá nhân của người đang đăng nhập. */
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ProfileService {
 
 	private static final int MAX_NAME = 100;
 	private static final int MAX_PHONE = 20;
-	private static final int MAX_AVATAR = 500;
 	private static final int MIN_GOAL_MINUTES = 5;
 	private static final int MAX_GOAL_MINUTES = 600;
 	private static final String BAD_REQUEST_KEY = "errors.badRequest";
@@ -56,6 +65,7 @@ public class ProfileService {
 	private final UserFlashcardProgressRepository flashcardProgress;
 	private final RefreshTokenService refreshTokens;
 	private final PasswordEncoder passwordEncoder;
+	private final AvatarStorage avatarStorage;
 
 	@Transactional(readOnly = true)
 	public ProfileResponse get(UUID userId) {
@@ -95,9 +105,6 @@ public class ProfileService {
 		if (request.phoneNumber() != null) {
 			user.setPhoneNumber(blankToNull(request.phoneNumber(), "phoneNumber", MAX_PHONE));
 		}
-		if (request.avatarUrl() != null) {
-			user.setAvatarUrl(blankToNull(request.avatarUrl(), "avatarUrl", MAX_AVATAR));
-		}
 
 		try {
 			users.saveAndFlush(user);
@@ -106,6 +113,67 @@ public class ProfileService {
 			throw emailTaken();
 		}
 		return UserResponse.from(user);
+	}
+
+	/** Thay ảnh đại diện bằng ảnh người dùng tải lên (jpg/png/webp, tối đa {@link AvatarFiles#MAX_UPLOAD_BYTES}). */
+	@Transactional
+	public UserResponse uploadAvatar(UUID userId, MultipartFile file) {
+		if (file == null || file.isEmpty()) {
+			throw ApiException.field(ErrorCode.VALIDATION, "file", "errors.field.fileRequired");
+		}
+		String extension = AvatarFiles.extensionFor(file.getContentType());
+		if (extension == null) {
+			throw new ApiException(ErrorCode.IMAGE_UNSUPPORTED);
+		}
+		if (file.getSize() > AvatarFiles.MAX_UPLOAD_BYTES) {
+			throw new ApiException(ErrorCode.IMAGE_TOO_LARGE);
+		}
+		byte[] data;
+		try {
+			data = file.getBytes();
+		} catch (IOException e) {
+			throw new IllegalStateException("Không đọc được file tải lên", e);
+		}
+		if (!AvatarFiles.matchesSignature(extension, data)) {
+			throw new ApiException(ErrorCode.IMAGE_UNSUPPORTED);
+		}
+
+		User user = activeUser(userId);
+		StoredAvatar stored;
+		try {
+			stored = avatarStorage.store(data, userId + "-" + System.currentTimeMillis(), extension);
+		} catch (AvatarStorageException e) {
+			log.warn("Lưu ảnh đại diện của {} lỗi: {}", userId, e.getMessage());
+			throw new ApiException(ErrorCode.STORAGE_UNAVAILABLE);
+		}
+		String previous = user.getAvatarPublicId();
+		user.setAvatarUrl(stored.url());
+		user.setAvatarPublicId(stored.publicId());
+		try {
+			users.saveAndFlush(user);
+		} catch (RuntimeException e) {
+			avatarStorage.delete(stored.publicId());
+			throw e;
+		}
+		discardAvatarAfterCommit(previous);
+		return UserResponse.from(user);
+	}
+
+	/** Xoá ảnh cũ sau khi DB commit; nếu đang nằm trong giao dịch ngoài (ví dụ test) thì đợi giao dịch đó. */
+	private void discardAvatarAfterCommit(String publicId) {
+		if (publicId == null) {
+			return;
+		}
+		if (TransactionSynchronizationManager.isSynchronizationActive()) {
+			TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
+				@Override
+				public void afterCommit() {
+					avatarStorage.delete(publicId);
+				}
+			});
+		} else {
+			avatarStorage.delete(publicId);
+		}
 	}
 
 	/**

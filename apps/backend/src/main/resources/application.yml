@@ -85,6 +85,10 @@ app:
     cloudinary-url: ${CLOUDINARY_URL:}
     local-dir: ${AUDIO_LOCAL_DIR:uploads/audio}
     generate-seed: ${AUDIO_GENERATE_SEED:false}
+  # Ảnh đại diện người dùng tự tải lên (đợt profile). Dùng chung CLOUDINARY_URL với audio, thư mục khác (avatar/).
+  avatar:
+    cloudinary-url: ${CLOUDINARY_URL:}
+    local-dir: ${AVATAR_LOCAL_DIR:uploads/avatars}
   # Hạn mức chat: tối đa daily-limit câu trợ lý trả lời mỗi người mỗi ngày (giờ Asia/Ho_Chi_Minh).
   chat:
     daily-limit: ${CHAT_DAILY_LIMIT:30}
