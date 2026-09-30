@@ -908,8 +908,16 @@
     "csvCol3": "<strong>Cột 3 (Nội dung):</strong> Nội dung câu hỏi phụ. Với điền từ, dùng <code>[blank]</code> cho ô trống.",
     "csvCol4": "<strong>Cột 4, 5, 6, 7 (Lựa chọn):</strong> Các lựa chọn cho câu hỏi trắc nghiệm. Bỏ trống nếu là câu điền từ.",
     "csvCol8": "<strong>Cột 8 (Đáp án đúng):</strong> Nhập chính xác lựa chọn đúng. Nếu có nhiều đáp án, phân cách bằng dấu chấm phẩy (<code>;</code>).",
+    "csvColVocab1": "<strong>Cột 1 (Từ):</strong> Từ vựng tiếng Anh.",
+    "csvColVocab2": "<strong>Cột 2 (Phiên âm):</strong> Phiên âm IPA (tuỳ chọn).",
+    "csvColVocab3": "<strong>Cột 3 (Nghĩa):</strong> Nghĩa tiếng Việt.",
+    "csvColVocab4": "<strong>Cột 4 (Ví dụ):</strong> Câu ví dụ (tuỳ chọn).",
+    "csvColVocab5": "<strong>Cột 5 (URL ảnh):</strong> Đường dẫn ảnh minh hoạ (tuỳ chọn).",
+    "csvColSpeaking1": "<strong>Cột 1 (Câu):</strong> Câu tiếng Anh cần luyện nói.",
+    "csvColSpeaking2": "<strong>Cột 2 (Nghĩa):</strong> Nghĩa tiếng Việt (tuỳ chọn).",
+    "csvColWriting1": "<strong>Cột 1 (Gợi ý):</strong> Mỗi dòng là một gợi ý viết bài.",
     "csvEmpty": "File CSV trống hoặc không đúng định dạng",
-    "csvImported": "Đã nhập thành công {{count}} câu hỏi. Hãy quay lại tab \"Nhập thủ công\" để kiểm tra.",
+    "csvImported": "Đã nhập thành công {{count}} mục. Hãy quay lại tab \"Nhập thủ công\" để kiểm tra.",
     "chooseCsv": "Chọn file CSV"
   }
 }

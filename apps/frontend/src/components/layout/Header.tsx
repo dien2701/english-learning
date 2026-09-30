@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
@@ -34,8 +34,41 @@ export const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => {
      luôn lệch với Trung tâm thông báo. */
   const { data: notifications } = useApi(() => notificationService.list(), []);
 
-  const items = (notifications?.items ?? []).slice(0, 3);
-  const unreadCount = (notifications?.items ?? []).filter((n) => !n.isRead).length;
+  /* Chỉ giữ phần người dùng vừa đánh dấu rồi phủ lên dữ liệu gốc, giống
+     NotificationCenterPage — bấm đã đọc thì badge/chấm đỏ cập nhật ngay
+     mà không cần tải lại danh sách. */
+  const [readIds, setReadIds] = useState<ReadonlySet<string>>(new Set());
+  const [isAllRead, setIsAllRead] = useState(false);
+
+  const allItems = useMemo(
+    () =>
+      (notifications?.items ?? []).map((n) => ({
+        ...n,
+        isRead: n.isRead || isAllRead || readIds.has(n.id),
+      })),
+    [notifications, readIds, isAllRead],
+  );
+
+  const items = allItems.slice(0, 3);
+  const unreadCount = allItems.filter((n) => !n.isRead).length;
+
+  const markRead = async (id: string) => {
+    setReadIds((prev) => new Set(prev).add(id));
+    try {
+      await notificationService.markRead(id);
+    } catch {
+      // Đánh dấu đã đọc không thành công thì cũng không cần báo lỗi ồn ào.
+    }
+  };
+
+  const markAllRead = async () => {
+    setIsAllRead(true);
+    try {
+      await notificationService.markAllRead();
+    } catch {
+      setIsAllRead(false);
+    }
+  };
 
   const [openMenu, setOpenMenu] = useState<'notif' | 'profile' | null>(null);
 
@@ -153,12 +186,15 @@ export const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => {
                 <h2 className="text-[15px] font-bold text-ink">
                   {t('header.notifications')}
                 </h2>
-                <button
-                  type="button"
-                  className="text-[12px] font-bold text-accent hover:underline"
-                >
-                  {t('header.markAllRead')}
-                </button>
+                {unreadCount > 0 && (
+                  <button
+                    type="button"
+                    onClick={markAllRead}
+                    className="text-[12px] font-bold text-accent hover:underline"
+                  >
+                    {t('header.markAllRead')}
+                  </button>
+                )}
               </div>
 
               <ul className="max-h-80 divide-y divide-hairline overflow-y-auto">
@@ -166,7 +202,10 @@ export const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => {
                   <li key={n.id}>
                     <Link
                       to={n.path}
-                      onClick={() => setOpenMenu(null)}
+                      onClick={() => {
+                        setOpenMenu(null);
+                        void markRead(n.id);
+                      }}
                       className={`flex gap-3 px-4 py-3 transition-colors hover:bg-surface-hover ${
                         n.isRead ? '' : 'bg-accent-subtle'
                       }`}

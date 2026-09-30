@@ -908,8 +908,16 @@
     "csvCol3": "<strong>Column 3 (Text):</strong> The question text. For fill-in-the-blank, use <code>[blank]</code> for the gap.",
     "csvCol4": "<strong>Columns 4, 5, 6, 7 (Options):</strong> Options for multiple-choice questions. Leave empty for fill-in-the-blank.",
     "csvCol8": "<strong>Column 8 (Correct answer):</strong> Enter the correct option exactly. Separate multiple answers with a semicolon (<code>;</code>).",
+    "csvColVocab1": "<strong>Column 1 (Word):</strong> The English word.",
+    "csvColVocab2": "<strong>Column 2 (Phonetic):</strong> IPA phonetic spelling (optional).",
+    "csvColVocab3": "<strong>Column 3 (Meaning):</strong> Vietnamese meaning.",
+    "csvColVocab4": "<strong>Column 4 (Example):</strong> Example sentence (optional).",
+    "csvColVocab5": "<strong>Column 5 (Image URL):</strong> Illustration image URL (optional).",
+    "csvColSpeaking1": "<strong>Column 1 (Sentence):</strong> The English sentence to practice speaking.",
+    "csvColSpeaking2": "<strong>Column 2 (Meaning):</strong> Vietnamese meaning (optional).",
+    "csvColWriting1": "<strong>Column 1 (Hint):</strong> Each row is one writing hint.",
     "csvEmpty": "The CSV file is empty or has the wrong format",
-    "csvImported": "Imported {{count}} questions. Go back to the \"Manual entry\" tab to review them.",
+    "csvImported": "Imported {{count}} items. Go back to the \"Manual entry\" tab to review them.",
     "chooseCsv": "Choose CSV file"
   }
 }
