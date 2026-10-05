@@ -47,11 +47,6 @@ const LoginPage: React.FC = () => {
     }
   };
 
-  /** Điền nhanh tài khoản mẫu — chỉ có ý nghĩa khi chạy với dữ liệu giả lập. */
-  const fillDemo = (email: string) => {
-    form.setFieldsValue({ email, password: '123456' });
-  };
-
   return (
     <AuthLayout
       title={t('auth.login')}
@@ -112,26 +107,6 @@ const LoginPage: React.FC = () => {
           </span>
         </div>
       </Form>
-
-      <div className="mt-6 rounded-md bg-surface-muted p-3">
-        <p className="text-caption text-ink-muted">{t('auth.demoHint')}</p>
-        <div className="mt-2 flex flex-wrap gap-2">
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={() => fillDemo('hocvien@enlearning.vn')}
-          >
-            {t('auth.demoStudent')}
-          </Button>
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={() => fillDemo('admin@enlearning.vn')}
-          >
-            {t('auth.demoAdmin')}
-          </Button>
-        </div>
-      </div>
     </AuthLayout>
   );
 };

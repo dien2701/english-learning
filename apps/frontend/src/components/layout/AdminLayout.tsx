@@ -101,8 +101,8 @@ const AdminLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
                   className={({ isActive }) =>
                     `group flex min-h-[44px] items-center gap-3 rounded-md px-3 text-[13.5px] font-semibold transition-colors duration-200 ${
                       isActive
-                        ? 'bg-sidebar-active text-white'
-                        : 'text-sidebar-fg hover:bg-white/[0.07] hover:text-white'
+                        ? 'bg-sidebar-active text-white!'
+                        : 'text-sidebar-fg! hover:bg-white/[0.07] hover:text-white!'
                     }`
                   }
                 >
@@ -122,7 +122,7 @@ const AdminLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
         <div className="shrink-0 border-t border-white/10 p-3">
           <Link
             to="/dashboard"
-            className="flex min-h-[44px] items-center gap-3 rounded-md px-3 text-[13.5px] font-semibold text-sidebar-fg transition-colors hover:bg-white/[0.07] hover:text-white"
+            className="flex min-h-[44px] items-center gap-3 rounded-md px-3 text-[13.5px] font-semibold text-sidebar-fg! transition-colors hover:bg-white/[0.07] hover:text-white!"
           >
             <span aria-hidden="true" className="material-symbols-outlined text-[21px]">
               school

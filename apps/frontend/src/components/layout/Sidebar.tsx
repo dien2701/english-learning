@@ -74,7 +74,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       <Link
         to="/dashboard"
         onClick={onNavigate}
-        className={`flex h-header shrink-0 items-center gap-2.5 text-white no-underline visited:text-white hover:text-white ${
+        className={`flex h-header shrink-0 items-center gap-2.5 text-white no-underline text-white! visited:text-white! hover:text-white! ${
           isOpen ? 'px-5' : 'px-5 lg:justify-center lg:px-0'
         }`}
       >
@@ -113,13 +113,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     className={({ isActive }) =>
                       [
                         'group flex items-center rounded-md text-[13.5px] font-semibold',
-                        'transition-colors duration-200 visited:text-white',
+                        'transition-colors duration-200 visited:text-white!',
                         // Chiều cao tối thiểu 44px cho vùng chạm trên cảm ứng.
                         'min-h-[44px] px-3',
                         isOpen ? 'gap-3' : 'gap-3 lg:justify-center lg:px-0',
                         isActive
-                          ? 'bg-sidebar-active text-white'
-                          : 'text-white hover:bg-white/[0.07]',
+                          ? 'bg-sidebar-active text-white!'
+                          : 'text-white! hover:bg-white/[0.07]',
                       ].join(' ')
                     }
                   >
