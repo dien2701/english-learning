@@ -389,6 +389,8 @@
     "inputLabel": "Message",
     "placeholder": "Ask about vocabulary, grammar…",
     "send": "Send message",
+    "voiceStart": "Dictate message",
+    "voiceStop": "Stop recording",
     "thinking": "The assistant is writing a reply",
     "widgetTitle": "AI Assistant",
     "widgetSubtitle": "English questions answered",

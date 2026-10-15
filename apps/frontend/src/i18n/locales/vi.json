@@ -389,6 +389,8 @@
     "inputLabel": "Nội dung tin nhắn",
     "placeholder": "Hỏi về từ vựng, ngữ pháp…",
     "send": "Gửi tin nhắn",
+    "voiceStart": "Nhập bằng giọng nói",
+    "voiceStop": "Dừng ghi âm",
     "thinking": "Trợ lý đang soạn câu trả lời",
     "widgetTitle": "Trợ lý AI",
     "widgetSubtitle": "Hỏi đáp về tiếng Anh",
