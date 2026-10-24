@@ -69,7 +69,6 @@ Mật khẩu chung: `123456`
 
 | Email | Vai trò |
 |---|---|
-| `admin@enlearning.vn` | Quản trị |
 | `hocvien@enlearning.vn` | Học viên (có sẵn lịch sử học) |
 | `khoa@enlearning.vn` | Học viên |
 
