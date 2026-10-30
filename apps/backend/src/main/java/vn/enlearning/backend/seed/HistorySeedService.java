@@ -184,6 +184,15 @@ public class HistorySeedService {
 		return users.findByEmail(DEMO_EMAIL).flatMap(this::seedFor);
 	}
 
+	/** Xoá lịch sử hiện có của tài khoản theo email rồi nạp lại lịch sử mẫu; rỗng nếu không có tài khoản. */
+	@Transactional
+	public Optional<Report> reseedForEmail(String email) {
+		return users.findByEmail(email).flatMap(user -> {
+			deleteHistory(user);
+			return seedFor(user);
+		});
+	}
+
 	/** Nạp lịch sử đầy đủ (90 ngày, mọi kỹ năng) cho một người dùng. */
 	@Transactional
 	public Optional<Report> seedFor(User user) {
@@ -238,13 +247,15 @@ public class HistorySeedService {
 	/** Xoá lịch sử của học viên mẫu chính để nạp lại (dùng ở chế độ {@code reset-demo}); người dùng khác giữ nguyên. */
 	@Transactional
 	public void deleteMainHistory() {
-		users.findByEmail(DEMO_EMAIL).ifPresent(user -> {
-			for (String table : HISTORY_TABLES) {
-				em.createNativeQuery("delete from " + table + " where user_id = :id").setParameter("id", user.getId())
-						.executeUpdate();
-			}
-			log.info("Đã xoá lịch sử học của {}.", DEMO_EMAIL);
-		});
+		users.findByEmail(DEMO_EMAIL).ifPresent(this::deleteHistory);
+	}
+
+	private void deleteHistory(User user) {
+		for (String table : HISTORY_TABLES) {
+			em.createNativeQuery("delete from " + table + " where user_id = :id").setParameter("id", user.getId())
+					.executeUpdate();
+		}
+		log.info("Đã xoá lịch sử học của {}.", user.getEmail());
 	}
 
 	// --- Dựng ngữ cảnh -------------------------------------------------------------------------------

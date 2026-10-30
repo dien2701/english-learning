@@ -95,6 +95,8 @@ app:
   # Chỉ có tác dụng ở profile dev. if-empty: chỉ nạp phần còn thiếu; reset-demo: xoá dữ liệu demo (email @demo.enlearning.vn) rồi nạp lại.
   seed:
     mode: ${SEED_MODE:if-empty}
+    # Email tài khoản cần nạp lịch sử học mẫu (dev); để trống thì bỏ qua.
+    history-email: ${SEED_HISTORY_EMAIL:}
     # Nạp dữ liệu thật đợt 13 (seed/real/*.json) một lần; idempotent nên bật lại vẫn an toàn.
     real-data: ${REAL_DATA_SEED:false}
   scheduling:

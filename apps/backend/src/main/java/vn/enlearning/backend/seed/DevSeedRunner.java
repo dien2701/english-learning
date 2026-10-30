@@ -38,6 +38,12 @@ public class DevSeedRunner implements ApplicationRunner {
 		// Chạy cả khi DB đã có người dùng từ trước: chỉ nạp cho người dùng chưa có lịch sử học.
 		historySeed.seedIfEmpty();
 		historySeed.seedDemoUsers();
+		if (properties.historyEmail() != null && !properties.historyEmail().isBlank()) {
+			historySeed.reseedForEmail(properties.historyEmail().trim())
+					.ifPresentOrElse(r -> log.info("Đã nạp lịch sử cho {}: {}", properties.historyEmail(), r),
+							() -> log.warn("Không nạp lịch sử cho {}: không có tài khoản.",
+									properties.historyEmail()));
+		}
 		notificationSeed.seedIfMissing();
 	}
 }

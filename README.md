@@ -1,31 +1,67 @@
 # EN-Learning
 
-Nền tảng học tiếng Anh trên web, giao diện song ngữ Việt/Anh. Người học có flashcard, luyện nghe, đọc, viết, nói, làm bài kiểm tra và chat với AI. Người quản trị quản lý nội dung, người dùng và thông báo.
+**Học tiếng Anh mỗi ngày, đủ cả 4 kỹ năng Nghe, Nói, Đọc, Viết, có AI chấm bài và trò chuyện cùng bạn.**
 
-## Chức năng
+EN-Learning là website học tiếng Anh dành cho người Việt. Giao diện dùng được bằng tiếng Việt hoặc tiếng Anh. Người học tự luyện theo nhịp của mình, còn hệ thống ghi lại tiến độ, nhắc học và chỉ ra kỹ năng cần cải thiện.
 
-| # | Chức năng | Mô tả ngắn |
-|---|---|---|
-| 1 | Đăng ký, đăng nhập | JWT, refresh token xoay vòng trong cookie HttpOnly, quên mật khẩu bằng OTP qua email |
-| 2 | Dashboard | Tiến độ, chuỗi ngày học, thống kê theo kỹ năng |
-| 3 | Flashcard | Học từ vựng theo chủ đề, có ảnh và phát âm |
-| 4 | Luyện viết | AI chấm điểm và nhận xét bài viết |
-| 5 | Luyện nghe | Bài nghe có audio, câu hỏi trắc nghiệm |
-| 6 | Luyện đọc | Bài đọc kèm câu hỏi |
-| 7 | Luyện nói | Thu âm thật, AI chấm phát âm từng câu |
-| 8 | Bài kiểm tra | Đề thi tổng hợp, tính giờ, lưu lịch sử |
-| 9 | Chat với AI | Hội thoại luyện tiếng Anh (giới hạn 30 tin/ngày) |
-| 10 | Quản trị | Nội dung (nhập CSV), người dùng, thông báo, dashboard quản trị |
+## Video demo
 
-Ngoài ra: nhắc học qua email, giới hạn tần suất gọi API, hồ sơ và ảnh đại diện, cài đặt cá nhân.
+[![Xem video demo EN-Learning](https://img.youtube.com/vi/I40x8kGZiw0/hqdefault.jpg)](https://www.youtube.com/watch?v=I40x8kGZiw0)
 
-## Công nghệ
+▶ Xem trên YouTube: https://www.youtube.com/watch?v=I40x8kGZiw0
+
+---
+
+## Phần 1. Giới thiệu sản phẩm
+
+### Người học làm được gì?
+
+| Chức năng | Bạn sẽ làm gì |
+|---|---|
+| 📊 **Trang tổng quan** | Xem mình đã học bao nhiêu, chuỗi ngày học liên tục, kỹ năng nào mạnh, kỹ năng nào yếu |
+| 🃏 **Flashcard từ vựng** | Học từ mới theo chủ đề, mỗi thẻ có hình minh hoạ và phát âm |
+| 🎧 **Luyện nghe** | Nghe đoạn hội thoại, bài nói rồi trả lời câu hỏi |
+| 📖 **Luyện đọc** | Đọc bài ngắn rồi trả lời câu hỏi để kiểm tra mức hiểu |
+| ✍️ **Luyện viết** | Viết bài theo đề, AI chấm điểm và góp ý cách sửa |
+| 🎤 **Luyện nói** | Đọc to từng câu vào micro, AI chấm phát âm từng câu |
+| 📝 **Bài kiểm tra** | Làm đề tổng hợp có tính giờ, xem lại kết quả và lịch sử làm bài |
+| 💬 **Trò chuyện với AI** | Nói chuyện bằng tiếng Anh với trợ lý AI như với một người bạn (tối đa 30 tin mỗi ngày) |
+
+Ngoài ra còn có hồ sơ cá nhân với ảnh đại diện, cài đặt ngôn ngữ, thông báo trong ứng dụng và email nhắc học khi bạn quên vào học.
+
+### Người quản trị làm được gì?
+
+- Thêm, sửa, xoá bài học: chủ đề, từ vựng, bài nghe, bài đọc, đề viết, đề nói, đề kiểm tra. Có thể nhập nhanh hàng loạt từ file CSV.
+- Quản lý tài khoản người học.
+- Gửi thông báo tới người học.
+- Xem thống kê chung của toàn hệ thống.
+
+### Điểm nổi bật
+
+- **Đủ 4 kỹ năng trên một nơi**, không phải dùng nhiều ứng dụng khác nhau.
+- **AI chấm ngay**: bài viết và bài nói được chấm điểm, kèm nhận xét cụ thể.
+- **Nội dung thật**: hàng trăm từ vựng theo 20 chủ đề, bài nghe có giọng đọc của người bản xứ.
+- **Song ngữ Việt/Anh**: đổi ngôn ngữ giao diện bất cứ lúc nào.
+- **Bảo mật**: mật khẩu được mã hoá, phiên đăng nhập tự gia hạn an toàn, quên mật khẩu thì lấy lại bằng mã gửi qua email.
+
+### Dùng thử
+
+Sau khi chạy hệ thống trên máy (xem Phần 2), đăng nhập bằng một trong các tài khoản mẫu, mật khẩu `123456`:
+
+| Email | Dành cho |
+|---|---|
+| `hocvien@enlearning.vn` | Học viên đã có sẵn lịch sử học, để xem biểu đồ và thống kê |
+| `khoa@enlearning.vn` | Học viên mới |
+
+---
+
+## Phần 2. Dành cho đội kỹ thuật
+
+### Công nghệ
 
 - **Backend:** Java 21, Spring Boot 4.1, Spring Security (JWT HS256), JPA/Hibernate, MySQL 9.0, Flyway.
 - **Frontend:** React 19, TypeScript, Vite, Ant Design 6, Tailwind 4, React Router 7, i18next, Recharts.
 - **Dịch vụ ngoài (tuỳ chọn):** Gemini 3.5 Flash-Lite (chấm Viết/Nói, Chat), Cloudinary (lưu audio, ảnh), Gmail SMTP (email). Thiếu khoá thì hệ thống tự dùng bản giả hoặc lưu cục bộ.
-
-## Cài đặt và chạy
 
 ### Yêu cầu
 
@@ -33,7 +69,7 @@ Ngoài ra: nhắc học qua email, giới hạn tần suất gọi API, hồ sơ
 - Node.js 20 trở lên
 - MySQL 9.0, đã tạo sẵn database (ví dụ `en_learning`)
 
-### Backend (`apps/backend`)
+### Chạy backend (`apps/backend`)
 
 ```bash
 cd apps/backend
@@ -50,7 +86,9 @@ API chạy ở `http://localhost:8080/api`. Flyway tự tạo bảng. Profile `d
 
 Chạy test: `./mvnw -q test` (test tích hợp chạy trên DB đã cấu hình và tự rollback).
 
-### Frontend (`apps/frontend`)
+> Trên PowerShell: dùng `copy` thay cho `cp`, và đặt biến bằng `$env:SPRING_PROFILES_ACTIVE="dev"` trước khi chạy `./mvnw spring-boot:run`.
+
+### Chạy frontend (`apps/frontend`)
 
 ```bash
 cd apps/frontend
@@ -63,23 +101,14 @@ Mở `http://localhost:5173`. Vite chuyển `/api` sang backend ở cổng 8080,
 
 Các lệnh khác: `npm run lint`, `npm run build`.
 
-### Tài khoản mẫu (profile `dev`)
-
-Mật khẩu chung: `123456`
-
-| Email | Vai trò |
-|---|---|
-| `hocvien@enlearning.vn` | Học viên (có sẵn lịch sử học) |
-| `khoa@enlearning.vn` | Học viên |
-
-## Kiến trúc
+### Kiến trúc
 
 Monorepo hai ứng dụng, giao tiếp qua REST JSON.
 
 ```
 Trình duyệt ──► Frontend (Vite, :5173) ──/api──► Backend (Spring Boot, :8080/api) ──► MySQL
                                                        │
-                                                       └──► Gemini · OpenAI TTS · Cloudinary · SMTP
+                                                       └──► Gemini · Cloudinary · SMTP
 ```
 
 **Backend:** mỗi module theo luồng `Controller` (mỏng) → `Service` (nghiệp vụ) → `Repository`. Phản hồi thành công có dạng `{ success, data }`, lỗi có dạng `{ message, code, messageKey, fieldErrorKeys }`. Khoá chính UUID v7, nội dung song ngữ `xxxVi/xxxEn`, xoá mềm bằng `deletedAt`, điểm thang 10.
